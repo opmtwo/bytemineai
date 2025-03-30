@@ -1,0 +1,103 @@
+{
+  "Comment": "Nymblr state machine to process csv file in batches",
+  "StartAt": "NymblrStateMachine",
+  "TimeoutSeconds": 900,
+  "States": {
+    "NymblrStateMachine": {
+      "Type": "Parallel",
+      "Branches": [
+        {
+          "StartAt": "ProcessCsvFile",
+          "States": {
+            "ProcessCsvFile": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "arn:aws:lambda:us-west-2:777146195997:function:stepMachineProcessCsvFile-opmtwobulk",
+                "Payload.$": "$"
+              },
+              "ResultPath": "$.result",
+              "Next": "CheckIfDone"
+            },
+            "WaitState": {
+              "Type": "Wait",
+              "Seconds": 2,
+              "Comment": "Time to wait before resuming - let dynamodb update",
+              "Next": "ProcessCsvFile"
+            },
+            "CheckIfDone": {
+              "Type": "Choice",
+              "Choices": [
+                {
+                  "Variable": "$.result.Payload.hasMore",
+                  "BooleanEquals": false,
+                  "Next": "NotifySuccess"
+                }
+              ],
+              "Default": "WaitState"
+            },
+            "NotifySuccess": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "Parameters": {
+                "FunctionName": "arn:aws:lambda:us-west-2:777146195997:function:stepMachineSuccess-opmtwobulk",
+                "Payload.$": "$"
+              },
+              "ResultPath": "$.result",
+              "End": true
+            }
+          }
+        }
+      ],
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "IntervalSeconds": 10,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.Timeout"
+          ],
+          "Next": "NotifyTimeout"
+        },
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "NotifyError"
+        }
+      ],
+      "End": true
+    },
+    "NotifyTimeout": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "arn:aws:lambda:us-west-2:777146195997:function:stepMachineProcessCsvFile-opmtwobulk",
+        "Payload": {
+          "Payload.$": "$",
+          "message": "The CSV processing has timed out."
+        }
+      },
+      "End": true
+    },
+    "NotifyError": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "arn:aws:lambda:us-west-2:777146195997:function:stepMachineError-opmtwobulk",
+        "Payload": {
+          "Payload.$": "$",
+          "message": "The CSV processing has failed."
+        }
+      },
+      "End": true
+    }
+  }
+}

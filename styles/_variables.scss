@@ -1,0 +1,69 @@
+// theme
+$radius: 6px;
+$radius-small: $radius;
+$animation-time: 250ms;
+$animation-method: ease-in-out;
+$box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+
+// layout
+$gap: 20px;
+$gutter: (2 * $gap);
+$tablet: 667px + $gutter;
+$desktop: 800px + $gutter;
+$widescreen: 1080px + $gutter;
+$fullhd: 1600px + $gutter;
+
+// body
+$body-background-color: #f4f4f5;
+
+// font
+$body-color: #444;
+$body-size: 16px;
+$body-font-size: 14px;
+$body-weight: 500;
+$family-primary: Montserrat, sans-serif;
+
+// colors
+$primary: #f72707;
+$danger: #e02020;
+$link: var(--primary);
+$dark: #444;
+$grey: #979797;
+$grey-light: #eae7e7;
+
+// panel
+$panel-shadow: $box-shadow;
+$panel-border-color: #d8d8d8;
+$panel-item-border: 1px solid $panel-border-color;
+
+// input
+$input-shadow: none;
+$input-focus-box-shadow-size: none;
+
+// spacing
+$spacing-values: (
+	'0': 0,
+	'1': 0.25rem,
+	'2': 0.5rem,
+	'3': 0.625rem,
+	'4': 1rem,
+	'5': 1.25rem,
+	'6': 2rem,
+	'auto': auto,
+) !default;
+
+// navbar
+$navbar-height: 5rem;
+$navbar-item-color: $grey;
+$navbar-padding-horizontal: 2.5rem;
+$navbar-padding-vertical: 0;
+$navbar-box-shadow-size: 0 1px 6px;
+$navbar-box-shadow-color: rgba(0, 0, 0, 0.10566);
+$navbar-item-active-color: $primary;
+$navbar-item-hover-color: $primary;
+$navbar-item-active-background-color: transparent;
+$navbar-item-hover-background-color: transparent;
+$navbar-breakpoint: $widescreen;
+
+// modal
+$modal-content-width: 585px + ($gap * 2);

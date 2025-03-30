@@ -1,0 +1,13 @@
+.panel {
+	font-size: 1em;
+}
+
+.panel-heading,
+.panel-block {
+	padding: 1.25rem;
+}
+
+.modal .panel {
+	overflow-y: auto;
+	max-height: 100%;
+}

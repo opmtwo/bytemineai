@@ -1,0 +1,130 @@
+.is-filter > .field {
+	padding: 1.25rem;
+	padding-top: 1rem;
+
+	.label {
+		margin-bottom: 0;
+		margin-left: 2.75rem;
+		color: var(--primary);
+		font-weight: bold !important;
+	}
+
+	.help {
+		padding-left: 3rem;
+	}
+
+	.material-icons {
+		// margin-top: 1rem;
+		color: var(--primary);
+	}
+
+	> .field {
+		display: flex;
+		align-items: flex-start;
+	}
+
+	.is-react-select {
+		flex: 1;
+		margin-left: 1rem;
+	}
+}
+
+.is-filter > .field + .field {
+	border-top: $panel-item-border;
+}
+
+.is-filter .input {
+	font-weight: $body-weight;
+}
+
+.is-filter .input::placeholder {
+	color: #333;
+	font-weight: inherit;
+}
+
+.is-filter .tabs a {
+	border: none;
+}
+
+.is-filter .tabs.is-toggle {
+	margin-top: -1px;
+	margin-bottom: 0;
+	background-color: $body-background-color;
+}
+
+.is-filter .tabs {
+	margin-bottom: 0;
+}
+
+.is-filter .tabs li,
+.is-filter .tabs.is-toggle li {
+	flex: 1;
+}
+
+.is-filter .tabs.is-toggle li a {
+	border: none;
+	border-radius: 0;
+}
+
+.is-filter .tabs.is-toggle a:hover {
+	z-index: auto;
+}
+
+.is-filter .is-checkbox {
+	// flex-direction: row-reverse;
+	// justify-content: space-between;
+}
+
+.filter-form header {
+	z-index: 20;
+	position: sticky;
+	top: 0;
+	background-color: #fff;
+	border-radius: $radius $radius 0 0;
+}
+
+.filter-form .button {
+	outline: 0 !important;
+	box-shadow: none !important;
+}
+
+.filter-form .button svg {
+	width: 24px;
+	height: 24px;
+}
+
+@include widescreen {
+	.filter-form {
+		z-index: 1;
+		position: fixed;
+		overflow-y: auto;
+		width: calc(25% - #{$gutter});
+		max-height: 85vh;
+		border-radius: $panel-radius;
+  		box-shadow: $panel-shadow;
+
+	}
+}
+
+@include fullhd {
+	.filter-form {
+		width: calc(#{$fullhd} * 0.25 - #{$gutter});
+	}
+}
+
+
+.trialsize .filter-form {
+	max-height: 75vh;
+}
+
+.trialsize .is-scroll-view  {
+	max-height: 75vh;
+}
+
+.audiencebuilderheader .filter-form {
+	max-height: 65vh;
+}
+
+.audiencebuilderheader .is-scroll-view  {
+	max-height: 65vh;
+}

@@ -1,0 +1,55 @@
+.captionText {
+  gap: 23px;
+  padding: 15px 70px;
+}
+
+.singleData {
+  width: 20%;
+}
+
+.priceRangeInput {
+  appearance: none !important;
+  height: 7px;
+  border-radius: 5px;
+  padding: 0 105px;
+}
+
+.priceRangeInput::-webkit-slider-thumb {
+  appearance: none !important;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  background: var(--primary) !important;
+  cursor: pointer;
+}
+
+.borderTopDesign {
+  border-top: 4px solid var(--primary);
+  position: sticky;
+  bottom: 0;
+}
+
+.overflowControl {
+  overflow: auto;
+}
+
+@media (max-width: 767px) {
+  .captionText {
+    gap: revert;
+    padding: 15px 15px;
+  }
+
+  .singleData {
+    font-size: 0.8em;
+  }
+
+  .priceRangeInput {
+    padding: 0 15px;
+  }
+}
+
+@media (min-width: 991px) {
+  .singleData {
+    font-size: 1.5em;
+  }
+}

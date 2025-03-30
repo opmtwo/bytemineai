@@ -1,0 +1,59 @@
+.button {
+	font-weight: 500;
+	transition: all $animation-time $animation-method;
+
+	&.is-ui-button {
+		padding-right: 2em;
+		padding-left: 2em;
+
+		&,
+		&:active,
+		&:focus,
+		&:active:focus,
+		&:focus:not(:active),
+		&.is-focused:not(:active) {
+			outline: 0;
+			box-shadow: none;
+		}
+	}
+}
+.action-buttons svg {
+	width: 12px !important;
+	height: 12px !important;
+}
+.button.is-icon {
+	align-items: center;
+	justify-content: center;
+	min-width: 1.875rem;
+	height: 1.875rem;
+	padding: 0;
+
+	&.is-medium {
+		width: 2.5rem;
+		height: 2.5rem;
+
+		.icon {
+			width: inherit;
+			height: inherit;
+		}
+	}
+
+	svg {
+		width: inherit;
+		height: inherit;
+	}
+
+	svg,
+	path {
+		transition: all $animation-time $animation-method;
+	}
+
+	&:hover svg path {
+		fill: #fff !important;
+	}
+}
+
+.button.is-primary.is-outlined[disabled],
+fieldset[disabled] .button.is-primary.is-outlined {
+	background-color: $primary;
+}

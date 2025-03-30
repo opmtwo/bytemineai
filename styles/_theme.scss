@@ -1,0 +1,160 @@
+:root {
+  --primary: #f72707;
+  --primary-hover: #f72707;
+  --message-icon: #0091FF;
+}
+
+.has-background-primary,
+.react-switch.is-active .react-switch-bg,
+.button.is-primary:not(.is-outlined),
+.button.is-primary:hover,
+.button.is-primary.is-hovered,
+.button.is-primary.is-outlined:hover,
+.button.is-primary.is-outlined.is-hovered,
+.button.is-primary.is-outlined:focus,
+.button.is-primary.is-outlined.is-focused,
+.button.is-primary.is-outlined.is-loading,
+.button.is-primary.is-outlined.is-ui-button:disabled,
+.button.is-primary.is-outlined[disabled],
+.tabs.is-toggle li.is-active a {
+  background-color: var(--primary) !important;
+}
+
+.has-border-primary,
+.button.is-primary.is-outlined,
+.button.is-primary.is-outlined:hover,
+.button.is-primary.is-outlined.is-hovered,
+.button.is-primary.is-outlined:focus,
+.button.is-primary.is-outlined.is-focused,
+.input:focus,
+.textarea:focus,
+.select select:focus,
+.is-focused.input,
+.is-focused.textarea,
+.select select.is-focused,
+.input:active,
+.textarea:active,
+.select select:active,
+.is-active.input,
+.is-active.textarea,
+.select select.is-active,
+.field.has-addons .button:hover,
+.field.has-addons .button:focus,
+.field.has-addons .button:focus:active,
+.field.has-addons .button.is-loading,
+.field.has-addons .button.is-loading::after {
+  border-color: var(--primary) !important;
+}
+
+.button.is-primary.is-loading::after,
+.button.is-default.is-loading::after,
+.button.is-default.is-outlined.is-loading::after,
+.button.is-primary.is-outlined.is-loading::after {
+  border-color: #fff transparent #fff transparent !important;
+}
+
+.field.has-addons .button.is-primary.is-loading::after,
+.field.has-addons .button.is-default.is-loading::after,
+.field.has-addons .button.is-default.is-outlined.is-loading::after {
+  // border-color: var(--primary) transparent var(--primary) transparent !important;
+}
+
+a:hover,
+.has-text-primary,
+a.has-text-primary:hover,
+a.has-text-primary:focus,
+.button.is-primary.is-outlined,
+// .button.is-primary.is-outlined:not(:hover:active:focus),
+a.navbar-item.is-active,
+.navbar-link.is-active,
+a.navbar-item:focus,
+a.navbar-item:focus-within,
+a.navbar-item:hover,
+a.navbar-item.is-active,
+.navbar-link:focus,
+.navbar-link:focus-within,
+.navbar-link:hover,
+.navbar-link.is-active,
+.field.has-addons .button:hover:not(.is-loading),
+.field.has-addons .button:active:not(.is-loading),
+.field.has-addons .button:focus:not(.is-loading),
+.tabs li.is-active a {
+  color: var(--primary) !important;
+}
+
+.button.is-primary.is-outlined:not(.is-loading):hover,
+.button.is-primary.is-outlined:not(.is-loading):active,
+.button.is-primary.is-outlined:not(.is-loading):focus,
+.button.is-primary.is-outlined.is-ui-button:disabled:not(.is-loading),
+.tabs.is-toggle li.is-active a {
+  color: #fff !important;
+}
+
+.button svg line,
+.button svg path,
+.button svg circle {
+  stroke: var(--primary) !important;
+}
+
+.box svg path,
+.navbar-brand path,
+.button svg line,
+.button svg path,
+.button svg circle,
+.is-ui-svg line,
+.is-ui-svg path,
+.is-ui-svg circle,
+.is-ui-svg rect,
+.filter-form .button svg path,
+.filter-form .button:hover svg path,
+.filter-form .button:active svg path,
+.filter-form .button:focus svg path,
+.filter-form .button:active:focus svg path,
+.filter-form .button svg polyline,
+.filter-form .button:hover svg polyline,
+.filter-form .button:active svg polyline,
+.filter-form .button:focus svg polyline,
+.filter-form .button:active:focus svg polyline {
+  fill: var(--primary) !important;
+  stroke: var(--primary) !important;
+}
+
+.is-danger svg line,
+.is-danger svg path,
+.is-danger svg circle {
+  fill: $danger !important;
+  stroke: $danger !important;
+}
+
+.button:hover svg line,
+.button:hover svg path,
+.button:hover svg circle,
+.button:focus svg line,
+.button:focus svg path,
+.button:focus svg circle,
+.button:active:focus svg line,
+.button:active:focus svg path,
+.button:active:focus svg circle {
+  fill: #fff !important;
+  stroke: #fff !important;
+}
+
+.pagination .is-clickable:not(.is-disabled):hover path {
+  fill: var(--primary) !important;
+}
+
+.button.is-primary.is-inverted,
+.button.is-primary.is-inverted:hover,
+.button.is-primary.is-inverted:active,
+.button.is-primary.is-inverted:focus,
+.button.is-primary.is-inverted:active:focus,
+.button.is-primary.is-outlined[disabled] {
+  background-color: transparent !important;
+}
+
+.tabs li.is-active a {
+  box-shadow: inset 0 -3px 0 0;
+}
+.customHeightinPanel > .panel {
+  height: 26.7rem;
+}

@@ -1,0 +1,13 @@
+{
+  "resourceName": "bytemineaiStorage",
+  "policyUUID": "dc2bd16f",
+  "bucketName": "bytemineaid65142bbe6974f539fbc3421233680fc",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "auth": {
+      "bytemineai2721b75b": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "api": {
+      "bytemineaiGraphApi": [
+        "Query",
+        "Mutation",
+        "Subscription"
+      ]
+    },
+    "storage": {
+      "bytemineaiStorage": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

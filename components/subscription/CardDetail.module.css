@@ -1,0 +1,16 @@
+.cardInputWrapper {
+    background-color: white;
+    border: 1px solid;
+    border-color: #dbdbdb;
+    border-radius: 6px;
+    min-height: 2.5rem;
+    transition: all 250ms;
+    margin-top: 0.625rem;
+    padding: 10px 10px;
+}
+
+.active {
+    border-top: 4px solid var(--primary) !important;
+    border-radius: 5px !important;
+    box-shadow: 0 0 4px 0 var(--primary) !important;
+}

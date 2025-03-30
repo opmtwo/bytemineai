@@ -1,0 +1,222 @@
+html {
+	font-size: 14px;
+}
+
+body {
+	font-size: 12px;
+}
+
+section.section {
+	padding-top: 90px;
+}
+
+.is-info-card {
+	padding: 1.5rem 0;
+}
+
+.is-contacts-area header {
+	z-index: 20;
+	position: sticky;
+	top: 0;
+	background-color: #fff;
+	border-radius: $radius $radius 0 0;
+}
+
+.action-buttons svg {
+	width: 12px;
+	height: 12px;
+}
+
+.contact-social {
+	display: inline-flex;
+	margin-top: 5px;
+}
+
+.contact-social svg {
+	width: 16px;
+	height: 16px;
+	margin-right: 5px;
+	fill: var(--primary);
+}
+
+.icon.has-svg svg {
+	width: inherit;
+	height: inherit;
+}
+
+.tox.tox-tinymce {
+	border: none;
+}
+
+.Toastify__toast {
+	box-shadow: $box-shadow;
+	font-family: inherit;
+}
+
+.is-scroll-view {
+	overflow-y: auto;
+	max-height: 85vh;
+}
+
+.is-scroll-view header {
+	z-index: 10;
+	position: sticky;
+	top: 0;
+	background-color: #fff;
+}
+
+.table {
+	margin-top: -1px;
+	border: 0;
+	border-collapse: separate
+}
+
+.table th,
+.table td {
+	padding: 0.5rem 1.25rem;
+	border: $panel-item-border;
+	border-left: 0;
+	border-top: 0;
+	vertical-align: top;
+}
+
+.table th:first-child,
+.table td:first-child {}
+
+.table th:last-child,
+.table td:last-child {
+	border-right: 0;
+}
+
+.table .action-buttons {
+	z-index: 1;
+	position: relative;
+	width: 160px;
+	padding-left: 0;
+	text-align: right !important;
+}
+
+.table .action-buttons.is-sticky {
+	position: sticky;
+	right: 0;
+	min-width: 150px;
+	background-color: #fff;
+	box-shadow: -1px 0 0 0 $panel-border-color;
+}
+
+// remove left margin from 1st action button
+.table .action-buttons .button:first-child {
+	margin-left: 0 !important;
+}
+
+.table .action-select.is-sticky {
+	z-index: 1;
+	position: sticky;
+	left: 0;
+	min-width: 50px;
+	max-width: 50px;
+	background-color: #fff;
+}
+
+.table .action-select.is-sticky .field {
+	min-width: auto;
+}
+
+.table.is-resizable th {
+	padding: 0;
+}
+
+.table.is-resizable th:active,
+.table.is-resizable th:focus,
+.table.is-resizable .icon:focus,
+.table.is-resizable .icon:focus {
+	outline: 0;
+}
+
+.table th.action-buttons,
+.table.is-comfortable th div {
+	padding: 0.5rem 1.25rem;
+}
+
+.table.is-comfortable th div {
+	min-width: 175px;
+	min-height: 56px;
+	padding: 0.5rem 1.25rem;
+	text-align: left;
+}
+
+.table.is-comfortable th div[style*="width"] {
+	min-width: 120px;
+}
+
+.table th .is-resizeable {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	outline: 0;
+	resize: none !important;
+}
+
+.table th .is-resizeable:hover {
+	resize: horizontal !important;
+}
+
+.table.is-comfortable td {
+	max-width: 200px;
+	hyphens: auto;
+	word-break: break-all;
+}
+
+.is-drag-handle {
+	position: absolute;
+	bottom: 10px;
+	right: 1.25rem;
+	cursor: move;
+}
+
+@include fullhd {
+	html {
+		font-size: 16px;
+	}
+
+	body {
+		font-size: 14px;
+	}
+}
+
+.enrichicon{
+	width:24px !important;
+	height:24px !important;
+}
+
+.customHeightinPanel{
+    height:374px;
+}
+
+.tag.is-ui {
+	height: auto;
+	padding: 0.33em 0.66em;
+	white-space: normal;
+}
+
+.is-clipped-text {
+	overflow: hidden;
+	display: inline-block;
+	max-width: 100%;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+div.planslist, div.planslist div.column,div.planslist div.column div.panel  {
+    height: 760px;
+}
+@include until-widescreen {
+	#__next > section > main > div > div.pannel-block.is-realtive.py-3.px-2 > div > div:nth-child(4) > div > header > div:nth-child(2) {
+		display: none;
+	}
+}
+.toast-message {
+	background-color: transparent;
+	box-shadow: none;
+	margin-top: 80px;
+}

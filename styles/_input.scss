@@ -1,0 +1,42 @@
+.input {
+    min-height: 2.5rem;
+    font-size: $body-font-size;
+    transition: all $animation-time;
+}
+
+textarea.input {
+    height: 10rem;
+    max-height: 10rem;
+}
+
+.field:not(:last-child) {
+    margin: 0;
+}
+
+.field + .field {
+    padding-top: 0.75rem;
+}
+
+.field.has-addons {
+    .input,
+    .button {
+        border: $panel-item-border;
+    }
+
+    .button {
+        color: $panel-border-color;
+
+        &:hover,
+        &:focus,
+        &:focus:active,
+        &.is-loading,
+        &.is-loading::after {
+            border-color: $primary;
+            color: $primary;
+        }
+
+        &.is-loading::after {
+            border-color: $primary transparent $primary transparent;
+        }
+    }
+}

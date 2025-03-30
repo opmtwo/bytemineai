@@ -1,0 +1,90 @@
+.navbar-brand {
+	margin-right: 1rem;
+}
+
+.navbar-item {
+	height: 2.5rem;
+	transition: all $animation-time $animation-method;
+}
+
+.navbar.is-spaced .navbar-dropdown {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	width: 12rem;
+	padding-top: 1rem;
+	background-color: transparent;
+	box-shadow: none;
+
+	.navbar-item {
+		border-radius: 0;
+	}
+
+	.navbar-dropdown-card {
+		padding: 1em 0;
+		background-color: #fff;
+		border-radius: 4px;
+		box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
+	}
+}
+
+@media (max-width: ($widescreen+$gutter+101-101-41)) {
+	.navbar {
+		padding: 0 1rem;
+	}
+	.navbar-brand {
+		width: 100%;
+	}
+	.navbar-quickmenu {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		position: absolute;
+		right: 5rem;
+		width: 12rem;
+		height: $navbar-height;
+	}
+	.navbar-burger {
+		position: absolute;
+		top: 0;
+		right: 1rem;
+		width: 4rem;
+		height: $navbar-height;
+	}
+	.navbar-menu {
+		opacity: 0;
+		visibility: hidden;
+		display: block;
+		position: absolute;
+		top: 100%;
+		right: 0;
+		left: 0;
+		padding: 2rem;
+		transform: scaleY(0);
+		transform-origin: left top;
+		transition: all $animation-time $animation-method;
+	}
+	.navbar-menu.is-active {
+		opacity: 1;
+		visibility: visible;
+		transform: scaleY(1);
+	}
+	.navbar-dropdown {
+		opacity: 0;
+		visibility: hidden;
+		transition: all $animation-time $animation-method;
+	}
+	.navbar-item.has-dropdown.is-hoverable:hover .navbar-dropdown {
+		opacity: 1;
+		visibility: visible;
+	}
+}
+
+@media (min-width: ($widescreen+$gutter+101))  {
+	.navbar-start a.navbar-item {
+		margin-left: 1rem;
+		padding-right: 1.5rem;
+		padding-left: 1.5rem;
+		border-radius: $radius;
+	}
+}

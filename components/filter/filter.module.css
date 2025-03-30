@@ -1,0 +1,24 @@
+.dataRequirement {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.dataRequirement label {
+    margin-left: 1.275rem;
+    color: var(--primary);
+    font-weight: bold !important;
+    font-size: .75rem!important;
+}
+
+.filterIcon {
+    fill: var(--primary);
+    width: 20px;
+}
+
+.dataRequirementFilter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-left: 2.75rem;
+    row-gap: 8px;
+}

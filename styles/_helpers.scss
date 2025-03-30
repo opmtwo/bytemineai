@@ -1,0 +1,86 @@
+.is-borderless {
+	border: 0 !important;
+}
+
+.has-border {
+	border: $panel-item-border !important; 
+}
+
+.has-radius {
+	border-radius: $radius !important;
+}
+
+.is-rounded {
+	border-radius: 50% !important;
+}
+
+.has-shadow {
+	box-shadow: $shadow !important;
+}
+
+.is-color-inherit {
+	color: inherit !important;
+}
+
+.has-background-transparent {
+	background-color: transparent !important;
+}
+
+.has-border-transparent {
+	border-color: transparent !important;
+}
+
+.is-disabled {
+	cursor: not-allowed !important;
+}
+
+.is-fullwidth {
+	width: 100%;
+	min-width: 100%;
+}
+
+.is-sticky-top {
+	position: sticky !important;
+	top: 0;
+}
+
+.is-absolute {
+	position: absolute !important;
+}
+
+.is-word-break-break-all {
+	word-break: break-all !important;
+}
+
+.is-resizeable {
+	overflow: auto !important;
+	width: 100%;
+	min-width: 100%;
+	height: 100%;
+	min-height: 100%;
+	resize: horizontal !important;
+}
+
+.is-outline-free {
+
+	&,
+	&:active,
+	&:focus,
+	&:active:focus,
+	&:focus:not(:active),
+	&.is-focused:not(:active) {
+		outline: 0 !important;
+	}
+}
+
+.is-normalcase {
+	text-transform:  none !important;
+}
+
+.mr-a {
+	margin-right: auto !important;
+}
+
+.ml-a {
+	margin-left: auto !important;
+}

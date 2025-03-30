@@ -1,0 +1,62 @@
+.mainWrap {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    color: #979797;
+    cursor:pointer;
+}
+
+.mainWrap:hover,
+.mainWrap:hover {
+    color: var(--primary);
+    fill: var(--primary);
+}
+
+.iconMainWrap {
+    width: 100%;
+    color: #979797
+}
+
+.iconwrap {
+    display: flex;
+    width: 30%;
+    color: #979797
+}
+
+.iconColorTick,
+.iconColorClose {
+    fill: #979797;
+    width: 1.2rem;
+    height: 1.2rem;
+    z-index: 1;
+    color: #979797;
+}
+
+.iconColorClose {
+    color: #979797;
+    border-left: 1px solid #d8d8d8;
+    margin-left: 5px;
+    padding-left: 1px;
+    width: 2rem;
+}
+/* 
+.iconColorClose {
+    fill: red;
+
+} */
+
+.mainWrap:has(.iconColorClose:hover),
+.mainWrap:has(.iconColorClose:hover) .iconColorClose {
+    color: var(--primary);
+    fill: var(--primary);
+    color: var(--primary);
+}
+
+.mainWrap:has(.iconColorTick:hover),
+.mainWrap:has(.iconColorTick:hover) .iconColorTick {
+    color: var(--primary);
+    fill: var(--primary);
+    color: var(--primary);
+}

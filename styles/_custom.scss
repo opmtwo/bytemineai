@@ -1,0 +1,33 @@
+// Font sizes
+.is-size-6-1 {
+  font-size: 0.85rem;
+}
+
+.list-action-button-container {
+  width: 300px;
+  // width: 90%;
+}
+
+.dropdown-item.is-active:hover {
+  color: white !important;
+}
+
+.pl-5-1 {
+  padding-left: 2rem;
+}
+
+
+.nymbl-circle {
+  width: 100px;
+  height: 100px;
+  background: lightgrey;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+}
+
+.nymbl-circle svg g { fill: var(--primary);}
+.nymbl-circle  {
+  padding-left:30px;
+  padding-top:28px;
+}

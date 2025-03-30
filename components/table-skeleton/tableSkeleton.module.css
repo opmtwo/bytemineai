@@ -1,0 +1,114 @@
+.skeletonHeader {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.skeletonfooter {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.skeletonSubHeader {
+  display: flex;
+}
+
+.skeleton2SubHeader {
+  display: flex;
+  width: 50%;
+}
+
+.checkbox {
+  width: 25px;
+  height: 25px;
+  border-radius: 25%;
+  margin-top: 5px;
+}
+
+.unlock {
+  width: 150px;
+  height: 33px;
+  margin-left: 15px;
+  border-radius: 8px;
+}
+
+.button {
+  width: 40%;
+  height: 33px;
+  margin-left: 15px;
+  border-radius: 8px;
+}
+
+.pagination {
+  width: 60%;
+  height: 33px;
+  margin-left: 15px;
+  border-radius: 8px;
+}
+
+.skeletonBody {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 15px;
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.header {
+  width: 150px;
+  height: 15px;
+  margin-left: 15px;
+  border-radius: 8px;
+}
+
+.header1 {
+  width: 150px;
+  height: 10px;
+  margin-left: 15px;
+  border-radius: 8px;
+}
+
+.skeletonfooter {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.footerPagination {
+  width: 28%;
+  height: 33px;
+  margin-left: 15px;
+  border-radius: 8px;
+}
+
+.lineAnimation {
+  margin-bottom: 6px;
+  background: rgba(130, 130, 130, 0.2);
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(8%, rgba(130, 130, 130, 0.2)),
+    color-stop(18%, rgba(130, 130, 130, 0.3)),
+    color-stop(33%, rgba(130, 130, 130, 0.2))
+  );
+  background: linear-gradient(
+    to right,
+    rgba(130, 130, 130, 0.2) 8%,
+    rgba(130, 130, 130, 0.3) 18%,
+    rgba(130, 130, 130, 0.2) 33%
+  );
+  background-size: 800px 100px;
+  animation: wave-lines 2s infinite ease-out;
+}
+
+@keyframes wave-lines {
+  0% {
+    background-position: -468px 0;
+  }
+
+  100% {
+    background-position: 468px 0;
+  }
+}
