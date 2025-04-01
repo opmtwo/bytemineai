@@ -1,9 +1,312 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
-type Todo @model {
-  id: ID!
-  name: String!
-  description: String
+# input AMPLIFY {
+# 	globalAuthRule: AuthRule = { allow: public }
+# } # FOR TESTING ONLY!
+
+type Collection @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listCollectionByTeamId", queryField: "listCollectionByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listCollectionByUserId", queryField: "listCollectionByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	name: String
+}
+
+type Contact @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listContactByTeamId", queryField: "listContactByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listContactByUserId", queryField: "listContactByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	# email validation
+	isEmailVerified: Boolean
+	contactEmailStatusCode: String
+	contactEmailDomainType: String
+	personalEmailStatusCode: String
+	personalEmailDomainType: String
+	contactPersonalEmailStatusCode: String
+	contactPersonalEmailDomainType: String
+
+	first_name: String # "Mandy",
+	last_name: String # "Dancho",
+	middle_name: String # "",
+	full_name: String # "Mandy Dancho",
+	job_title: String # "Director, Strategic Alliances, Global Project and Alliance Management",
+	seniority: String # "Director",
+	department: String # "Business Development, Corporate Development, Partnerships",
+	primary_role: String # "Business Development, Corporate Development, Partnerships",
+	secondary_role: String # "",
+	linkedin_profile: String # "https://www.linkedin.com/in/mandy-dancho-pmp-cpm-4754651",
+	linkedin_connection_count: String # "501",
+	work_email: String # "mandy_dancho@merck.com",
+	work_email_history: String # "[{\"work_email\": \"mandy_dancho@merck.com\", \"yyyyqq\": \"2025q1\"}, {\"work_email\": \"mandy.dancho@merck.com\", \"yyyyqq\": \"2024q4\"}]",
+	personal_email: String # "mandy.dancho@yahoo.com",
+	personal_email2: String # "adancho@gmail.com",
+	personal_email_history: String # "[{\"personal_email\": \"mandy.dancho@rcn.com\", \"yyyyqq\": \"2025q1\"}, {\"personal_email\": \"mandy.dancho@yahoo.com\", \"yyyyqq\": \"2025q1\"}]",
+	direct_dial: String # "(484) 951-6816",
+	mobile_number: String # "(484) 951-6816",
+	mobile_number_history: String # "[{\"phone_mobile\": \"(484) 951-6816\", \"yyyyqq\": \"2025q1\"}]",
+	work_number: String # "(800) 672-6372",
+	education: String # "[{\"school\":\"Shippensburg University of Pennsylvania\",\"end_date\":\"1997\",\"start_date\":\"1993\",\"degrees\":[\"B.S.\",\"Environmental Science, Biology\"]},{\"school\":\"Northern Virginia Community College\",\"end_date\":\"2001\",\"start_date\":\"1999\",\"degrees\":[\"A.S.\",\"Veterinary Technology\"]}]",
+	skills: String # "[\"Glp\",\"Pharmaceutical Industry\",\"Cross Functional Team Leadership\",\"Oncology\",\"Clinical Development\",\"Validation\",\"In Vivo\",\"Fda\",\"Gmp\",\"Cro\",\"Life Sciences\",\"Biotechnology\",\"Clinical Trials\",\"Vaccines\",\"Sop\",\"Lims\",\"Cgmp\",\"Project Management\",\"Good Laboratory Practice\",\"Drug Development\",\"Microsoft Project\"]",
+	interests: String # "",
+	linkedin_headline: String # "Director, Strategic Alliances, Global Project and Alliance Management at Merck",
+	facebook_profile: String # "facebook.com/mandydancho",
+	twitter_profile: String # "twitter.com/mandkalman",
+	work_experience: String # "[{\"title\":\"Director, Strategic Operations- Global Project And Alliance Mangement\",\"start_date\":\"2021-01-01\",\"end_date\":\"2022-04-01\",\"company\":\"Merck\"},{\"title\":\"Director, Global Clinical Trial Operations Pmo\",\"start_date\":\"2020-02-01\",\"end_date\":\"2021-01-01\",\"company\":\"Merck\"},{\"title\":\"Associate Director, Global Project & Alliance Management\",\"start_date\":\"2016-10-01\",\"end_date\":\"2020-02-01\",\"company\":\"Merck\"},{\"title\":\"Senior Specialist, Project Management\",\"start_date\":\"2015-03-01\",\"end_date\":\"2016-10-01\",\"company\":\"Merck\"},{\"title\":\"Specialist, Global Project Management\",\"start_date\":\"2012-10-01\",\"end_date\":\"2015-03-01\",\"company\":\"Merck\"},{\"title\":\"Research Biologist\",\"start_date\":\"2004-07-01\",\"end_date\":\"2012-10-01\",\"company\":\"Merck\"},{\"title\":\"Production Supervisor\",\"start_date\":\"2002-02-01\",\"end_date\":\"2004-07-01\",\"company\":\"Merck\"},{\"title\":\"Supervisor\",\"start_date\":\"1999-08-01\",\"end_date\":\"2002-02-01\",\"company\":\"Foundation for the National Institutes of Health\"}]",
+	salary: String # "$200,001+",
+	birth_year: String # "1975",
+	age: String # "50",
+	gender: String # "female",
+	new_hire: String # "false",
+	job_start_date: String # "2022-04-01",
+	company_name: String # "Merck",
+	company_domain: String # "merck.com",
+	company_website: String # "www.merck.com",
+	company_linkedin_profile: String # "https://www.linkedin.com/company/merck/",
+	company_linkedin_followers: String # "2346674",
+	company_local_address: String # "1684 N Broad St",
+	company_local_city: String # "Lansdale",
+	company_local_state: String # "PA",
+	company_local_address_postal: String # "19446",
+	company_hq_address: String # "2000 Galloping Hill Rd",
+	company_hq_city: String # "Kenilworth",
+	company_hq_state: String # "NJ",
+	company_hq_postal: String # "07033",
+	person_city: String # "Coopersburg",
+	person_state: String # "PA",
+	person_postal: String # "18036",
+	company_employee_range: String # "5000+",
+	company_revenue_range: String # "$1B+",
+	company_industry: String # "Manufacturing",
+	company_sic4: String # "2834",
+	company_sic4_description: String # "Pharmaceutical Preparations",
+	company_naics: String # "325412",
+	company_naics_description: String # "Pharmaceutical Preparation Manufacturing",
+	company_type: String # "Public Company"
+}
+
+type CollectionContact @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listCollectionContactByTeamId", queryField: "listCollectionContactByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listCollectionContactByUserId", queryField: "listCollectionContactByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	contactId: ID
+	contact: Contact @hasOne(fields: ["contactId"])
+
+	name: String
+}
+
+type ContactForm @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listContactFormByTeamId", queryField: "listContactFormByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listContactFormByUserId", queryField: "listContactFormByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	contactId: ID
+	contact: Contact @hasOne(fields: ["contactId"])
+
+	firstName: String
+	lastName: String
+	message: String
+}
+
+type DomainSearch @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listDomainSearchByTeamId", queryField: "listDomainSearchByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listDomainSearchByUserId", queryField: "listDomainSearchByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	term: String
+}
+
+type Filter @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listFilterByTeamId", queryField: "listFilterByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listFilterByUserId", queryField: "listFilterByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	name: String
+	filter: AWSJSON # rampedUpFilter
+	isSaved: Boolean # savedFilter
+}
+
+type EmailAccount @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listEmailAccountByTeamId", queryField: "listEmailAccountByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listEmailAccountByUserId", queryField: "listEmailAccountByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	email: String
+	code: String
+	token: String
+}
+
+type Enrichment @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listEnrichmentByTeamId", queryField: "listEnrichmentByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listEnrichmentByUserId", queryField: "listEnrichmentByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	s3Key: String # S3 key of the input csv file
+	s3KeyOutput: String # S3 key of the output csv file
+	name: String # original file name of the file
+	size: Int # original file size of the file
+	recordsUploaded: Int # number of records in the file
+	recordsEnriched: Int # number of records enriched - this is updated as records are processed
+	recordsProcessed: Int # number of records processed - this is updated as records are processed
+	isCompleted: Boolean # whether the operation is completed or not
+	keyEmail: String # csv key for the email field
+	keyPhone: String # csv key for the phone field
+	keyLinkedin: String # csv key for the linkedin field
+	status: String # one of - pending / processing / completed / failed
+}
+
+type EnrichSearch @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listEnrichSearchByTeamId", queryField: "listEnrichSearchByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listEnrichSearchByUserId", queryField: "listEnrichSearchByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	type: String
+	term: String
+}
+
+type FilterItem @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listFilterItemByTeamId", queryField: "listFilterItemByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listFilterItemByUserId", queryField: "listFilterByUsItemerId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	filterId: ID # teamId-filterId - e.g. opmtwo-domains
+	filename: String # file name of the original csv file
+	key: String # key of the filter value, e.g. domain, email, linkedin etc...
+	val: String # the actual value of the filter
+}
+
+type AuditLog @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listAuditLogByTeamId", queryField: "listAuditLogByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listAuditLogByUserId", queryField: "listAuditLogByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	title: String
+	description: String
+	data: String
+}
+
+type Sub @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listSubByTeamId", queryField: "listSubByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listSubByUserId", queryField: "listSubByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	subscriptionStatus: String
+	subscriptionPeriod: String
+
+	monthlyCredits: String
+	quarterlyCredits: String
+	annualCredits: String
+	currentCredits: String
+
+	stripeCustomerId: ID @index(name: "listSubByStripeCustomerId", queryField: "listSubByStripeCustomerId", sortKeyFields: ["createdAt"])
+	stripeSubscriptionID: [String]
+
+	seats: String
+
+	block: Boolean
+
+	tenant: Boolean
+
+	notes: String
+
+	color_code: String
+
+	icon_s3_key: String
+	logo_s3_key: String
+
+	isApiBlocked: Boolean # block_api
+	isEmailBlocked: Boolean # block_email
+	isProspectBlocked: Boolean # block_prospect
+	isEnrichBlocked: Boolean # block_enrich
+	isFilesBlocked: Boolean # block_files
+	isAutoComposeBlocked: Boolean # block_auto_compose
+	isAssistantsBlocked: Boolean # block_assistants
+	isSubProcessingBlocked: Boolean # block_sub_processing
+
+	firstPaid: AWSDateTime
+	lastPaid: AWSDateTime
+	nextPay: AWSDateTime
+}
+
+type SubLog @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listSubLogByTeamId", queryField: "listSubLogByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listSubLogByUserId", queryField: "listSubLogByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	subId: String
+	subOld: String
+	subNew: String
+	subject: String # subjectLine
+	description: String
+	oldCurrentCredits: Int
+	newCurrentCredits: Int
+	oldRolloverCredits: Int
+	newRolloverCredits: Int
+}
+
+type Usage @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	teamId: ID @index(name: "listUsageByTeamId", queryField: "listUsageByTeamId", sortKeyFields: ["createdAt"])
+	userId: ID @index(name: "listUsageByUserId", queryField: "listUsageByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	filterId: String
+	credits: Int
 }
