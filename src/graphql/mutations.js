@@ -1,51 +1,54 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createList = /* GraphQL */ `
-  mutation CreateList(
-    $input: CreateListInput!
-    $condition: ModelListConditionInput
+export const createCollection = /* GraphQL */ `
+  mutation CreateCollection(
+    $input: CreateCollectionInput!
+    $condition: ModelCollectionConditionInput
   ) {
-    createList(input: $input, condition: $condition) {
+    createCollection(input: $input, condition: $condition) {
       id
-      name
-      groupId
-      tenants
+      owner
+      teamId
+      userId
       createdAt
       updatedAt
-      owner
+      name
+      __typename
     }
   }
 `;
-export const updateList = /* GraphQL */ `
-  mutation UpdateList(
-    $input: UpdateListInput!
-    $condition: ModelListConditionInput
+export const updateCollection = /* GraphQL */ `
+  mutation UpdateCollection(
+    $input: UpdateCollectionInput!
+    $condition: ModelCollectionConditionInput
   ) {
-    updateList(input: $input, condition: $condition) {
+    updateCollection(input: $input, condition: $condition) {
       id
-      name
-      groupId
-      tenants
+      owner
+      teamId
+      userId
       createdAt
       updatedAt
-      owner
+      name
+      __typename
     }
   }
 `;
-export const deleteList = /* GraphQL */ `
-  mutation DeleteList(
-    $input: DeleteListInput!
-    $condition: ModelListConditionInput
+export const deleteCollection = /* GraphQL */ `
+  mutation DeleteCollection(
+    $input: DeleteCollectionInput!
+    $condition: ModelCollectionConditionInput
   ) {
-    deleteList(input: $input, condition: $condition) {
+    deleteCollection(input: $input, condition: $condition) {
       id
-      name
-      groupId
-      tenants
+      owner
+      teamId
+      userId
       createdAt
       updatedAt
-      owner
+      name
+      __typename
     }
   }
 `;
@@ -56,10 +59,9 @@ export const createContact = /* GraphQL */ `
   ) {
     createContact(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
-      isUnlocked
       createdAt
       updatedAt
       isEmailVerified
@@ -69,74 +71,64 @@ export const createContact = /* GraphQL */ `
       personalEmailDomainType
       contactPersonalEmailStatusCode
       contactPersonalEmailDomainType
-      ruid
-      contactFirstName
-      contactMiddleName
-      contactLastName
-      companyName
-      companyStartDate
-      companyEndDate
-      contactTitle
-      contactTitleLevel
-      contactJobFunctions
-      contactEmail
-      contactPersonalEmail
-      historicalEmails
-      directDialPhone
-      directDialType
-      contactCity
-      contactState
-      contactCountry
-      contactContinent
-      contactSkills
-      contactLinkedinURL
-      contactFacebook
-      contactTwitterURL
-      contactEducation
-      contactBirthDate
-      contactGender
-      contactPhone
-      contactOfficeCity
-      contactOfficeAddress
-      contactOfficeState
-      contactOfficeCountry
-      contactOfficeZipCode
-      lastUpdatedDate
-      contactLinkedinConnectionCount
-      hasChangedJobRecently
-      companyId
-      companyLinkedinURL
-      companyDomain
-      companyAddressLine1
-      companyAddressLine2
-      companyCity
-      companyRegion
-      companyCountry
-      companyZipCode
-      companyPhone
-      companyEmployees
-      companyRevenueRange
-      companySpecialties
-      companyPrimaryIndustry
-      companySIC
-      companyType
-      companyStatus
-      companyFoundedYear
-      companyLinkedinFollowers
-      companyNAICSCode
-      companySICCode6
-      formerTitles
-      formerCompanies
-      contactFullName
-      contactLocation
-      personalEmail
-      hasContactPhone
-      hasPersonalEmail
-      hasContactEmail
-      hasDirectDial
-      hasLocalAddress
-      hasCompanyPhone
-      owner
+      first_name
+      last_name
+      middle_name
+      full_name
+      job_title
+      seniority
+      department
+      primary_role
+      secondary_role
+      linkedin_profile
+      linkedin_connection_count
+      work_email
+      work_email_history
+      personal_email
+      personal_email2
+      personal_email_history
+      direct_dial
+      mobile_number
+      mobile_number_history
+      work_number
+      education
+      skills
+      interests
+      linkedin_headline
+      facebook_profile
+      twitter_profile
+      work_experience
+      salary
+      birth_year
+      age
+      gender
+      new_hire
+      job_start_date
+      company_name
+      company_domain
+      company_website
+      company_linkedin_profile
+      company_linkedin_followers
+      company_local_address
+      company_local_city
+      company_local_state
+      company_local_address_postal
+      company_hq_address
+      company_hq_city
+      company_hq_state
+      company_hq_postal
+      person_city
+      person_state
+      person_postal
+      company_employee_range
+      company_revenue_range
+      company_industry
+      company_sic4
+      company_sic4_description
+      company_naics
+      company_naics_description
+      company_type
+      __typename
     }
   }
 `;
@@ -147,10 +139,9 @@ export const updateContact = /* GraphQL */ `
   ) {
     updateContact(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
-      isUnlocked
       createdAt
       updatedAt
       isEmailVerified
@@ -160,74 +151,64 @@ export const updateContact = /* GraphQL */ `
       personalEmailDomainType
       contactPersonalEmailStatusCode
       contactPersonalEmailDomainType
-      ruid
-      contactFirstName
-      contactMiddleName
-      contactLastName
-      companyName
-      companyStartDate
-      companyEndDate
-      contactTitle
-      contactTitleLevel
-      contactJobFunctions
-      contactEmail
-      contactPersonalEmail
-      historicalEmails
-      directDialPhone
-      directDialType
-      contactCity
-      contactState
-      contactCountry
-      contactContinent
-      contactSkills
-      contactLinkedinURL
-      contactFacebook
-      contactTwitterURL
-      contactEducation
-      contactBirthDate
-      contactGender
-      contactPhone
-      contactOfficeCity
-      contactOfficeAddress
-      contactOfficeState
-      contactOfficeCountry
-      contactOfficeZipCode
-      lastUpdatedDate
-      contactLinkedinConnectionCount
-      hasChangedJobRecently
-      companyId
-      companyLinkedinURL
-      companyDomain
-      companyAddressLine1
-      companyAddressLine2
-      companyCity
-      companyRegion
-      companyCountry
-      companyZipCode
-      companyPhone
-      companyEmployees
-      companyRevenueRange
-      companySpecialties
-      companyPrimaryIndustry
-      companySIC
-      companyType
-      companyStatus
-      companyFoundedYear
-      companyLinkedinFollowers
-      companyNAICSCode
-      companySICCode6
-      formerTitles
-      formerCompanies
-      contactFullName
-      contactLocation
-      personalEmail
-      hasContactPhone
-      hasPersonalEmail
-      hasContactEmail
-      hasDirectDial
-      hasLocalAddress
-      hasCompanyPhone
-      owner
+      first_name
+      last_name
+      middle_name
+      full_name
+      job_title
+      seniority
+      department
+      primary_role
+      secondary_role
+      linkedin_profile
+      linkedin_connection_count
+      work_email
+      work_email_history
+      personal_email
+      personal_email2
+      personal_email_history
+      direct_dial
+      mobile_number
+      mobile_number_history
+      work_number
+      education
+      skills
+      interests
+      linkedin_headline
+      facebook_profile
+      twitter_profile
+      work_experience
+      salary
+      birth_year
+      age
+      gender
+      new_hire
+      job_start_date
+      company_name
+      company_domain
+      company_website
+      company_linkedin_profile
+      company_linkedin_followers
+      company_local_address
+      company_local_city
+      company_local_state
+      company_local_address_postal
+      company_hq_address
+      company_hq_city
+      company_hq_state
+      company_hq_postal
+      person_city
+      person_state
+      person_postal
+      company_employee_range
+      company_revenue_range
+      company_industry
+      company_sic4
+      company_sic4_description
+      company_naics
+      company_naics_description
+      company_type
+      __typename
     }
   }
 `;
@@ -238,10 +219,9 @@ export const deleteContact = /* GraphQL */ `
   ) {
     deleteContact(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
-      isUnlocked
       createdAt
       updatedAt
       isEmailVerified
@@ -251,97 +231,85 @@ export const deleteContact = /* GraphQL */ `
       personalEmailDomainType
       contactPersonalEmailStatusCode
       contactPersonalEmailDomainType
-      ruid
-      contactFirstName
-      contactMiddleName
-      contactLastName
-      companyName
-      companyStartDate
-      companyEndDate
-      contactTitle
-      contactTitleLevel
-      contactJobFunctions
-      contactEmail
-      contactPersonalEmail
-      historicalEmails
-      directDialPhone
-      directDialType
-      contactCity
-      contactState
-      contactCountry
-      contactContinent
-      contactSkills
-      contactLinkedinURL
-      contactFacebook
-      contactTwitterURL
-      contactEducation
-      contactBirthDate
-      contactGender
-      contactPhone
-      contactOfficeCity
-      contactOfficeAddress
-      contactOfficeState
-      contactOfficeCountry
-      contactOfficeZipCode
-      lastUpdatedDate
-      contactLinkedinConnectionCount
-      hasChangedJobRecently
-      companyId
-      companyLinkedinURL
-      companyDomain
-      companyAddressLine1
-      companyAddressLine2
-      companyCity
-      companyRegion
-      companyCountry
-      companyZipCode
-      companyPhone
-      companyEmployees
-      companyRevenueRange
-      companySpecialties
-      companyPrimaryIndustry
-      companySIC
-      companyType
-      companyStatus
-      companyFoundedYear
-      companyLinkedinFollowers
-      companyNAICSCode
-      companySICCode6
-      formerTitles
-      formerCompanies
-      contactFullName
-      contactLocation
-      personalEmail
-      hasContactPhone
-      hasPersonalEmail
-      hasContactEmail
-      hasDirectDial
-      hasLocalAddress
-      hasCompanyPhone
-      owner
+      first_name
+      last_name
+      middle_name
+      full_name
+      job_title
+      seniority
+      department
+      primary_role
+      secondary_role
+      linkedin_profile
+      linkedin_connection_count
+      work_email
+      work_email_history
+      personal_email
+      personal_email2
+      personal_email_history
+      direct_dial
+      mobile_number
+      mobile_number_history
+      work_number
+      education
+      skills
+      interests
+      linkedin_headline
+      facebook_profile
+      twitter_profile
+      work_experience
+      salary
+      birth_year
+      age
+      gender
+      new_hire
+      job_start_date
+      company_name
+      company_domain
+      company_website
+      company_linkedin_profile
+      company_linkedin_followers
+      company_local_address
+      company_local_city
+      company_local_state
+      company_local_address_postal
+      company_hq_address
+      company_hq_city
+      company_hq_state
+      company_hq_postal
+      person_city
+      person_state
+      person_postal
+      company_employee_range
+      company_revenue_range
+      company_industry
+      company_sic4
+      company_sic4_description
+      company_naics
+      company_naics_description
+      company_type
+      __typename
     }
   }
 `;
-export const createListContact = /* GraphQL */ `
-  mutation CreateListContact(
-    $input: CreateListContactInput!
-    $condition: ModelListContactConditionInput
+export const createCollectionContact = /* GraphQL */ `
+  mutation CreateCollectionContact(
+    $input: CreateCollectionContactInput!
+    $condition: ModelCollectionContactConditionInput
   ) {
-    createListContact(input: $input, condition: $condition) {
+    createCollectionContact(input: $input, condition: $condition) {
       id
-      listId
-      contactId
+      owner
+      teamId
       userId
-      groupId
-      tenants
       createdAt
       updatedAt
+      contactId
       contact {
         id
+        owner
+        teamId
         userId
-        groupId
-        tenants
-        isUnlocked
         createdAt
         updatedAt
         isEmailVerified
@@ -351,99 +319,88 @@ export const createListContact = /* GraphQL */ `
         personalEmailDomainType
         contactPersonalEmailStatusCode
         contactPersonalEmailDomainType
-        ruid
-        contactFirstName
-        contactMiddleName
-        contactLastName
-        companyName
-        companyStartDate
-        companyEndDate
-        contactTitle
-        contactTitleLevel
-        contactJobFunctions
-        contactEmail
-        contactPersonalEmail
-        historicalEmails
-        directDialPhone
-        directDialType
-        contactCity
-        contactState
-        contactCountry
-        contactContinent
-        contactSkills
-        contactLinkedinURL
-        contactFacebook
-        contactTwitterURL
-        contactEducation
-        contactBirthDate
-        contactGender
-        contactPhone
-        contactOfficeCity
-        contactOfficeAddress
-        contactOfficeState
-        contactOfficeCountry
-        contactOfficeZipCode
-        lastUpdatedDate
-        contactLinkedinConnectionCount
-        hasChangedJobRecently
-        companyId
-        companyLinkedinURL
-        companyDomain
-        companyAddressLine1
-        companyAddressLine2
-        companyCity
-        companyRegion
-        companyCountry
-        companyZipCode
-        companyPhone
-        companyEmployees
-        companyRevenueRange
-        companySpecialties
-        companyPrimaryIndustry
-        companySIC
-        companyType
-        companyStatus
-        companyFoundedYear
-        companyLinkedinFollowers
-        companyNAICSCode
-        companySICCode6
-        formerTitles
-        formerCompanies
-        contactFullName
-        contactLocation
-        personalEmail
-        hasContactPhone
-        hasPersonalEmail
-        hasContactEmail
-        hasDirectDial
-        hasLocalAddress
-        hasCompanyPhone
-        owner
+        first_name
+        last_name
+        middle_name
+        full_name
+        job_title
+        seniority
+        department
+        primary_role
+        secondary_role
+        linkedin_profile
+        linkedin_connection_count
+        work_email
+        work_email_history
+        personal_email
+        personal_email2
+        personal_email_history
+        direct_dial
+        mobile_number
+        mobile_number_history
+        work_number
+        education
+        skills
+        interests
+        linkedin_headline
+        facebook_profile
+        twitter_profile
+        work_experience
+        salary
+        birth_year
+        age
+        gender
+        new_hire
+        job_start_date
+        company_name
+        company_domain
+        company_website
+        company_linkedin_profile
+        company_linkedin_followers
+        company_local_address
+        company_local_city
+        company_local_state
+        company_local_address_postal
+        company_hq_address
+        company_hq_city
+        company_hq_state
+        company_hq_postal
+        person_city
+        person_state
+        person_postal
+        company_employee_range
+        company_revenue_range
+        company_industry
+        company_sic4
+        company_sic4_description
+        company_naics
+        company_naics_description
+        company_type
+        __typename
       }
-      owner
+      name
+      __typename
     }
   }
 `;
-export const updateListContact = /* GraphQL */ `
-  mutation UpdateListContact(
-    $input: UpdateListContactInput!
-    $condition: ModelListContactConditionInput
+export const updateCollectionContact = /* GraphQL */ `
+  mutation UpdateCollectionContact(
+    $input: UpdateCollectionContactInput!
+    $condition: ModelCollectionContactConditionInput
   ) {
-    updateListContact(input: $input, condition: $condition) {
+    updateCollectionContact(input: $input, condition: $condition) {
       id
-      listId
-      contactId
+      owner
+      teamId
       userId
-      groupId
-      tenants
       createdAt
       updatedAt
+      contactId
       contact {
         id
+        owner
+        teamId
         userId
-        groupId
-        tenants
-        isUnlocked
         createdAt
         updatedAt
         isEmailVerified
@@ -453,99 +410,88 @@ export const updateListContact = /* GraphQL */ `
         personalEmailDomainType
         contactPersonalEmailStatusCode
         contactPersonalEmailDomainType
-        ruid
-        contactFirstName
-        contactMiddleName
-        contactLastName
-        companyName
-        companyStartDate
-        companyEndDate
-        contactTitle
-        contactTitleLevel
-        contactJobFunctions
-        contactEmail
-        contactPersonalEmail
-        historicalEmails
-        directDialPhone
-        directDialType
-        contactCity
-        contactState
-        contactCountry
-        contactContinent
-        contactSkills
-        contactLinkedinURL
-        contactFacebook
-        contactTwitterURL
-        contactEducation
-        contactBirthDate
-        contactGender
-        contactPhone
-        contactOfficeCity
-        contactOfficeAddress
-        contactOfficeState
-        contactOfficeCountry
-        contactOfficeZipCode
-        lastUpdatedDate
-        contactLinkedinConnectionCount
-        hasChangedJobRecently
-        companyId
-        companyLinkedinURL
-        companyDomain
-        companyAddressLine1
-        companyAddressLine2
-        companyCity
-        companyRegion
-        companyCountry
-        companyZipCode
-        companyPhone
-        companyEmployees
-        companyRevenueRange
-        companySpecialties
-        companyPrimaryIndustry
-        companySIC
-        companyType
-        companyStatus
-        companyFoundedYear
-        companyLinkedinFollowers
-        companyNAICSCode
-        companySICCode6
-        formerTitles
-        formerCompanies
-        contactFullName
-        contactLocation
-        personalEmail
-        hasContactPhone
-        hasPersonalEmail
-        hasContactEmail
-        hasDirectDial
-        hasLocalAddress
-        hasCompanyPhone
-        owner
+        first_name
+        last_name
+        middle_name
+        full_name
+        job_title
+        seniority
+        department
+        primary_role
+        secondary_role
+        linkedin_profile
+        linkedin_connection_count
+        work_email
+        work_email_history
+        personal_email
+        personal_email2
+        personal_email_history
+        direct_dial
+        mobile_number
+        mobile_number_history
+        work_number
+        education
+        skills
+        interests
+        linkedin_headline
+        facebook_profile
+        twitter_profile
+        work_experience
+        salary
+        birth_year
+        age
+        gender
+        new_hire
+        job_start_date
+        company_name
+        company_domain
+        company_website
+        company_linkedin_profile
+        company_linkedin_followers
+        company_local_address
+        company_local_city
+        company_local_state
+        company_local_address_postal
+        company_hq_address
+        company_hq_city
+        company_hq_state
+        company_hq_postal
+        person_city
+        person_state
+        person_postal
+        company_employee_range
+        company_revenue_range
+        company_industry
+        company_sic4
+        company_sic4_description
+        company_naics
+        company_naics_description
+        company_type
+        __typename
       }
-      owner
+      name
+      __typename
     }
   }
 `;
-export const deleteListContact = /* GraphQL */ `
-  mutation DeleteListContact(
-    $input: DeleteListContactInput!
-    $condition: ModelListContactConditionInput
+export const deleteCollectionContact = /* GraphQL */ `
+  mutation DeleteCollectionContact(
+    $input: DeleteCollectionContactInput!
+    $condition: ModelCollectionContactConditionInput
   ) {
-    deleteListContact(input: $input, condition: $condition) {
+    deleteCollectionContact(input: $input, condition: $condition) {
       id
-      listId
-      contactId
+      owner
+      teamId
       userId
-      groupId
-      tenants
       createdAt
       updatedAt
+      contactId
       contact {
         id
+        owner
+        teamId
         userId
-        groupId
-        tenants
-        isUnlocked
         createdAt
         updatedAt
         isEmailVerified
@@ -555,76 +501,67 @@ export const deleteListContact = /* GraphQL */ `
         personalEmailDomainType
         contactPersonalEmailStatusCode
         contactPersonalEmailDomainType
-        ruid
-        contactFirstName
-        contactMiddleName
-        contactLastName
-        companyName
-        companyStartDate
-        companyEndDate
-        contactTitle
-        contactTitleLevel
-        contactJobFunctions
-        contactEmail
-        contactPersonalEmail
-        historicalEmails
-        directDialPhone
-        directDialType
-        contactCity
-        contactState
-        contactCountry
-        contactContinent
-        contactSkills
-        contactLinkedinURL
-        contactFacebook
-        contactTwitterURL
-        contactEducation
-        contactBirthDate
-        contactGender
-        contactPhone
-        contactOfficeCity
-        contactOfficeAddress
-        contactOfficeState
-        contactOfficeCountry
-        contactOfficeZipCode
-        lastUpdatedDate
-        contactLinkedinConnectionCount
-        hasChangedJobRecently
-        companyId
-        companyLinkedinURL
-        companyDomain
-        companyAddressLine1
-        companyAddressLine2
-        companyCity
-        companyRegion
-        companyCountry
-        companyZipCode
-        companyPhone
-        companyEmployees
-        companyRevenueRange
-        companySpecialties
-        companyPrimaryIndustry
-        companySIC
-        companyType
-        companyStatus
-        companyFoundedYear
-        companyLinkedinFollowers
-        companyNAICSCode
-        companySICCode6
-        formerTitles
-        formerCompanies
-        contactFullName
-        contactLocation
-        personalEmail
-        hasContactPhone
-        hasPersonalEmail
-        hasContactEmail
-        hasDirectDial
-        hasLocalAddress
-        hasCompanyPhone
-        owner
+        first_name
+        last_name
+        middle_name
+        full_name
+        job_title
+        seniority
+        department
+        primary_role
+        secondary_role
+        linkedin_profile
+        linkedin_connection_count
+        work_email
+        work_email_history
+        personal_email
+        personal_email2
+        personal_email_history
+        direct_dial
+        mobile_number
+        mobile_number_history
+        work_number
+        education
+        skills
+        interests
+        linkedin_headline
+        facebook_profile
+        twitter_profile
+        work_experience
+        salary
+        birth_year
+        age
+        gender
+        new_hire
+        job_start_date
+        company_name
+        company_domain
+        company_website
+        company_linkedin_profile
+        company_linkedin_followers
+        company_local_address
+        company_local_city
+        company_local_state
+        company_local_address_postal
+        company_hq_address
+        company_hq_city
+        company_hq_state
+        company_hq_postal
+        person_city
+        person_state
+        person_postal
+        company_employee_range
+        company_revenue_range
+        company_industry
+        company_sic4
+        company_sic4_description
+        company_naics
+        company_naics_description
+        company_type
+        __typename
       }
-      owner
+      name
+      __typename
     }
   }
 `;
@@ -635,13 +572,89 @@ export const createContactForm = /* GraphQL */ `
   ) {
     createContactForm(input: $input, condition: $condition) {
       id
-      tenants
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      contactId
+      contact {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEmailVerified
+        contactEmailStatusCode
+        contactEmailDomainType
+        personalEmailStatusCode
+        personalEmailDomainType
+        contactPersonalEmailStatusCode
+        contactPersonalEmailDomainType
+        first_name
+        last_name
+        middle_name
+        full_name
+        job_title
+        seniority
+        department
+        primary_role
+        secondary_role
+        linkedin_profile
+        linkedin_connection_count
+        work_email
+        work_email_history
+        personal_email
+        personal_email2
+        personal_email_history
+        direct_dial
+        mobile_number
+        mobile_number_history
+        work_number
+        education
+        skills
+        interests
+        linkedin_headline
+        facebook_profile
+        twitter_profile
+        work_experience
+        salary
+        birth_year
+        age
+        gender
+        new_hire
+        job_start_date
+        company_name
+        company_domain
+        company_website
+        company_linkedin_profile
+        company_linkedin_followers
+        company_local_address
+        company_local_city
+        company_local_state
+        company_local_address_postal
+        company_hq_address
+        company_hq_city
+        company_hq_state
+        company_hq_postal
+        person_city
+        person_state
+        person_postal
+        company_employee_range
+        company_revenue_range
+        company_industry
+        company_sic4
+        company_sic4_description
+        company_naics
+        company_naics_description
+        company_type
+        __typename
+      }
       firstName
       lastName
       message
-      createdAt
-      updatedAt
-      owner
+      __typename
     }
   }
 `;
@@ -652,13 +665,89 @@ export const updateContactForm = /* GraphQL */ `
   ) {
     updateContactForm(input: $input, condition: $condition) {
       id
-      tenants
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      contactId
+      contact {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEmailVerified
+        contactEmailStatusCode
+        contactEmailDomainType
+        personalEmailStatusCode
+        personalEmailDomainType
+        contactPersonalEmailStatusCode
+        contactPersonalEmailDomainType
+        first_name
+        last_name
+        middle_name
+        full_name
+        job_title
+        seniority
+        department
+        primary_role
+        secondary_role
+        linkedin_profile
+        linkedin_connection_count
+        work_email
+        work_email_history
+        personal_email
+        personal_email2
+        personal_email_history
+        direct_dial
+        mobile_number
+        mobile_number_history
+        work_number
+        education
+        skills
+        interests
+        linkedin_headline
+        facebook_profile
+        twitter_profile
+        work_experience
+        salary
+        birth_year
+        age
+        gender
+        new_hire
+        job_start_date
+        company_name
+        company_domain
+        company_website
+        company_linkedin_profile
+        company_linkedin_followers
+        company_local_address
+        company_local_city
+        company_local_state
+        company_local_address_postal
+        company_hq_address
+        company_hq_city
+        company_hq_state
+        company_hq_postal
+        person_city
+        person_state
+        person_postal
+        company_employee_range
+        company_revenue_range
+        company_industry
+        company_sic4
+        company_sic4_description
+        company_naics
+        company_naics_description
+        company_type
+        __typename
+      }
       firstName
       lastName
       message
-      createdAt
-      updatedAt
-      owner
+      __typename
     }
   }
 `;
@@ -669,13 +758,89 @@ export const deleteContactForm = /* GraphQL */ `
   ) {
     deleteContactForm(input: $input, condition: $condition) {
       id
-      tenants
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      contactId
+      contact {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEmailVerified
+        contactEmailStatusCode
+        contactEmailDomainType
+        personalEmailStatusCode
+        personalEmailDomainType
+        contactPersonalEmailStatusCode
+        contactPersonalEmailDomainType
+        first_name
+        last_name
+        middle_name
+        full_name
+        job_title
+        seniority
+        department
+        primary_role
+        secondary_role
+        linkedin_profile
+        linkedin_connection_count
+        work_email
+        work_email_history
+        personal_email
+        personal_email2
+        personal_email_history
+        direct_dial
+        mobile_number
+        mobile_number_history
+        work_number
+        education
+        skills
+        interests
+        linkedin_headline
+        facebook_profile
+        twitter_profile
+        work_experience
+        salary
+        birth_year
+        age
+        gender
+        new_hire
+        job_start_date
+        company_name
+        company_domain
+        company_website
+        company_linkedin_profile
+        company_linkedin_followers
+        company_local_address
+        company_local_city
+        company_local_state
+        company_local_address_postal
+        company_hq_address
+        company_hq_city
+        company_hq_state
+        company_hq_postal
+        person_city
+        person_state
+        person_postal
+        company_employee_range
+        company_revenue_range
+        company_industry
+        company_sic4
+        company_sic4_description
+        company_naics
+        company_naics_description
+        company_type
+        __typename
+      }
       firstName
       lastName
       message
-      createdAt
-      updatedAt
-      owner
+      __typename
     }
   }
 `;
@@ -686,11 +851,13 @@ export const createDomainSearch = /* GraphQL */ `
   ) {
     createDomainSearch(input: $input, condition: $condition) {
       id
-      tenants
-      term
+      owner
+      teamId
+      userId
       createdAt
       updatedAt
-      owner
+      term
+      __typename
     }
   }
 `;
@@ -701,11 +868,13 @@ export const updateDomainSearch = /* GraphQL */ `
   ) {
     updateDomainSearch(input: $input, condition: $condition) {
       id
-      tenants
-      term
+      owner
+      teamId
+      userId
       createdAt
       updatedAt
-      owner
+      term
+      __typename
     }
   }
 `;
@@ -716,11 +885,13 @@ export const deleteDomainSearch = /* GraphQL */ `
   ) {
     deleteDomainSearch(input: $input, condition: $condition) {
       id
-      tenants
-      term
+      owner
+      teamId
+      userId
       createdAt
       updatedAt
-      owner
+      term
+      __typename
     }
   }
 `;
@@ -731,15 +902,15 @@ export const createFilter = /* GraphQL */ `
   ) {
     createFilter(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
-      name
-      savedFilter
-      rampedUpFilter
       createdAt
       updatedAt
-      owner
+      name
+      filter
+      isSaved
+      __typename
     }
   }
 `;
@@ -750,15 +921,15 @@ export const updateFilter = /* GraphQL */ `
   ) {
     updateFilter(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
-      name
-      savedFilter
-      rampedUpFilter
       createdAt
       updatedAt
-      owner
+      name
+      filter
+      isSaved
+      __typename
     }
   }
 `;
@@ -769,66 +940,15 @@ export const deleteFilter = /* GraphQL */ `
   ) {
     deleteFilter(input: $input, condition: $condition) {
       id
-      userId
-      groupId
-      tenants
-      name
-      savedFilter
-      rampedUpFilter
-      createdAt
-      updatedAt
       owner
-    }
-  }
-`;
-export const createUsage = /* GraphQL */ `
-  mutation CreateUsage(
-    $input: CreateUsageInput!
-    $condition: ModelUsageConditionInput
-  ) {
-    createUsage(input: $input, condition: $condition) {
-      id
+      teamId
       userId
-      groupId
-      tenants
-      filterId
-      credits
       createdAt
       updatedAt
-    }
-  }
-`;
-export const updateUsage = /* GraphQL */ `
-  mutation UpdateUsage(
-    $input: UpdateUsageInput!
-    $condition: ModelUsageConditionInput
-  ) {
-    updateUsage(input: $input, condition: $condition) {
-      id
-      userId
-      groupId
-      tenants
-      filterId
-      credits
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteUsage = /* GraphQL */ `
-  mutation DeleteUsage(
-    $input: DeleteUsageInput!
-    $condition: ModelUsageConditionInput
-  ) {
-    deleteUsage(input: $input, condition: $condition) {
-      id
-      userId
-      groupId
-      tenants
-      filterId
-      credits
-      createdAt
-      updatedAt
+      name
+      filter
+      isSaved
+      __typename
     }
   }
 `;
@@ -839,15 +959,15 @@ export const createEmailAccount = /* GraphQL */ `
   ) {
     createEmailAccount(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
+      createdAt
+      updatedAt
       email
       code
       token
-      createdAt
-      updatedAt
-      owner
+      __typename
     }
   }
 `;
@@ -858,15 +978,15 @@ export const updateEmailAccount = /* GraphQL */ `
   ) {
     updateEmailAccount(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
+      createdAt
+      updatedAt
       email
       code
       token
-      createdAt
-      updatedAt
-      owner
+      __typename
     }
   }
 `;
@@ -877,360 +997,15 @@ export const deleteEmailAccount = /* GraphQL */ `
   ) {
     deleteEmailAccount(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
+      createdAt
+      updatedAt
       email
       code
       token
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const createAuditLog = /* GraphQL */ `
-  mutation CreateAuditLog(
-    $input: CreateAuditLogInput!
-    $condition: ModelAuditLogConditionInput
-  ) {
-    createAuditLog(input: $input, condition: $condition) {
-      id
-      userId
-      groupId
-      tenants
-      title
-      description
-      data
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateAuditLog = /* GraphQL */ `
-  mutation UpdateAuditLog(
-    $input: UpdateAuditLogInput!
-    $condition: ModelAuditLogConditionInput
-  ) {
-    updateAuditLog(input: $input, condition: $condition) {
-      id
-      userId
-      groupId
-      tenants
-      title
-      description
-      data
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteAuditLog = /* GraphQL */ `
-  mutation DeleteAuditLog(
-    $input: DeleteAuditLogInput!
-    $condition: ModelAuditLogConditionInput
-  ) {
-    deleteAuditLog(input: $input, condition: $condition) {
-      id
-      userId
-      groupId
-      tenants
-      title
-      description
-      data
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createEnrichSearch = /* GraphQL */ `
-  mutation CreateEnrichSearch(
-    $input: CreateEnrichSearchInput!
-    $condition: ModelEnrichSearchConditionInput
-  ) {
-    createEnrichSearch(input: $input, condition: $condition) {
-      id
-      tenants
-      type
-      term
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const updateEnrichSearch = /* GraphQL */ `
-  mutation UpdateEnrichSearch(
-    $input: UpdateEnrichSearchInput!
-    $condition: ModelEnrichSearchConditionInput
-  ) {
-    updateEnrichSearch(input: $input, condition: $condition) {
-      id
-      tenants
-      type
-      term
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const deleteEnrichSearch = /* GraphQL */ `
-  mutation DeleteEnrichSearch(
-    $input: DeleteEnrichSearchInput!
-    $condition: ModelEnrichSearchConditionInput
-  ) {
-    deleteEnrichSearch(input: $input, condition: $condition) {
-      id
-      tenants
-      type
-      term
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const createNymblrSubscription = /* GraphQL */ `
-  mutation CreateNymblrSubscription(
-    $input: CreateNymblrSubscriptionInput!
-    $condition: ModelNymblrSubscriptionConditionInput
-  ) {
-    createNymblrSubscription(input: $input, condition: $condition) {
-      id
-      userId
-      groupId
-      tenants
-      groupName
-      subscriptionStatus
-      subscriptionPeriod
-      monthlyCredits
-      quarterlyCredits
-      annualCredits
-      currentCredits
-      stripeCustomerId
-      stripeSubscriptionID
-      seats
-      block
-      tenant
-      notes
-      color_code
-      icon_s3_key
-      logo_s3_key
-      block_api
-      block_email
-      block_prospect
-      block_enrich
-      block_files
-      block_auto_compose
-      block_assistants
-      block_sub_processing
-      firstPaid
-      lastPaid
-      nextPay
-      createdAt
-      updatedAt
-      appsumo_uuid
-      appsumo_current_plan_id
-      appsumo_current_activation_email
-      appsumo_current_invoice_item_uuid
-      appsumo_current_datetime
-      appsumo_previous_plan_id
-      appsumo_previous_activation_email
-      appsumo_previous_invoice_item_uuid
-      appsumo_previous_datetime
-      oldCurrentCredits
-      owner
-    }
-  }
-`;
-export const updateNymblrSubscription = /* GraphQL */ `
-  mutation UpdateNymblrSubscription(
-    $input: UpdateNymblrSubscriptionInput!
-    $condition: ModelNymblrSubscriptionConditionInput
-  ) {
-    updateNymblrSubscription(input: $input, condition: $condition) {
-      id
-      userId
-      groupId
-      tenants
-      groupName
-      subscriptionStatus
-      subscriptionPeriod
-      monthlyCredits
-      quarterlyCredits
-      annualCredits
-      currentCredits
-      stripeCustomerId
-      stripeSubscriptionID
-      seats
-      block
-      tenant
-      notes
-      color_code
-      icon_s3_key
-      logo_s3_key
-      block_api
-      block_email
-      block_prospect
-      block_enrich
-      block_files
-      block_auto_compose
-      block_assistants
-      block_sub_processing
-      firstPaid
-      lastPaid
-      nextPay
-      createdAt
-      updatedAt
-      appsumo_uuid
-      appsumo_current_plan_id
-      appsumo_current_activation_email
-      appsumo_current_invoice_item_uuid
-      appsumo_current_datetime
-      appsumo_previous_plan_id
-      appsumo_previous_activation_email
-      appsumo_previous_invoice_item_uuid
-      appsumo_previous_datetime
-      oldCurrentCredits
-      owner
-    }
-  }
-`;
-export const deleteNymblrSubscription = /* GraphQL */ `
-  mutation DeleteNymblrSubscription(
-    $input: DeleteNymblrSubscriptionInput!
-    $condition: ModelNymblrSubscriptionConditionInput
-  ) {
-    deleteNymblrSubscription(input: $input, condition: $condition) {
-      id
-      userId
-      groupId
-      tenants
-      groupName
-      subscriptionStatus
-      subscriptionPeriod
-      monthlyCredits
-      quarterlyCredits
-      annualCredits
-      currentCredits
-      stripeCustomerId
-      stripeSubscriptionID
-      seats
-      block
-      tenant
-      notes
-      color_code
-      icon_s3_key
-      logo_s3_key
-      block_api
-      block_email
-      block_prospect
-      block_enrich
-      block_files
-      block_auto_compose
-      block_assistants
-      block_sub_processing
-      firstPaid
-      lastPaid
-      nextPay
-      createdAt
-      updatedAt
-      appsumo_uuid
-      appsumo_current_plan_id
-      appsumo_current_activation_email
-      appsumo_current_invoice_item_uuid
-      appsumo_current_datetime
-      appsumo_previous_plan_id
-      appsumo_previous_activation_email
-      appsumo_previous_invoice_item_uuid
-      appsumo_previous_datetime
-      oldCurrentCredits
-      owner
-    }
-  }
-`;
-export const createAudience = /* GraphQL */ `
-  mutation CreateAudience(
-    $input: CreateAudienceInput!
-    $condition: ModelAudienceConditionInput
-  ) {
-    createAudience(input: $input, condition: $condition) {
-      id
-      userId
-      groupId
-      tenants
-      name
-      rampedUpFilter
-      expectedCount
-      currentCount
-      currentStatus
-      filePath
-      downloads
-      esFilter
-      workerId
-      workerJobId
-      workerLastPing
-      startedAt
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const updateAudience = /* GraphQL */ `
-  mutation UpdateAudience(
-    $input: UpdateAudienceInput!
-    $condition: ModelAudienceConditionInput
-  ) {
-    updateAudience(input: $input, condition: $condition) {
-      id
-      userId
-      groupId
-      tenants
-      name
-      rampedUpFilter
-      expectedCount
-      currentCount
-      currentStatus
-      filePath
-      downloads
-      esFilter
-      workerId
-      workerJobId
-      workerLastPing
-      startedAt
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const deleteAudience = /* GraphQL */ `
-  mutation DeleteAudience(
-    $input: DeleteAudienceInput!
-    $condition: ModelAudienceConditionInput
-  ) {
-    deleteAudience(input: $input, condition: $condition) {
-      id
-      userId
-      groupId
-      tenants
-      name
-      rampedUpFilter
-      expectedCount
-      currentCount
-      currentStatus
-      filePath
-      downloads
-      esFilter
-      workerId
-      workerJobId
-      workerLastPing
-      startedAt
-      createdAt
-      updatedAt
-      owner
+      __typename
     }
   }
 `;
@@ -1241,9 +1016,11 @@ export const createEnrichment = /* GraphQL */ `
   ) {
     createEnrichment(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
+      createdAt
+      updatedAt
       s3Key
       s3KeyOutput
       name
@@ -1256,9 +1033,7 @@ export const createEnrichment = /* GraphQL */ `
       keyPhone
       keyLinkedin
       status
-      createdAt
-      updatedAt
-      owner
+      __typename
     }
   }
 `;
@@ -1269,9 +1044,11 @@ export const updateEnrichment = /* GraphQL */ `
   ) {
     updateEnrichment(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
+      createdAt
+      updatedAt
       s3Key
       s3KeyOutput
       name
@@ -1284,9 +1061,7 @@ export const updateEnrichment = /* GraphQL */ `
       keyPhone
       keyLinkedin
       status
-      createdAt
-      updatedAt
-      owner
+      __typename
     }
   }
 `;
@@ -1297,9 +1072,11 @@ export const deleteEnrichment = /* GraphQL */ `
   ) {
     deleteEnrichment(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
+      createdAt
+      updatedAt
       s3Key
       s3KeyOutput
       name
@@ -1312,9 +1089,61 @@ export const deleteEnrichment = /* GraphQL */ `
       keyPhone
       keyLinkedin
       status
+      __typename
+    }
+  }
+`;
+export const createEnrichSearch = /* GraphQL */ `
+  mutation CreateEnrichSearch(
+    $input: CreateEnrichSearchInput!
+    $condition: ModelEnrichSearchConditionInput
+  ) {
+    createEnrichSearch(input: $input, condition: $condition) {
+      id
+      owner
+      teamId
+      userId
       createdAt
       updatedAt
+      type
+      term
+      __typename
+    }
+  }
+`;
+export const updateEnrichSearch = /* GraphQL */ `
+  mutation UpdateEnrichSearch(
+    $input: UpdateEnrichSearchInput!
+    $condition: ModelEnrichSearchConditionInput
+  ) {
+    updateEnrichSearch(input: $input, condition: $condition) {
+      id
       owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      type
+      term
+      __typename
+    }
+  }
+`;
+export const deleteEnrichSearch = /* GraphQL */ `
+  mutation DeleteEnrichSearch(
+    $input: DeleteEnrichSearchInput!
+    $condition: ModelEnrichSearchConditionInput
+  ) {
+    deleteEnrichSearch(input: $input, condition: $condition) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      type
+      term
+      __typename
     }
   }
 `;
@@ -1325,16 +1154,16 @@ export const createFilterItem = /* GraphQL */ `
   ) {
     createFilterItem(input: $input, condition: $condition) {
       id
-      filterId
+      owner
+      teamId
       userId
-      groupId
-      tenants
+      createdAt
+      updatedAt
+      filterId
       filename
       key
       val
-      createdAt
-      updatedAt
-      owner
+      __typename
     }
   }
 `;
@@ -1345,16 +1174,16 @@ export const updateFilterItem = /* GraphQL */ `
   ) {
     updateFilterItem(input: $input, condition: $condition) {
       id
-      filterId
+      owner
+      teamId
       userId
-      groupId
-      tenants
+      createdAt
+      updatedAt
+      filterId
       filename
       key
       val
-      createdAt
-      updatedAt
-      owner
+      __typename
     }
   }
 `;
@@ -1365,85 +1194,328 @@ export const deleteFilterItem = /* GraphQL */ `
   ) {
     deleteFilterItem(input: $input, condition: $condition) {
       id
-      filterId
+      owner
+      teamId
       userId
-      groupId
-      tenants
+      createdAt
+      updatedAt
+      filterId
       filename
       key
       val
-      createdAt
-      updatedAt
-      owner
+      __typename
     }
   }
 `;
-export const createCampaign = /* GraphQL */ `
-  mutation CreateCampaign(
-    $input: CreateCampaignInput!
-    $condition: ModelCampaignConditionInput
+export const createAuditLog = /* GraphQL */ `
+  mutation CreateAuditLog(
+    $input: CreateAuditLogInput!
+    $condition: ModelAuditLogConditionInput
   ) {
-    createCampaign(input: $input, condition: $condition) {
+    createAuditLog(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
-      name
-      rampedUpFilter
-      expectedCount
-      currentCount
-      currentStatus
-      esFilter
-      startedAt
       createdAt
       updatedAt
-      owner
+      title
+      description
+      data
+      __typename
     }
   }
 `;
-export const updateCampaign = /* GraphQL */ `
-  mutation UpdateCampaign(
-    $input: UpdateCampaignInput!
-    $condition: ModelCampaignConditionInput
+export const updateAuditLog = /* GraphQL */ `
+  mutation UpdateAuditLog(
+    $input: UpdateAuditLogInput!
+    $condition: ModelAuditLogConditionInput
   ) {
-    updateCampaign(input: $input, condition: $condition) {
+    updateAuditLog(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
-      name
-      rampedUpFilter
-      expectedCount
-      currentCount
-      currentStatus
-      esFilter
-      startedAt
       createdAt
       updatedAt
-      owner
+      title
+      description
+      data
+      __typename
     }
   }
 `;
-export const deleteCampaign = /* GraphQL */ `
-  mutation DeleteCampaign(
-    $input: DeleteCampaignInput!
-    $condition: ModelCampaignConditionInput
+export const deleteAuditLog = /* GraphQL */ `
+  mutation DeleteAuditLog(
+    $input: DeleteAuditLogInput!
+    $condition: ModelAuditLogConditionInput
   ) {
-    deleteCampaign(input: $input, condition: $condition) {
+    deleteAuditLog(input: $input, condition: $condition) {
       id
+      owner
+      teamId
       userId
-      groupId
-      tenants
-      name
-      rampedUpFilter
-      expectedCount
-      currentCount
-      currentStatus
-      esFilter
-      startedAt
       createdAt
       updatedAt
+      title
+      description
+      data
+      __typename
+    }
+  }
+`;
+export const createSub = /* GraphQL */ `
+  mutation CreateSub(
+    $input: CreateSubInput!
+    $condition: ModelSubConditionInput
+  ) {
+    createSub(input: $input, condition: $condition) {
+      id
       owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      subscriptionStatus
+      subscriptionPeriod
+      monthlyCredits
+      quarterlyCredits
+      annualCredits
+      currentCredits
+      stripeCustomerId
+      stripeSubscriptionID
+      seats
+      block
+      tenant
+      notes
+      color_code
+      icon_s3_key
+      logo_s3_key
+      isApiBlocked
+      isEmailBlocked
+      isProspectBlocked
+      isEnrichBlocked
+      isFilesBlocked
+      isAutoComposeBlocked
+      isAssistantsBlocked
+      isSubProcessingBlocked
+      firstPaid
+      lastPaid
+      nextPay
+      __typename
+    }
+  }
+`;
+export const updateSub = /* GraphQL */ `
+  mutation UpdateSub(
+    $input: UpdateSubInput!
+    $condition: ModelSubConditionInput
+  ) {
+    updateSub(input: $input, condition: $condition) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      subscriptionStatus
+      subscriptionPeriod
+      monthlyCredits
+      quarterlyCredits
+      annualCredits
+      currentCredits
+      stripeCustomerId
+      stripeSubscriptionID
+      seats
+      block
+      tenant
+      notes
+      color_code
+      icon_s3_key
+      logo_s3_key
+      isApiBlocked
+      isEmailBlocked
+      isProspectBlocked
+      isEnrichBlocked
+      isFilesBlocked
+      isAutoComposeBlocked
+      isAssistantsBlocked
+      isSubProcessingBlocked
+      firstPaid
+      lastPaid
+      nextPay
+      __typename
+    }
+  }
+`;
+export const deleteSub = /* GraphQL */ `
+  mutation DeleteSub(
+    $input: DeleteSubInput!
+    $condition: ModelSubConditionInput
+  ) {
+    deleteSub(input: $input, condition: $condition) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      subscriptionStatus
+      subscriptionPeriod
+      monthlyCredits
+      quarterlyCredits
+      annualCredits
+      currentCredits
+      stripeCustomerId
+      stripeSubscriptionID
+      seats
+      block
+      tenant
+      notes
+      color_code
+      icon_s3_key
+      logo_s3_key
+      isApiBlocked
+      isEmailBlocked
+      isProspectBlocked
+      isEnrichBlocked
+      isFilesBlocked
+      isAutoComposeBlocked
+      isAssistantsBlocked
+      isSubProcessingBlocked
+      firstPaid
+      lastPaid
+      nextPay
+      __typename
+    }
+  }
+`;
+export const createSubLog = /* GraphQL */ `
+  mutation CreateSubLog(
+    $input: CreateSubLogInput!
+    $condition: ModelSubLogConditionInput
+  ) {
+    createSubLog(input: $input, condition: $condition) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      subId
+      subOld
+      subNew
+      subject
+      description
+      oldCurrentCredits
+      newCurrentCredits
+      oldRolloverCredits
+      newRolloverCredits
+      __typename
+    }
+  }
+`;
+export const updateSubLog = /* GraphQL */ `
+  mutation UpdateSubLog(
+    $input: UpdateSubLogInput!
+    $condition: ModelSubLogConditionInput
+  ) {
+    updateSubLog(input: $input, condition: $condition) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      subId
+      subOld
+      subNew
+      subject
+      description
+      oldCurrentCredits
+      newCurrentCredits
+      oldRolloverCredits
+      newRolloverCredits
+      __typename
+    }
+  }
+`;
+export const deleteSubLog = /* GraphQL */ `
+  mutation DeleteSubLog(
+    $input: DeleteSubLogInput!
+    $condition: ModelSubLogConditionInput
+  ) {
+    deleteSubLog(input: $input, condition: $condition) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      subId
+      subOld
+      subNew
+      subject
+      description
+      oldCurrentCredits
+      newCurrentCredits
+      oldRolloverCredits
+      newRolloverCredits
+      __typename
+    }
+  }
+`;
+export const createUsage = /* GraphQL */ `
+  mutation CreateUsage(
+    $input: CreateUsageInput!
+    $condition: ModelUsageConditionInput
+  ) {
+    createUsage(input: $input, condition: $condition) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      filterId
+      credits
+      __typename
+    }
+  }
+`;
+export const updateUsage = /* GraphQL */ `
+  mutation UpdateUsage(
+    $input: UpdateUsageInput!
+    $condition: ModelUsageConditionInput
+  ) {
+    updateUsage(input: $input, condition: $condition) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      filterId
+      credits
+      __typename
+    }
+  }
+`;
+export const deleteUsage = /* GraphQL */ `
+  mutation DeleteUsage(
+    $input: DeleteUsageInput!
+    $condition: ModelUsageConditionInput
+  ) {
+    deleteUsage(input: $input, condition: $condition) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      filterId
+      credits
+      __typename
     }
   }
 `;
