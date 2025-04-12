@@ -750,3 +750,84 @@ export interface FilterItem {
 	createdAt: string;
 	updatedAt: string;
 }
+
+export interface IBytemineContact {
+	id: string;
+	linkedin_url: string;
+	first_name: string;
+	last_name: string;
+	middle_name: string;
+	full_name: string;
+	job_title: string;
+	seniority: string;
+	department: string;
+	primary_role: string;
+	secondary_role: string;
+	linkedin_profile: string;
+	linkedin_connection_count: number;
+	work_email: string;
+	work_email_history: {
+		work_email: string;
+		yyyyqq: string;
+	}[];
+	personal_email: string;
+	personal_email2: string;
+	personal_email_history: {
+		personal_email: string;
+		yyyyqq: string;
+	}[];
+	direct_dial: string;
+	mobile_number: string;
+	mobile_number_history: {
+		phone_mobile: string;
+		yyyyqq: string;
+	}[];
+	work_number: string;
+	education: {
+		school: string;
+		start_date: string;
+		end_date: string;
+		degrees: string;
+	}[];
+	skills: string[];
+	interests: string;
+	linkedin_headline: string;
+	facebook_profile: string;
+	twitter_profile: string;
+	work_experience: {
+		title: string;
+		start_date: string; // ISO date string
+		end_date: string;
+		company: string;
+	}[];
+	salary: string;
+	birth_year: number;
+	age: number;
+	gender: string;
+	new_hire: boolean;
+	job_start_date: string; // ISO date string
+	company_name: string;
+	company_domain: string;
+	company_website: string;
+	company_linkedin_profile: string;
+	company_linkedin_followers: number;
+	company_local_address: string;
+	company_local_city: string;
+	company_local_state: string;
+	company_local_address_postal: string;
+	company_hq_address: string;
+	company_hq_city: string;
+	company_hq_state: string;
+	company_hq_postal: string;
+	person_city: string;
+	person_state: string;
+	person_postal: string;
+	company_employee_range: string;
+	company_revenue_range: string;
+	company_industry: string;
+	company_sic4: string;
+	company_sic4_description: string;
+	company_naics: string;
+	company_naics_description: string;
+	company_type: string;
+}
