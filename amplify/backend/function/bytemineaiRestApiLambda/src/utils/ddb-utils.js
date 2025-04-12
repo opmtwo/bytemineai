@@ -1,34 +1,67 @@
 const aws = require('aws-sdk');
 
-const ddbGetClient = () => new aws.DynamoDB({ apiVersion: '2012-08-10' });
-
-const ddbEncode = (item, verbose = false) => {
-	verbose && console.log('ddbEncode - input -', item);
+const ddbDecode = async (value, verbose = false) => {
 	try {
-		const json = aws.DynamoDB.Converter.marshall(item);
+		const res = aws.DynamoDB.Converter.unmarshall(value);
 		if (verbose) {
-			console.log('ddbEncode - success -', json);
+			console.log('ddbDecode - res', res);
 		}
-		return json;
+		return res;
 	} catch (err) {
 		if (verbose) {
-			console.log('ddbEncode - error -', err);
+			console.log('ddbDecode - err', err);
 		}
 		throw err;
 	}
 };
 
-const ddbDecode = (item, verbose = false) => {
-	verbose && console.log('ddbDecode - input -', item);
+const ddbEncode = async (value, verbose = false) => {
 	try {
-		const json = aws.DynamoDB.Converter.unmarshall(item);
+		const res = aws.DynamoDB.Converter.marshall(value);
 		if (verbose) {
-			console.log('ddbDecode - success -', json);
+			console.log('ddbEncode - res', res);
 		}
-		return json;
+		return res;
 	} catch (err) {
 		if (verbose) {
-			console.log('ddbDecode - error -', err);
+			console.log('ddbEncode - err', err);
+		}
+		throw err;
+	}
+};
+
+const ddbGetTable = async (verbose = true) => {
+	try {
+		const res = new aws.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
+		if (verbose) {
+			console.log('ddbGetTable - res', res);
+		}
+		return res;
+	} catch (err) {
+		if (verbose) {
+			console.log('ddbGetTable - err', err);
+		}
+		throw err;
+	}
+};
+
+const ddbGet = async (tableName, key, raw = false, verbose = true) => {
+	if (verbose) {
+		console.log(`ddbGet - tableName=${tableName}, key=${JSON.stringify(key)}, raw=${raw}`);
+	}
+	try {
+		const table = await ddbGetTable(verbose);
+		const res = await table.get({ TableName: tableName, Key: key }).promise();
+		if (verbose) {
+			console.log('ddbGet - res', res);
+		}
+		if (raw) {
+			return res;
+		}
+		return res.Item;
+	} catch (err) {
+		if (verbose) {
+			console.log('ddbGet - err', err);
 		}
 		throw err;
 	}
@@ -36,39 +69,48 @@ const ddbDecode = (item, verbose = false) => {
 
 const ddbQuery = async (
 	tableName,
-	indexName = null,
-	keyConditionExpression = null,
-	expressionAttributeNames = null,
-	expressionAttributeValues = null,
-	limit = 999,
+	indexName,
+	keyConditionExpression,
+	expressionAttributeNames,
+	expressionAttributeValues,
+	limit = 200,
 	maxLimit = null,
-	scanIndexForward = false,
-	isFetchAll = false,
 	projectionExpression = null,
+	scanIndexForward = false,
+	exclusiveStartKey = null,
 	verbose = true
 ) => {
-	let results = [];
-	const params = {
-		TableName: tableName,
-		IndexName: indexName,
-		KeyConditionExpression: keyConditionExpression, // "aws = :e AND begins_with ( cEmail, :t )",
-		ExpressionAttributeNames: expressionAttributeNames,
-		ExpressionAttributeValues: expressionAttributeValues,
-		Limit: limit,
-		ScanIndexForward: scanIndexForward,
-	};
-	if (projectionExpression) {
-		params.ProjectionExpression = projectionExpression;
-	}
 	if (verbose) {
-		console.log('ddbQuery - params - ', params);
+		console.log(
+			`ddbQuery - tableName: ${tableName}, indexName: ${indexName}, keyConditionExpression: ${keyConditionExpression}, expressionAttributeNames: ${expressionAttributeNames}, expressionAttributeValues: ${expressionAttributeValues}, limit: ${limit}, projectionExpression: ${projectionExpression}, scanIndexForward: ${scanIndexForward}, exclusiveStartKey: ${exclusiveStartKey}`
+		);
 	}
-	do {
-		try {
-			const ddb = await ddbGetClient();
-			const response = await ddb.query(params).promise();
-			results = results.concat(response.Items);
-			if (!response.LastEvaluatedKey) {
+	try {
+		const table = await ddbGetTable();
+		let res = [];
+		let nextToken = exclusiveStartKey;
+		while (true) {
+			const params = {
+				TableName: tableName,
+				IndexName: indexName,
+				KeyConditionExpression: keyConditionExpression,
+				ExpressionAttributeNames: expressionAttributeNames,
+				ExpressionAttributeValues: expressionAttributeValues,
+				Limit: limit,
+				ScanIndexForward: scanIndexForward,
+			};
+			if (nextToken) {
+				params.ExclusiveStartKey = nextToken;
+			}
+			if (projectionExpression) {
+				params.ProjectionExpression = projectionExpression;
+			}
+			const queryRes = await table.query(params).promise();
+			res = res.concat(queryRes.Items);
+			if (!queryRes.LastEvaluatedKey) {
+				if (verbose) {
+					console.log(`ddbQuery - LastEvaluatedKey not found - break`);
+				}
 				break;
 			}
 			if (maxLimit && res.length >= maxLimit) {
@@ -77,125 +119,223 @@ const ddbQuery = async (
 				}
 				break;
 			}
-			params.ExclusiveStartKey = response.LastEvaluatedKey;
-			if (verbose) {
-				console.log('ddbQuery - found next token -', response.LastEvaluatedKey);
-			}
-		} catch (err) {
-			if (verbose) {
-				console.log('ddbQuery - error -', err);
-			}
-			throw err;
+			nextToken = queryRes.LastEvaluatedKey;
 		}
-	} while (isFetchAll);
-	if (verbose) {
-		console.log(`ddbQuery - success - ${results.length} found`);
-	}
-	return results;
-};
-
-const ddbGetItem = async (tableName, key, verbose = true) => {
-	const params = {
-		TableName: tableName,
-		Key: key,
-	};
-	if (verbose) {
-		console.log('ddbGetItem - params - ', params);
-	}
-	try {
-		const ddb = await ddbGetClient();
-		const response = await ddb.getItem(params).promise();
 		if (verbose) {
-			console.log('ddbGetItem - success - ', response);
+			console.log(`ddbQuery - res: ${res}`);
 		}
-		return response;
+		return res;
 	} catch (err) {
 		if (verbose) {
-			console.log('ddbGetItem - error - ', err);
+			console.log('ddbQuery - err', err);
 		}
 		throw err;
 	}
 };
 
-const ddbPutItem = async (tableName, item, verbose = true) => {
-	const params = {
-		TableName: tableName,
-		Item: item,
-	};
+const ddbScan = async (
+	tableName,
+	filterExpression = null,
+	expressionAttributeNames = null,
+	expressionAttributeValues = null,
+	limit = 200,
+	maxLimit = null,
+	projectionExpression = null,
+	exclusiveStartKey = null,
+	verbose = true
+) => {
 	if (verbose) {
-		console.log('ddbPutItem - params - ', params);
+		console.log(
+			`ddbScan - tableName: ${tableName}, filterExpression: ${filterExpression}, expressionAttributeNames: ${expressionAttributeNames}, expressionAttributeValues: ${expressionAttributeValues}, limit: ${limit}, projectionExpression: ${projectionExpression}, exclusiveStartKey: ${exclusiveStartKey}`
+		);
 	}
 	try {
-		const ddb = await ddbGetClient();
-		const response = await ddb.putItem(params).promise();
-		if (verbose) {
-			console.log('ddbPutItem - success - ', JSON.stringify(response, null, 2));
+		const table = await ddbGetTable();
+		let res = [];
+		let nextToken = exclusiveStartKey;
+		while (true) {
+			const params = { TableName: tableName, Limit: limit };
+			if (filterExpression) {
+				params.FilterExpression = filterExpression;
+			}
+			if (expressionAttributeNames) {
+				params.ExpressionAttributeNames = expressionAttributeNames;
+			}
+			if (expressionAttributeValues) {
+				params.ExpressionAttributeValues = expressionAttributeValues;
+			}
+			if (nextToken) {
+				params.ExclusiveStartKey = nextToken;
+			}
+			if (projectionExpression) {
+				params.ProjectionExpression = projectionExpression;
+			}
+			const scanRes = await table.scan(params).promise();
+			res = res.concat(scanRes.Items);
+			if (!scanRes.LastEvaluatedKey) {
+				if (verbose) {
+					console.log('ddbScan - LastEvaluatedKey not found - break');
+				}
+				break;
+			}
+			if (maxLimit && res.length >= maxLimit) {
+				if (verbose) {
+					console.log(`ddbScan - maxLimit: ${maxLimit} reached - break `);
+				}
+				break;
+			}
+			nextToken = scanRes.LastEvaluatedKey;
 		}
-		return response;
+		if (verbose) {
+			console.log('ddbScan - res', res);
+		}
+		return res;
 	} catch (err) {
 		if (verbose) {
-			console.log('ddbPutItem - error - ', err);
+			console.log('ddbScan - err', err);
 		}
 		throw err;
 	}
 };
 
-const ddbUpdateItem = async (tableName, key, updateExpression, expressionAttributeNames, expressionAttributeValues, verbose = true) => {
+const ddbPut = async (tableName, item, verbose = true) => {
+	if (verbose) {
+		console.log(`ddbPut - tableName: ${tableName}, item: ${JSON.stringify(item)}`);
+	}
+	try {
+		const table = await ddbGetTable();
+		const res = await table.put({ TableName: tableName, Item: item }).promise();
+		if (verbose) {
+			console.log('ddbPut - res', res);
+		}
+		return res;
+	} catch (err) {
+		if (verbose) {
+			console.log('ddbPut - err', err);
+		}
+		throw err;
+	}
+};
+
+const ddbUpdate = async (
+	tableName,
+	key,
+	updateExpression,
+	expressionAttributeNames,
+	expressionAttributeValues,
+	returnValues = 'UPDATED_NEW',
+	verbose = true
+) => {
+	if (verbose) {
+		console.log(
+			`ddbUpdate - tableName: ${tableName}, key: ${JSON.stringify(
+				key
+			)}, updateExpression: ${updateExpression}, expressionAttributeNames: ${JSON.stringify(
+				expressionAttributeNames
+			)}, expressionAttributeValues: ${JSON.stringify(expressionAttributeValues)}, returnValues: ${returnValues}`
+		);
+	}
+	try {
+		const table = await ddbGetTable();
+		const res = await table
+			.update({
+				TableName: tableName,
+				Key: key,
+				UpdateExpression: updateExpression,
+				ExpressionAttributeNames: expressionAttributeNames,
+				ExpressionAttributeValues: expressionAttributeValues,
+				ReturnValues: returnValues,
+			})
+			.promise();
+		if (verbose) {
+			console.log('ddbUpdate - res', res);
+		}
+		return res;
+	} catch (err) {
+		if (verbose) {
+			console.log('ddbUpdate - err', err);
+		}
+		throw err;
+	}
+};
+
+const ddbUpdateAlt = async (tableName, key, updateValues, returnValues = 'UPDATED_NEW', verbose = true) => {
+	const updateExpression = Object.keys(updateValues)
+		.map((key) => `#${key} = :${key}`)
+		.join(', ');
+
+	const expressionAttributeNames = Object.keys(updateValues).reduce(
+		(names, key) => ({
+			...names,
+			[`#${key}`]: key,
+		}),
+		{}
+	);
+
+	const expressionAttributeValues = Object.keys(updateValues).reduce(
+		(values, key) => ({
+			...values,
+			[`:${key}`]: updateValues[key],
+		}),
+		{}
+	);
+
 	const params = {
 		TableName: tableName,
 		Key: key,
-		UpdateExpression: updateExpression,
+		UpdateExpression: `SET ${updateExpression}`,
 		ExpressionAttributeNames: expressionAttributeNames,
 		ExpressionAttributeValues: expressionAttributeValues,
-		ReturnValues: 'UPDATED_NEW',
+		ReturnValues: returnValues,
 	};
+
 	if (verbose) {
-		console.log('ddbUpdateItem - params - ', params);
+		console.log('ddbUpdateAlt - params', JSON.stringify(params, null, 2));
 	}
+
 	try {
-		const ddb = await ddbGetClient();
-		const response = await ddb.updateItem(params).promise();
+		const table = await ddbGetTable();
+		const res = await table.update(params).promise();
 		if (verbose) {
-			console.log('ddbUpdateItem - success - ', JSON.stringify(response, null, 2));
+			console.log('ddbUpdateAlt - result', res);
 		}
-		return response;
+		return res;
 	} catch (err) {
 		if (verbose) {
-			console.log('ddbUpdateItem - error - ', err);
+			console.log('ddbUpdateAlt - error', err);
 		}
 		throw err;
 	}
 };
 
-const ddbDeleteItem = async (tableName, key, verbose = true) => {
-	const params = {
-		TableName: tableName,
-		Key: key,
-	};
+const ddbDelete = async (tableName, key, verbose = true) => {
 	if (verbose) {
-		console.log('ddbDeleteItem - params - ', params);
+		console.log(`ddbDelete - tableName: ${tableName}, key: ${JSON.stringify(key)}`);
 	}
 	try {
-		const ddb = await ddbGetClient();
-		const response = await ddb.deleteItem(params).promise();
+		const table = await ddbGetTable(verbose);
+		const res = await table.delete({ TableName: tableName, Key: key }).promise();
 		if (verbose) {
-			console.log('ddbDeleteItem - success - ', JSON.stringify(response, null, 2));
+			console.log('ddbDelete - res', res);
 		}
-		return response;
+		return res;
 	} catch (err) {
 		if (verbose) {
-			console.log('ddbDeleteItem - error - ', err);
+			console.log('ddbDelete - err', err);
 		}
 		throw err;
 	}
 };
 
 module.exports = {
-	ddbEncode,
 	ddbDecode,
+	ddbEncode,
+	ddbGetTable,
+	ddbGet,
 	ddbQuery,
-	ddbGetItem,
-	ddbPutItem,
-	ddbUpdateItem,
-	ddbDeleteItem,
+	ddbScan,
+	ddbPut,
+	ddbUpdate,
+	ddbUpdateAlt,
+	ddbDelete,
 };
