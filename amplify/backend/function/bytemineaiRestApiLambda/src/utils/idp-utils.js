@@ -288,7 +288,12 @@ const idpAdminDisableUser = async (userPoolId, username, verbose = true) => {
 	}
 	try {
 		const idp = new AWS.CognitoIdentityServiceProvider();
-		const res = await idp.adminDisableUser({ UserPoolId: userPoolId, Username: username }).promise();
+		const res = await idp
+			.adminDisableUser({
+				UserPoolId: userPoolId,
+				Username: username,
+			})
+			.promise();
 		if (verbose) {
 			console.log('idpAdminDisableUser - res', res);
 		}
@@ -307,7 +312,7 @@ const idpAdminEnableUser = async (userPoolId, username, verbose = true) => {
 	}
 	try {
 		const idp = new AWS.CognitoIdentityServiceProvider();
-		const res = await idp.adminEnableUser({ UserPoolId: userPoolId, Username: username }).promise();
+		const res = idp.adminEnableUser({ UserPoolId: userPoolId, Username: username });
 		if (verbose) {
 			console.log('idpAdminEnableUser - res', res);
 		}
@@ -366,14 +371,20 @@ const idpAdminListGroupsForUser = async (userPoolId, username, limit = null, nex
 		const groups = [];
 		let token = nextToken;
 		while (true) {
-			const response = await idp
-				.adminListGroupsForUser({
-					UserPoolId: userPoolId,
-					Username: username,
-					Limit: limit,
-					NextToken: token,
-				})
-				.promise();
+			let params = {
+				UserPoolId: userPoolId,
+				Username: username,
+			};
+			if (limit) {
+				params.Limit = limit;
+			}
+			if (token) {
+				params.NextToken = token;
+			}
+			if (verbose) {
+				console.log('idpAdminListGroupsForUser - params', params);
+			}
+			const response = await idp.adminListGroupsForUser(params).promise();
 			groups.push(...response.Groups);
 			if (!response.NextToken) {
 				if (verbose) {
@@ -405,6 +416,7 @@ const idpCreateGroup = async (userPoolId, groupName, precedence = 2, verbose = t
 	if (verbose) {
 		console.log(`idpCreateGroup - userPoolId=${userPoolId}, groupName=${groupName}, precedence=${precedence}`);
 	}
+
 	try {
 		const idp = new AWS.CognitoIdentityServiceProvider();
 		const res = await idp
@@ -414,14 +426,17 @@ const idpCreateGroup = async (userPoolId, groupName, precedence = 2, verbose = t
 				Precedence: precedence,
 			})
 			.promise();
+
 		if (verbose) {
 			console.log('idpCreateGroup - res', res);
 		}
+
 		return res;
 	} catch (err) {
 		if (verbose) {
 			console.log('idpCreateGroup - err', err);
 		}
+
 		throw err;
 	}
 };
@@ -568,30 +583,6 @@ const idpGetUserAttribute = async (user, key, defaultValue = null, verbose = fal
 	return defaultValue;
 };
 
-const idpAdminDeleteUser = async (userPoolId, username, verbose = true) => {
-	if (verbose) {
-		console.log(`idpAdminDeleteUser - ${userPoolId}, ${username}`);
-	}
-	try {
-		const idp = new AWS.CognitoIdentityServiceProvider();
-		const res = await idp
-			.adminDeleteUser({
-				UserPoolId: userPoolId,
-				Username: username,
-			})
-			.promise();
-		if (verbose) {
-			console.log('idpAdminDeleteUser - res', res);
-		}
-		return res;
-	} catch (err) {
-		if (verbose) {
-			console.log('idpAdminDeleteUser - err', err);
-		}
-		throw err;
-	}
-};
-
 module.exports = {
 	idpListUserPoolClients,
 	idpGetClientId,
@@ -613,5 +604,4 @@ module.exports = {
 	idpAdminUpdateUserAttributes,
 	idpAdminUserGlobalSignOut,
 	idpGetUserAttribute,
-	idpAdminDeleteUser,
 };
