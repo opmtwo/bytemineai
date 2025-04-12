@@ -337,7 +337,7 @@ export interface SelectOption {
 	label: string;
 	isFixed?: boolean;
 	included?: boolean;
-	excluded?: boolean
+	excluded?: boolean;
 }
 
 export interface RampedUpFilter {
