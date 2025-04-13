@@ -1,9 +1,9 @@
-import { Sha256 } from '@aws-crypto/sha256-js';
-import { defaultProvider } from '@aws-sdk/credential-provider-node';
-import { HttpRequest } from '@aws-sdk/protocol-http';
-import { SignatureV4 } from '@aws-sdk/signature-v4';
+const { Sha256 } = require('@aws-crypto/sha256-js');
+const { defaultProvider } = require('@aws-sdk/credential-provider-node');
+const { HttpRequest } = require('@aws-sdk/protocol-http');
+const { SignatureV4 } = require('@aws-sdk/signature-v4');
 
-import { getNestedKey } from './helper-utils';
+const { getNestedKey } = require('./helper-utils');
 
 const { API_BYTEMINEAIGRAPHAPI_GRAPHQLAPIENDPOINTOUTPUT: GRAPHQL_ENDPOINT, REGION } = process.env;
 
