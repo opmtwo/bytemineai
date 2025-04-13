@@ -1,8 +1,8 @@
-import { Stripe } from 'stripe';
+const { Stripe } = require('stripe');
 
 const { STRIPE_CLIENT_SECRET } = process.env;
 
-export const stripe = new Stripe(STRIPE_CLIENT_SECRET, { apiVersion: '2023-10-16' });
+const stripe = new Stripe(STRIPE_CLIENT_SECRET, { apiVersion: '2023-10-16' });
 
 /**
  * @summary
@@ -14,7 +14,7 @@ export const stripe = new Stripe(STRIPE_CLIENT_SECRET, { apiVersion: '2023-10-16
  * @param {string} priceId stripe price id
  * @returns {Promise<Stripe.Price>} Promise resolving to the retrieved price
  */
-export const stripeGetPrice = async (priceId) => {
+const stripeGetPrice = async (priceId) => {
 	try {
 		const response = await stripe.prices.retrieve(priceId, { expand: ['product'] });
 		console.log('stripeGetPrice - success - ', response);
@@ -34,7 +34,7 @@ export const stripeGetPrice = async (priceId) => {
  *
  * @param {string} sessionId stripe checkout session id
  */
-export const stripeGetCheckoutSession = async (secretKey, sessionId) => {
+const stripeGetCheckoutSession = async (secretKey, sessionId) => {
 	try {
 		const response = await stripe.checkout.sessions.retrieve(sessionId);
 		console.log('stripeGetCheckoutSession - success - ', response);
@@ -66,45 +66,45 @@ export const stripeGetCheckoutSession = async (secretKey, sessionId) => {
 //  * @param {boolean} isIdealEnabled True if iDEAL is needed - check links above
 //  * @returns {Promise<Stripe.Checkout.Session>} Promise resolving to the created checkout session
 //  */
-// export const stripeCreateCheckoutSession = async (
-// 	secretKey: string,
-// 	domainURL: string,
-// 	currency: string,
-// 	name: string,
-// 	amount: number,
-// 	quantity: number,
-// 	isIdealEnabled: boolean
-// ): Promise<Stripe.Checkout.Session> => {
-// 	const paymentMethodTypes: string[] = ['card'];
-// 	if (currency === 'eur' && isIdealEnabled) {
-// 		paymentMethodTypes.push('ideal');
-// 	}
-// 	console.log('stripeCreateCheckoutSession - params - ', { secretKey, domainURL, currency, name, amount, quantity, isIdealEnabled });
-// 	try {
-// 		const session = await stripe.checkout.sessions.create({
-// 			mode: 'payment',
-// 			payment_method_types: paymentMethodTypes,
-// 			line_items: [
-// 				{
-// 					name,
-// 					amount,
-// 					currency,
-// 					quantity,
-// 				},
-// 			],
-// 			success_url: `${domainURL}&stripe_success_id={CHECKOUT_SESSION_ID}`,
-// 			cancel_url: `${domainURL}&stripe_cancel_id={CHECKOUT_SESSION_ID}`,
-// 			automatic_tax: {
-// 				enabled: false,
-// 			},
-// 		});
-// 		console.log('stripeCreateCheckoutSession - success - ', session);
-// 		return session;
-// 	} catch (err) {
-// 		console.log('stripeCreateCheckoutSession - error - ', err);
-// 		throw err;
-// 	}
-// };
+const stripeCreateCheckoutSession = async (
+	secretKey,
+	domainURL,
+	currency,
+	name,
+	amount,
+	quantity,
+	isIdealEnabled
+) => {
+	const paymentMethodTypes = ['card'];
+	if (currency === 'eur' && isIdealEnabled) {
+		paymentMethodTypes.push('ideal');
+	}
+	console.log('stripeCreateCheckoutSession - params - ', { secretKey, domainURL, currency, name, amount, quantity, isIdealEnabled });
+	try {
+		const session = await stripe.checkout.sessions.create({
+			mode: 'payment',
+			payment_method_types: paymentMethodTypes,
+			line_items: [
+				{
+					name,
+					amount,
+					currency,
+					quantity,
+				},
+			],
+			success_url: `${domainURL}&stripe_success_id={CHECKOUT_SESSION_ID}`,
+			cancel_url: `${domainURL}&stripe_cancel_id={CHECKOUT_SESSION_ID}`,
+			automatic_tax: {
+				enabled: false,
+			},
+		});
+		console.log('stripeCreateCheckoutSession - success - ', session);
+		return session;
+	} catch (err) {
+		console.log('stripeCreateCheckoutSession - error - ', err);
+		throw err;
+	}
+};
 
 /**
  * @summary
@@ -125,7 +125,7 @@ export const stripeGetCheckoutSession = async (secretKey, sessionId) => {
  * @param {string} promoCode The discount promo code
  * @returns {Promise<Stripe.Checkout.Session>} Promise resolving to the created checkout session
  */
-export const stripeCreateSubscriptionCheckoutSession = async (url, customerId, priceId, txnId, promoCode) => {
+const stripeCreateSubscriptionCheckoutSession = async (url, customerId, priceId, txnId, promoCode) => {
 	try {
 		const params = {
 			mode: 'subscription',
@@ -159,7 +159,7 @@ export const stripeCreateSubscriptionCheckoutSession = async (url, customerId, p
  * @param {string} id Stripe customer id
  * @returns {Promise<Stripe.Customer>} Promise resolving to the retrieved customer
  */
-export const stripeGetCustomer = async (id) => {
+const stripeGetCustomer = async (id) => {
 	try {
 		const response = await stripe.customers.retrieve(id);
 		console.log('stripeGetCustomer - response - ', response);
@@ -180,7 +180,7 @@ export const stripeGetCustomer = async (id) => {
  * @param {string} email Stripe customer email
  * @returns {Promise<Stripe.Customer | undefined>} Promise resolving to the retrieved customer or undefined if not found
  */
-export const stripeGetCustomerByEmail = async (email) => {
+const stripeGetCustomerByEmail = async (email) => {
 	try {
 		const response = await stripe.customers.list({ email, limit: 1 });
 		console.log('stripeGetCustomerByEmail - success - ', response);
@@ -201,7 +201,7 @@ export const stripeGetCustomerByEmail = async (email) => {
  * @param {number} limit - The number of customers to return (default: 100)
  * @returns {Promise<Stripe.Customer[]>} Promise resolving to the list of retrieved customers
  */
-export const stripeListCustomers = async (limit = 100) => {
+const stripeListCustomers = async (limit = 100) => {
 	let customers = [];
 	let startingAfter = undefined;
 
@@ -240,7 +240,7 @@ export const stripeListCustomers = async (limit = 100) => {
  * @param {string} txnId - Unique transaction id
  * @returns {Promise<Stripe.Subscription | undefined>} Promise resolving to the customer subscription or undefined if not found
  */
-export const stripeGetCustomerSubscription = async (customerId, priceId, txnId) => {
+const stripeGetCustomerSubscription = async (customerId, priceId, txnId) => {
 	try {
 		const response = await stripe.subscriptions.list({
 			limit: 100,
@@ -278,7 +278,7 @@ export const stripeGetCustomerSubscription = async (customerId, priceId, txnId) 
  * @param {string} email - Stripe customer email address
  * @returns {Promise<Stripe.Customer>} Promise resolving to the created or existing customer
  */
-export const stripeCreateCustomer = async (email) => {
+const stripeCreateCustomer = async (email) => {
 	try {
 		const response = await stripeGetCustomerByEmail(email);
 		if (response?.id) {
@@ -308,7 +308,7 @@ export const stripeCreateCustomer = async (email) => {
  * @param {string} customerId - Stripe customer id
  * @returns {Promise<Stripe.BillingPortal.Session>} Promise resolving to the created customer portal session
  */
-export const stripeCreateCustomerPortalSession = async (customerId) => {
+const stripeCreateCustomerPortalSession = async (customerId) => {
 	try {
 		const response = await stripe.billingPortal.sessions.create({ customer: customerId });
 		console.log('stripeCreateCustomerPortalSession - response - ', response);
@@ -329,7 +329,7 @@ export const stripeCreateCustomerPortalSession = async (customerId) => {
  * @param {string} id - Stripe charge id
  * @returns {Promise<Stripe.Charges.Charge>} Promise resolving to the retrieved charge object
  */
-export const stripeGetCharge = async (id) => {
+const stripeGetCharge = async (id) => {
 	try {
 		const response = await stripe.charges.retrieve(id);
 		console.log('stripeGetCharge - success - ', response);
@@ -352,7 +352,7 @@ export const stripeGetCharge = async (id) => {
  * @param {boolean} verbose - Flag to enable verbose logging (default: false)
  * @returns {Promise<Stripe.Invoices.Invoice[]>} Promise resolving to the array of retrieved invoices
  */
-export const stripeListInvoices = async (customerId, limit = 100, verbose) => {
+const stripeListInvoices = async (customerId, limit = 100, verbose) => {
 	const invoices = [];
 	let startingAfter = undefined; // Use undefined instead of null
 	try {
@@ -394,7 +394,7 @@ export const stripeListInvoices = async (customerId, limit = 100, verbose) => {
  * @param {string} id - Stripe invoice id
  * @returns {Promise<Stripe.Invoices.Invoice>} Promise resolving to the retrieved invoice
  */
-export const stripeGetInvoice = async (id) => {
+const stripeGetInvoice = async (id) => {
 	try {
 		const response = await stripe.invoices.retrieve(id, { expand: ['subscription'] });
 		console.log('stripeGetInvoice - success - ', response);
@@ -416,7 +416,7 @@ export const stripeGetInvoice = async (id) => {
  * @param {string} subscriptionId - Stripe subscription id
  * @returns {Promise<Stripe.Invoices.Invoice>} Promise resolving to the upcoming invoice
  */
-export const stripeGetUpcomingInvoice = async (customerId, subscriptionId) => {
+const stripeGetUpcomingInvoice = async (customerId, subscriptionId) => {
 	try {
 		const response = await stripe.invoices.retrieveUpcoming({ customer: customerId, subscription: subscriptionId });
 		console.log('stripeGetUpcomingInvoice - success - ', response);
@@ -437,7 +437,7 @@ export const stripeGetUpcomingInvoice = async (customerId, subscriptionId) => {
  * @param {string} id - Stripe subscription id
  * @returns {Promise<Stripe.Subscription>} Promise resolving to the subscription information
  */
-export const stripeGetSubscription = async (id) => {
+const stripeGetSubscription = async (id) => {
 	try {
 		const response = await stripe.subscriptions.retrieve(id, { expand: ['customer', 'latest_invoice'] });
 		console.log('stripeGetSubscription - success - ', JSON.stringify(response, null, 2));
@@ -457,7 +457,7 @@ export const stripeGetSubscription = async (id) => {
  *
  * @param {int} limit the number of subscriptions to return
  */
-export const stripeListSubscriptions = async (limit = 100, verbose = true) => {
+const stripeListSubscriptions = async (limit = 100, verbose = true) => {
 	if (verbose) {
 		console.log('stripeListSubscriptions - ', { limit });
 	}
@@ -502,7 +502,7 @@ export const stripeListSubscriptions = async (limit = 100, verbose = true) => {
  * @param {number} trialPeriod - Trial period in days (default: 7)
  * @returns {Promise<Stripe.Subscription>} Promise resolving to the created subscription
  */
-export const stripeCreateSubscription = async (customerId, priceId, coupon, trialPeriod = 7) => {
+const stripeCreateSubscription = async (customerId, priceId, coupon, trialPeriod = 7) => {
 	try {
 		const response = await stripe.subscriptions.create({
 			customer: customerId,
@@ -533,7 +533,7 @@ export const stripeCreateSubscription = async (customerId, priceId, coupon, tria
  * @param {string} subscriptionId - Stripe subscription id
  * @returns {Promise<Stripe.DeletedSubscription>} Promise resolving to the deleted subscription object
  */
-export const stripeDeleteSubscription = async (subscriptionId) => {
+const stripeDeleteSubscription = async (subscriptionId) => {
 	try {
 		const response = await stripe.subscriptions.cancel(subscriptionId);
 		console.log('stripeDeleteSubscription - success - ', response);
@@ -554,7 +554,7 @@ export const stripeDeleteSubscription = async (subscriptionId) => {
  * @param {string} id - Stripe payment method id
  * @returns {Promise<Stripe.PaymentMethod>} Promise resolving to the payment method object
  */
-export const stripeGetPaymentMethod = async (id) => {
+const stripeGetPaymentMethod = async (id) => {
 	try {
 		const response = await stripe.paymentMethods.retrieve(id);
 		console.log('stripeGetPaymentMethod - success - ', response);
@@ -576,7 +576,7 @@ export const stripeGetPaymentMethod = async (id) => {
  * @param {string} customerId - Stripe customer id
  * @returns {Promise<Stripe.PaymentMethod>} Promise resolving to the attached payment method object
  */
-export const stripeAddPaymentMethod = async (paymentMethodId, customerId) => {
+const stripeAddPaymentMethod = async (paymentMethodId, customerId) => {
 	try {
 		const response = await stripe.paymentMethods.attach(paymentMethodId, {
 			customer: customerId,
@@ -600,7 +600,7 @@ export const stripeAddPaymentMethod = async (paymentMethodId, customerId) => {
  * @param {string} paymentMethodId - Stripe payment method id
  * @returns {Promise<Stripe.Subscription>} Promise resolving to the updated subscription object
  */
-export const stripeUpdateSubscriptionPaymentMethod = async (subscriptionId, paymentMethodId) => {
+const stripeUpdateSubscriptionPaymentMethod = async (subscriptionId, paymentMethodId) => {
 	try {
 		const response = await stripe.subscriptions.update(subscriptionId, {
 			default_payment_method: paymentMethodId,
@@ -627,7 +627,7 @@ export const stripeUpdateSubscriptionPaymentMethod = async (subscriptionId, paym
  * @param {number} prorationDate - epoch time in seconds - forces the proration to be calculated as though the update was done at the specified time
  * @returns {Promise<Stripe.UpcomingInvoice>} - Promise resolving to the upcoming prorated invoice object
  */
-export const stripeGetProratedInvoice = async (subscription, pricingId, customerId, prorationDate) => {
+const stripeGetProratedInvoice = async (subscription, pricingId, customerId, prorationDate) => {
 	const items = [
 		{
 			id: subscription.items.data[0].id,
@@ -659,7 +659,7 @@ export const stripeGetProratedInvoice = async (subscription, pricingId, customer
  * @param {string} customerId - stripe customer id
  * @returns {Promise<Stripe.ApiList<Stripe.PaymentMethod>>} Promise resolving to the list of payment methods
  */
-export const stripeListPaymentMethods = async (customerId) => {
+const stripeListPaymentMethods = async (customerId) => {
 	try {
 		const response = await stripe.paymentMethods.list({
 			customer: customerId,
@@ -684,7 +684,7 @@ export const stripeListPaymentMethods = async (customerId) => {
  * @param {string} paymentMethodId - stripe payment method id
  * @returns {Promise<Stripe.Customer>} - Promise resolving to the updated customer object
  */
-export const stripeSetDefaultPaymentMethod = async (customerId, paymentMethodId) => {
+const stripeSetDefaultPaymentMethod = async (customerId, paymentMethodId) => {
 	try {
 		const response = await stripe.customers.update(customerId, {
 			invoice_settings: {
@@ -709,7 +709,7 @@ export const stripeSetDefaultPaymentMethod = async (customerId, paymentMethodId)
  * @param {string} code - stripe coupon code
  * @returns {Promise<Stripe.Coupon>} - Promise resolving to the retrieved coupon object
  */
-export const stripeGetCoupon = async (code) => {
+const stripeGetCoupon = async (code) => {
 	try {
 		const response = await stripe.coupons.retrieve(code);
 		console.log('stripeGetCoupon - success - ', response);
@@ -730,7 +730,7 @@ export const stripeGetCoupon = async (code) => {
  * @param {string} code - the stripe promo code
  * @returns {Promise<Stripe.PromotionCode | undefined>} - Promise resolving to the retrieved promo code object or undefined if not found
  */
-export const stripeGetPromoCodeByCode = async (code) => {
+const stripeGetPromoCodeByCode = async (code) => {
 	try {
 		const response = await stripe.promotionCodes.list({ code, limit: 1 });
 		console.log('stripeGetPromoCodeByCode - success - ', response);
@@ -752,7 +752,7 @@ export const stripeGetPromoCodeByCode = async (code) => {
  * @param {string} code - the stripe promo code
  * @returns {Promise<Stripe.Subscription>} - Promise resolving to the modified subscription object
  */
-export const stripeSetSuscriptionPromoCode = async (subscriptionId, code) => {
+const stripeSetSuscriptionPromoCode = async (subscriptionId, code) => {
 	try {
 		const response = await stripe.subscriptions.update(subscriptionId, {
 			promotion_code: code,
@@ -777,7 +777,7 @@ export const stripeSetSuscriptionPromoCode = async (subscriptionId, code) => {
  * @param {Record<string, string>} metadata - Custom metadata to associate with the payment link
  * @returns {Promise<Stripe.PaymentLink>} - Promise resolving to the created payment link object
  */
-export const stripeGeneratePaymentLink = async (priceId, metadata) => {
+const stripeGeneratePaymentLink = async (priceId, metadata) => {
 	try {
 		const response = await stripe.paymentLinks.create({
 			line_items: [
@@ -797,4 +797,36 @@ export const stripeGeneratePaymentLink = async (priceId, metadata) => {
 		console.log('stripeGeneratePaymentLink - error - ', err);
 		throw err;
 	}
+};
+
+module.exports = {
+	stripe,
+	stripeGetPrice,
+	stripeGetCheckoutSession,
+	stripeCreateCheckoutSession,
+	stripeCreateSubscriptionCheckoutSession,
+	stripeGetCustomer,
+	stripeGetCustomerByEmail,
+	stripeListCustomers,
+	stripeGetCustomerSubscription,
+	stripeCreateCustomer,
+	stripeCreateCustomerPortalSession,
+	stripeGetCharge,
+	stripeListInvoices,
+	stripeGetInvoice,
+	stripeGetUpcomingInvoice,
+	stripeGetSubscription,
+	stripeListSubscriptions,
+	stripeCreateSubscription,
+	stripeDeleteSubscription,
+	stripeGetPaymentMethod,
+	stripeAddPaymentMethod,
+	stripeUpdateSubscriptionPaymentMethod,
+	stripeGetProratedInvoice,
+	stripeListPaymentMethods,
+	stripeSetDefaultPaymentMethod,
+	stripeGetCoupon,
+	stripeGetPromoCodeByCode,
+	stripeSetSuscriptionPromoCode,
+	stripeGeneratePaymentLink,
 };
