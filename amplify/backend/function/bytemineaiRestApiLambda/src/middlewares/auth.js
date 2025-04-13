@@ -1,94 +1,90 @@
-import { getUser, listUsersByTeamId } from '../graphql/queries';
-import { apsGql } from '../utils/aps-utils';
-import { idpAdminGetUser, idpAdminListGroupsForUser, idpGetUserByToken } from '../utils/idp-utils';
-import { stripeGetSubscription } from '../utils/stripe-utils';
+const { getUser, listUsersByTeamId } = require('../graphql/queries');
+const { apsGql } = require('../utils/aps-utils');
+const { idpAdminGetUser, idpAdminListGroupsForUser, idpGetUserByToken } = require('../utils/idp-utils');
+const { stripeGetSubscription } = require('../utils/stripe-utils');
 
-const { AUTH_STACKUPAUTH_USERPOOLID: USER_POOL_ID } = process.env;
+const { AUTH_BYTEMINEAI2721B75B_USERPOOLID: USERPOOLID } = process.env;
 
-export const verifyToken = async (req, res, next) => {
+const verifyToken = async (req, res, next) => {
+	// Define a default error response.
+	const defaultResponse = { error: 'Unauthorized' };
+
 	// Extract the token from the Authorization header in the request.
-	const token = req.headers.authorization;
+	const token = req.headers.Authorization || req.headers.authorization;
 
 	// Extract the user id directly from the header
 	// This is passed in header when using partner mode to browse team member
 	const userId = req.headers['x-amz-security-token'];
 
-	if (userId) {
-		console.log('verifyToken', { userId });
-
-		// If trying to auth via user id then check access token and retrieve team member
-		if (token?.length > 100) {
-			try {
-				// Retrieve user information using the provided token.
-				const userInfo = await idpGetUserByToken({ AccessToken: token });
-				// Save team member in teamMember
-				res.locals.teamMember = userInfo;
-				console.log('verifyToken', JSON.stringify({ teamMember: res.locals.teamMember }));
-			} catch (err) {
-				//
-			}
-		}
-
-		try {
-			const user = await idpAdminGetUser({ UserPoolId: USER_POOL_ID, Username: userId });
-
-			// Attach user-related information to the response locals for further use.
-			res.locals.token = token;
-			res.locals.user = user;
-			res.locals.sub = (user.UserAttributes || []).find((_attr) => _attr.Name === 'sub')?.Value;
-			res.locals.username = user.Username;
-
-			// Call the next middleware in the chain.
-			return next();
-		} catch (err) {
-			console.log('verifyToken - error fetching user details via userid', err);
-		}
-	}
-
-	// Define a default error response.
-	const defaultResponse = { error: 'Unauthorized' };
-
 	// Log the token for debugging purposes.
-	console.log(`verifyToken - token = ${token}`);
+	console.log('verifyToken', { USERPOOLID, token, userId });
 
 	// If no token is found in the request headers, log an error, return a 401 status, and send the default error response.
-	if (!token) {
+	if (!token && !userId) {
 		console.log(`verifyToken - token not found`);
 		return res.status(401).json(defaultResponse);
 	}
 
-	try {
-		// Retrieve user information using the provided token.
-		const userInfo = await idpGetUserByToken({ AccessToken: token });
+	let user;
+	let userInfo;
 
-		// Retrieve detailed user information using the username obtained from the previous step.
-		const user = await idpAdminGetUser({ UserPoolId: USER_POOL_ID, Username: userInfo.Username });
+	if (userId) {
+		// If trying to auth via user id then check access token and retrieve team member
+		if (token?.length > 100) {
+			try {
+				// Retrieve user information using the provided token.
+				userInfo = await idpGetUserByToken({ AccessToken: token });
+				console.log(JSON.stringify({ userInfo }));
 
-		// If the user is not enabled, log an error, return a 401 status, and send the default error response.
-		if (user.Enabled !== true) {
-			console.error('verifyToken - err - user not enabled');
-			res.status(401).json(defaultResponse);
+				// Retrieve full user information using
+				user = await idpAdminGetUser(USERPOOLID, userInfo.Username);
+
+				// Log info
+				console.log('verifyToken', JSON.stringify({ userInfo, user }));
+			} catch (err) {
+				console.log('Error fetching access token by token', { token });
+			}
 		}
 
-		// Attach user-related information to the response locals for further use.
-		res.locals.token = token;
-		res.locals.user = user;
-		res.locals.sub = (user.UserAttributes || []).find((_attr) => _attr.Name === 'sub')?.Value;
-		res.locals.username = user.Username;
+		// Save team member in team
+		if (userId) {
+			try {
+				user = await idpAdminGetUser(USERPOOLID, userId);
+				console.log(JSON.stringify({ user }));
 
-		// Call the next middleware in the chain.
-		return next();
-	} catch (err) {
-		// If an error occurs during the process, log the error, return a 401 status, and send the default error response.
-		console.error('verifyToken - err', err);
+				// Attach user-related information to the response locals for further use.
+				res.locals.team = user;
+			} catch (err) {
+				console.log('verifyToken - error fetching user details via userid', err);
+			}
+		}
+	}
+
+	// If the user is not enabled, log an error, return a 401 status, and send the default error response.
+	console.log(JSON.stringify({ user, userInfo }));
+	if (user?.Enabled === false) {
+		console.error('verifyToken - err - user not enabled');
 		return res.status(401).json(defaultResponse);
 	}
+
+	// Attach user-related information to the response locals for further use.
+	res.locals.token = token;
+	res.locals.userId = userId;
+	res.locals.user = user;
+	res.locals.userInfo = userInfo;
+	res.locals.sub = (user?.UserAttributes || userInfo?.UserAttributes || []).find((_attr) => _attr.Name === 'sub')?.Value;
+	res.locals.username = user?.Username || userInfo?.Username;
+
+	console.log({ user, userInfo });
+
+	// Call the next middleware in the chain.
+	return next();
 };
 
-export const verifyGroup = async (req, res, next) => {
+const verifyGroup = async (req, res, next) => {
 	try {
 		// Retrieve detailed user group information
-		const groups = await idpAdminListGroupsForUser({ UserPoolId: USER_POOL_ID, Username: res.locals.username });
+		const groups = await idpAdminListGroupsForUser({ UserPoolId: USERPOOLID, Username: res.locals.username });
 
 		// Get user cognito groups
 		res.locals.groups = groups.map((_group) => _group.GroupName);
@@ -110,7 +106,7 @@ export const verifyGroup = async (req, res, next) => {
 	}
 };
 
-export const verifyPlan = async (req, res, next) => {
+const verifyPlan = async (req, res, next) => {
 	try {
 		// Declare a variable to store the subscription information.
 		let subscription;
@@ -150,7 +146,7 @@ export const verifyPlan = async (req, res, next) => {
 	}
 };
 
-export const verifyTeam = async (req, res, next) => {
+const verifyTeam = async (req, res, next) => {
 	// Define a default error response.
 	const defaultResponse = { error: 'Unauthorized' };
 
@@ -191,4 +187,11 @@ export const verifyTeam = async (req, res, next) => {
 		console.log(`😱 - verifyTeam - error`, err);
 		return res.status(403).json(defaultResponse).send();
 	}
+};
+
+module.exports = {
+	verifyToken,
+	verifyGroup,
+	verifyPlan,
+	verifyTeam,
 };
