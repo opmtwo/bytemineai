@@ -110,13 +110,13 @@ const idpGetUserByKey = async (userPoolId, filter, limit = 1, paginationToken = 
 
 const idpAdminGetUser = async (userPoolId, username, verbose = true) => {
 	if (verbose) {
-		console.log(`idpAdminGetUser - ${userPoolId}, ${username}`);
+		console.log(`idpAdminGetUser`, JSON.stringify({ userPoolId, username }));
 	}
 	try {
 		const idp = new AWS.CognitoIdentityServiceProvider();
 		const res = await idp.adminGetUser({ UserPoolId: userPoolId, Username: username }).promise();
 		if (verbose) {
-			console.log('idpAdminGetUser - res', res);
+			console.log('idpAdminGetUser - res', JSON.stringify(res));
 		}
 		return res;
 	} catch (err) {
