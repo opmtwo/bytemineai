@@ -1,12 +1,12 @@
-import { Router } from 'express';
+const { Router } = require('express');
 
-import { createCollection, deleteCollection, updateCollection } from '../graphql/mutations';
-import { getCollection, listCollectionByTeamId } from '../../graphql/queries';
-import { verifyGroup, verifyToken } from '../../middlewares/auth';
-import { IFaq, schemaValidate } from '../../schemas';
-import { apsGql } from '../utils/aps-utils';
+const { createCollection, deleteCollection, updateCollection } = require('../graphql/mutations');
+const { getCollection, listCollectionByTeamId } = require('../graphql/queries');
+const { verifyTeam, verifyToken } = require('../middlewares/auth');
+const { ICollection, schemaValidate } = require('../schemas');
+const { apsGql } = require('../utils/aps-utils');
 
-export const router = Router();
+const router = Router();
 
 router.get('/', verifyToken, async (req, res) => {
 	const sub = res.locals.sub;
@@ -36,14 +36,14 @@ router.get('/:id', verifyToken, async (req, res) => {
 	const { id } = req.params;
 
 	const collection = await apsGql(getCollection, { id }, 'data.getCollection');
-	if (!faq?.id) {
+	if (!collection?.id) {
 		return res.status(404).json({ message: 'Not found' });
 	}
 
 	return res.json(collection);
 });
 
-router.post('/', schemaValidate(IFaq), verifyToken, verifyGroup, async (req, res) => {
+router.post('/', schemaValidate(ICollection), verifyToken, verifyTeam, async (req, res) => {
 	const { sub, groups } = res.locals;
 	const data = req.body;
 
@@ -53,7 +53,7 @@ router.post('/', schemaValidate(IFaq), verifyToken, verifyGroup, async (req, res
 	return res.json(collection);
 });
 
-router.put('/:id', schemaValidate(IFaq), verifyToken, verifyGroup, async (req, res) => {
+router.put('/:id', schemaValidate(ICollection), verifyToken, verifyTeam, async (req, res) => {
 	const { id } = req.params;
 	const data = req.body;
 
@@ -68,7 +68,7 @@ router.put('/:id', schemaValidate(IFaq), verifyToken, verifyGroup, async (req, r
 	return res.json(collectionUpdated);
 });
 
-router.delete('/:id', verifyToken, verifyGroup, async (req, res) => {
+router.delete('/:id', verifyToken, verifyTeam, async (req, res) => {
 	const { id } = req.params;
 
 	const collection = await apsGql(getCollection, { id }, 'data.getCollection');

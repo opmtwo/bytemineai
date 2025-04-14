@@ -1,15 +1,13 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateCollection = /* GraphQL */ `
-  subscription OnCreateCollection(
-    $filter: ModelSubscriptionCollectionFilterInput
+export const onCreateBytemineCollection = /* GraphQL */ `
+  subscription OnCreateBytemineCollection(
+    $filter: ModelSubscriptionBytemineCollectionFilterInput
   ) {
-    onCreateCollection(filter: $filter) {
+    onCreateBytemineCollection(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       name
@@ -17,15 +15,13 @@ export const onCreateCollection = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateCollection = /* GraphQL */ `
-  subscription OnUpdateCollection(
-    $filter: ModelSubscriptionCollectionFilterInput
+export const onUpdateBytemineCollection = /* GraphQL */ `
+  subscription OnUpdateBytemineCollection(
+    $filter: ModelSubscriptionBytemineCollectionFilterInput
   ) {
-    onUpdateCollection(filter: $filter) {
+    onUpdateBytemineCollection(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       name
@@ -33,15 +29,13 @@ export const onUpdateCollection = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteCollection = /* GraphQL */ `
-  subscription OnDeleteCollection(
-    $filter: ModelSubscriptionCollectionFilterInput
+export const onDeleteBytemineCollection = /* GraphQL */ `
+  subscription OnDeleteBytemineCollection(
+    $filter: ModelSubscriptionBytemineCollectionFilterInput
   ) {
-    onDeleteCollection(filter: $filter) {
+    onDeleteBytemineCollection(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       name
@@ -49,13 +43,55 @@ export const onDeleteCollection = /* GraphQL */ `
     }
   }
 `;
-export const onCreateContact = /* GraphQL */ `
-  subscription OnCreateContact($filter: ModelSubscriptionContactFilterInput) {
-    onCreateContact(filter: $filter) {
+export const onCreateBytemineUser = /* GraphQL */ `
+  subscription OnCreateBytemineUser(
+    $filter: ModelSubscriptionBytemineUserFilterInput
+  ) {
+    onCreateBytemineUser(filter: $filter) {
       id
       owner
-      teamId
-      userId
+      createdAt
+      updatedAt
+      name
+      __typename
+    }
+  }
+`;
+export const onUpdateBytemineUser = /* GraphQL */ `
+  subscription OnUpdateBytemineUser(
+    $filter: ModelSubscriptionBytemineUserFilterInput
+  ) {
+    onUpdateBytemineUser(filter: $filter) {
+      id
+      owner
+      createdAt
+      updatedAt
+      name
+      __typename
+    }
+  }
+`;
+export const onDeleteBytemineUser = /* GraphQL */ `
+  subscription OnDeleteBytemineUser(
+    $filter: ModelSubscriptionBytemineUserFilterInput
+  ) {
+    onDeleteBytemineUser(filter: $filter) {
+      id
+      owner
+      createdAt
+      updatedAt
+      name
+      __typename
+    }
+  }
+`;
+export const onCreateBytemineContact = /* GraphQL */ `
+  subscription OnCreateBytemineContact(
+    $filter: ModelSubscriptionBytemineContactFilterInput
+  ) {
+    onCreateBytemineContact(filter: $filter) {
+      id
+      owner
       createdAt
       updatedAt
       isEmailVerified
@@ -126,177 +162,173 @@ export const onCreateContact = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateContact = /* GraphQL */ `
-  subscription OnUpdateContact($filter: ModelSubscriptionContactFilterInput) {
-    onUpdateContact(filter: $filter) {
-      id
-      owner
-      teamId
-      userId
-      createdAt
-      updatedAt
-      isEmailVerified
-      contactEmailStatusCode
-      contactEmailDomainType
-      personalEmailStatusCode
-      personalEmailDomainType
-      contactPersonalEmailStatusCode
-      contactPersonalEmailDomainType
-      first_name
-      last_name
-      middle_name
-      full_name
-      job_title
-      seniority
-      department
-      primary_role
-      secondary_role
-      linkedin_profile
-      linkedin_connection_count
-      work_email
-      work_email_history
-      personal_email
-      personal_email2
-      personal_email_history
-      direct_dial
-      mobile_number
-      mobile_number_history
-      work_number
-      education
-      skills
-      interests
-      linkedin_headline
-      facebook_profile
-      twitter_profile
-      work_experience
-      salary
-      birth_year
-      age
-      gender
-      new_hire
-      job_start_date
-      company_name
-      company_domain
-      company_website
-      company_linkedin_profile
-      company_linkedin_followers
-      company_local_address
-      company_local_city
-      company_local_state
-      company_local_address_postal
-      company_hq_address
-      company_hq_city
-      company_hq_state
-      company_hq_postal
-      person_city
-      person_state
-      person_postal
-      company_employee_range
-      company_revenue_range
-      company_industry
-      company_sic4
-      company_sic4_description
-      company_naics
-      company_naics_description
-      company_type
-      __typename
-    }
-  }
-`;
-export const onDeleteContact = /* GraphQL */ `
-  subscription OnDeleteContact($filter: ModelSubscriptionContactFilterInput) {
-    onDeleteContact(filter: $filter) {
-      id
-      owner
-      teamId
-      userId
-      createdAt
-      updatedAt
-      isEmailVerified
-      contactEmailStatusCode
-      contactEmailDomainType
-      personalEmailStatusCode
-      personalEmailDomainType
-      contactPersonalEmailStatusCode
-      contactPersonalEmailDomainType
-      first_name
-      last_name
-      middle_name
-      full_name
-      job_title
-      seniority
-      department
-      primary_role
-      secondary_role
-      linkedin_profile
-      linkedin_connection_count
-      work_email
-      work_email_history
-      personal_email
-      personal_email2
-      personal_email_history
-      direct_dial
-      mobile_number
-      mobile_number_history
-      work_number
-      education
-      skills
-      interests
-      linkedin_headline
-      facebook_profile
-      twitter_profile
-      work_experience
-      salary
-      birth_year
-      age
-      gender
-      new_hire
-      job_start_date
-      company_name
-      company_domain
-      company_website
-      company_linkedin_profile
-      company_linkedin_followers
-      company_local_address
-      company_local_city
-      company_local_state
-      company_local_address_postal
-      company_hq_address
-      company_hq_city
-      company_hq_state
-      company_hq_postal
-      person_city
-      person_state
-      person_postal
-      company_employee_range
-      company_revenue_range
-      company_industry
-      company_sic4
-      company_sic4_description
-      company_naics
-      company_naics_description
-      company_type
-      __typename
-    }
-  }
-`;
-export const onCreateCollectionContact = /* GraphQL */ `
-  subscription OnCreateCollectionContact(
-    $filter: ModelSubscriptionCollectionContactFilterInput
+export const onUpdateBytemineContact = /* GraphQL */ `
+  subscription OnUpdateBytemineContact(
+    $filter: ModelSubscriptionBytemineContactFilterInput
   ) {
-    onCreateCollectionContact(filter: $filter) {
+    onUpdateBytemineContact(filter: $filter) {
       id
       owner
-      teamId
-      userId
+      createdAt
+      updatedAt
+      isEmailVerified
+      contactEmailStatusCode
+      contactEmailDomainType
+      personalEmailStatusCode
+      personalEmailDomainType
+      contactPersonalEmailStatusCode
+      contactPersonalEmailDomainType
+      first_name
+      last_name
+      middle_name
+      full_name
+      job_title
+      seniority
+      department
+      primary_role
+      secondary_role
+      linkedin_profile
+      linkedin_connection_count
+      work_email
+      work_email_history
+      personal_email
+      personal_email2
+      personal_email_history
+      direct_dial
+      mobile_number
+      mobile_number_history
+      work_number
+      education
+      skills
+      interests
+      linkedin_headline
+      facebook_profile
+      twitter_profile
+      work_experience
+      salary
+      birth_year
+      age
+      gender
+      new_hire
+      job_start_date
+      company_name
+      company_domain
+      company_website
+      company_linkedin_profile
+      company_linkedin_followers
+      company_local_address
+      company_local_city
+      company_local_state
+      company_local_address_postal
+      company_hq_address
+      company_hq_city
+      company_hq_state
+      company_hq_postal
+      person_city
+      person_state
+      person_postal
+      company_employee_range
+      company_revenue_range
+      company_industry
+      company_sic4
+      company_sic4_description
+      company_naics
+      company_naics_description
+      company_type
+      __typename
+    }
+  }
+`;
+export const onDeleteBytemineContact = /* GraphQL */ `
+  subscription OnDeleteBytemineContact(
+    $filter: ModelSubscriptionBytemineContactFilterInput
+  ) {
+    onDeleteBytemineContact(filter: $filter) {
+      id
+      owner
+      createdAt
+      updatedAt
+      isEmailVerified
+      contactEmailStatusCode
+      contactEmailDomainType
+      personalEmailStatusCode
+      personalEmailDomainType
+      contactPersonalEmailStatusCode
+      contactPersonalEmailDomainType
+      first_name
+      last_name
+      middle_name
+      full_name
+      job_title
+      seniority
+      department
+      primary_role
+      secondary_role
+      linkedin_profile
+      linkedin_connection_count
+      work_email
+      work_email_history
+      personal_email
+      personal_email2
+      personal_email_history
+      direct_dial
+      mobile_number
+      mobile_number_history
+      work_number
+      education
+      skills
+      interests
+      linkedin_headline
+      facebook_profile
+      twitter_profile
+      work_experience
+      salary
+      birth_year
+      age
+      gender
+      new_hire
+      job_start_date
+      company_name
+      company_domain
+      company_website
+      company_linkedin_profile
+      company_linkedin_followers
+      company_local_address
+      company_local_city
+      company_local_state
+      company_local_address_postal
+      company_hq_address
+      company_hq_city
+      company_hq_state
+      company_hq_postal
+      person_city
+      person_state
+      person_postal
+      company_employee_range
+      company_revenue_range
+      company_industry
+      company_sic4
+      company_sic4_description
+      company_naics
+      company_naics_description
+      company_type
+      __typename
+    }
+  }
+`;
+export const onCreateBytemineCollectionContact = /* GraphQL */ `
+  subscription OnCreateBytemineCollectionContact(
+    $filter: ModelSubscriptionBytemineCollectionContactFilterInput
+  ) {
+    onCreateBytemineCollectionContact(filter: $filter) {
+      id
+      owner
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
-        teamId
-        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -370,23 +402,19 @@ export const onCreateCollectionContact = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateCollectionContact = /* GraphQL */ `
-  subscription OnUpdateCollectionContact(
-    $filter: ModelSubscriptionCollectionContactFilterInput
+export const onUpdateBytemineCollectionContact = /* GraphQL */ `
+  subscription OnUpdateBytemineCollectionContact(
+    $filter: ModelSubscriptionBytemineCollectionContactFilterInput
   ) {
-    onUpdateCollectionContact(filter: $filter) {
+    onUpdateBytemineCollectionContact(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
-        teamId
-        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -460,23 +488,19 @@ export const onUpdateCollectionContact = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteCollectionContact = /* GraphQL */ `
-  subscription OnDeleteCollectionContact(
-    $filter: ModelSubscriptionCollectionContactFilterInput
+export const onDeleteBytemineCollectionContact = /* GraphQL */ `
+  subscription OnDeleteBytemineCollectionContact(
+    $filter: ModelSubscriptionBytemineCollectionContactFilterInput
   ) {
-    onDeleteCollectionContact(filter: $filter) {
+    onDeleteBytemineCollectionContact(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
-        teamId
-        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -550,23 +574,19 @@ export const onDeleteCollectionContact = /* GraphQL */ `
     }
   }
 `;
-export const onCreateContactForm = /* GraphQL */ `
-  subscription OnCreateContactForm(
-    $filter: ModelSubscriptionContactFormFilterInput
+export const onCreateBytemineContactForm = /* GraphQL */ `
+  subscription OnCreateBytemineContactForm(
+    $filter: ModelSubscriptionBytemineContactFormFilterInput
   ) {
-    onCreateContactForm(filter: $filter) {
+    onCreateBytemineContactForm(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
-        teamId
-        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -642,23 +662,19 @@ export const onCreateContactForm = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateContactForm = /* GraphQL */ `
-  subscription OnUpdateContactForm(
-    $filter: ModelSubscriptionContactFormFilterInput
+export const onUpdateBytemineContactForm = /* GraphQL */ `
+  subscription OnUpdateBytemineContactForm(
+    $filter: ModelSubscriptionBytemineContactFormFilterInput
   ) {
-    onUpdateContactForm(filter: $filter) {
+    onUpdateBytemineContactForm(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
-        teamId
-        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -734,23 +750,19 @@ export const onUpdateContactForm = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteContactForm = /* GraphQL */ `
-  subscription OnDeleteContactForm(
-    $filter: ModelSubscriptionContactFormFilterInput
+export const onDeleteBytemineContactForm = /* GraphQL */ `
+  subscription OnDeleteBytemineContactForm(
+    $filter: ModelSubscriptionBytemineContactFormFilterInput
   ) {
-    onDeleteContactForm(filter: $filter) {
+    onDeleteBytemineContactForm(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
-        teamId
-        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -826,15 +838,13 @@ export const onDeleteContactForm = /* GraphQL */ `
     }
   }
 `;
-export const onCreateDomainSearch = /* GraphQL */ `
-  subscription OnCreateDomainSearch(
-    $filter: ModelSubscriptionDomainSearchFilterInput
+export const onCreateBytemineDomainSearch = /* GraphQL */ `
+  subscription OnCreateBytemineDomainSearch(
+    $filter: ModelSubscriptionBytemineDomainSearchFilterInput
   ) {
-    onCreateDomainSearch(filter: $filter) {
+    onCreateBytemineDomainSearch(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       term
@@ -842,15 +852,13 @@ export const onCreateDomainSearch = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateDomainSearch = /* GraphQL */ `
-  subscription OnUpdateDomainSearch(
-    $filter: ModelSubscriptionDomainSearchFilterInput
+export const onUpdateBytemineDomainSearch = /* GraphQL */ `
+  subscription OnUpdateBytemineDomainSearch(
+    $filter: ModelSubscriptionBytemineDomainSearchFilterInput
   ) {
-    onUpdateDomainSearch(filter: $filter) {
+    onUpdateBytemineDomainSearch(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       term
@@ -858,15 +866,13 @@ export const onUpdateDomainSearch = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteDomainSearch = /* GraphQL */ `
-  subscription OnDeleteDomainSearch(
-    $filter: ModelSubscriptionDomainSearchFilterInput
+export const onDeleteBytemineDomainSearch = /* GraphQL */ `
+  subscription OnDeleteBytemineDomainSearch(
+    $filter: ModelSubscriptionBytemineDomainSearchFilterInput
   ) {
-    onDeleteDomainSearch(filter: $filter) {
+    onDeleteBytemineDomainSearch(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       term
@@ -874,13 +880,13 @@ export const onDeleteDomainSearch = /* GraphQL */ `
     }
   }
 `;
-export const onCreateFilter = /* GraphQL */ `
-  subscription OnCreateFilter($filter: ModelSubscriptionFilterFilterInput) {
-    onCreateFilter(filter: $filter) {
+export const onCreateBytemineFilter = /* GraphQL */ `
+  subscription OnCreateBytemineFilter(
+    $filter: ModelSubscriptionBytemineFilterFilterInput
+  ) {
+    onCreateBytemineFilter(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       name
@@ -890,13 +896,13 @@ export const onCreateFilter = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateFilter = /* GraphQL */ `
-  subscription OnUpdateFilter($filter: ModelSubscriptionFilterFilterInput) {
-    onUpdateFilter(filter: $filter) {
+export const onUpdateBytemineFilter = /* GraphQL */ `
+  subscription OnUpdateBytemineFilter(
+    $filter: ModelSubscriptionBytemineFilterFilterInput
+  ) {
+    onUpdateBytemineFilter(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       name
@@ -906,13 +912,13 @@ export const onUpdateFilter = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteFilter = /* GraphQL */ `
-  subscription OnDeleteFilter($filter: ModelSubscriptionFilterFilterInput) {
-    onDeleteFilter(filter: $filter) {
+export const onDeleteBytemineFilter = /* GraphQL */ `
+  subscription OnDeleteBytemineFilter(
+    $filter: ModelSubscriptionBytemineFilterFilterInput
+  ) {
+    onDeleteBytemineFilter(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       name
@@ -922,15 +928,13 @@ export const onDeleteFilter = /* GraphQL */ `
     }
   }
 `;
-export const onCreateEmailAccount = /* GraphQL */ `
-  subscription OnCreateEmailAccount(
-    $filter: ModelSubscriptionEmailAccountFilterInput
+export const onCreateBytemineEmailAccount = /* GraphQL */ `
+  subscription OnCreateBytemineEmailAccount(
+    $filter: ModelSubscriptionBytemineEmailAccountFilterInput
   ) {
-    onCreateEmailAccount(filter: $filter) {
+    onCreateBytemineEmailAccount(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       email
@@ -940,15 +944,13 @@ export const onCreateEmailAccount = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateEmailAccount = /* GraphQL */ `
-  subscription OnUpdateEmailAccount(
-    $filter: ModelSubscriptionEmailAccountFilterInput
+export const onUpdateBytemineEmailAccount = /* GraphQL */ `
+  subscription OnUpdateBytemineEmailAccount(
+    $filter: ModelSubscriptionBytemineEmailAccountFilterInput
   ) {
-    onUpdateEmailAccount(filter: $filter) {
+    onUpdateBytemineEmailAccount(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       email
@@ -958,15 +960,13 @@ export const onUpdateEmailAccount = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteEmailAccount = /* GraphQL */ `
-  subscription OnDeleteEmailAccount(
-    $filter: ModelSubscriptionEmailAccountFilterInput
+export const onDeleteBytemineEmailAccount = /* GraphQL */ `
+  subscription OnDeleteBytemineEmailAccount(
+    $filter: ModelSubscriptionBytemineEmailAccountFilterInput
   ) {
-    onDeleteEmailAccount(filter: $filter) {
+    onDeleteBytemineEmailAccount(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       email
@@ -976,15 +976,13 @@ export const onDeleteEmailAccount = /* GraphQL */ `
     }
   }
 `;
-export const onCreateEnrichment = /* GraphQL */ `
-  subscription OnCreateEnrichment(
-    $filter: ModelSubscriptionEnrichmentFilterInput
+export const onCreateBytemineEnrichment = /* GraphQL */ `
+  subscription OnCreateBytemineEnrichment(
+    $filter: ModelSubscriptionBytemineEnrichmentFilterInput
   ) {
-    onCreateEnrichment(filter: $filter) {
+    onCreateBytemineEnrichment(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       s3Key
@@ -1003,15 +1001,13 @@ export const onCreateEnrichment = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateEnrichment = /* GraphQL */ `
-  subscription OnUpdateEnrichment(
-    $filter: ModelSubscriptionEnrichmentFilterInput
+export const onUpdateBytemineEnrichment = /* GraphQL */ `
+  subscription OnUpdateBytemineEnrichment(
+    $filter: ModelSubscriptionBytemineEnrichmentFilterInput
   ) {
-    onUpdateEnrichment(filter: $filter) {
+    onUpdateBytemineEnrichment(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       s3Key
@@ -1030,15 +1026,13 @@ export const onUpdateEnrichment = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteEnrichment = /* GraphQL */ `
-  subscription OnDeleteEnrichment(
-    $filter: ModelSubscriptionEnrichmentFilterInput
+export const onDeleteBytemineEnrichment = /* GraphQL */ `
+  subscription OnDeleteBytemineEnrichment(
+    $filter: ModelSubscriptionBytemineEnrichmentFilterInput
   ) {
-    onDeleteEnrichment(filter: $filter) {
+    onDeleteBytemineEnrichment(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       s3Key
@@ -1057,15 +1051,13 @@ export const onDeleteEnrichment = /* GraphQL */ `
     }
   }
 `;
-export const onCreateEnrichSearch = /* GraphQL */ `
-  subscription OnCreateEnrichSearch(
-    $filter: ModelSubscriptionEnrichSearchFilterInput
+export const onCreateBytemineEnrichSearch = /* GraphQL */ `
+  subscription OnCreateBytemineEnrichSearch(
+    $filter: ModelSubscriptionBytemineEnrichSearchFilterInput
   ) {
-    onCreateEnrichSearch(filter: $filter) {
+    onCreateBytemineEnrichSearch(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       type
@@ -1074,15 +1066,13 @@ export const onCreateEnrichSearch = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateEnrichSearch = /* GraphQL */ `
-  subscription OnUpdateEnrichSearch(
-    $filter: ModelSubscriptionEnrichSearchFilterInput
+export const onUpdateBytemineEnrichSearch = /* GraphQL */ `
+  subscription OnUpdateBytemineEnrichSearch(
+    $filter: ModelSubscriptionBytemineEnrichSearchFilterInput
   ) {
-    onUpdateEnrichSearch(filter: $filter) {
+    onUpdateBytemineEnrichSearch(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       type
@@ -1091,15 +1081,13 @@ export const onUpdateEnrichSearch = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteEnrichSearch = /* GraphQL */ `
-  subscription OnDeleteEnrichSearch(
-    $filter: ModelSubscriptionEnrichSearchFilterInput
+export const onDeleteBytemineEnrichSearch = /* GraphQL */ `
+  subscription OnDeleteBytemineEnrichSearch(
+    $filter: ModelSubscriptionBytemineEnrichSearchFilterInput
   ) {
-    onDeleteEnrichSearch(filter: $filter) {
+    onDeleteBytemineEnrichSearch(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       type
@@ -1108,15 +1096,13 @@ export const onDeleteEnrichSearch = /* GraphQL */ `
     }
   }
 `;
-export const onCreateFilterItem = /* GraphQL */ `
-  subscription OnCreateFilterItem(
-    $filter: ModelSubscriptionFilterItemFilterInput
+export const onCreateBytemineFilterItem = /* GraphQL */ `
+  subscription OnCreateBytemineFilterItem(
+    $filter: ModelSubscriptionBytemineFilterItemFilterInput
   ) {
-    onCreateFilterItem(filter: $filter) {
+    onCreateBytemineFilterItem(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       filterId
@@ -1127,15 +1113,13 @@ export const onCreateFilterItem = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateFilterItem = /* GraphQL */ `
-  subscription OnUpdateFilterItem(
-    $filter: ModelSubscriptionFilterItemFilterInput
+export const onUpdateBytemineFilterItem = /* GraphQL */ `
+  subscription OnUpdateBytemineFilterItem(
+    $filter: ModelSubscriptionBytemineFilterItemFilterInput
   ) {
-    onUpdateFilterItem(filter: $filter) {
+    onUpdateBytemineFilterItem(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       filterId
@@ -1146,15 +1130,13 @@ export const onUpdateFilterItem = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteFilterItem = /* GraphQL */ `
-  subscription OnDeleteFilterItem(
-    $filter: ModelSubscriptionFilterItemFilterInput
+export const onDeleteBytemineFilterItem = /* GraphQL */ `
+  subscription OnDeleteBytemineFilterItem(
+    $filter: ModelSubscriptionBytemineFilterItemFilterInput
   ) {
-    onDeleteFilterItem(filter: $filter) {
+    onDeleteBytemineFilterItem(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       filterId
@@ -1165,13 +1147,13 @@ export const onDeleteFilterItem = /* GraphQL */ `
     }
   }
 `;
-export const onCreateAuditLog = /* GraphQL */ `
-  subscription OnCreateAuditLog($filter: ModelSubscriptionAuditLogFilterInput) {
-    onCreateAuditLog(filter: $filter) {
+export const onCreateBytemineAuditLog = /* GraphQL */ `
+  subscription OnCreateBytemineAuditLog(
+    $filter: ModelSubscriptionBytemineAuditLogFilterInput
+  ) {
+    onCreateBytemineAuditLog(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       title
@@ -1181,13 +1163,13 @@ export const onCreateAuditLog = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateAuditLog = /* GraphQL */ `
-  subscription OnUpdateAuditLog($filter: ModelSubscriptionAuditLogFilterInput) {
-    onUpdateAuditLog(filter: $filter) {
+export const onUpdateBytemineAuditLog = /* GraphQL */ `
+  subscription OnUpdateBytemineAuditLog(
+    $filter: ModelSubscriptionBytemineAuditLogFilterInput
+  ) {
+    onUpdateBytemineAuditLog(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       title
@@ -1197,13 +1179,13 @@ export const onUpdateAuditLog = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteAuditLog = /* GraphQL */ `
-  subscription OnDeleteAuditLog($filter: ModelSubscriptionAuditLogFilterInput) {
-    onDeleteAuditLog(filter: $filter) {
+export const onDeleteBytemineAuditLog = /* GraphQL */ `
+  subscription OnDeleteBytemineAuditLog(
+    $filter: ModelSubscriptionBytemineAuditLogFilterInput
+  ) {
+    onDeleteBytemineAuditLog(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       title
@@ -1213,13 +1195,13 @@ export const onDeleteAuditLog = /* GraphQL */ `
     }
   }
 `;
-export const onCreateSub = /* GraphQL */ `
-  subscription OnCreateSub($filter: ModelSubscriptionSubFilterInput) {
-    onCreateSub(filter: $filter) {
+export const onCreateBytemineSub = /* GraphQL */ `
+  subscription OnCreateBytemineSub(
+    $filter: ModelSubscriptionBytemineSubFilterInput
+  ) {
+    onCreateBytemineSub(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       subscriptionStatus
@@ -1228,8 +1210,6 @@ export const onCreateSub = /* GraphQL */ `
       quarterlyCredits
       annualCredits
       currentCredits
-      stripeCustomerId
-      stripeSubscriptionID
       seats
       block
       tenant
@@ -1252,13 +1232,13 @@ export const onCreateSub = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateSub = /* GraphQL */ `
-  subscription OnUpdateSub($filter: ModelSubscriptionSubFilterInput) {
-    onUpdateSub(filter: $filter) {
+export const onUpdateBytemineSub = /* GraphQL */ `
+  subscription OnUpdateBytemineSub(
+    $filter: ModelSubscriptionBytemineSubFilterInput
+  ) {
+    onUpdateBytemineSub(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       subscriptionStatus
@@ -1267,8 +1247,6 @@ export const onUpdateSub = /* GraphQL */ `
       quarterlyCredits
       annualCredits
       currentCredits
-      stripeCustomerId
-      stripeSubscriptionID
       seats
       block
       tenant
@@ -1291,13 +1269,13 @@ export const onUpdateSub = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteSub = /* GraphQL */ `
-  subscription OnDeleteSub($filter: ModelSubscriptionSubFilterInput) {
-    onDeleteSub(filter: $filter) {
+export const onDeleteBytemineSub = /* GraphQL */ `
+  subscription OnDeleteBytemineSub(
+    $filter: ModelSubscriptionBytemineSubFilterInput
+  ) {
+    onDeleteBytemineSub(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       subscriptionStatus
@@ -1306,8 +1284,6 @@ export const onDeleteSub = /* GraphQL */ `
       quarterlyCredits
       annualCredits
       currentCredits
-      stripeCustomerId
-      stripeSubscriptionID
       seats
       block
       tenant
@@ -1330,13 +1306,13 @@ export const onDeleteSub = /* GraphQL */ `
     }
   }
 `;
-export const onCreateSubLog = /* GraphQL */ `
-  subscription OnCreateSubLog($filter: ModelSubscriptionSubLogFilterInput) {
-    onCreateSubLog(filter: $filter) {
+export const onCreateBytemineSubLog = /* GraphQL */ `
+  subscription OnCreateBytemineSubLog(
+    $filter: ModelSubscriptionBytemineSubLogFilterInput
+  ) {
+    onCreateBytemineSubLog(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       subId
@@ -1352,13 +1328,13 @@ export const onCreateSubLog = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateSubLog = /* GraphQL */ `
-  subscription OnUpdateSubLog($filter: ModelSubscriptionSubLogFilterInput) {
-    onUpdateSubLog(filter: $filter) {
+export const onUpdateBytemineSubLog = /* GraphQL */ `
+  subscription OnUpdateBytemineSubLog(
+    $filter: ModelSubscriptionBytemineSubLogFilterInput
+  ) {
+    onUpdateBytemineSubLog(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       subId
@@ -1374,13 +1350,13 @@ export const onUpdateSubLog = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteSubLog = /* GraphQL */ `
-  subscription OnDeleteSubLog($filter: ModelSubscriptionSubLogFilterInput) {
-    onDeleteSubLog(filter: $filter) {
+export const onDeleteBytemineSubLog = /* GraphQL */ `
+  subscription OnDeleteBytemineSubLog(
+    $filter: ModelSubscriptionBytemineSubLogFilterInput
+  ) {
+    onDeleteBytemineSubLog(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       subId
@@ -1396,13 +1372,13 @@ export const onDeleteSubLog = /* GraphQL */ `
     }
   }
 `;
-export const onCreateUsage = /* GraphQL */ `
-  subscription OnCreateUsage($filter: ModelSubscriptionUsageFilterInput) {
-    onCreateUsage(filter: $filter) {
+export const onCreateBytemineUsage = /* GraphQL */ `
+  subscription OnCreateBytemineUsage(
+    $filter: ModelSubscriptionBytemineUsageFilterInput
+  ) {
+    onCreateBytemineUsage(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       filterId
@@ -1411,13 +1387,13 @@ export const onCreateUsage = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateUsage = /* GraphQL */ `
-  subscription OnUpdateUsage($filter: ModelSubscriptionUsageFilterInput) {
-    onUpdateUsage(filter: $filter) {
+export const onUpdateBytemineUsage = /* GraphQL */ `
+  subscription OnUpdateBytemineUsage(
+    $filter: ModelSubscriptionBytemineUsageFilterInput
+  ) {
+    onUpdateBytemineUsage(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       filterId
@@ -1426,13 +1402,13 @@ export const onUpdateUsage = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteUsage = /* GraphQL */ `
-  subscription OnDeleteUsage($filter: ModelSubscriptionUsageFilterInput) {
-    onDeleteUsage(filter: $filter) {
+export const onDeleteBytemineUsage = /* GraphQL */ `
+  subscription OnDeleteBytemineUsage(
+    $filter: ModelSubscriptionBytemineUsageFilterInput
+  ) {
+    onDeleteBytemineUsage(filter: $filter) {
       id
       owner
-      teamId
-      userId
       createdAt
       updatedAt
       filterId

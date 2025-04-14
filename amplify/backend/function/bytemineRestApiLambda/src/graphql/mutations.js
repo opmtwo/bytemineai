@@ -52,6 +52,57 @@ exports.deleteCollection = /* GraphQL */ `
     }
   }
 `;
+exports.createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      name
+      __typename
+    }
+  }
+`;
+exports.updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    updateUser(input: $input, condition: $condition) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      name
+      __typename
+    }
+  }
+`;
+exports.deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    deleteUser(input: $input, condition: $condition) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      name
+      __typename
+    }
+  }
+`;
 exports.createContact = /* GraphQL */ `
   mutation CreateContact(
     $input: CreateContactInput!

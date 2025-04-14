@@ -1,18 +1,17 @@
 export type AmplifyDependentResourcesAttributes = {
   "api": {
-    "bytemineaiGraphApi": {
+    "bytemineGraphApi": {
       "GraphQLAPIEndpointOutput": "string",
-      "GraphQLAPIIdOutput": "string",
-      "GraphQLAPIKeyOutput": "string"
+      "GraphQLAPIIdOutput": "string"
     },
-    "bytemineaiRestApi": {
+    "bytemineRestApi": {
       "ApiId": "string",
       "ApiName": "string",
       "RootUrl": "string"
     }
   },
   "auth": {
-    "bytemineai2721b75b": {
+    "bytemine4c24b3bd": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "IdentityPoolId": "string",
@@ -23,7 +22,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
-    "bytemineaiRestApiLambda": {
+    "bytemineRestApiLambda": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
@@ -32,7 +31,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "bytemineaiStorage": {
+    "amplifyStorage": {
       "BucketName": "string",
       "Region": "string"
     }

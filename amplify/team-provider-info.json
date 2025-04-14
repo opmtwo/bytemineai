@@ -1,32 +1,32 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-bytemineai-dev-4bb67-authRole",
-      "UnauthRoleArn": "arn:aws:iam::396102999596:role/amplify-bytemineai-dev-4bb67-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::396102999596:role/amplify-bytemineai-dev-4bb67-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-bytemineai-dev-4bb67-deployment",
-      "UnauthRoleName": "amplify-bytemineai-dev-4bb67-unauthRole",
-      "StackName": "amplify-bytemineai-dev-4bb67",
-      "StackId": "arn:aws:cloudformation:us-east-1:396102999596:stack/amplify-bytemineai-dev-4bb67/5b0fb830-0d35-11f0-9d0a-0affde65f0fb",
-      "AmplifyAppId": "dtjtrwv8541j4"
+      "AuthRoleName": "amplify-bytemine-dev-1660e-authRole",
+      "UnauthRoleArn": "arn:aws:iam::396102999596:role/amplify-bytemine-dev-1660e-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::396102999596:role/amplify-bytemine-dev-1660e-authRole",
+      "Region": "us-west-1",
+      "DeploymentBucketName": "amplify-bytemine-dev-1660e-deployment",
+      "UnauthRoleName": "amplify-bytemine-dev-1660e-unauthRole",
+      "StackName": "amplify-bytemine-dev-1660e",
+      "StackId": "arn:aws:cloudformation:us-west-1:396102999596:stack/amplify-bytemine-dev-1660e/5411c030-1921-11f0-a296-06d52c629cb5",
+      "AmplifyAppId": "dsqlwmgrmx0x4"
     },
     "categories": {
       "auth": {
-        "bytemineai2721b75b": {}
-      },
-      "function": {
-        "bytemineaiRestApiLambda": {
-          "deploymentBucketName": "amplify-bytemineai-dev-4bb67-deployment",
-          "s3Key": "amplify-builds/bytemineaiRestApiLambda-6a5452765344387a4d48-build.zip"
-        }
+        "bytemine4c24b3bd": {}
       },
       "api": {
-        "bytemineaiGraphApi": {},
-        "bytemineaiRestApi": {}
+        "bytemineGraphApi": {},
+        "bytemineRestApi": {}
+      },
+      "function": {
+        "bytemineRestApiLambda": {
+          "deploymentBucketName": "amplify-bytemine-dev-1660e-deployment",
+          "s3Key": "amplify-builds/bytemineRestApiLambda-32734e6b6c724c6e7363-build.zip"
+        }
       },
       "storage": {
-        "bytemineaiStorage": {}
+        "amplifyStorage": {}
       }
     }
   }

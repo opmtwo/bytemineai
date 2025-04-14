@@ -1,10 +1,10 @@
 {
-  "AppSyncApiName": "bytemineaiGraphApi",
+  "AppSyncApiName": "bytemineGraphApi",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
   "AuthCognitoUserPoolId": {
     "Fn::GetAtt": [
-      "authbytemineai2721b75b",
+      "authbytemine4c24b3bd",
       "Outputs.UserPoolId"
     ]
   }

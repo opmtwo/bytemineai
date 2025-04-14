@@ -5,11 +5,11 @@
 # 	globalAuthRule: AuthRule = { allow: public }
 # } # FOR TESTING ONLY!
 
-type Collection @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineCollection @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listCollectionByTeamId", queryField: "listCollectionByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listCollectionByUserId", queryField: "listCollectionByUserId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listCollectionByTeamId", queryField: "listCollectionByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listCollectionByUserId", queryField: "listCollectionByUserId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
@@ -17,11 +17,23 @@ type Collection @model @auth(rules: [{ allow: private, operations: [] }]) {
 	name: String
 }
 
-type Contact @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineUser @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listContactByTeamId", queryField: "listContactByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listContactByUserId", queryField: "listContactByUserId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listUserByTeamId", queryField: "listUserByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listUserByUserId", queryField: "listUserByUserId", sortKeyFields: ["createdAt"])
+
+	createdAt: AWSDateTime!
+	updatedAt: AWSDateTime!
+
+	name: String
+}
+
+type BytemineContact @model @auth(rules: [{ allow: private, operations: [] }]) {
+	id: ID!
+	owner: ID!
+	# teamId: ID @index(name: "listContactByTeamId", queryField: "listContactByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listContactByUserId", queryField: "listContactByUserId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
@@ -94,43 +106,43 @@ type Contact @model @auth(rules: [{ allow: private, operations: [] }]) {
 	company_type: String # "Public Company"
 }
 
-type CollectionContact @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineCollectionContact @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listCollectionContactByTeamId", queryField: "listCollectionContactByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listCollectionContactByUserId", queryField: "listCollectionContactByUserId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listCollectionContactByTeamId", queryField: "listCollectionContactByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listCollectionContactByUserId", queryField: "listCollectionContactByUserId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
 
 	contactId: ID
-	contact: Contact @hasOne(fields: ["contactId"])
+	contact: BytemineContact @hasOne(fields: ["contactId"])
 
 	name: String
 }
 
-type ContactForm @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineContactForm @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listContactFormByTeamId", queryField: "listContactFormByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listContactFormByUserId", queryField: "listContactFormByUserId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listContactFormByTeamId", queryField: "listContactFormByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listContactFormByUserId", queryField: "listContactFormByUserId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
 
 	contactId: ID
-	contact: Contact @hasOne(fields: ["contactId"])
+	contact: BytemineContact @hasOne(fields: ["contactId"])
 
 	firstName: String
 	lastName: String
 	message: String
 }
 
-type DomainSearch @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineDomainSearch @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listDomainSearchByTeamId", queryField: "listDomainSearchByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listDomainSearchByUserId", queryField: "listDomainSearchByUserId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listDomainSearchByTeamId", queryField: "listDomainSearchByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listDomainSearchByUserId", queryField: "listDomainSearchByUserId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
@@ -138,11 +150,11 @@ type DomainSearch @model @auth(rules: [{ allow: private, operations: [] }]) {
 	term: String
 }
 
-type Filter @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineFilter @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listFilterByTeamId", queryField: "listFilterByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listFilterByUserId", queryField: "listFilterByUserId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listFilterByTeamId", queryField: "listFilterByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listFilterByUserId", queryField: "listFilterByUserId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
@@ -152,11 +164,11 @@ type Filter @model @auth(rules: [{ allow: private, operations: [] }]) {
 	isSaved: Boolean # savedFilter
 }
 
-type EmailAccount @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineEmailAccount @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listEmailAccountByTeamId", queryField: "listEmailAccountByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listEmailAccountByUserId", queryField: "listEmailAccountByUserId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listEmailAccountByTeamId", queryField: "listEmailAccountByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listEmailAccountByUserId", queryField: "listEmailAccountByUserId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
@@ -166,11 +178,11 @@ type EmailAccount @model @auth(rules: [{ allow: private, operations: [] }]) {
 	token: String
 }
 
-type Enrichment @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineEnrichment @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listEnrichmentByTeamId", queryField: "listEnrichmentByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listEnrichmentByUserId", queryField: "listEnrichmentByUserId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listEnrichmentByTeamId", queryField: "listEnrichmentByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listEnrichmentByUserId", queryField: "listEnrichmentByUserId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
@@ -189,11 +201,11 @@ type Enrichment @model @auth(rules: [{ allow: private, operations: [] }]) {
 	status: String # one of - pending / processing / completed / failed
 }
 
-type EnrichSearch @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineEnrichSearch @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listEnrichSearchByTeamId", queryField: "listEnrichSearchByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listEnrichSearchByUserId", queryField: "listEnrichSearchByUserId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listEnrichSearchByTeamId", queryField: "listEnrichSearchByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listEnrichSearchByUserId", queryField: "listEnrichSearchByUserId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
@@ -202,11 +214,11 @@ type EnrichSearch @model @auth(rules: [{ allow: private, operations: [] }]) {
 	term: String
 }
 
-type FilterItem @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineFilterItem @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listFilterItemByTeamId", queryField: "listFilterItemByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listFilterItemByUserId", queryField: "listFilterByUsItemerId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listFilterItemByTeamId", queryField: "listFilterItemByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listFilterItemByUserId", queryField: "listFilterByUsItemerId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
@@ -217,11 +229,11 @@ type FilterItem @model @auth(rules: [{ allow: private, operations: [] }]) {
 	val: String # the actual value of the filter
 }
 
-type AuditLog @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineAuditLog @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listAuditLogByTeamId", queryField: "listAuditLogByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listAuditLogByUserId", queryField: "listAuditLogByUserId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listAuditLogByTeamId", queryField: "listAuditLogByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listAuditLogByUserId", queryField: "listAuditLogByUserId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
@@ -231,11 +243,11 @@ type AuditLog @model @auth(rules: [{ allow: private, operations: [] }]) {
 	data: String
 }
 
-type Sub @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineSub @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listSubByTeamId", queryField: "listSubByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listSubByUserId", queryField: "listSubByUserId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listSubByTeamId", queryField: "listSubByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listSubByUserId", queryField: "listSubByUserId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
@@ -248,8 +260,8 @@ type Sub @model @auth(rules: [{ allow: private, operations: [] }]) {
 	annualCredits: String
 	currentCredits: String
 
-	stripeCustomerId: ID @index(name: "listSubByStripeCustomerId", queryField: "listSubByStripeCustomerId", sortKeyFields: ["createdAt"])
-	stripeSubscriptionID: [String]
+	# stripeCustomerId: ID @index(name: "listSubByStripeCustomerId", queryField: "listSubByStripeCustomerId", sortKeyFields: ["createdAt"])
+	# stripeSubscriptionID: [String]
 
 	seats: String
 
@@ -272,17 +284,16 @@ type Sub @model @auth(rules: [{ allow: private, operations: [] }]) {
 	isAutoComposeBlocked: Boolean # block_auto_compose
 	isAssistantsBlocked: Boolean # block_assistants
 	isSubProcessingBlocked: Boolean # block_sub_processing
-
 	firstPaid: AWSDateTime
 	lastPaid: AWSDateTime
 	nextPay: AWSDateTime
 }
 
-type SubLog @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineSubLog @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listSubLogByTeamId", queryField: "listSubLogByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listSubLogByUserId", queryField: "listSubLogByUserId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listSubLogByTeamId", queryField: "listSubLogByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listSubLogByUserId", queryField: "listSubLogByUserId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
@@ -298,11 +309,11 @@ type SubLog @model @auth(rules: [{ allow: private, operations: [] }]) {
 	newRolloverCredits: Int
 }
 
-type Usage @model @auth(rules: [{ allow: private, operations: [] }]) {
+type BytemineUsage @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
 	owner: ID!
-	teamId: ID @index(name: "listUsageByTeamId", queryField: "listUsageByTeamId", sortKeyFields: ["createdAt"])
-	userId: ID @index(name: "listUsageByUserId", queryField: "listUsageByUserId", sortKeyFields: ["createdAt"])
+	# teamId: ID @index(name: "listUsageByTeamId", queryField: "listUsageByTeamId", sortKeyFields: ["createdAt"])
+	# userId: ID @index(name: "listUsageByUserId", queryField: "listUsageByUserId", sortKeyFields: ["createdAt"])
 
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!

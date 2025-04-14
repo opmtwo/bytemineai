@@ -1,31 +1,26 @@
 {
   "api": {
-    "bytemineaiGraphApi": {
+    "bytemineGraphApi": {
       "dependsOn": [
         {
           "attributes": [
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "bytemineai2721b75b"
+          "resourceName": "bytemine4c24b3bd"
         }
       ],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
             {
-              "apiKeyConfig": {
-                "apiKeyExpirationDate": "2025-04-06T07:13:08.963Z",
-                "apiKeyExpirationDays": 7,
-                "description": ""
-              },
-              "authenticationType": "API_KEY"
+              "authenticationType": "AWS_IAM"
             }
           ],
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authbytemineai2721b75b"
+              "userPoolId": "authbytemine4c24b3bd"
             }
           }
         }
@@ -33,7 +28,7 @@
       "providerPlugin": "awscloudformation",
       "service": "AppSync"
     },
-    "bytemineaiRestApi": {
+    "bytemineRestApi": {
       "dependsOn": [
         {
           "attributes": [
@@ -41,7 +36,7 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "bytemineaiRestApiLambda"
+          "resourceName": "bytemineRestApiLambda"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -49,7 +44,7 @@
     }
   },
   "auth": {
-    "bytemineai2721b75b": {
+    "bytemine4c24b3bd": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -65,9 +60,7 @@
           "EMAIL"
         ],
         "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
+        "usernameAttributes": [],
         "verificationMechanisms": [
           "EMAIL"
         ]
@@ -77,7 +70,7 @@
     }
   },
   "function": {
-    "bytemineaiRestApiLambda": {
+    "bytemineRestApiLambda": {
       "build": true,
       "dependsOn": [
         {
@@ -85,23 +78,22 @@
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "bytemineai2721b75b"
+          "resourceName": "bytemine4c24b3bd"
         },
         {
           "attributes": [
             "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput",
-            "GraphQLAPIKeyOutput"
+            "GraphQLAPIEndpointOutput"
           ],
           "category": "api",
-          "resourceName": "bytemineaiGraphApi"
+          "resourceName": "bytemineGraphApi"
         },
         {
           "attributes": [
             "BucketName"
           ],
           "category": "storage",
-          "resourceName": "bytemineaiStorage"
+          "resourceName": "amplifyStorage"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -109,25 +101,25 @@
     }
   },
   "parameters": {
-    "AMPLIFY_function_bytemineaiRestApiLambda_deploymentBucketName": {
+    "AMPLIFY_function_bytemineRestApiLambda_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "bytemineaiRestApiLambda"
+          "resourceName": "bytemineRestApiLambda"
         }
       ]
     },
-    "AMPLIFY_function_bytemineaiRestApiLambda_s3Key": {
+    "AMPLIFY_function_bytemineRestApiLambda_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "bytemineaiRestApiLambda"
+          "resourceName": "bytemineRestApiLambda"
         }
       ]
     }
   },
   "storage": {
-    "bytemineaiStorage": {
+    "amplifyStorage": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"

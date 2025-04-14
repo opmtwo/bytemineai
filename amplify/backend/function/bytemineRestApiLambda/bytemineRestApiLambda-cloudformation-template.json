@@ -16,25 +16,21 @@
     "s3Key": {
       "Type": "String"
     },
-    "authbytemineai2721b75bUserPoolId": {
+    "authbytemine4c24b3bdUserPoolId": {
       "Type": "String",
-      "Default": "authbytemineai2721b75bUserPoolId"
+      "Default": "authbytemine4c24b3bdUserPoolId"
     },
-    "apibytemineaiGraphApiGraphQLAPIIdOutput": {
+    "apibytemineGraphApiGraphQLAPIIdOutput": {
       "Type": "String",
-      "Default": "apibytemineaiGraphApiGraphQLAPIIdOutput"
+      "Default": "apibytemineGraphApiGraphQLAPIIdOutput"
     },
-    "apibytemineaiGraphApiGraphQLAPIEndpointOutput": {
+    "apibytemineGraphApiGraphQLAPIEndpointOutput": {
       "Type": "String",
-      "Default": "apibytemineaiGraphApiGraphQLAPIEndpointOutput"
+      "Default": "apibytemineGraphApiGraphQLAPIEndpointOutput"
     },
-    "apibytemineaiGraphApiGraphQLAPIKeyOutput": {
+    "storageamplifyStorageBucketName": {
       "Type": "String",
-      "Default": "apibytemineaiGraphApiGraphQLAPIKeyOutput"
-    },
-    "storagebytemineaiStorageBucketName": {
-      "Type": "String",
-      "Default": "storagebytemineaiStorageBucketName"
+      "Default": "storageamplifyStorageBucketName"
     }
   },
   "Conditions": {
@@ -67,12 +63,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "bytemineaiRestApiLambda",
+            "bytemineRestApiLambda",
             {
               "Fn::Join": [
                 "",
                 [
-                  "bytemineaiRestApiLambda",
+                  "bytemineRestApiLambda",
                   "-",
                   {
                     "Ref": "env"
@@ -90,20 +86,17 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "AUTH_BYTEMINEAI2721B75B_USERPOOLID": {
-              "Ref": "authbytemineai2721b75bUserPoolId"
+            "AUTH_BYTEMINE4C24B3BD_USERPOOLID": {
+              "Ref": "authbytemine4c24b3bdUserPoolId"
             },
-            "API_BYTEMINEAIGRAPHAPI_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apibytemineaiGraphApiGraphQLAPIIdOutput"
+            "API_BYTEMINEGRAPHAPI_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apibytemineGraphApiGraphQLAPIIdOutput"
             },
-            "API_BYTEMINEAIGRAPHAPI_GRAPHQLAPIENDPOINTOUTPUT": {
-              "Ref": "apibytemineaiGraphApiGraphQLAPIEndpointOutput"
+            "API_BYTEMINEGRAPHAPI_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apibytemineGraphApiGraphQLAPIEndpointOutput"
             },
-            "API_BYTEMINEAIGRAPHAPI_GRAPHQLAPIKEYOUTPUT": {
-              "Ref": "apibytemineaiGraphApiGraphQLAPIKeyOutput"
-            },
-            "STORAGE_BYTEMINEAISTORAGE_BUCKETNAME": {
-              "Ref": "storagebytemineaiStorageBucketName"
+            "STORAGE_AMPLIFYSTORAGE_BUCKETNAME": {
+              "Ref": "storageamplifyStorageBucketName"
             }
           }
         },
@@ -113,10 +106,9 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs22.x",
+        "Runtime": "nodejs18.x",
         "Layers": [],
-        "Timeout": 25,
-        "MemorySize": 1280
+        "Timeout": 25
       }
     },
     "LambdaExecutionRole": {
@@ -125,12 +117,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "bytemineaiLambdaRole23e64fc2",
+            "bytemineLambdaRole44622bb1",
             {
               "Fn::Join": [
                 "",
                 [
-                  "bytemineaiLambdaRole23e64fc2",
+                  "bytemineLambdaRole44622bb1",
                   "-",
                   {
                     "Ref": "env"
@@ -316,7 +308,7 @@
                       },
                       ":userpool/",
                       {
-                        "Ref": "authbytemineai2721b75bUserPoolId"
+                        "Ref": "authbytemine4c24b3bdUserPoolId"
                       }
                     ]
                   ]
@@ -343,7 +335,7 @@
                       },
                       ":apis/",
                       {
-                        "Ref": "apibytemineaiGraphApiGraphQLAPIIdOutput"
+                        "Ref": "apibytemineGraphApiGraphQLAPIIdOutput"
                       },
                       "/types/Query/*"
                     ]
@@ -363,7 +355,7 @@
                       },
                       ":apis/",
                       {
-                        "Ref": "apibytemineaiGraphApiGraphQLAPIIdOutput"
+                        "Ref": "apibytemineGraphApiGraphQLAPIIdOutput"
                       },
                       "/types/Mutation/*"
                     ]
@@ -383,7 +375,7 @@
                       },
                       ":apis/",
                       {
-                        "Ref": "apibytemineaiGraphApiGraphQLAPIIdOutput"
+                        "Ref": "apibytemineGraphApiGraphQLAPIIdOutput"
                       },
                       "/types/Subscription/*"
                     ]
@@ -401,7 +393,7 @@
                     [
                       "arn:aws:s3:::",
                       {
-                        "Ref": "storagebytemineaiStorageBucketName"
+                        "Ref": "storageamplifyStorageBucketName"
                       }
                     ]
                   ]
@@ -422,7 +414,7 @@
                     [
                       "arn:aws:s3:::",
                       {
-                        "Ref": "storagebytemineaiStorageBucketName"
+                        "Ref": "storageamplifyStorageBucketName"
                       },
                       "/*"
                     ]

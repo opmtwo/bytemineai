@@ -1,15 +1,15 @@
-import { Router } from 'express';
+const { Router } = require('express');
 
-import { createUser, updateUser } from '../../graphql/mutations';
-import { apsGql } from '../utils/aps-utils';
-import { safeJsonDecode } from '../utils/helper-utils';
-import { idpAdminGetUser } from '../utils/idp-utils';
-import { stripeGetCustomer, stripeGetSubscription, stripeSetDefaultPaymentMethod } from '../utils/stripe-utils';
-import { listUsersByEmail } from '../../graphql/queries';
+const { createUser, updateUser } = require('../../graphql/mutations');
+const { apsGql } = require('../utils/aps-utils');
+const { safeJsonDecode } = require('../utils/helper-utils');
+const { idpAdminGetUser } = require('../utils/idp-utils');
+const { stripeGetCustomer, stripeGetSubscription, stripeSetDefaultPaymentMethod } = require('../utils/stripe-utils');
+// const { listUsersByEmail } = require('../../graphql/queries');
 
 const { AUTH_STACKUPAUTH_USERPOOLID: USERPOOLID } = process.env;
 
-export const router = Router();
+const router = Router();
 
 router.post('/stripe', async (req, res) => {
 	// log request body
@@ -427,3 +427,5 @@ router.post('/stripe', async (req, res) => {
 	console.log('All done');
 	return res.status(200).json({});
 });
+
+module.exports = router;

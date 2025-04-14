@@ -1,4 +1,4 @@
-const { getUser, listUsersByTeamId } = require('../graphql/queries');
+const { getUser, listUserByTeamId } = require('../graphql/queries');
 const { apsGql } = require('../utils/aps-utils');
 const { idpAdminGetUser, idpAdminListGroupsForUser, idpGetUserByToken } = require('../utils/idp-utils');
 const { stripeGetSubscription } = require('../utils/stripe-utils');
@@ -51,9 +51,6 @@ const verifyToken = async (req, res, next) => {
 			try {
 				user = await idpAdminGetUser(USERPOOLID, userId);
 				console.log(JSON.stringify({ user }));
-
-				// Attach user-related information to the response locals for further use.
-				res.locals.team = user;
 			} catch (err) {
 				console.log('verifyToken - error fetching user details via userid', err);
 			}
@@ -83,21 +80,25 @@ const verifyToken = async (req, res, next) => {
 
 const verifyGroup = async (req, res, next) => {
 	try {
-		// Retrieve detailed user group information
-		const groups = await idpAdminListGroupsForUser({ UserPoolId: USERPOOLID, Username: res.locals.username });
+		// Get user info
+		const user = res.locals.user;
+		console.log('verifyGroup', JSON.stringify({ user }));
 
-		// Get user cognito groups
-		res.locals.groups = groups.map((_group) => _group.GroupName);
+		// Retrieve team info from AppSync
+		const team = await apsGql(getUser, { id: user.id }, 'data.getUser');
+		console.log('verifyGroup', JSON.stringify({ team }));
 
-		// check for root or admin cognito groups
-		const isRoot = res.locals.groups.find((_group) => _group.toLowerCase() === 'root');
-		const isAdmin = res.locals.groups.find((_group) => _group.toLowerCase() === 'admin');
-		if (!isRoot) {
-			console.error('verifyGroup - err - user is neither root nor admin');
+		// Get user team info
+		const teamUser = await apsGql(getUser, { id: team.Username }, 'data.getUser');
+		console.log('verifyGroup -', JSON.stringify({ teamUser }));
+
+		// team validation has failed
+		if (!teamUser?.id) {
 			return res.status(403).json({ error: 'Group validation failed' }).send();
 		}
 
 		// Call the next middleware in the chain.
+		console.log('verifyGroup - All done');
 		return next();
 	} catch (err) {
 		// If an error occurs during the process, log the error, return a 403 status, and send the default error response.
@@ -164,7 +165,7 @@ const verifyTeam = async (req, res, next) => {
 		}
 
 		// Query the GraphQL server to get the list of members in the team.
-		const members = await apsGql(listUsersByTeamId, { teamId: team.teamId }, 'data.listUsersByTeamId.items');
+		const members = await apsGql(listUserByTeamId, { teamId: team.teamId }, 'data.listUserByTeamId.items');
 
 		// Find the owner of the team from the list of members.
 		const owner = members.find((_member) => _member.role === 'owner');

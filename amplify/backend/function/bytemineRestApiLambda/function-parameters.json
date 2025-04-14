@@ -1,7 +1,7 @@
 {
   "permissions": {
     "auth": {
-      "bytemineai2721b75b": [
+      "bytemine4c24b3bd": [
         "create",
         "read",
         "update",
@@ -9,14 +9,14 @@
       ]
     },
     "api": {
-      "bytemineaiGraphApi": [
+      "bytemineGraphApi": [
         "Query",
         "Mutation",
         "Subscription"
       ]
     },
     "storage": {
-      "bytemineaiStorage": [
+      "amplifyStorage": [
         "create",
         "read",
         "update",

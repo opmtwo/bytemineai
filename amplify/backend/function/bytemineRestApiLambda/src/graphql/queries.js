@@ -37,6 +37,170 @@ exports.listCollections = /* GraphQL */ `
     }
   }
 `;
+exports.listCollectionByTeamId = /* GraphQL */ `
+  query ListCollectionByTeamId(
+    $teamId: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelCollectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCollectionByTeamId(
+      teamId: $teamId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        name
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.listCollectionByUserId = /* GraphQL */ `
+  query ListCollectionByUserId(
+    $userId: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelCollectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCollectionByUserId(
+      userId: $userId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        name
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      name
+      __typename
+    }
+  }
+`;
+exports.listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        name
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.listUserByTeamId = /* GraphQL */ `
+  query ListUserByTeamId(
+    $teamId: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserByTeamId(
+      teamId: $teamId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        name
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.listUserByUserId = /* GraphQL */ `
+  query ListUserByUserId(
+    $userId: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserByUserId(
+      userId: $userId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        name
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 exports.getContact = /* GraphQL */ `
   query GetContact($id: ID!) {
     getContact(id: $id) {
@@ -121,6 +285,196 @@ exports.listContacts = /* GraphQL */ `
     $nextToken: String
   ) {
     listContacts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEmailVerified
+        contactEmailStatusCode
+        contactEmailDomainType
+        personalEmailStatusCode
+        personalEmailDomainType
+        contactPersonalEmailStatusCode
+        contactPersonalEmailDomainType
+        first_name
+        last_name
+        middle_name
+        full_name
+        job_title
+        seniority
+        department
+        primary_role
+        secondary_role
+        linkedin_profile
+        linkedin_connection_count
+        work_email
+        work_email_history
+        personal_email
+        personal_email2
+        personal_email_history
+        direct_dial
+        mobile_number
+        mobile_number_history
+        work_number
+        education
+        skills
+        interests
+        linkedin_headline
+        facebook_profile
+        twitter_profile
+        work_experience
+        salary
+        birth_year
+        age
+        gender
+        new_hire
+        job_start_date
+        company_name
+        company_domain
+        company_website
+        company_linkedin_profile
+        company_linkedin_followers
+        company_local_address
+        company_local_city
+        company_local_state
+        company_local_address_postal
+        company_hq_address
+        company_hq_city
+        company_hq_state
+        company_hq_postal
+        person_city
+        person_state
+        person_postal
+        company_employee_range
+        company_revenue_range
+        company_industry
+        company_sic4
+        company_sic4_description
+        company_naics
+        company_naics_description
+        company_type
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.listContactByTeamId = /* GraphQL */ `
+  query ListContactByTeamId(
+    $teamId: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelContactFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listContactByTeamId(
+      teamId: $teamId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEmailVerified
+        contactEmailStatusCode
+        contactEmailDomainType
+        personalEmailStatusCode
+        personalEmailDomainType
+        contactPersonalEmailStatusCode
+        contactPersonalEmailDomainType
+        first_name
+        last_name
+        middle_name
+        full_name
+        job_title
+        seniority
+        department
+        primary_role
+        secondary_role
+        linkedin_profile
+        linkedin_connection_count
+        work_email
+        work_email_history
+        personal_email
+        personal_email2
+        personal_email_history
+        direct_dial
+        mobile_number
+        mobile_number_history
+        work_number
+        education
+        skills
+        interests
+        linkedin_headline
+        facebook_profile
+        twitter_profile
+        work_experience
+        salary
+        birth_year
+        age
+        gender
+        new_hire
+        job_start_date
+        company_name
+        company_domain
+        company_website
+        company_linkedin_profile
+        company_linkedin_followers
+        company_local_address
+        company_local_city
+        company_local_state
+        company_local_address_postal
+        company_hq_address
+        company_hq_city
+        company_hq_state
+        company_hq_postal
+        person_city
+        person_state
+        person_postal
+        company_employee_range
+        company_revenue_range
+        company_industry
+        company_sic4
+        company_sic4_description
+        company_naics
+        company_naics_description
+        company_type
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.listContactByUserId = /* GraphQL */ `
+  query ListContactByUserId(
+    $userId: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelContactFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listContactByUserId(
+      userId: $userId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
         owner
@@ -294,6 +648,218 @@ exports.listCollectionContacts = /* GraphQL */ `
     $nextToken: String
   ) {
     listCollectionContacts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        contactId
+        contact {
+          id
+          owner
+          teamId
+          userId
+          createdAt
+          updatedAt
+          isEmailVerified
+          contactEmailStatusCode
+          contactEmailDomainType
+          personalEmailStatusCode
+          personalEmailDomainType
+          contactPersonalEmailStatusCode
+          contactPersonalEmailDomainType
+          first_name
+          last_name
+          middle_name
+          full_name
+          job_title
+          seniority
+          department
+          primary_role
+          secondary_role
+          linkedin_profile
+          linkedin_connection_count
+          work_email
+          work_email_history
+          personal_email
+          personal_email2
+          personal_email_history
+          direct_dial
+          mobile_number
+          mobile_number_history
+          work_number
+          education
+          skills
+          interests
+          linkedin_headline
+          facebook_profile
+          twitter_profile
+          work_experience
+          salary
+          birth_year
+          age
+          gender
+          new_hire
+          job_start_date
+          company_name
+          company_domain
+          company_website
+          company_linkedin_profile
+          company_linkedin_followers
+          company_local_address
+          company_local_city
+          company_local_state
+          company_local_address_postal
+          company_hq_address
+          company_hq_city
+          company_hq_state
+          company_hq_postal
+          person_city
+          person_state
+          person_postal
+          company_employee_range
+          company_revenue_range
+          company_industry
+          company_sic4
+          company_sic4_description
+          company_naics
+          company_naics_description
+          company_type
+          __typename
+        }
+        name
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.listCollectionContactByTeamId = /* GraphQL */ `
+  query ListCollectionContactByTeamId(
+    $teamId: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelCollectionContactFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCollectionContactByTeamId(
+      teamId: $teamId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        contactId
+        contact {
+          id
+          owner
+          teamId
+          userId
+          createdAt
+          updatedAt
+          isEmailVerified
+          contactEmailStatusCode
+          contactEmailDomainType
+          personalEmailStatusCode
+          personalEmailDomainType
+          contactPersonalEmailStatusCode
+          contactPersonalEmailDomainType
+          first_name
+          last_name
+          middle_name
+          full_name
+          job_title
+          seniority
+          department
+          primary_role
+          secondary_role
+          linkedin_profile
+          linkedin_connection_count
+          work_email
+          work_email_history
+          personal_email
+          personal_email2
+          personal_email_history
+          direct_dial
+          mobile_number
+          mobile_number_history
+          work_number
+          education
+          skills
+          interests
+          linkedin_headline
+          facebook_profile
+          twitter_profile
+          work_experience
+          salary
+          birth_year
+          age
+          gender
+          new_hire
+          job_start_date
+          company_name
+          company_domain
+          company_website
+          company_linkedin_profile
+          company_linkedin_followers
+          company_local_address
+          company_local_city
+          company_local_state
+          company_local_address_postal
+          company_hq_address
+          company_hq_city
+          company_hq_state
+          company_hq_postal
+          person_city
+          person_state
+          person_postal
+          company_employee_range
+          company_revenue_range
+          company_industry
+          company_sic4
+          company_sic4_description
+          company_naics
+          company_naics_description
+          company_type
+          __typename
+        }
+        name
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.listCollectionContactByUserId = /* GraphQL */ `
+  query ListCollectionContactByUserId(
+    $userId: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelCollectionContactFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCollectionContactByUserId(
+      userId: $userId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -575,942 +1141,6 @@ exports.listContactForms = /* GraphQL */ `
     }
   }
 `;
-exports.getDomainSearch = /* GraphQL */ `
-  query GetDomainSearch($id: ID!) {
-    getDomainSearch(id: $id) {
-      id
-      owner
-      teamId
-      userId
-      createdAt
-      updatedAt
-      term
-      __typename
-    }
-  }
-`;
-exports.listDomainSearches = /* GraphQL */ `
-  query ListDomainSearches(
-    $filter: ModelDomainSearchFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listDomainSearches(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        term
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.getFilter = /* GraphQL */ `
-  query GetFilter($id: ID!) {
-    getFilter(id: $id) {
-      id
-      owner
-      teamId
-      userId
-      createdAt
-      updatedAt
-      name
-      filter
-      isSaved
-      __typename
-    }
-  }
-`;
-exports.listFilters = /* GraphQL */ `
-  query ListFilters(
-    $filter: ModelFilterFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listFilters(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        name
-        filter
-        isSaved
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.getEmailAccount = /* GraphQL */ `
-  query GetEmailAccount($id: ID!) {
-    getEmailAccount(id: $id) {
-      id
-      owner
-      teamId
-      userId
-      createdAt
-      updatedAt
-      email
-      code
-      token
-      __typename
-    }
-  }
-`;
-exports.listEmailAccounts = /* GraphQL */ `
-  query ListEmailAccounts(
-    $filter: ModelEmailAccountFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listEmailAccounts(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        email
-        code
-        token
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.getEnrichment = /* GraphQL */ `
-  query GetEnrichment($id: ID!) {
-    getEnrichment(id: $id) {
-      id
-      owner
-      teamId
-      userId
-      createdAt
-      updatedAt
-      s3Key
-      s3KeyOutput
-      name
-      size
-      recordsUploaded
-      recordsEnriched
-      recordsProcessed
-      isCompleted
-      keyEmail
-      keyPhone
-      keyLinkedin
-      status
-      __typename
-    }
-  }
-`;
-exports.listEnrichments = /* GraphQL */ `
-  query ListEnrichments(
-    $filter: ModelEnrichmentFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listEnrichments(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        s3Key
-        s3KeyOutput
-        name
-        size
-        recordsUploaded
-        recordsEnriched
-        recordsProcessed
-        isCompleted
-        keyEmail
-        keyPhone
-        keyLinkedin
-        status
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.getEnrichSearch = /* GraphQL */ `
-  query GetEnrichSearch($id: ID!) {
-    getEnrichSearch(id: $id) {
-      id
-      owner
-      teamId
-      userId
-      createdAt
-      updatedAt
-      type
-      term
-      __typename
-    }
-  }
-`;
-exports.listEnrichSearches = /* GraphQL */ `
-  query ListEnrichSearches(
-    $filter: ModelEnrichSearchFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listEnrichSearches(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        type
-        term
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.getFilterItem = /* GraphQL */ `
-  query GetFilterItem($id: ID!) {
-    getFilterItem(id: $id) {
-      id
-      owner
-      teamId
-      userId
-      createdAt
-      updatedAt
-      filterId
-      filename
-      key
-      val
-      __typename
-    }
-  }
-`;
-exports.listFilterItems = /* GraphQL */ `
-  query ListFilterItems(
-    $filter: ModelFilterItemFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listFilterItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        filterId
-        filename
-        key
-        val
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.getAuditLog = /* GraphQL */ `
-  query GetAuditLog($id: ID!) {
-    getAuditLog(id: $id) {
-      id
-      owner
-      teamId
-      userId
-      createdAt
-      updatedAt
-      title
-      description
-      data
-      __typename
-    }
-  }
-`;
-exports.listAuditLogs = /* GraphQL */ `
-  query ListAuditLogs(
-    $filter: ModelAuditLogFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listAuditLogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        title
-        description
-        data
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.getSub = /* GraphQL */ `
-  query GetSub($id: ID!) {
-    getSub(id: $id) {
-      id
-      owner
-      teamId
-      userId
-      createdAt
-      updatedAt
-      subscriptionStatus
-      subscriptionPeriod
-      monthlyCredits
-      quarterlyCredits
-      annualCredits
-      currentCredits
-      stripeCustomerId
-      stripeSubscriptionID
-      seats
-      block
-      tenant
-      notes
-      color_code
-      icon_s3_key
-      logo_s3_key
-      isApiBlocked
-      isEmailBlocked
-      isProspectBlocked
-      isEnrichBlocked
-      isFilesBlocked
-      isAutoComposeBlocked
-      isAssistantsBlocked
-      isSubProcessingBlocked
-      firstPaid
-      lastPaid
-      nextPay
-      __typename
-    }
-  }
-`;
-exports.listSubs = /* GraphQL */ `
-  query ListSubs(
-    $filter: ModelSubFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listSubs(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        subscriptionStatus
-        subscriptionPeriod
-        monthlyCredits
-        quarterlyCredits
-        annualCredits
-        currentCredits
-        stripeCustomerId
-        stripeSubscriptionID
-        seats
-        block
-        tenant
-        notes
-        color_code
-        icon_s3_key
-        logo_s3_key
-        isApiBlocked
-        isEmailBlocked
-        isProspectBlocked
-        isEnrichBlocked
-        isFilesBlocked
-        isAutoComposeBlocked
-        isAssistantsBlocked
-        isSubProcessingBlocked
-        firstPaid
-        lastPaid
-        nextPay
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.getSubLog = /* GraphQL */ `
-  query GetSubLog($id: ID!) {
-    getSubLog(id: $id) {
-      id
-      owner
-      teamId
-      userId
-      createdAt
-      updatedAt
-      subId
-      subOld
-      subNew
-      subject
-      description
-      oldCurrentCredits
-      newCurrentCredits
-      oldRolloverCredits
-      newRolloverCredits
-      __typename
-    }
-  }
-`;
-exports.listSubLogs = /* GraphQL */ `
-  query ListSubLogs(
-    $filter: ModelSubLogFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listSubLogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        subId
-        subOld
-        subNew
-        subject
-        description
-        oldCurrentCredits
-        newCurrentCredits
-        oldRolloverCredits
-        newRolloverCredits
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.getUsage = /* GraphQL */ `
-  query GetUsage($id: ID!) {
-    getUsage(id: $id) {
-      id
-      owner
-      teamId
-      userId
-      createdAt
-      updatedAt
-      filterId
-      credits
-      __typename
-    }
-  }
-`;
-exports.listUsages = /* GraphQL */ `
-  query ListUsages(
-    $filter: ModelUsageFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUsages(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        filterId
-        credits
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.listCollectionByTeamId = /* GraphQL */ `
-  query ListCollectionByTeamId(
-    $teamId: ID!
-    $createdAt: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelCollectionFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listCollectionByTeamId(
-      teamId: $teamId
-      createdAt: $createdAt
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        name
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.listCollectionByUserId = /* GraphQL */ `
-  query ListCollectionByUserId(
-    $userId: ID!
-    $createdAt: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelCollectionFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listCollectionByUserId(
-      userId: $userId
-      createdAt: $createdAt
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        name
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.listContactByTeamId = /* GraphQL */ `
-  query ListContactByTeamId(
-    $teamId: ID!
-    $createdAt: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelContactFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listContactByTeamId(
-      teamId: $teamId
-      createdAt: $createdAt
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
-        first_name
-        last_name
-        middle_name
-        full_name
-        job_title
-        seniority
-        department
-        primary_role
-        secondary_role
-        linkedin_profile
-        linkedin_connection_count
-        work_email
-        work_email_history
-        personal_email
-        personal_email2
-        personal_email_history
-        direct_dial
-        mobile_number
-        mobile_number_history
-        work_number
-        education
-        skills
-        interests
-        linkedin_headline
-        facebook_profile
-        twitter_profile
-        work_experience
-        salary
-        birth_year
-        age
-        gender
-        new_hire
-        job_start_date
-        company_name
-        company_domain
-        company_website
-        company_linkedin_profile
-        company_linkedin_followers
-        company_local_address
-        company_local_city
-        company_local_state
-        company_local_address_postal
-        company_hq_address
-        company_hq_city
-        company_hq_state
-        company_hq_postal
-        person_city
-        person_state
-        person_postal
-        company_employee_range
-        company_revenue_range
-        company_industry
-        company_sic4
-        company_sic4_description
-        company_naics
-        company_naics_description
-        company_type
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.listContactByUserId = /* GraphQL */ `
-  query ListContactByUserId(
-    $userId: ID!
-    $createdAt: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelContactFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listContactByUserId(
-      userId: $userId
-      createdAt: $createdAt
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
-        first_name
-        last_name
-        middle_name
-        full_name
-        job_title
-        seniority
-        department
-        primary_role
-        secondary_role
-        linkedin_profile
-        linkedin_connection_count
-        work_email
-        work_email_history
-        personal_email
-        personal_email2
-        personal_email_history
-        direct_dial
-        mobile_number
-        mobile_number_history
-        work_number
-        education
-        skills
-        interests
-        linkedin_headline
-        facebook_profile
-        twitter_profile
-        work_experience
-        salary
-        birth_year
-        age
-        gender
-        new_hire
-        job_start_date
-        company_name
-        company_domain
-        company_website
-        company_linkedin_profile
-        company_linkedin_followers
-        company_local_address
-        company_local_city
-        company_local_state
-        company_local_address_postal
-        company_hq_address
-        company_hq_city
-        company_hq_state
-        company_hq_postal
-        person_city
-        person_state
-        person_postal
-        company_employee_range
-        company_revenue_range
-        company_industry
-        company_sic4
-        company_sic4_description
-        company_naics
-        company_naics_description
-        company_type
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.listCollectionContactByTeamId = /* GraphQL */ `
-  query ListCollectionContactByTeamId(
-    $teamId: ID!
-    $createdAt: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelCollectionContactFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listCollectionContactByTeamId(
-      teamId: $teamId
-      createdAt: $createdAt
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        contactId
-        contact {
-          id
-          owner
-          teamId
-          userId
-          createdAt
-          updatedAt
-          isEmailVerified
-          contactEmailStatusCode
-          contactEmailDomainType
-          personalEmailStatusCode
-          personalEmailDomainType
-          contactPersonalEmailStatusCode
-          contactPersonalEmailDomainType
-          first_name
-          last_name
-          middle_name
-          full_name
-          job_title
-          seniority
-          department
-          primary_role
-          secondary_role
-          linkedin_profile
-          linkedin_connection_count
-          work_email
-          work_email_history
-          personal_email
-          personal_email2
-          personal_email_history
-          direct_dial
-          mobile_number
-          mobile_number_history
-          work_number
-          education
-          skills
-          interests
-          linkedin_headline
-          facebook_profile
-          twitter_profile
-          work_experience
-          salary
-          birth_year
-          age
-          gender
-          new_hire
-          job_start_date
-          company_name
-          company_domain
-          company_website
-          company_linkedin_profile
-          company_linkedin_followers
-          company_local_address
-          company_local_city
-          company_local_state
-          company_local_address_postal
-          company_hq_address
-          company_hq_city
-          company_hq_state
-          company_hq_postal
-          person_city
-          person_state
-          person_postal
-          company_employee_range
-          company_revenue_range
-          company_industry
-          company_sic4
-          company_sic4_description
-          company_naics
-          company_naics_description
-          company_type
-          __typename
-        }
-        name
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-exports.listCollectionContactByUserId = /* GraphQL */ `
-  query ListCollectionContactByUserId(
-    $userId: ID!
-    $createdAt: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelCollectionContactFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listCollectionContactByUserId(
-      userId: $userId
-      createdAt: $createdAt
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        owner
-        teamId
-        userId
-        createdAt
-        updatedAt
-        contactId
-        contact {
-          id
-          owner
-          teamId
-          userId
-          createdAt
-          updatedAt
-          isEmailVerified
-          contactEmailStatusCode
-          contactEmailDomainType
-          personalEmailStatusCode
-          personalEmailDomainType
-          contactPersonalEmailStatusCode
-          contactPersonalEmailDomainType
-          first_name
-          last_name
-          middle_name
-          full_name
-          job_title
-          seniority
-          department
-          primary_role
-          secondary_role
-          linkedin_profile
-          linkedin_connection_count
-          work_email
-          work_email_history
-          personal_email
-          personal_email2
-          personal_email_history
-          direct_dial
-          mobile_number
-          mobile_number_history
-          work_number
-          education
-          skills
-          interests
-          linkedin_headline
-          facebook_profile
-          twitter_profile
-          work_experience
-          salary
-          birth_year
-          age
-          gender
-          new_hire
-          job_start_date
-          company_name
-          company_domain
-          company_website
-          company_linkedin_profile
-          company_linkedin_followers
-          company_local_address
-          company_local_city
-          company_local_state
-          company_local_address_postal
-          company_hq_address
-          company_hq_city
-          company_hq_state
-          company_hq_postal
-          person_city
-          person_state
-          person_postal
-          company_employee_range
-          company_revenue_range
-          company_industry
-          company_sic4
-          company_sic4_description
-          company_naics
-          company_naics_description
-          company_type
-          __typename
-        }
-        name
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
 exports.listContactFormByTeamId = /* GraphQL */ `
   query ListContactFormByTeamId(
     $teamId: ID!
@@ -1727,6 +1357,42 @@ exports.listContactFormByUserId = /* GraphQL */ `
     }
   }
 `;
+exports.getDomainSearch = /* GraphQL */ `
+  query GetDomainSearch($id: ID!) {
+    getDomainSearch(id: $id) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      term
+      __typename
+    }
+  }
+`;
+exports.listDomainSearches = /* GraphQL */ `
+  query ListDomainSearches(
+    $filter: ModelDomainSearchFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listDomainSearches(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        term
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 exports.listDomainSearchByTeamId = /* GraphQL */ `
   query ListDomainSearchByTeamId(
     $teamId: ID!
@@ -1784,6 +1450,46 @@ exports.listDomainSearchByUserId = /* GraphQL */ `
         createdAt
         updatedAt
         term
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.getFilter = /* GraphQL */ `
+  query GetFilter($id: ID!) {
+    getFilter(id: $id) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      name
+      filter
+      isSaved
+      __typename
+    }
+  }
+`;
+exports.listFilters = /* GraphQL */ `
+  query ListFilters(
+    $filter: ModelFilterFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFilters(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        name
+        filter
+        isSaved
         __typename
       }
       nextToken
@@ -1859,6 +1565,46 @@ exports.listFilterByUserId = /* GraphQL */ `
     }
   }
 `;
+exports.getEmailAccount = /* GraphQL */ `
+  query GetEmailAccount($id: ID!) {
+    getEmailAccount(id: $id) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      email
+      code
+      token
+      __typename
+    }
+  }
+`;
+exports.listEmailAccounts = /* GraphQL */ `
+  query ListEmailAccounts(
+    $filter: ModelEmailAccountFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEmailAccounts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        email
+        code
+        token
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 exports.listEmailAccountByTeamId = /* GraphQL */ `
   query ListEmailAccountByTeamId(
     $teamId: ID!
@@ -1920,6 +1666,64 @@ exports.listEmailAccountByUserId = /* GraphQL */ `
         email
         code
         token
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.getEnrichment = /* GraphQL */ `
+  query GetEnrichment($id: ID!) {
+    getEnrichment(id: $id) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      s3Key
+      s3KeyOutput
+      name
+      size
+      recordsUploaded
+      recordsEnriched
+      recordsProcessed
+      isCompleted
+      keyEmail
+      keyPhone
+      keyLinkedin
+      status
+      __typename
+    }
+  }
+`;
+exports.listEnrichments = /* GraphQL */ `
+  query ListEnrichments(
+    $filter: ModelEnrichmentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEnrichments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        s3Key
+        s3KeyOutput
+        name
+        size
+        recordsUploaded
+        recordsEnriched
+        recordsProcessed
+        isCompleted
+        keyEmail
+        keyPhone
+        keyLinkedin
+        status
         __typename
       }
       nextToken
@@ -2013,6 +1817,44 @@ exports.listEnrichmentByUserId = /* GraphQL */ `
     }
   }
 `;
+exports.getEnrichSearch = /* GraphQL */ `
+  query GetEnrichSearch($id: ID!) {
+    getEnrichSearch(id: $id) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      type
+      term
+      __typename
+    }
+  }
+`;
+exports.listEnrichSearches = /* GraphQL */ `
+  query ListEnrichSearches(
+    $filter: ModelEnrichSearchFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEnrichSearches(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        type
+        term
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 exports.listEnrichSearchByTeamId = /* GraphQL */ `
   query ListEnrichSearchByTeamId(
     $teamId: ID!
@@ -2072,6 +1914,48 @@ exports.listEnrichSearchByUserId = /* GraphQL */ `
         updatedAt
         type
         term
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.getFilterItem = /* GraphQL */ `
+  query GetFilterItem($id: ID!) {
+    getFilterItem(id: $id) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      filterId
+      filename
+      key
+      val
+      __typename
+    }
+  }
+`;
+exports.listFilterItems = /* GraphQL */ `
+  query ListFilterItems(
+    $filter: ModelFilterItemFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFilterItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        filterId
+        filename
+        key
+        val
         __typename
       }
       nextToken
@@ -2149,6 +2033,46 @@ exports.listFilterByUsItemerId = /* GraphQL */ `
     }
   }
 `;
+exports.getAuditLog = /* GraphQL */ `
+  query GetAuditLog($id: ID!) {
+    getAuditLog(id: $id) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      title
+      description
+      data
+      __typename
+    }
+  }
+`;
+exports.listAuditLogs = /* GraphQL */ `
+  query ListAuditLogs(
+    $filter: ModelAuditLogFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAuditLogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        title
+        description
+        data
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 exports.listAuditLogByTeamId = /* GraphQL */ `
   query ListAuditLogByTeamId(
     $teamId: ID!
@@ -2210,6 +2134,92 @@ exports.listAuditLogByUserId = /* GraphQL */ `
         title
         description
         data
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.getSub = /* GraphQL */ `
+  query GetSub($id: ID!) {
+    getSub(id: $id) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      subscriptionStatus
+      subscriptionPeriod
+      monthlyCredits
+      quarterlyCredits
+      annualCredits
+      currentCredits
+      stripeCustomerId
+      stripeSubscriptionID
+      seats
+      block
+      tenant
+      notes
+      color_code
+      icon_s3_key
+      logo_s3_key
+      isApiBlocked
+      isEmailBlocked
+      isProspectBlocked
+      isEnrichBlocked
+      isFilesBlocked
+      isAutoComposeBlocked
+      isAssistantsBlocked
+      isSubProcessingBlocked
+      firstPaid
+      lastPaid
+      nextPay
+      __typename
+    }
+  }
+`;
+exports.listSubs = /* GraphQL */ `
+  query ListSubs(
+    $filter: ModelSubFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSubs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        subscriptionStatus
+        subscriptionPeriod
+        monthlyCredits
+        quarterlyCredits
+        annualCredits
+        currentCredits
+        stripeCustomerId
+        stripeSubscriptionID
+        seats
+        block
+        tenant
+        notes
+        color_code
+        icon_s3_key
+        logo_s3_key
+        isApiBlocked
+        isEmailBlocked
+        isProspectBlocked
+        isEnrichBlocked
+        isFilesBlocked
+        isAutoComposeBlocked
+        isAssistantsBlocked
+        isSubProcessingBlocked
+        firstPaid
+        lastPaid
+        nextPay
         __typename
       }
       nextToken
@@ -2388,6 +2398,58 @@ exports.listSubByStripeCustomerId = /* GraphQL */ `
     }
   }
 `;
+exports.getSubLog = /* GraphQL */ `
+  query GetSubLog($id: ID!) {
+    getSubLog(id: $id) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      subId
+      subOld
+      subNew
+      subject
+      description
+      oldCurrentCredits
+      newCurrentCredits
+      oldRolloverCredits
+      newRolloverCredits
+      __typename
+    }
+  }
+`;
+exports.listSubLogs = /* GraphQL */ `
+  query ListSubLogs(
+    $filter: ModelSubLogFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSubLogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        subId
+        subOld
+        subNew
+        subject
+        description
+        oldCurrentCredits
+        newCurrentCredits
+        oldRolloverCredits
+        newRolloverCredits
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 exports.listSubLogByTeamId = /* GraphQL */ `
   query ListSubLogByTeamId(
     $teamId: ID!
@@ -2461,6 +2523,44 @@ exports.listSubLogByUserId = /* GraphQL */ `
         newCurrentCredits
         oldRolloverCredits
         newRolloverCredits
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.getUsage = /* GraphQL */ `
+  query GetUsage($id: ID!) {
+    getUsage(id: $id) {
+      id
+      owner
+      teamId
+      userId
+      createdAt
+      updatedAt
+      filterId
+      credits
+      __typename
+    }
+  }
+`;
+exports.listUsages = /* GraphQL */ `
+  query ListUsages(
+    $filter: ModelUsageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUsages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        filterId
+        credits
         __typename
       }
       nextToken

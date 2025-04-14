@@ -1,12 +1,12 @@
-import { Router } from 'express';
+const { Router } = require('express');
 
-import { createSub, deleteSub, updateSub } from '../graphql/mutations';
-import { getSub, listSubByTeamId } from '../../graphql/queries';
-import { verifyGroup, verifyToken } from '../../middlewares/auth';
-import { IFaq, schemaValidate } from '../../schemas';
-import { apsGql } from '../utils/aps-utils';
+const { createSub, deleteSub, updateSub } = require('../graphql/mutations');
+const { getSub, listSubByTeamId } = require('../graphql/queries');
+const { verifyGroup, verifyToken } = require('../middlewares/auth');
+const { IFaq, schemaValidate } = require('../schemas');
+const { apsGql } = require('../utils/aps-utils');
 
-export const router = Router();
+const router = Router();
 
 router.get('/', verifyToken, async (req, res) => {
 	const sub = res.locals.sub;
