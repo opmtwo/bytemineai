@@ -9,6 +9,8 @@ export const createBytemineCollection = /* GraphQL */ `
     createBytemineCollection(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
@@ -24,6 +26,8 @@ export const updateBytemineCollection = /* GraphQL */ `
     updateBytemineCollection(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
@@ -39,6 +43,8 @@ export const deleteBytemineCollection = /* GraphQL */ `
     deleteBytemineCollection(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
@@ -54,9 +60,12 @@ export const createBytemineUser = /* GraphQL */ `
     createBytemineUser(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
+      role
       __typename
     }
   }
@@ -69,9 +78,12 @@ export const updateBytemineUser = /* GraphQL */ `
     updateBytemineUser(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
+      role
       __typename
     }
   }
@@ -84,9 +96,12 @@ export const deleteBytemineUser = /* GraphQL */ `
     deleteBytemineUser(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
+      role
       __typename
     }
   }
@@ -99,6 +114,8 @@ export const createBytemineContact = /* GraphQL */ `
     createBytemineContact(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       isEmailVerified
@@ -177,6 +194,8 @@ export const updateBytemineContact = /* GraphQL */ `
     updateBytemineContact(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       isEmailVerified
@@ -255,6 +274,8 @@ export const deleteBytemineContact = /* GraphQL */ `
     deleteBytemineContact(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       isEmailVerified
@@ -333,12 +354,16 @@ export const createBytemineCollectionContact = /* GraphQL */ `
     createBytemineCollectionContact(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
+        teamId
+        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -420,12 +445,16 @@ export const updateBytemineCollectionContact = /* GraphQL */ `
     updateBytemineCollectionContact(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
+        teamId
+        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -507,12 +536,16 @@ export const deleteBytemineCollectionContact = /* GraphQL */ `
     deleteBytemineCollectionContact(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
+        teamId
+        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -594,12 +627,16 @@ export const createBytemineContactForm = /* GraphQL */ `
     createBytemineContactForm(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
+        teamId
+        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -683,12 +720,16 @@ export const updateBytemineContactForm = /* GraphQL */ `
     updateBytemineContactForm(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
+        teamId
+        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -772,12 +813,16 @@ export const deleteBytemineContactForm = /* GraphQL */ `
     deleteBytemineContactForm(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
+        teamId
+        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -861,6 +906,8 @@ export const createBytemineDomainSearch = /* GraphQL */ `
     createBytemineDomainSearch(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       term
@@ -876,6 +923,8 @@ export const updateBytemineDomainSearch = /* GraphQL */ `
     updateBytemineDomainSearch(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       term
@@ -891,6 +940,8 @@ export const deleteBytemineDomainSearch = /* GraphQL */ `
     deleteBytemineDomainSearch(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       term
@@ -906,6 +957,8 @@ export const createBytemineFilter = /* GraphQL */ `
     createBytemineFilter(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
@@ -923,6 +976,8 @@ export const updateBytemineFilter = /* GraphQL */ `
     updateBytemineFilter(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
@@ -940,6 +995,8 @@ export const deleteBytemineFilter = /* GraphQL */ `
     deleteBytemineFilter(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
@@ -957,6 +1014,8 @@ export const createBytemineEmailAccount = /* GraphQL */ `
     createBytemineEmailAccount(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       email
@@ -974,6 +1033,8 @@ export const updateBytemineEmailAccount = /* GraphQL */ `
     updateBytemineEmailAccount(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       email
@@ -991,6 +1052,8 @@ export const deleteBytemineEmailAccount = /* GraphQL */ `
     deleteBytemineEmailAccount(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       email
@@ -1008,6 +1071,8 @@ export const createBytemineEnrichment = /* GraphQL */ `
     createBytemineEnrichment(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       s3Key
@@ -1034,6 +1099,8 @@ export const updateBytemineEnrichment = /* GraphQL */ `
     updateBytemineEnrichment(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       s3Key
@@ -1060,6 +1127,8 @@ export const deleteBytemineEnrichment = /* GraphQL */ `
     deleteBytemineEnrichment(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       s3Key
@@ -1086,6 +1155,8 @@ export const createBytemineEnrichSearch = /* GraphQL */ `
     createBytemineEnrichSearch(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       type
@@ -1102,6 +1173,8 @@ export const updateBytemineEnrichSearch = /* GraphQL */ `
     updateBytemineEnrichSearch(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       type
@@ -1118,6 +1191,8 @@ export const deleteBytemineEnrichSearch = /* GraphQL */ `
     deleteBytemineEnrichSearch(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       type
@@ -1134,6 +1209,8 @@ export const createBytemineFilterItem = /* GraphQL */ `
     createBytemineFilterItem(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       filterId
@@ -1152,6 +1229,8 @@ export const updateBytemineFilterItem = /* GraphQL */ `
     updateBytemineFilterItem(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       filterId
@@ -1170,6 +1249,8 @@ export const deleteBytemineFilterItem = /* GraphQL */ `
     deleteBytemineFilterItem(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       filterId
@@ -1188,6 +1269,8 @@ export const createBytemineAuditLog = /* GraphQL */ `
     createBytemineAuditLog(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       title
@@ -1205,6 +1288,8 @@ export const updateBytemineAuditLog = /* GraphQL */ `
     updateBytemineAuditLog(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       title
@@ -1222,6 +1307,8 @@ export const deleteBytemineAuditLog = /* GraphQL */ `
     deleteBytemineAuditLog(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       title
@@ -1239,6 +1326,8 @@ export const createBytemineSub = /* GraphQL */ `
     createBytemineSub(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       subscriptionStatus
@@ -1247,6 +1336,8 @@ export const createBytemineSub = /* GraphQL */ `
       quarterlyCredits
       annualCredits
       currentCredits
+      stripeCustomerId
+      stripeSubscriptionID
       seats
       block
       tenant
@@ -1277,6 +1368,8 @@ export const updateBytemineSub = /* GraphQL */ `
     updateBytemineSub(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       subscriptionStatus
@@ -1285,6 +1378,8 @@ export const updateBytemineSub = /* GraphQL */ `
       quarterlyCredits
       annualCredits
       currentCredits
+      stripeCustomerId
+      stripeSubscriptionID
       seats
       block
       tenant
@@ -1315,6 +1410,8 @@ export const deleteBytemineSub = /* GraphQL */ `
     deleteBytemineSub(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       subscriptionStatus
@@ -1323,6 +1420,8 @@ export const deleteBytemineSub = /* GraphQL */ `
       quarterlyCredits
       annualCredits
       currentCredits
+      stripeCustomerId
+      stripeSubscriptionID
       seats
       block
       tenant
@@ -1353,6 +1452,8 @@ export const createBytemineSubLog = /* GraphQL */ `
     createBytemineSubLog(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       subId
@@ -1376,6 +1477,8 @@ export const updateBytemineSubLog = /* GraphQL */ `
     updateBytemineSubLog(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       subId
@@ -1399,6 +1502,8 @@ export const deleteBytemineSubLog = /* GraphQL */ `
     deleteBytemineSubLog(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       subId
@@ -1422,6 +1527,8 @@ export const createBytemineUsage = /* GraphQL */ `
     createBytemineUsage(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       filterId
@@ -1438,6 +1545,8 @@ export const updateBytemineUsage = /* GraphQL */ `
     updateBytemineUsage(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       filterId
@@ -1454,6 +1563,8 @@ export const deleteBytemineUsage = /* GraphQL */ `
     deleteBytemineUsage(input: $input, condition: $condition) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       filterId

@@ -5,7 +5,7 @@ const { SignatureV4 } = require('@aws-sdk/signature-v4');
 
 const { getNestedKey } = require('./helper-utils');
 
-const { API_BYTEMINEAIGRAPHAPI_GRAPHQLAPIENDPOINTOUTPUT: GRAPHQL_ENDPOINT, REGION } = process.env;
+const { API_BYTEMINEGRAPHAPI_GRAPHQLAPIENDPOINTOUTPUT: GRAPHQL_ENDPOINT, REGION } = process.env;
 
 const apsGql = async (query, variables = {}, key = undefined, verbose = true) => {
 	if (verbose) {

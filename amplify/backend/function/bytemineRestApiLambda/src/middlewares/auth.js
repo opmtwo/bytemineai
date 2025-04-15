@@ -1,9 +1,9 @@
-const { getUser, listUserByTeamId } = require('../graphql/queries');
+const { getUser, listUserByTeamId, getBytemineUser } = require('../graphql/queries');
 const { apsGql } = require('../utils/aps-utils');
 const { idpAdminGetUser, idpAdminListGroupsForUser, idpGetUserByToken } = require('../utils/idp-utils');
 const { stripeGetSubscription } = require('../utils/stripe-utils');
 
-const { AUTH_BYTEMINEAI2721B75B_USERPOOLID: USERPOOLID } = process.env;
+const { AUTH_BYTEMINEF573E062_USERPOOLID: USERPOOLID } = process.env;
 
 const verifyToken = async (req, res, next) => {
 	// Define a default error response.
@@ -85,11 +85,11 @@ const verifyGroup = async (req, res, next) => {
 		console.log('verifyGroup', JSON.stringify({ user }));
 
 		// Retrieve team info from AppSync
-		const team = await apsGql(getUser, { id: user.id }, 'data.getUser');
+		const team = await apsGql(getBytemineUser, { id: user.id }, 'data.getBytemineUser');
 		console.log('verifyGroup', JSON.stringify({ team }));
 
 		// Get user team info
-		const teamUser = await apsGql(getUser, { id: team.Username }, 'data.getUser');
+		const teamUser = await apsGql(getBytemineUser, { id: team.Username }, 'data.getBytemineUser');
 		console.log('verifyGroup -', JSON.stringify({ teamUser }));
 
 		// team validation has failed
@@ -156,7 +156,7 @@ const verifyTeam = async (req, res, next) => {
 		const username = res.locals.username;
 
 		// Query the GraphQL server to get the team data based on the user's username.
-		const team = await apsGql(getUser, { id: username }, 'data.getUser');
+		const team = await apsGql(getBytemineUser, { id: username }, 'data.getBytemineUser');
 
 		// If no team data is found, log an error, return a 403 status, and send the default error response.
 		if (!team?.id) {
@@ -168,7 +168,7 @@ const verifyTeam = async (req, res, next) => {
 		const members = await apsGql(listUserByTeamId, { teamId: team.teamId }, 'data.listUserByTeamId.items');
 
 		// Find the owner of the team from the list of members.
-		const owner = members.find((_member) => _member.role === 'owner');
+		const owner = members.find((_member) => ['owner', 'admin'].includes(_member.role.toLowerCase()));
 
 		// If no owner data is found, log an error, return a 403 status, and send the default error response.
 		if (!owner?.id) {

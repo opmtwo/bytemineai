@@ -1,7 +1,7 @@
 {
-  "resourceName": "amplifyStorage",
-  "policyUUID": "96087a85",
-  "bucketName": "bytemine513d82c971064622af4f4fa59a25fe45",
+  "resourceName": "bytemineStorage",
+  "policyUUID": "3a67cbfa",
+  "bucketName": "bytemine68e89098cf2d4727b19eb547fd2e5567",
   "storageAccess": "auth",
   "guestAccess": [],
   "authAccess": [

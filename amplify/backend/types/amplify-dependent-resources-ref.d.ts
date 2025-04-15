@@ -11,7 +11,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "auth": {
-    "bytemine4c24b3bd": {
+    "byteminef573e062": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "IdentityPoolId": "string",
@@ -31,7 +31,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "amplifyStorage": {
+    "bytemineStorage": {
       "BucketName": "string",
       "Region": "string"
     }

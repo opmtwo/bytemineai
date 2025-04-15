@@ -1,32 +1,33 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-bytemine-dev-1660e-authRole",
-      "UnauthRoleArn": "arn:aws:iam::396102999596:role/amplify-bytemine-dev-1660e-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::396102999596:role/amplify-bytemine-dev-1660e-authRole",
-      "Region": "us-west-1",
-      "DeploymentBucketName": "amplify-bytemine-dev-1660e-deployment",
-      "UnauthRoleName": "amplify-bytemine-dev-1660e-unauthRole",
-      "StackName": "amplify-bytemine-dev-1660e",
-      "StackId": "arn:aws:cloudformation:us-west-1:396102999596:stack/amplify-bytemine-dev-1660e/5411c030-1921-11f0-a296-06d52c629cb5",
-      "AmplifyAppId": "dsqlwmgrmx0x4"
+      "AuthRoleName": "amplify-bytemine-dev-96701-authRole",
+      "UnauthRoleArn": "arn:aws:iam::396102999596:role/amplify-bytemine-dev-96701-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::396102999596:role/amplify-bytemine-dev-96701-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-bytemine-dev-96701-deployment",
+      "UnauthRoleName": "amplify-bytemine-dev-96701-unauthRole",
+      "StackName": "amplify-bytemine-dev-96701",
+      "StackId": "arn:aws:cloudformation:us-east-2:396102999596:stack/amplify-bytemine-dev-96701/ed038e10-19ba-11f0-afbb-0641fab08323",
+      "AmplifyAppId": "d2mflxata5aivj"
     },
     "categories": {
       "auth": {
-        "bytemine4c24b3bd": {}
+        "byteminef573e062": {}
+      },
+      "function": {
+        "bytemineRestApiLambda": {
+          "stripeClientSecret": "sk_test_51OSl5uLgUrD1kX4RntOleOV3WAUXUKEqtizcVSVxrCPxsjEZ89Y5RhEViyOOubSC8pDQxJoY1xHtghfK3z5PSxcu00Ej5J9fgD",
+          "deploymentBucketName": "amplify-bytemine-dev-96701-deployment",
+          "s3Key": "amplify-builds/bytemineRestApiLambda-6e42304a712b782b4679-build.zip"
+        }
+      },
+      "storage": {
+        "bytemineStorage": {}
       },
       "api": {
         "bytemineGraphApi": {},
         "bytemineRestApi": {}
-      },
-      "function": {
-        "bytemineRestApiLambda": {
-          "deploymentBucketName": "amplify-bytemine-dev-1660e-deployment",
-          "s3Key": "amplify-builds/bytemineRestApiLambda-32734e6b6c724c6e7363-build.zip"
-        }
-      },
-      "storage": {
-        "amplifyStorage": {}
       }
     }
   }

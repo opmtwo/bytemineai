@@ -1,7 +1,7 @@
 const { Router } = require('express');
 
-const { createCollection, deleteCollection, updateCollection } = require('../graphql/mutations');
-const { getCollection, listCollectionByTeamId } = require('../graphql/queries');
+const { deleteBytemineCollection, updateBytemineCollection, createBytemineCollection } = require('../graphql/mutations');
+const { getBytemineCollection, listCollectionByTeamId } = require('../graphql/queries');
 const { verifyTeam, verifyToken } = require('../middlewares/auth');
 const { ICollection, schemaValidate } = require('../schemas');
 const { apsGql } = require('../utils/aps-utils');
@@ -35,7 +35,7 @@ router.get('/', verifyToken, async (req, res) => {
 router.get('/:id', verifyToken, async (req, res) => {
 	const { id } = req.params;
 
-	const collection = await apsGql(getCollection, { id }, 'data.getCollection');
+	const collection = await apsGql(getBytemineCollection, { id }, 'data.getBytemineCollection');
 	if (!collection?.id) {
 		return res.status(404).json({ message: 'Not found' });
 	}
@@ -47,8 +47,8 @@ router.post('/', schemaValidate(ICollection), verifyToken, verifyTeam, async (re
 	const { sub, groups } = res.locals;
 	const data = req.body;
 
-	const input = { ...data, owner: sub, userId: sub };
-	const collection = await apsGql(createCollection, { input }, 'data.createCollection');
+	const input = { ...data, owner: sub, userId: sub, teamId: sub };
+	const collection = await apsGql(createBytemineCollection, { input }, 'data.createBytemineCollection');
 
 	return res.json(collection);
 });
@@ -57,13 +57,13 @@ router.put('/:id', schemaValidate(ICollection), verifyToken, verifyTeam, async (
 	const { id } = req.params;
 	const data = req.body;
 
-	const collection = await apsGql(getCollection, { id }, 'data.getCollection');
+	const collection = await apsGql(getBytemineCollection, { id }, 'data.getBytemineCollection');
 	if (!collection?.id) {
 		return res.status(404).json({ message: 'Not found' });
 	}
 
 	const input = { id, _version: collection._version, ...data };
-	const collectionUpdated = await apsGql(updateCollection, { input }, 'data.updateCollection');
+	const collectionUpdated = await apsGql(updateBytemineCollection, { input }, 'data.updateBytemineCollection');
 
 	return res.json(collectionUpdated);
 });
@@ -71,13 +71,13 @@ router.put('/:id', schemaValidate(ICollection), verifyToken, verifyTeam, async (
 router.delete('/:id', verifyToken, verifyTeam, async (req, res) => {
 	const { id } = req.params;
 
-	const collection = await apsGql(getCollection, { id }, 'data.getCollection');
+	const collection = await apsGql(getBytemineCollection, { id }, 'data.getBytemineCollection');
 	if (!collection?.id) {
 		return res.status(404).json({ message: 'Not found' });
 	}
 
 	const input = { id, _version: collection._version };
-	await apsGql(deleteCollection, { input });
+	await apsGql(deleteBytemineCollection, { input });
 
 	return res.json(collection);
 });

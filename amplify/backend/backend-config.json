@@ -7,21 +7,21 @@
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "bytemine4c24b3bd"
+          "resourceName": "byteminef573e062"
         }
       ],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
             {
-              "authenticationType": "AWS_IAM"
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authbyteminef573e062"
+              }
             }
           ],
           "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authbytemine4c24b3bd"
-            }
+            "authenticationType": "AWS_IAM"
           }
         }
       },
@@ -44,7 +44,7 @@
     }
   },
   "auth": {
-    "bytemine4c24b3bd": {
+    "byteminef573e062": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -60,7 +60,9 @@
           "EMAIL"
         ],
         "socialProviders": [],
-        "usernameAttributes": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
         "verificationMechanisms": [
           "EMAIL"
         ]
@@ -78,7 +80,14 @@
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "bytemine4c24b3bd"
+          "resourceName": "byteminef573e062"
+        },
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "bytemineStorage"
         },
         {
           "attributes": [
@@ -87,13 +96,6 @@
           ],
           "category": "api",
           "resourceName": "bytemineGraphApi"
-        },
-        {
-          "attributes": [
-            "BucketName"
-          ],
-          "category": "storage",
-          "resourceName": "amplifyStorage"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -116,10 +118,18 @@
           "resourceName": "bytemineRestApiLambda"
         }
       ]
+    },
+    "AMPLIFY_function_bytemineRestApiLambda_stripeClientSecret": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "bytemineRestApiLambda"
+        }
+      ]
     }
   },
   "storage": {
-    "amplifyStorage": {
+    "bytemineStorage": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"

@@ -16,9 +16,13 @@
     "s3Key": {
       "Type": "String"
     },
-    "authbytemine4c24b3bdUserPoolId": {
+    "authbyteminef573e062UserPoolId": {
       "Type": "String",
-      "Default": "authbytemine4c24b3bdUserPoolId"
+      "Default": "authbyteminef573e062UserPoolId"
+    },
+    "storagebytemineStorageBucketName": {
+      "Type": "String",
+      "Default": "storagebytemineStorageBucketName"
     },
     "apibytemineGraphApiGraphQLAPIIdOutput": {
       "Type": "String",
@@ -28,9 +32,8 @@
       "Type": "String",
       "Default": "apibytemineGraphApiGraphQLAPIEndpointOutput"
     },
-    "storageamplifyStorageBucketName": {
-      "Type": "String",
-      "Default": "storageamplifyStorageBucketName"
+    "stripeClientSecret": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -86,8 +89,11 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "AUTH_BYTEMINE4C24B3BD_USERPOOLID": {
-              "Ref": "authbytemine4c24b3bdUserPoolId"
+            "AUTH_BYTEMINEF573E062_USERPOOLID": {
+              "Ref": "authbyteminef573e062UserPoolId"
+            },
+            "STORAGE_BYTEMINESTORAGE_BUCKETNAME": {
+              "Ref": "storagebytemineStorageBucketName"
             },
             "API_BYTEMINEGRAPHAPI_GRAPHQLAPIIDOUTPUT": {
               "Ref": "apibytemineGraphApiGraphQLAPIIdOutput"
@@ -95,8 +101,8 @@
             "API_BYTEMINEGRAPHAPI_GRAPHQLAPIENDPOINTOUTPUT": {
               "Ref": "apibytemineGraphApiGraphQLAPIEndpointOutput"
             },
-            "STORAGE_AMPLIFYSTORAGE_BUCKETNAME": {
-              "Ref": "storageamplifyStorageBucketName"
+            "STRIPE_CLIENT_SECRET": {
+              "Ref": "stripeClientSecret"
             }
           }
         },
@@ -117,12 +123,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "bytemineLambdaRole44622bb1",
+            "bytemineLambdaRoleffcf7e2a",
             {
               "Fn::Join": [
                 "",
                 [
-                  "bytemineLambdaRole44622bb1",
+                  "bytemineLambdaRoleffcf7e2a",
                   "-",
                   {
                     "Ref": "env"
@@ -308,8 +314,47 @@
                       },
                       ":userpool/",
                       {
-                        "Ref": "authbytemine4c24b3bdUserPoolId"
+                        "Ref": "authbyteminef573e062UserPoolId"
                       }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "s3:ListBucket",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagebytemineStorageBucketName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:DeleteObject"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagebytemineStorageBucketName"
+                      },
+                      "/*"
                     ]
                   ]
                 }
@@ -378,45 +423,6 @@
                         "Ref": "apibytemineGraphApiGraphQLAPIIdOutput"
                       },
                       "/types/Subscription/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": "s3:ListBucket",
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      {
-                        "Ref": "storageamplifyStorageBucketName"
-                      }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "s3:PutObject",
-                "s3:GetObject",
-                "s3:DeleteObject"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      {
-                        "Ref": "storageamplifyStorageBucketName"
-                      },
-                      "/*"
                     ]
                   ]
                 }

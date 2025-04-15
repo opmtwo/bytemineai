@@ -8,6 +8,8 @@ export const onCreateBytemineCollection = /* GraphQL */ `
     onCreateBytemineCollection(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
@@ -22,6 +24,8 @@ export const onUpdateBytemineCollection = /* GraphQL */ `
     onUpdateBytemineCollection(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
@@ -36,6 +40,8 @@ export const onDeleteBytemineCollection = /* GraphQL */ `
     onDeleteBytemineCollection(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
@@ -50,9 +56,12 @@ export const onCreateBytemineUser = /* GraphQL */ `
     onCreateBytemineUser(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
+      role
       __typename
     }
   }
@@ -64,9 +73,12 @@ export const onUpdateBytemineUser = /* GraphQL */ `
     onUpdateBytemineUser(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
+      role
       __typename
     }
   }
@@ -78,9 +90,12 @@ export const onDeleteBytemineUser = /* GraphQL */ `
     onDeleteBytemineUser(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
+      role
       __typename
     }
   }
@@ -92,6 +107,8 @@ export const onCreateBytemineContact = /* GraphQL */ `
     onCreateBytemineContact(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       isEmailVerified
@@ -169,6 +186,8 @@ export const onUpdateBytemineContact = /* GraphQL */ `
     onUpdateBytemineContact(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       isEmailVerified
@@ -246,6 +265,8 @@ export const onDeleteBytemineContact = /* GraphQL */ `
     onDeleteBytemineContact(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       isEmailVerified
@@ -323,12 +344,16 @@ export const onCreateBytemineCollectionContact = /* GraphQL */ `
     onCreateBytemineCollectionContact(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
+        teamId
+        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -409,12 +434,16 @@ export const onUpdateBytemineCollectionContact = /* GraphQL */ `
     onUpdateBytemineCollectionContact(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
+        teamId
+        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -495,12 +524,16 @@ export const onDeleteBytemineCollectionContact = /* GraphQL */ `
     onDeleteBytemineCollectionContact(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
+        teamId
+        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -581,12 +614,16 @@ export const onCreateBytemineContactForm = /* GraphQL */ `
     onCreateBytemineContactForm(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
+        teamId
+        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -669,12 +706,16 @@ export const onUpdateBytemineContactForm = /* GraphQL */ `
     onUpdateBytemineContactForm(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
+        teamId
+        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -757,12 +798,16 @@ export const onDeleteBytemineContactForm = /* GraphQL */ `
     onDeleteBytemineContactForm(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       contactId
       contact {
         id
         owner
+        teamId
+        userId
         createdAt
         updatedAt
         isEmailVerified
@@ -845,6 +890,8 @@ export const onCreateBytemineDomainSearch = /* GraphQL */ `
     onCreateBytemineDomainSearch(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       term
@@ -859,6 +906,8 @@ export const onUpdateBytemineDomainSearch = /* GraphQL */ `
     onUpdateBytemineDomainSearch(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       term
@@ -873,6 +922,8 @@ export const onDeleteBytemineDomainSearch = /* GraphQL */ `
     onDeleteBytemineDomainSearch(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       term
@@ -887,6 +938,8 @@ export const onCreateBytemineFilter = /* GraphQL */ `
     onCreateBytemineFilter(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
@@ -903,6 +956,8 @@ export const onUpdateBytemineFilter = /* GraphQL */ `
     onUpdateBytemineFilter(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
@@ -919,6 +974,8 @@ export const onDeleteBytemineFilter = /* GraphQL */ `
     onDeleteBytemineFilter(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       name
@@ -935,6 +992,8 @@ export const onCreateBytemineEmailAccount = /* GraphQL */ `
     onCreateBytemineEmailAccount(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       email
@@ -951,6 +1010,8 @@ export const onUpdateBytemineEmailAccount = /* GraphQL */ `
     onUpdateBytemineEmailAccount(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       email
@@ -967,6 +1028,8 @@ export const onDeleteBytemineEmailAccount = /* GraphQL */ `
     onDeleteBytemineEmailAccount(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       email
@@ -983,6 +1046,8 @@ export const onCreateBytemineEnrichment = /* GraphQL */ `
     onCreateBytemineEnrichment(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       s3Key
@@ -1008,6 +1073,8 @@ export const onUpdateBytemineEnrichment = /* GraphQL */ `
     onUpdateBytemineEnrichment(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       s3Key
@@ -1033,6 +1100,8 @@ export const onDeleteBytemineEnrichment = /* GraphQL */ `
     onDeleteBytemineEnrichment(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       s3Key
@@ -1058,6 +1127,8 @@ export const onCreateBytemineEnrichSearch = /* GraphQL */ `
     onCreateBytemineEnrichSearch(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       type
@@ -1073,6 +1144,8 @@ export const onUpdateBytemineEnrichSearch = /* GraphQL */ `
     onUpdateBytemineEnrichSearch(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       type
@@ -1088,6 +1161,8 @@ export const onDeleteBytemineEnrichSearch = /* GraphQL */ `
     onDeleteBytemineEnrichSearch(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       type
@@ -1103,6 +1178,8 @@ export const onCreateBytemineFilterItem = /* GraphQL */ `
     onCreateBytemineFilterItem(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       filterId
@@ -1120,6 +1197,8 @@ export const onUpdateBytemineFilterItem = /* GraphQL */ `
     onUpdateBytemineFilterItem(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       filterId
@@ -1137,6 +1216,8 @@ export const onDeleteBytemineFilterItem = /* GraphQL */ `
     onDeleteBytemineFilterItem(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       filterId
@@ -1154,6 +1235,8 @@ export const onCreateBytemineAuditLog = /* GraphQL */ `
     onCreateBytemineAuditLog(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       title
@@ -1170,6 +1253,8 @@ export const onUpdateBytemineAuditLog = /* GraphQL */ `
     onUpdateBytemineAuditLog(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       title
@@ -1186,6 +1271,8 @@ export const onDeleteBytemineAuditLog = /* GraphQL */ `
     onDeleteBytemineAuditLog(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       title
@@ -1202,6 +1289,8 @@ export const onCreateBytemineSub = /* GraphQL */ `
     onCreateBytemineSub(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       subscriptionStatus
@@ -1210,6 +1299,8 @@ export const onCreateBytemineSub = /* GraphQL */ `
       quarterlyCredits
       annualCredits
       currentCredits
+      stripeCustomerId
+      stripeSubscriptionID
       seats
       block
       tenant
@@ -1239,6 +1330,8 @@ export const onUpdateBytemineSub = /* GraphQL */ `
     onUpdateBytemineSub(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       subscriptionStatus
@@ -1247,6 +1340,8 @@ export const onUpdateBytemineSub = /* GraphQL */ `
       quarterlyCredits
       annualCredits
       currentCredits
+      stripeCustomerId
+      stripeSubscriptionID
       seats
       block
       tenant
@@ -1276,6 +1371,8 @@ export const onDeleteBytemineSub = /* GraphQL */ `
     onDeleteBytemineSub(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       subscriptionStatus
@@ -1284,6 +1381,8 @@ export const onDeleteBytemineSub = /* GraphQL */ `
       quarterlyCredits
       annualCredits
       currentCredits
+      stripeCustomerId
+      stripeSubscriptionID
       seats
       block
       tenant
@@ -1313,6 +1412,8 @@ export const onCreateBytemineSubLog = /* GraphQL */ `
     onCreateBytemineSubLog(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       subId
@@ -1335,6 +1436,8 @@ export const onUpdateBytemineSubLog = /* GraphQL */ `
     onUpdateBytemineSubLog(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       subId
@@ -1357,6 +1460,8 @@ export const onDeleteBytemineSubLog = /* GraphQL */ `
     onDeleteBytemineSubLog(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       subId
@@ -1379,6 +1484,8 @@ export const onCreateBytemineUsage = /* GraphQL */ `
     onCreateBytemineUsage(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       filterId
@@ -1394,6 +1501,8 @@ export const onUpdateBytemineUsage = /* GraphQL */ `
     onUpdateBytemineUsage(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       filterId
@@ -1409,6 +1518,8 @@ export const onDeleteBytemineUsage = /* GraphQL */ `
     onDeleteBytemineUsage(filter: $filter) {
       id
       owner
+      teamId
+      userId
       createdAt
       updatedAt
       filterId

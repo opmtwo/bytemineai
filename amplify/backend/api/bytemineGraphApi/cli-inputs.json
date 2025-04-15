@@ -4,13 +4,14 @@
     "apiName": "bytemineGraphApi",
     "serviceName": "AppSync",
     "defaultAuthType": {
-      "mode": "AMAZON_COGNITO_USER_POOLS",
-      "cognitoUserPoolId": "authbytemine4c24b3bd"
+      "mode": "AWS_IAM"
     },
     "additionalAuthTypes": [
       {
-        "mode": "AWS_IAM"
+        "mode": "AMAZON_COGNITO_USER_POOLS",
+        "cognitoUserPoolId": "authbyteminef573e062"
       }
-    ]
+    ],
+    "conflictResolution": {}
   }
 }

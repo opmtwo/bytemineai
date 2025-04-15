@@ -11,8 +11,7 @@ const schemaValidate = (schema) => {
 };
 
 const ICollection = Joi.object({
-	title: Joi.string().max(200).required(),
-	description: Joi.string().required(),
+	name: Joi.string().max(200).required(),
 }).options({ abortEarly: false });
 
 const phoneSchema = Joi.string().pattern(/^\+[1-9]\d{1,14}$/);

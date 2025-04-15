@@ -1,7 +1,15 @@
 {
   "permissions": {
     "auth": {
-      "bytemine4c24b3bd": [
+      "byteminef573e062": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "storage": {
+      "bytemineStorage": [
         "create",
         "read",
         "update",
@@ -14,15 +22,13 @@
         "Mutation",
         "Subscription"
       ]
-    },
-    "storage": {
-      "amplifyStorage": [
-        "create",
-        "read",
-        "update",
-        "delete"
-      ]
     }
   },
-  "lambdaLayers": []
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "stripeClientSecret",
+      "environmentVariableName": "STRIPE_CLIENT_SECRET"
+    }
+  ]
 }

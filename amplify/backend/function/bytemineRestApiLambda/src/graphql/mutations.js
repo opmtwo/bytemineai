@@ -1,12 +1,12 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-exports.createCollection = /* GraphQL */ `
-  mutation CreateCollection(
-    $input: CreateCollectionInput!
-    $condition: ModelCollectionConditionInput
+exports.createBytemineCollection = /* GraphQL */ `
+  mutation CreateBytemineCollection(
+    $input: CreateBytemineCollectionInput!
+    $condition: ModelBytemineCollectionConditionInput
   ) {
-    createCollection(input: $input, condition: $condition) {
+    createBytemineCollection(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -18,12 +18,12 @@ exports.createCollection = /* GraphQL */ `
     }
   }
 `;
-exports.updateCollection = /* GraphQL */ `
-  mutation UpdateCollection(
-    $input: UpdateCollectionInput!
-    $condition: ModelCollectionConditionInput
+exports.updateBytemineCollection = /* GraphQL */ `
+  mutation UpdateBytemineCollection(
+    $input: UpdateBytemineCollectionInput!
+    $condition: ModelBytemineCollectionConditionInput
   ) {
-    updateCollection(input: $input, condition: $condition) {
+    updateBytemineCollection(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -35,12 +35,12 @@ exports.updateCollection = /* GraphQL */ `
     }
   }
 `;
-exports.deleteCollection = /* GraphQL */ `
-  mutation DeleteCollection(
-    $input: DeleteCollectionInput!
-    $condition: ModelCollectionConditionInput
+exports.deleteBytemineCollection = /* GraphQL */ `
+  mutation DeleteBytemineCollection(
+    $input: DeleteBytemineCollectionInput!
+    $condition: ModelBytemineCollectionConditionInput
   ) {
-    deleteCollection(input: $input, condition: $condition) {
+    deleteBytemineCollection(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -52,12 +52,12 @@ exports.deleteCollection = /* GraphQL */ `
     }
   }
 `;
-exports.createUser = /* GraphQL */ `
-  mutation CreateUser(
-    $input: CreateUserInput!
-    $condition: ModelUserConditionInput
+exports.createBytemineUser = /* GraphQL */ `
+  mutation CreateBytemineUser(
+    $input: CreateBytemineUserInput!
+    $condition: ModelBytemineUserConditionInput
   ) {
-    createUser(input: $input, condition: $condition) {
+    createBytemineUser(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -65,16 +65,17 @@ exports.createUser = /* GraphQL */ `
       createdAt
       updatedAt
       name
+      role
       __typename
     }
   }
 `;
-exports.updateUser = /* GraphQL */ `
-  mutation UpdateUser(
-    $input: UpdateUserInput!
-    $condition: ModelUserConditionInput
+exports.updateBytemineUser = /* GraphQL */ `
+  mutation UpdateBytemineUser(
+    $input: UpdateBytemineUserInput!
+    $condition: ModelBytemineUserConditionInput
   ) {
-    updateUser(input: $input, condition: $condition) {
+    updateBytemineUser(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -82,16 +83,17 @@ exports.updateUser = /* GraphQL */ `
       createdAt
       updatedAt
       name
+      role
       __typename
     }
   }
 `;
-exports.deleteUser = /* GraphQL */ `
-  mutation DeleteUser(
-    $input: DeleteUserInput!
-    $condition: ModelUserConditionInput
+exports.deleteBytemineUser = /* GraphQL */ `
+  mutation DeleteBytemineUser(
+    $input: DeleteBytemineUserInput!
+    $condition: ModelBytemineUserConditionInput
   ) {
-    deleteUser(input: $input, condition: $condition) {
+    deleteBytemineUser(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -99,16 +101,17 @@ exports.deleteUser = /* GraphQL */ `
       createdAt
       updatedAt
       name
+      role
       __typename
     }
   }
 `;
-exports.createContact = /* GraphQL */ `
-  mutation CreateContact(
-    $input: CreateContactInput!
-    $condition: ModelContactConditionInput
+exports.createBytemineContact = /* GraphQL */ `
+  mutation CreateBytemineContact(
+    $input: CreateBytemineContactInput!
+    $condition: ModelBytemineContactConditionInput
   ) {
-    createContact(input: $input, condition: $condition) {
+    createBytemineContact(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -183,12 +186,12 @@ exports.createContact = /* GraphQL */ `
     }
   }
 `;
-exports.updateContact = /* GraphQL */ `
-  mutation UpdateContact(
-    $input: UpdateContactInput!
-    $condition: ModelContactConditionInput
+exports.updateBytemineContact = /* GraphQL */ `
+  mutation UpdateBytemineContact(
+    $input: UpdateBytemineContactInput!
+    $condition: ModelBytemineContactConditionInput
   ) {
-    updateContact(input: $input, condition: $condition) {
+    updateBytemineContact(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -263,12 +266,12 @@ exports.updateContact = /* GraphQL */ `
     }
   }
 `;
-exports.deleteContact = /* GraphQL */ `
-  mutation DeleteContact(
-    $input: DeleteContactInput!
-    $condition: ModelContactConditionInput
+exports.deleteBytemineContact = /* GraphQL */ `
+  mutation DeleteBytemineContact(
+    $input: DeleteBytemineContactInput!
+    $condition: ModelBytemineContactConditionInput
   ) {
-    deleteContact(input: $input, condition: $condition) {
+    deleteBytemineContact(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -343,12 +346,12 @@ exports.deleteContact = /* GraphQL */ `
     }
   }
 `;
-exports.createCollectionContact = /* GraphQL */ `
-  mutation CreateCollectionContact(
-    $input: CreateCollectionContactInput!
-    $condition: ModelCollectionContactConditionInput
+exports.createBytemineCollectionContact = /* GraphQL */ `
+  mutation CreateBytemineCollectionContact(
+    $input: CreateBytemineCollectionContactInput!
+    $condition: ModelBytemineCollectionContactConditionInput
   ) {
-    createCollectionContact(input: $input, condition: $condition) {
+    createBytemineCollectionContact(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -434,12 +437,12 @@ exports.createCollectionContact = /* GraphQL */ `
     }
   }
 `;
-exports.updateCollectionContact = /* GraphQL */ `
-  mutation UpdateCollectionContact(
-    $input: UpdateCollectionContactInput!
-    $condition: ModelCollectionContactConditionInput
+exports.updateBytemineCollectionContact = /* GraphQL */ `
+  mutation UpdateBytemineCollectionContact(
+    $input: UpdateBytemineCollectionContactInput!
+    $condition: ModelBytemineCollectionContactConditionInput
   ) {
-    updateCollectionContact(input: $input, condition: $condition) {
+    updateBytemineCollectionContact(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -525,12 +528,12 @@ exports.updateCollectionContact = /* GraphQL */ `
     }
   }
 `;
-exports.deleteCollectionContact = /* GraphQL */ `
-  mutation DeleteCollectionContact(
-    $input: DeleteCollectionContactInput!
-    $condition: ModelCollectionContactConditionInput
+exports.deleteBytemineCollectionContact = /* GraphQL */ `
+  mutation DeleteBytemineCollectionContact(
+    $input: DeleteBytemineCollectionContactInput!
+    $condition: ModelBytemineCollectionContactConditionInput
   ) {
-    deleteCollectionContact(input: $input, condition: $condition) {
+    deleteBytemineCollectionContact(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -616,12 +619,12 @@ exports.deleteCollectionContact = /* GraphQL */ `
     }
   }
 `;
-exports.createContactForm = /* GraphQL */ `
-  mutation CreateContactForm(
-    $input: CreateContactFormInput!
-    $condition: ModelContactFormConditionInput
+exports.createBytemineContactForm = /* GraphQL */ `
+  mutation CreateBytemineContactForm(
+    $input: CreateBytemineContactFormInput!
+    $condition: ModelBytemineContactFormConditionInput
   ) {
-    createContactForm(input: $input, condition: $condition) {
+    createBytemineContactForm(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -709,12 +712,12 @@ exports.createContactForm = /* GraphQL */ `
     }
   }
 `;
-exports.updateContactForm = /* GraphQL */ `
-  mutation UpdateContactForm(
-    $input: UpdateContactFormInput!
-    $condition: ModelContactFormConditionInput
+exports.updateBytemineContactForm = /* GraphQL */ `
+  mutation UpdateBytemineContactForm(
+    $input: UpdateBytemineContactFormInput!
+    $condition: ModelBytemineContactFormConditionInput
   ) {
-    updateContactForm(input: $input, condition: $condition) {
+    updateBytemineContactForm(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -802,12 +805,12 @@ exports.updateContactForm = /* GraphQL */ `
     }
   }
 `;
-exports.deleteContactForm = /* GraphQL */ `
-  mutation DeleteContactForm(
-    $input: DeleteContactFormInput!
-    $condition: ModelContactFormConditionInput
+exports.deleteBytemineContactForm = /* GraphQL */ `
+  mutation DeleteBytemineContactForm(
+    $input: DeleteBytemineContactFormInput!
+    $condition: ModelBytemineContactFormConditionInput
   ) {
-    deleteContactForm(input: $input, condition: $condition) {
+    deleteBytemineContactForm(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -895,12 +898,12 @@ exports.deleteContactForm = /* GraphQL */ `
     }
   }
 `;
-exports.createDomainSearch = /* GraphQL */ `
-  mutation CreateDomainSearch(
-    $input: CreateDomainSearchInput!
-    $condition: ModelDomainSearchConditionInput
+exports.createBytemineDomainSearch = /* GraphQL */ `
+  mutation CreateBytemineDomainSearch(
+    $input: CreateBytemineDomainSearchInput!
+    $condition: ModelBytemineDomainSearchConditionInput
   ) {
-    createDomainSearch(input: $input, condition: $condition) {
+    createBytemineDomainSearch(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -912,12 +915,12 @@ exports.createDomainSearch = /* GraphQL */ `
     }
   }
 `;
-exports.updateDomainSearch = /* GraphQL */ `
-  mutation UpdateDomainSearch(
-    $input: UpdateDomainSearchInput!
-    $condition: ModelDomainSearchConditionInput
+exports.updateBytemineDomainSearch = /* GraphQL */ `
+  mutation UpdateBytemineDomainSearch(
+    $input: UpdateBytemineDomainSearchInput!
+    $condition: ModelBytemineDomainSearchConditionInput
   ) {
-    updateDomainSearch(input: $input, condition: $condition) {
+    updateBytemineDomainSearch(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -929,12 +932,12 @@ exports.updateDomainSearch = /* GraphQL */ `
     }
   }
 `;
-exports.deleteDomainSearch = /* GraphQL */ `
-  mutation DeleteDomainSearch(
-    $input: DeleteDomainSearchInput!
-    $condition: ModelDomainSearchConditionInput
+exports.deleteBytemineDomainSearch = /* GraphQL */ `
+  mutation DeleteBytemineDomainSearch(
+    $input: DeleteBytemineDomainSearchInput!
+    $condition: ModelBytemineDomainSearchConditionInput
   ) {
-    deleteDomainSearch(input: $input, condition: $condition) {
+    deleteBytemineDomainSearch(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -946,12 +949,12 @@ exports.deleteDomainSearch = /* GraphQL */ `
     }
   }
 `;
-exports.createFilter = /* GraphQL */ `
-  mutation CreateFilter(
-    $input: CreateFilterInput!
-    $condition: ModelFilterConditionInput
+exports.createBytemineFilter = /* GraphQL */ `
+  mutation CreateBytemineFilter(
+    $input: CreateBytemineFilterInput!
+    $condition: ModelBytemineFilterConditionInput
   ) {
-    createFilter(input: $input, condition: $condition) {
+    createBytemineFilter(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -965,12 +968,12 @@ exports.createFilter = /* GraphQL */ `
     }
   }
 `;
-exports.updateFilter = /* GraphQL */ `
-  mutation UpdateFilter(
-    $input: UpdateFilterInput!
-    $condition: ModelFilterConditionInput
+exports.updateBytemineFilter = /* GraphQL */ `
+  mutation UpdateBytemineFilter(
+    $input: UpdateBytemineFilterInput!
+    $condition: ModelBytemineFilterConditionInput
   ) {
-    updateFilter(input: $input, condition: $condition) {
+    updateBytemineFilter(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -984,12 +987,12 @@ exports.updateFilter = /* GraphQL */ `
     }
   }
 `;
-exports.deleteFilter = /* GraphQL */ `
-  mutation DeleteFilter(
-    $input: DeleteFilterInput!
-    $condition: ModelFilterConditionInput
+exports.deleteBytemineFilter = /* GraphQL */ `
+  mutation DeleteBytemineFilter(
+    $input: DeleteBytemineFilterInput!
+    $condition: ModelBytemineFilterConditionInput
   ) {
-    deleteFilter(input: $input, condition: $condition) {
+    deleteBytemineFilter(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1003,12 +1006,12 @@ exports.deleteFilter = /* GraphQL */ `
     }
   }
 `;
-exports.createEmailAccount = /* GraphQL */ `
-  mutation CreateEmailAccount(
-    $input: CreateEmailAccountInput!
-    $condition: ModelEmailAccountConditionInput
+exports.createBytemineEmailAccount = /* GraphQL */ `
+  mutation CreateBytemineEmailAccount(
+    $input: CreateBytemineEmailAccountInput!
+    $condition: ModelBytemineEmailAccountConditionInput
   ) {
-    createEmailAccount(input: $input, condition: $condition) {
+    createBytemineEmailAccount(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1022,12 +1025,12 @@ exports.createEmailAccount = /* GraphQL */ `
     }
   }
 `;
-exports.updateEmailAccount = /* GraphQL */ `
-  mutation UpdateEmailAccount(
-    $input: UpdateEmailAccountInput!
-    $condition: ModelEmailAccountConditionInput
+exports.updateBytemineEmailAccount = /* GraphQL */ `
+  mutation UpdateBytemineEmailAccount(
+    $input: UpdateBytemineEmailAccountInput!
+    $condition: ModelBytemineEmailAccountConditionInput
   ) {
-    updateEmailAccount(input: $input, condition: $condition) {
+    updateBytemineEmailAccount(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1041,12 +1044,12 @@ exports.updateEmailAccount = /* GraphQL */ `
     }
   }
 `;
-exports.deleteEmailAccount = /* GraphQL */ `
-  mutation DeleteEmailAccount(
-    $input: DeleteEmailAccountInput!
-    $condition: ModelEmailAccountConditionInput
+exports.deleteBytemineEmailAccount = /* GraphQL */ `
+  mutation DeleteBytemineEmailAccount(
+    $input: DeleteBytemineEmailAccountInput!
+    $condition: ModelBytemineEmailAccountConditionInput
   ) {
-    deleteEmailAccount(input: $input, condition: $condition) {
+    deleteBytemineEmailAccount(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1060,12 +1063,12 @@ exports.deleteEmailAccount = /* GraphQL */ `
     }
   }
 `;
-exports.createEnrichment = /* GraphQL */ `
-  mutation CreateEnrichment(
-    $input: CreateEnrichmentInput!
-    $condition: ModelEnrichmentConditionInput
+exports.createBytemineEnrichment = /* GraphQL */ `
+  mutation CreateBytemineEnrichment(
+    $input: CreateBytemineEnrichmentInput!
+    $condition: ModelBytemineEnrichmentConditionInput
   ) {
-    createEnrichment(input: $input, condition: $condition) {
+    createBytemineEnrichment(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1088,12 +1091,12 @@ exports.createEnrichment = /* GraphQL */ `
     }
   }
 `;
-exports.updateEnrichment = /* GraphQL */ `
-  mutation UpdateEnrichment(
-    $input: UpdateEnrichmentInput!
-    $condition: ModelEnrichmentConditionInput
+exports.updateBytemineEnrichment = /* GraphQL */ `
+  mutation UpdateBytemineEnrichment(
+    $input: UpdateBytemineEnrichmentInput!
+    $condition: ModelBytemineEnrichmentConditionInput
   ) {
-    updateEnrichment(input: $input, condition: $condition) {
+    updateBytemineEnrichment(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1116,12 +1119,12 @@ exports.updateEnrichment = /* GraphQL */ `
     }
   }
 `;
-exports.deleteEnrichment = /* GraphQL */ `
-  mutation DeleteEnrichment(
-    $input: DeleteEnrichmentInput!
-    $condition: ModelEnrichmentConditionInput
+exports.deleteBytemineEnrichment = /* GraphQL */ `
+  mutation DeleteBytemineEnrichment(
+    $input: DeleteBytemineEnrichmentInput!
+    $condition: ModelBytemineEnrichmentConditionInput
   ) {
-    deleteEnrichment(input: $input, condition: $condition) {
+    deleteBytemineEnrichment(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1144,12 +1147,12 @@ exports.deleteEnrichment = /* GraphQL */ `
     }
   }
 `;
-exports.createEnrichSearch = /* GraphQL */ `
-  mutation CreateEnrichSearch(
-    $input: CreateEnrichSearchInput!
-    $condition: ModelEnrichSearchConditionInput
+exports.createBytemineEnrichSearch = /* GraphQL */ `
+  mutation CreateBytemineEnrichSearch(
+    $input: CreateBytemineEnrichSearchInput!
+    $condition: ModelBytemineEnrichSearchConditionInput
   ) {
-    createEnrichSearch(input: $input, condition: $condition) {
+    createBytemineEnrichSearch(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1162,12 +1165,12 @@ exports.createEnrichSearch = /* GraphQL */ `
     }
   }
 `;
-exports.updateEnrichSearch = /* GraphQL */ `
-  mutation UpdateEnrichSearch(
-    $input: UpdateEnrichSearchInput!
-    $condition: ModelEnrichSearchConditionInput
+exports.updateBytemineEnrichSearch = /* GraphQL */ `
+  mutation UpdateBytemineEnrichSearch(
+    $input: UpdateBytemineEnrichSearchInput!
+    $condition: ModelBytemineEnrichSearchConditionInput
   ) {
-    updateEnrichSearch(input: $input, condition: $condition) {
+    updateBytemineEnrichSearch(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1180,12 +1183,12 @@ exports.updateEnrichSearch = /* GraphQL */ `
     }
   }
 `;
-exports.deleteEnrichSearch = /* GraphQL */ `
-  mutation DeleteEnrichSearch(
-    $input: DeleteEnrichSearchInput!
-    $condition: ModelEnrichSearchConditionInput
+exports.deleteBytemineEnrichSearch = /* GraphQL */ `
+  mutation DeleteBytemineEnrichSearch(
+    $input: DeleteBytemineEnrichSearchInput!
+    $condition: ModelBytemineEnrichSearchConditionInput
   ) {
-    deleteEnrichSearch(input: $input, condition: $condition) {
+    deleteBytemineEnrichSearch(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1198,12 +1201,12 @@ exports.deleteEnrichSearch = /* GraphQL */ `
     }
   }
 `;
-exports.createFilterItem = /* GraphQL */ `
-  mutation CreateFilterItem(
-    $input: CreateFilterItemInput!
-    $condition: ModelFilterItemConditionInput
+exports.createBytemineFilterItem = /* GraphQL */ `
+  mutation CreateBytemineFilterItem(
+    $input: CreateBytemineFilterItemInput!
+    $condition: ModelBytemineFilterItemConditionInput
   ) {
-    createFilterItem(input: $input, condition: $condition) {
+    createBytemineFilterItem(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1218,12 +1221,12 @@ exports.createFilterItem = /* GraphQL */ `
     }
   }
 `;
-exports.updateFilterItem = /* GraphQL */ `
-  mutation UpdateFilterItem(
-    $input: UpdateFilterItemInput!
-    $condition: ModelFilterItemConditionInput
+exports.updateBytemineFilterItem = /* GraphQL */ `
+  mutation UpdateBytemineFilterItem(
+    $input: UpdateBytemineFilterItemInput!
+    $condition: ModelBytemineFilterItemConditionInput
   ) {
-    updateFilterItem(input: $input, condition: $condition) {
+    updateBytemineFilterItem(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1238,12 +1241,12 @@ exports.updateFilterItem = /* GraphQL */ `
     }
   }
 `;
-exports.deleteFilterItem = /* GraphQL */ `
-  mutation DeleteFilterItem(
-    $input: DeleteFilterItemInput!
-    $condition: ModelFilterItemConditionInput
+exports.deleteBytemineFilterItem = /* GraphQL */ `
+  mutation DeleteBytemineFilterItem(
+    $input: DeleteBytemineFilterItemInput!
+    $condition: ModelBytemineFilterItemConditionInput
   ) {
-    deleteFilterItem(input: $input, condition: $condition) {
+    deleteBytemineFilterItem(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1258,12 +1261,12 @@ exports.deleteFilterItem = /* GraphQL */ `
     }
   }
 `;
-exports.createAuditLog = /* GraphQL */ `
-  mutation CreateAuditLog(
-    $input: CreateAuditLogInput!
-    $condition: ModelAuditLogConditionInput
+exports.createBytemineAuditLog = /* GraphQL */ `
+  mutation CreateBytemineAuditLog(
+    $input: CreateBytemineAuditLogInput!
+    $condition: ModelBytemineAuditLogConditionInput
   ) {
-    createAuditLog(input: $input, condition: $condition) {
+    createBytemineAuditLog(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1277,12 +1280,12 @@ exports.createAuditLog = /* GraphQL */ `
     }
   }
 `;
-exports.updateAuditLog = /* GraphQL */ `
-  mutation UpdateAuditLog(
-    $input: UpdateAuditLogInput!
-    $condition: ModelAuditLogConditionInput
+exports.updateBytemineAuditLog = /* GraphQL */ `
+  mutation UpdateBytemineAuditLog(
+    $input: UpdateBytemineAuditLogInput!
+    $condition: ModelBytemineAuditLogConditionInput
   ) {
-    updateAuditLog(input: $input, condition: $condition) {
+    updateBytemineAuditLog(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1296,12 +1299,12 @@ exports.updateAuditLog = /* GraphQL */ `
     }
   }
 `;
-exports.deleteAuditLog = /* GraphQL */ `
-  mutation DeleteAuditLog(
-    $input: DeleteAuditLogInput!
-    $condition: ModelAuditLogConditionInput
+exports.deleteBytemineAuditLog = /* GraphQL */ `
+  mutation DeleteBytemineAuditLog(
+    $input: DeleteBytemineAuditLogInput!
+    $condition: ModelBytemineAuditLogConditionInput
   ) {
-    deleteAuditLog(input: $input, condition: $condition) {
+    deleteBytemineAuditLog(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1315,12 +1318,12 @@ exports.deleteAuditLog = /* GraphQL */ `
     }
   }
 `;
-exports.createSub = /* GraphQL */ `
-  mutation CreateSub(
-    $input: CreateSubInput!
-    $condition: ModelSubConditionInput
+exports.createBytemineSub = /* GraphQL */ `
+  mutation CreateBytemineSub(
+    $input: CreateBytemineSubInput!
+    $condition: ModelBytemineSubConditionInput
   ) {
-    createSub(input: $input, condition: $condition) {
+    createBytemineSub(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1357,12 +1360,12 @@ exports.createSub = /* GraphQL */ `
     }
   }
 `;
-exports.updateSub = /* GraphQL */ `
-  mutation UpdateSub(
-    $input: UpdateSubInput!
-    $condition: ModelSubConditionInput
+exports.updateBytemineSub = /* GraphQL */ `
+  mutation UpdateBytemineSub(
+    $input: UpdateBytemineSubInput!
+    $condition: ModelBytemineSubConditionInput
   ) {
-    updateSub(input: $input, condition: $condition) {
+    updateBytemineSub(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1399,12 +1402,12 @@ exports.updateSub = /* GraphQL */ `
     }
   }
 `;
-exports.deleteSub = /* GraphQL */ `
-  mutation DeleteSub(
-    $input: DeleteSubInput!
-    $condition: ModelSubConditionInput
+exports.deleteBytemineSub = /* GraphQL */ `
+  mutation DeleteBytemineSub(
+    $input: DeleteBytemineSubInput!
+    $condition: ModelBytemineSubConditionInput
   ) {
-    deleteSub(input: $input, condition: $condition) {
+    deleteBytemineSub(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1441,12 +1444,12 @@ exports.deleteSub = /* GraphQL */ `
     }
   }
 `;
-exports.createSubLog = /* GraphQL */ `
-  mutation CreateSubLog(
-    $input: CreateSubLogInput!
-    $condition: ModelSubLogConditionInput
+exports.createBytemineSubLog = /* GraphQL */ `
+  mutation CreateBytemineSubLog(
+    $input: CreateBytemineSubLogInput!
+    $condition: ModelBytemineSubLogConditionInput
   ) {
-    createSubLog(input: $input, condition: $condition) {
+    createBytemineSubLog(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1466,12 +1469,12 @@ exports.createSubLog = /* GraphQL */ `
     }
   }
 `;
-exports.updateSubLog = /* GraphQL */ `
-  mutation UpdateSubLog(
-    $input: UpdateSubLogInput!
-    $condition: ModelSubLogConditionInput
+exports.updateBytemineSubLog = /* GraphQL */ `
+  mutation UpdateBytemineSubLog(
+    $input: UpdateBytemineSubLogInput!
+    $condition: ModelBytemineSubLogConditionInput
   ) {
-    updateSubLog(input: $input, condition: $condition) {
+    updateBytemineSubLog(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1491,12 +1494,12 @@ exports.updateSubLog = /* GraphQL */ `
     }
   }
 `;
-exports.deleteSubLog = /* GraphQL */ `
-  mutation DeleteSubLog(
-    $input: DeleteSubLogInput!
-    $condition: ModelSubLogConditionInput
+exports.deleteBytemineSubLog = /* GraphQL */ `
+  mutation DeleteBytemineSubLog(
+    $input: DeleteBytemineSubLogInput!
+    $condition: ModelBytemineSubLogConditionInput
   ) {
-    deleteSubLog(input: $input, condition: $condition) {
+    deleteBytemineSubLog(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1516,12 +1519,12 @@ exports.deleteSubLog = /* GraphQL */ `
     }
   }
 `;
-exports.createUsage = /* GraphQL */ `
-  mutation CreateUsage(
-    $input: CreateUsageInput!
-    $condition: ModelUsageConditionInput
+exports.createBytemineUsage = /* GraphQL */ `
+  mutation CreateBytemineUsage(
+    $input: CreateBytemineUsageInput!
+    $condition: ModelBytemineUsageConditionInput
   ) {
-    createUsage(input: $input, condition: $condition) {
+    createBytemineUsage(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1534,12 +1537,12 @@ exports.createUsage = /* GraphQL */ `
     }
   }
 `;
-exports.updateUsage = /* GraphQL */ `
-  mutation UpdateUsage(
-    $input: UpdateUsageInput!
-    $condition: ModelUsageConditionInput
+exports.updateBytemineUsage = /* GraphQL */ `
+  mutation UpdateBytemineUsage(
+    $input: UpdateBytemineUsageInput!
+    $condition: ModelBytemineUsageConditionInput
   ) {
-    updateUsage(input: $input, condition: $condition) {
+    updateBytemineUsage(input: $input, condition: $condition) {
       id
       owner
       teamId
@@ -1552,12 +1555,12 @@ exports.updateUsage = /* GraphQL */ `
     }
   }
 `;
-exports.deleteUsage = /* GraphQL */ `
-  mutation DeleteUsage(
-    $input: DeleteUsageInput!
-    $condition: ModelUsageConditionInput
+exports.deleteBytemineUsage = /* GraphQL */ `
+  mutation DeleteBytemineUsage(
+    $input: DeleteBytemineUsageInput!
+    $condition: ModelBytemineUsageConditionInput
   ) {
-    deleteUsage(input: $input, condition: $condition) {
+    deleteBytemineUsage(input: $input, condition: $condition) {
       id
       owner
       teamId
