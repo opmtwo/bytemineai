@@ -50,8 +50,15 @@ export const getBytemineUser = /* GraphQL */ `
       userId
       createdAt
       updatedAt
-      name
+      isEnabled
       role
+      email
+      phone
+      name
+      givenName
+      familyName
+      company
+      passwordHash
       __typename
     }
   }
@@ -70,8 +77,15 @@ export const listBytemineUsers = /* GraphQL */ `
         userId
         createdAt
         updatedAt
-        name
+        isEnabled
         role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
+        passwordHash
         __typename
       }
       nextToken
@@ -1061,8 +1075,15 @@ export const listUserByTeamId = /* GraphQL */ `
         userId
         createdAt
         updatedAt
-        name
+        isEnabled
         role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
+        passwordHash
         __typename
       }
       nextToken
@@ -1094,8 +1115,55 @@ export const listUserByUserId = /* GraphQL */ `
         userId
         createdAt
         updatedAt
-        name
+        isEnabled
         role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
+        passwordHash
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const listUserByEmail = /* GraphQL */ `
+  query ListUserByEmail(
+    $email: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelBytemineUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserByEmail(
+      email: $email
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEnabled
+        role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
+        passwordHash
         __typename
       }
       nextToken

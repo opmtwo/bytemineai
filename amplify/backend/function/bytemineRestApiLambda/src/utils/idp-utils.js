@@ -325,6 +325,25 @@ const idpAdminEnableUser = async (userPoolId, username, verbose = true) => {
 	}
 };
 
+const idpAdminSetUserPassword = async (userPoolId, username, password, verbose = true) => {
+	if (verbose) {
+		console.log(`idpAdminSetUserPassword - userPoolId=${userPoolId}, username=${username}`);
+	}
+	try {
+		const idp = new AWS.CognitoIdentityServiceProvider();
+		const res = idp.adminSetUserPassword({ UserPoolId: userPoolId, Username: username, Password: password, Permanent: true });
+		if (verbose) {
+			console.log('idpAdminSetUserPassword - res', res);
+		}
+		return res;
+	} catch (err) {
+		if (verbose) {
+			console.log('idpAdminSetUserPassword - err', err);
+		}
+		throw err;
+	}
+};
+
 const idpListGroups = async (userPoolId, limit = null, paginationToken = null, verbose = true) => {
 	if (verbose) {
 		console.log(`idpListGroups - userPoolId=${userPoolId}, limit=${limit}, paginationToken=${paginationToken}`);
@@ -477,7 +496,7 @@ const idpSignUp = async (userPoolId, username, password, userAttributes, verbose
 	}
 };
 
-const idpAdminCreateUser = async (userPoolId, username, userAttributes, desiredDeliveryMediums, verbose = true) => {
+const idpAdminCreateUser = async (userPoolId, username, desiredDeliveryMediums, userAttributes, verbose = true) => {
 	if (verbose) {
 		console.log(
 			`idpAdminCreateUser - userPoolId=${userPoolId}, username=${username}, userAttributes=${userAttributes}, desiredDeliveryMediums=${desiredDeliveryMediums}`
@@ -604,4 +623,5 @@ module.exports = {
 	idpAdminUpdateUserAttributes,
 	idpAdminUserGlobalSignOut,
 	idpGetUserAttribute,
+	idpAdminSetUserPassword,
 };

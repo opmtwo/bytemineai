@@ -23,6 +23,7 @@ const awsServerlessExpressMiddleware = require('aws-serverless-express/middlewar
 
 const helloRouter = require('./v1/hello');
 const collectionsRouter = require('./v1/collections');
+const usersRouter = require('./v1/users');
 
 // declare a new express app
 const app = express()
@@ -38,6 +39,7 @@ app.use(function(req, res, next) {
 
 app.use('/api/v1/hello', helloRouter);
 app.use('/api/v1/collections', collectionsRouter);
+app.use('/api/v1/users', usersRouter);
 
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from

@@ -20,9 +20,25 @@ const IIds = Joi.object({
 	ids: Joi.array().max(100).required().items(Joi.string().trim().max(100)),
 });
 
+const IUser = Joi.object({
+	email: Joi.string().max(200).required(),
+	phone: Joi.string().max(20).required(),
+	name: Joi.string().max(100).required(),
+	givenName: Joi.string().allow('', null).max(50).optional(),
+	familyName: Joi.string().allow('', null).max(50).optional(),
+	company: Joi.string().allow('', null).max(200).optional(),
+	role: Joi.string().optional().allow('', null, 'Admin', 'Manager', 'Editor', 'Viewer'),
+}).options({ abortEarly: false });
+
+const IPassword = Joi.object({
+	password: Joi.string().max(100).required(),
+}).options({ abortEarly: false });
+
 module.exports = {
 	schemaValidate,
 	ICollection,
 	phoneSchema,
 	IIds,
+	IUser,
+	IPassword,
 };

@@ -64,8 +64,14 @@ exports.createBytemineUser = /* GraphQL */ `
       userId
       createdAt
       updatedAt
-      name
+      isEnabled
       role
+      email
+      phone
+      name
+      givenName
+      familyName
+      company
       __typename
     }
   }
@@ -82,8 +88,14 @@ exports.updateBytemineUser = /* GraphQL */ `
       userId
       createdAt
       updatedAt
-      name
+      isEnabled
       role
+      email
+      phone
+      name
+      givenName
+      familyName
+      company
       __typename
     }
   }
@@ -100,8 +112,14 @@ exports.deleteBytemineUser = /* GraphQL */ `
       userId
       createdAt
       updatedAt
-      name
+      isEnabled
       role
+      email
+      phone
+      name
+      givenName
+      familyName
+      company
       __typename
     }
   }

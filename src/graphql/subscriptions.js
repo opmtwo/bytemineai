@@ -60,8 +60,15 @@ export const onCreateBytemineUser = /* GraphQL */ `
       userId
       createdAt
       updatedAt
-      name
+      isEnabled
       role
+      email
+      phone
+      name
+      givenName
+      familyName
+      company
+      passwordHash
       __typename
     }
   }
@@ -77,8 +84,15 @@ export const onUpdateBytemineUser = /* GraphQL */ `
       userId
       createdAt
       updatedAt
-      name
+      isEnabled
       role
+      email
+      phone
+      name
+      givenName
+      familyName
+      company
+      passwordHash
       __typename
     }
   }
@@ -94,8 +108,15 @@ export const onDeleteBytemineUser = /* GraphQL */ `
       userId
       createdAt
       updatedAt
-      name
+      isEnabled
       role
+      email
+      phone
+      name
+      givenName
+      familyName
+      company
+      passwordHash
       __typename
     }
   }

@@ -19,7 +19,7 @@
         "bytemineRestApiLambda": {
           "stripeClientSecret": "sk_test_51OSl5uLgUrD1kX4RntOleOV3WAUXUKEqtizcVSVxrCPxsjEZ89Y5RhEViyOOubSC8pDQxJoY1xHtghfK3z5PSxcu00Ej5J9fgD",
           "deploymentBucketName": "amplify-bytemine-dev-96701-deployment",
-          "s3Key": "amplify-builds/bytemineRestApiLambda-6e42304a712b782b4679-build.zip"
+          "s3Key": "amplify-builds/bytemineRestApiLambda-6247316a4c4c7a586b43-build.zip"
         }
       },
       "storage": {

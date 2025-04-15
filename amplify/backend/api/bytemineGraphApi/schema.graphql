@@ -26,8 +26,32 @@ type BytemineUser @model @auth(rules: [{ allow: private, operations: [] }]) {
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
 
+	# enabled / disabled
+	isEnabled: Boolean
+
+	# admin / manager / user
+	role: String
+
+	# email
+	email: ID @index(name: "listUserByEmail", queryField: "listUserByEmail", sortKeyFields: ["createdAt"])
+
+	# phone_number
+	phone: String
+
+	# full name
 	name: String
-	role: String # admin / manager / user
+
+	# given name
+	givenName: String
+
+	# family name
+	familyName: String
+
+	# website
+	company: String
+
+	# password hash
+	passwordHash: String
 }
 
 type BytemineContact @model @auth(rules: [{ allow: private, operations: [] }]) {

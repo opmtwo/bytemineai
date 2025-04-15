@@ -50,8 +50,14 @@ exports.getBytemineUser = /* GraphQL */ `
       userId
       createdAt
       updatedAt
-      name
+      isEnabled
       role
+      email
+      phone
+      name
+      givenName
+      familyName
+      company
       __typename
     }
   }
@@ -70,8 +76,14 @@ exports.listBytemineUsers = /* GraphQL */ `
         userId
         createdAt
         updatedAt
-        name
+        isEnabled
         role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
         __typename
       }
       nextToken
@@ -1061,8 +1073,14 @@ exports.listUserByTeamId = /* GraphQL */ `
         userId
         createdAt
         updatedAt
-        name
+        isEnabled
         role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
         __typename
       }
       nextToken
@@ -1094,8 +1112,53 @@ exports.listUserByUserId = /* GraphQL */ `
         userId
         createdAt
         updatedAt
-        name
+        isEnabled
         role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.listUserByEmail = /* GraphQL */ `
+  query ListUserByEmail(
+    $email: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelBytemineUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserByEmail(
+      email: $email
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEnabled
+        role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
         __typename
       }
       nextToken
