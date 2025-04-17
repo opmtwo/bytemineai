@@ -369,6 +369,17 @@ export const onCreateBytemineCollectionContact = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      collectionId
+      collection {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        name
+        __typename
+      }
       contactId
       contact {
         id
@@ -459,6 +470,17 @@ export const onUpdateBytemineCollectionContact = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      collectionId
+      collection {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        name
+        __typename
+      }
       contactId
       contact {
         id
@@ -549,6 +571,17 @@ export const onDeleteBytemineCollectionContact = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      collectionId
+      collection {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        name
+        __typename
+      }
       contactId
       contact {
         id

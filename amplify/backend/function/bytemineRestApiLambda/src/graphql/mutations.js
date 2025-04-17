@@ -72,6 +72,7 @@ exports.createBytemineUser = /* GraphQL */ `
       givenName
       familyName
       company
+      passwordHash
       __typename
     }
   }
@@ -96,6 +97,7 @@ exports.updateBytemineUser = /* GraphQL */ `
       givenName
       familyName
       company
+      passwordHash
       __typename
     }
   }
@@ -120,6 +122,7 @@ exports.deleteBytemineUser = /* GraphQL */ `
       givenName
       familyName
       company
+      passwordHash
       __typename
     }
   }
@@ -376,6 +379,17 @@ exports.createBytemineCollectionContact = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      collectionId
+      collection {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        name
+        __typename
+      }
       contactId
       contact {
         id
@@ -467,6 +481,17 @@ exports.updateBytemineCollectionContact = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      collectionId
+      collection {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        name
+        __typename
+      }
       contactId
       contact {
         id
@@ -558,6 +583,17 @@ exports.deleteBytemineCollectionContact = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      collectionId
+      collection {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        name
+        __typename
+      }
       contactId
       contact {
         id
