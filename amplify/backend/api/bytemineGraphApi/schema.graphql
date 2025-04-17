@@ -140,6 +140,9 @@ type BytemineCollectionContact @model @auth(rules: [{ allow: private, operations
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
 
+	collectionId: ID @index(name: "listCollectionContactByCollectionId", queryField: "listCollectionContactByCollectionId", sortKeyFields: ["createdAt"])
+	collection: BytemineCollection @hasOne(fields: ["collectionId"])
+
 	contactId: ID
 	contact: BytemineContact @hasOne(fields: ["contactId"])
 
@@ -248,7 +251,7 @@ type BytemineFilterItem @model @auth(rules: [{ allow: private, operations: [] }]
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
 
-	filterId: ID # teamId-filterId - e.g. opmtwo-domains
+	filterId: ID @index(name: "listFilterItemByFilterId", queryField: "listFilterItemByFilterId", sortKeyFields: ["createdAt"]) # teamId-filterId - e.g. opmtwo-domains 
 	filename: String # file name of the original csv file
 	key: String # key of the filter value, e.g. domain, email, linkedin etc...
 	val: String # the actual value of the filter
