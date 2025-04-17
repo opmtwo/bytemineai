@@ -34,6 +34,17 @@ const IPassword = Joi.object({
 	password: Joi.string().max(100).required(),
 }).options({ abortEarly: false });
 
+const IDomainSearch = Joi.object({
+	term: Joi.string().max(100).required(),
+}).options({ abortEarly: false });
+
+const ICSVFilter = Joi.object({
+	key: Joi.string().max(100).required(),
+	fieldId: Joi.string().max(100).required(),
+	columnId: Joi.string().max(100).required(),
+	name: Joi.string().max(100).required(),
+}).options({ abortEarly: false });
+
 module.exports = {
 	schemaValidate,
 	ICollection,
@@ -41,4 +52,6 @@ module.exports = {
 	IIds,
 	IUser,
 	IPassword,
+	IDomainSearch,
+	ICSVFilter,
 };

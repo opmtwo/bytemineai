@@ -1,74 +1,39 @@
-const axios = require('axios');
-const rax = require('retry-axios');
-
 const { AT_DATA_API_KEY } = process.env;
 
 const atDataResponseCodes = {
-	5: { status: 'unknown', code: 5, description: `Timeout. Did not get a response in time` },
-	10: { status: 'unknown', code: 10, description: `Syntax OK` },
-	20: { status: 'unknown', code: 20, description: `Syntax OK and the domain is valid` },
-	45: { status: 'unverifiable', code: 45, description: `Domain is a catch all and does not support validation` },
-	50: { status: 'valid', code: 50, description: `Valid email address` },
-	100: { status: 'invalid', code: 100, description: `General syntax error` },
-	110: { status: 'invalid', code: 110, description: `Invalid character in address` },
-	115: { status: 'invalid', code: 115, description: `Invalid domain syntax` },
-	120: { status: 'invalid', code: 120, description: `Invalid username syntax` },
-	125: { status: 'invalid', code: 125, description: `Invalid username syntax for that domain` },
-	130: { status: 'invalid', code: 130, description: `Address is too long` },
-	135: { status: 'invalid', code: 135, description: `Address has unbalanced parentheses` },
-	140: { status: 'invalid', code: 140, description: `Address doesn’t have a username` },
-	145: { status: 'invalid', code: 145, description: `Address doesn’t have a domain` },
-	150: { status: 'invalid', code: 150, description: `Address doesn’t have an @ sign` },
-	155: { status: 'invalid', code: 155, description: `Address has more than one @ sign` },
-	200: { status: 'invalid', code: 200, description: `Invalid top-level domain (TLD) in address` },
-	205: { status: 'invalid', code: 205, description: `IP address is not allowed as a domain` },
-	210: { status: 'invalid', code: 210, description: `Address contains an extra space or character` },
-	215: { status: 'invalid', code: 215, description: `Unquoted spaces not allowed in email addresses` },
-	310: { status: 'invalid', code: 310, description: `Domain doesn’t exist` },
-	315: { status: 'invalid', code: 315, description: `Domain doesn’t have a valid IP address` },
-	325: { status: 'invalid', code: 325, description: `Domain can’t receive email` },
-	400: { status: 'invalid', code: 400, description: `Mailbox doesn't exist` },
-	410: { status: 'invalid', code: 410, description: `The mailbox is full and can’t receive email` },
-	420: { status: 'invalid', code: 420, description: `Mail isn't accepted for this domain` },
-	500: { status: 'invalid', code: 500, description: `Emails with that username aren’t accepted` },
-	505: { status: 'invalid', code: 505, description: `Emails with that domain aren’t accepted` },
-	510: { status: 'invalid', code: 510, description: `That address isn’t accepted` },
-	520: { status: 'invalid', code: 520, description: `Address matched to known bouncers (optional feature)` },
-	525: { status: 'risky', code: 525, description: `Address is a spamtrap, a known complainer or is suppressed` },
-	530: { status: 'risky', code: 530, description: `Address has opted out from commercial email` },
-	999: { status: 'unknown', code: 999, description: `System error` },
+	5: { status: 'unknown', code: 5, description: `Timeout. Did not get a response in time.` },
+	10: { status: 'unknown', code: 10, description: `Syntax OK.` },
+	20: { status: 'unknown', code: 20, description: `Syntax OK and the domain is valid.` },
+	45: { status: 'unverifiable', code: 45, description: `Domain is a catch-all and does not support validation.` },
+	50: { status: 'safetosend', code: 50, description: `Valid and guaranteed SafeToSend email address.` },
+	100: { status: 'invalid', code: 100, description: `General syntax error.` },
+	110: { status: 'invalid', code: 110, description: `Invalid character in address.` },
+	115: { status: 'invalid', code: 115, description: `Invalid domain syntax.` },
+	120: { status: 'invalid', code: 120, description: `Invalid username syntax.` },
+	125: { status: 'invalid', code: 125, description: `Invalid username syntax for that domain.` },
+	130: { status: 'invalid', code: 130, description: `The address is too long.` },
+	140: { status: 'invalid', code: 140, description: `Address doesn’t have a username.` },
+	145: { status: 'invalid', code: 145, description: `Address doesn’t have a domain.` },
+	150: { status: 'invalid', code: 150, description: `Address doesn’t have an @ sign.` },
+	155: { status: 'invalid', code: 155, description: `Address has more than one @ sign.` },
+	200: { status: 'invalid', code: 200, description: `Invalid top-level domain (TLD) in address.` },
+	210: { status: 'invalid', code: 210, description: `The address contains an extra space or character.` },
+	215: { status: 'invalid', code: 215, description: `Unquoted spaces not allowed in email addresses.` },
+	310: { status: 'invalid', code: 310, description: `Domain doesn’t exist.` },
+	325: { status: 'invalid', code: 325, description: `Domain can’t receive email.` },
+	400: { status: 'invalid', code: 400, description: `Mailbox doesn’t exist.` },
+	410: { status: 'invalid', code: 410, description: `The mailbox is full and can’t receive email.` },
+	420: { status: 'invalid', code: 420, description: `Mail isn’t accepted for this domain.` },
+	500: { status: 'invalid', code: 500, description: `Emails with that username aren’t accepted.` },
+	505: { status: 'invalid', code: 505, description: `Emails with that domain aren’t accepted.` },
+	510: { status: 'invalid', code: 510, description: `That address isn’t accepted.` },
+	520: { status: 'invalid', code: 520, description: `The address matched to known bouncers.` },
+	525: { status: 'trap', code: 525, description: `Address is a spam trap or is suppressed.` },
+	530: { status: 'trap', code: 530, description: `Address has opted out from commercial email.` },
+	535: { status: 'trap', code: 535, description: `Address is on ANA\'s "Do Not Email List".` },
+	540: { status: 'trap', code: 540, description: `Address belongs to a known or frequent complainer.` },
+	999: { status: 'unknown', code: 999, description: `System error occurred.` },
 };
-
-/**
- * @summary
- * Verify an email address using AtData API
- *
- * @see
- * https://docs.atdata.com/?javascript#email-validation-introduction
- *
- * @param {string} email The request email address to verify
- * @returns {Mixed} AtData response object on success else undefined
- */
-const atDataVerifyEmail = async (email = false) =>
-	new Promise(async (resolve, reject) => {
-		console.log('atdataVerifyEmail - email -', email);
-		if (!email?.trim()?.length) {
-			console.log('atdataVerifyEmail - error - email is required');
-			return reject({ message: 'Email is required' });
-		}
-		const emailEncoded = encodeURIComponent(email.trim());
-		const url = `https://api.towerdata.com/v5/ev?api_key=${AT_DATA_API_KEY}&email=${emailEncoded}`;
-		console.log('atdataVerifyEmail - ', { emailEncoded, url });
-		let response;
-		try {
-			response = await axios.get(url);
-			console.log('atdataVerifyEmail - success - ', response.data);
-			return resolve(response.data);
-		} catch (err) {
-			console.log('atdataVerifyEmail - error - ', err);
-			return reject(err);
-		}
-	});
 
 /**
  * @summary Verifies the email address using the AtData API
@@ -84,62 +49,77 @@ const atDataVerifyEmail = async (email = false) =>
  * @returns {Object|undefined} The validation data on success or undefined (or error if shouldReturnError is true)
  */
 const atDataVerifyEmailAddress = async (email, shouldReturnError = false) => {
-	// Early return if the email is empty or invalid
 	if (!email?.trim()) return;
 
-	// Encode the email to be URL-safe
 	const emailEncoded = encodeURIComponent(email.trim());
-
-	// Construct the API URL with the encoded email and the API key
 	const url = `https://api.towerdata.com/v5/ev?api_key=${AT_DATA_API_KEY}&email=${emailEncoded}`;
 
-	// Configure retry logic and request timeout settings
-	const config = {
-		raxConfig: {
-			retry: 16, // Number of retries on 4xx or 5xx errors
-			noResponseRetries: 8, // Number of retries on connection errors
-			onRetryAttempt: (err) => {
-				// Log each retry attempt for tracking
-				const cfg = rax.getConfig(err);
-				console.log(`Retry attempt #${cfg.currentRetryAttempt}`);
-			},
-		},
-		timeout: 500, // Timeout for the request (in ms)
-	};
+	const maxRetries = 16;
+	const retryDelay = 500; // ms
+	let attempt = 0;
 
-	try {
-		// Attach request interceptor to handle retries
-		const interceptorId = rax.attach();
+	while (attempt <= maxRetries) {
+		try {
+			const response = await fetch(url, {
+				method: 'POST',
+				// timeout: 500, // in Node.js v22+, fetch includes timeout natively
+			});
 
-		// Send the request to the AtData API and get the response data
-		const { data } = await axios.post(url, config);
-
-		console.log('verifyEmailAddress - success:', data);
-
-		// If the response contains a result, set custom validation codes based on the result
-		if (data?.result) {
-			switch (data.result) {
-				case 'valid': // Email is valid
-					data.code = '5';
-					break;
-				case 'catchall': // Email domain is catch-all
-					data.code = '4';
-					break;
-				default: // Other cases (invalid or undetermined)
-					data.code = '6';
-					break;
+			if (!response.ok) {
+				throw new Error(`HTTP error ${response.status}`);
 			}
-		}
 
-		// Return the validated data
-		return data;
-	} catch (err) {
-		// Log any error that occurs during the request
-		console.log('verifyEmailAddress - error:', err);
+			const data = await response.json();
 
-		// If shouldReturnError is true, return the error object
-		if (shouldReturnError) {
-			return err;
+			/*
+			SAMPLE
+			safe_to_send: {
+				domain_type: 'freeisp',
+				status_code: 50,
+				address: 'onepunchmantwo@gmail.com',
+				engagement: 2,
+				status: 'safetosend'
+			}
+			*/
+
+			console.log('verifyEmailAddress - success:', data);
+
+			if (data?.result) {
+				switch (data.result) {
+					case 'valid':
+						data.code = '5';
+						break;
+					case 'catchall':
+						data.code = '4';
+						break;
+					default:
+						data.code = '6';
+						break;
+				}
+			}
+
+			if (data?.safe_to_send?.status_code) {
+				const code = parseInt(data.safe_to_send.status_code);
+				data.safe_to_send.status_info = atDataResponseCodes[code];
+			}
+
+			return data;
+		} catch (err) {
+			attempt++;
+			console.log(`Retry attempt #${attempt} - error:`, err.message);
+
+			const isLastAttempt = attempt > maxRetries;
+			const isRetryable = err.name === 'FetchError' || err.message.includes('timeout') || err.message.includes('network');
+
+			if (isLastAttempt || !isRetryable) {
+				if (shouldReturnError) {
+					return err;
+				}
+				break;
+			}
+
+			// Wait before retrying
+			await new Promise((resolve) => setTimeout(resolve, retryDelay));
 		}
 	}
 };
@@ -157,29 +137,74 @@ const atDataVerifyEmailAddress = async (email, shouldReturnError = false) => {
  */
 const atDataVerifyEmailAccounts = async (contactData) => {
 	let response;
+	let contact = { ...contactData };
 
 	// Check if contactEmail exists and needs to be verified
 	if (contactData?.contactEmail) {
 		// Verify the email address using the AtData API
-		response = await verifyEmailAddress(contactData.contactEmail);
+		response = await atDataVerifyEmailAddress(contact.contactEmail);
 
 		// If the response contains valid email validation data, update the contactData object
-		if (response?.email_validation?.status_code) {
-			contactData.contactEmailStatusCode = response.email_validation.status_code;
-			contactData.contactEmailDomainType = response.email_validation.domain_type;
+		if (response?.safe_to_send?.status_code) {
+			contact.contactEmailStatusCode = response.safe_to_send.status_code;
+			contact.contactEmailDomainType = response.safe_to_send.domain_type;
 		}
+
+		/*if (response?.debounce?.code) {
+			contact.contactEmailStatusCode = response.debounce.code;
+			contact.contactEmailDomainType = response.debounce.reason;
+		}*/
+		/*
+		if (response?.code) {
+			contact.contactEmailStatusCode = response.code;
+			contact.contactEmailDomainType = response.result;
+		}*/
 	}
 
+	// verify personal email
+	//if (contact?.personalEmail) {
+	//	response = await verifyEmailAddress(contact.personalEmail);
+	//	if (response?.email_validation?.status_code) {
+	//		contact.personalEmailStatusCode = response.email_validation.status_code;
+	//		contact.personalEmailDomainType = response.email_validation.domain_type;
+	//	}
+	/*if (response?.debounce?.code) {
+        contact.personalEmailStatusCode = response.debounce.code;
+        contact.personalEmailDomainType = response.debounce.reason;
+    }
+    if (response?.code) {
+        contact.personalEmailStatusCode = response.code;
+        contact.personalEmailDomainType = response.result;
+    }*/
+	//}
+
+	// verify contact personal email
+	/*
+	if (contact?.contactPersonalEmail) {
+		response = await verifyEmailAddress(contact.contactPersonalEmail);
+		/*if (response?.email_validation?.status_code) {
+			contact.contactPersonalEmailStatusCode = response.email_validation.status_code;
+			contact.contactPersonalEmailDomainType = response.email_validation.domain_type;
+		}*/
+	/*if (response?.debounce?.code) {
+        contact.contactPersonalEmailStatusCode = response.debounce.code;
+        contact.contactPersonalEmailDomainType = response.debounce.reason;
+    }*/ /*
+		if (response?.code) {
+			contact.contactPersonalEmailStatusCode = response.code;
+			contact.contactPersonalEmailDomainType = response.result;
+		}
+	}*/
+
 	// Mark the email as verified in the contact data
-	contactData.isEmailVerified = true;
+	contact.isEmailVerified = true;
 
 	// Return the updated contact data
-	return contactData;
+	return contact;
 };
 
 module.exports = {
 	atDataResponseCodes,
-	atdataVerifyEmail,
-	atdataVerifyEmailAddress,
-	atdataVerifyEmailAccounts,
+	atDataVerifyEmailAddress,
+	atDataVerifyEmailAccounts,
 };

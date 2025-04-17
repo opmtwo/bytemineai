@@ -17,9 +17,10 @@
       },
       "function": {
         "bytemineRestApiLambda": {
-          "stripeClientSecret": "sk_test_51OSl5uLgUrD1kX4RntOleOV3WAUXUKEqtizcVSVxrCPxsjEZ89Y5RhEViyOOubSC8pDQxJoY1xHtghfK3z5PSxcu00Ej5J9fgD",
           "deploymentBucketName": "amplify-bytemine-dev-96701-deployment",
-          "s3Key": "amplify-builds/bytemineRestApiLambda-6247316a4c4c7a586b43-build.zip"
+          "s3Key": "amplify-builds/bytemineRestApiLambda-345057656c2b332f6c35-build.zip",
+          "stripeClientSecret": "sk_test_51OSl5uLgUrD1kX4RntOleOV3WAUXUKEqtizcVSVxrCPxsjEZ89Y5RhEViyOOubSC8pDQxJoY1xHtghfK3z5PSxcu00Ej5J9fgD",
+          "atDataApiKey": "863c3f14e37d1dd240e9cf76227a5d70"
         }
       },
       "storage": {

@@ -34,6 +34,9 @@
     },
     "stripeClientSecret": {
       "Type": "String"
+    },
+    "atDataApiKey": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -101,8 +104,37 @@
             "API_BYTEMINEGRAPHAPI_GRAPHQLAPIENDPOINTOUTPUT": {
               "Ref": "apibytemineGraphApiGraphQLAPIEndpointOutput"
             },
+            "API_BYTEMINEGRAPHAPI_BYTEMINEFILTERITEMTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineFilterItemTable:Name"
+              }
+            },
+            "API_BYTEMINEGRAPHAPI_BYTEMINEFILTERITEMTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineFilterItemTable:Name"
+                    }
+                  }
+                ]
+              ]
+            },
             "STRIPE_CLIENT_SECRET": {
               "Ref": "stripeClientSecret"
+            },
+            "AT_DATA_API_KEY": {
+              "Ref": "atDataApiKey"
             }
           }
         },
@@ -355,6 +387,72 @@
                         "Ref": "storagebytemineStorageBucketName"
                       },
                       "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PartiQLInsert",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:PartiQLSelect",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:PartiQLUpdate",
+                "dynamodb:Delete*",
+                "dynamodb:PartiQLDelete"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineFilterItemTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineFilterItemTable:Name"
+                        }
+                      },
+                      "/index/*"
                     ]
                   ]
                 }

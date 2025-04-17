@@ -1,6 +1,5 @@
 const aws = require('aws-sdk');
 const csv = require('csv-parser');
-const { updateEnrichment } = require('./helper-utils');
 
 const csvGetInfo = async (key, bucket, verbose = false) =>
 	new Promise((resolve, reject) => {

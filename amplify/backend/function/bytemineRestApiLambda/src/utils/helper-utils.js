@@ -135,10 +135,48 @@ const getNestedKey = (data, keyPath) => {
 	return data; // Return the final value
 };
 
+const createEnrichment = async (body) => {
+	console.log('createEnrichment - input ', body);
+	try {
+		const now = new Date().toISOString();
+		const params = {
+			id: v4(),
+			s3Key: body.key,
+			s3KeyOutput: `${body.key}.output.csv`,
+			userId: body.userId,
+			groupId: body.groupId,
+			tenants: [body.groupId],
+			name: body.name,
+			size: body.size,
+			recordsUploaded: body.records,
+			recordsEnriched: 0,
+			recordsProcessed: 0,
+			keyEmail: body.email,
+			keyPhone: body.phone,
+			keyLinkedin: body.linkedin,
+			keyFacebook: body.facebook,
+			phoneRequired: body.phoneRequired,
+			workEmailRequired: body.workEmailRequired,
+			status: 'pending',
+			isCompleted: false,
+			createdAt: now,
+			updatedAt: now,
+		};
+		const response = await ddbPutItem(ENRICHMENTTABLE_NAME, ddbEncode(params));
+		console.log('createEnrichment - success ', response);
+		return params;
+	} catch (err) {
+		console.log('createEnrichment - error -', err);
+		throw err;
+	}
+};
+
 module.exports = {
 	safeJsonDecode,
 	safelyParseJSON,
 	getResponse,
 	getErrorResponse,
 	getNestedKey,
+	createEnrichment,
+	//
 };

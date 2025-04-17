@@ -1,34 +1,5 @@
 'use strict';
 
-// const AWS = require('aws-sdk');
-// const connectionClass = require('http-aws-es');
-// const elasticsearch = require('elasticsearch');
-
-// AWS.config.update({
-// 	region: 'us-west-2',
-// 	accessKeyId: 'AKIA3J4MF4AO6YJBNKVY',
-// 	secretAccessKey: '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',
-// });
-
-// const domain = 'https://search-search-nymblr-1-cvhjgwripkshj377arn52corbq.us-west-2.es.amazonaws.com';
-// const index = 'nymblr_20221107';
-
-// /**
-//  * @link
-//  * https://www.npmjs.com/package/elasticsearch
-//  *
-//  * @link
-//  * https://www.npmjs.com/package/http-aws-es
-//  */
-// const elasticClient = new elasticsearch.Client({
-// 	host: domain,
-// 	log: 'error',
-// 	connectionClass: connectionClass,
-// 	amazonES: {
-// 		credentials: new AWS.EnvironmentCredentials('AWS'),
-// 	},
-// });
-
 const aws4 = require('aws4');
 const axios = require('axios');
 
@@ -268,7 +239,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-	// md5HashedEmailAddresses > 
+	// md5HashedEmailAddresses >
 	// -------------------------------------------------------------------------
 	if (body?.md5HashedEmailAddresses instanceof Array && body?.md5HashedEmailAddresses.length > 0) {
 		// const fields = ['emails.lower_md5', 'emails.upper_md5'];
@@ -346,7 +317,7 @@ const esGetFilters2 = (rawBody, append = false) => {
      */
 
 	// -------------------------------------------------------------------------
-    // seniorityLevels > job_title
+	// seniorityLevels > job_title
 	// job_level/seniority level title override checks
 	// -------------------------------------------------------------------------
 	if (body?.seniorityLevels instanceof Array && body?.seniorityLevels?.length > 0) {
@@ -635,7 +606,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-    // hqLocations
+	// hqLocations
 	// filter company country location - ['United States', 'United Kingdom'],
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// hqLocations
@@ -645,7 +616,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-    // cities > company_local_city | company_hq_city
+	// cities > company_local_city | company_hq_city
 	// filter company cities
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
@@ -661,7 +632,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-    // name_first > first_name
+	// name_first > first_name
 	// filter first name
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
@@ -677,7 +648,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-    // name_last > last_name
+	// name_last > last_name
 	// filter last name
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
@@ -693,7 +664,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-    // states > person_state
+	// states > person_state
 	// filter company states - ['NY', 'CA']
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
@@ -728,7 +699,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-    // industries > company_industry
+	// industries > company_industry
 	// filter company industry - ['accounting', 'capital markets', 'architecture & planning']
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
@@ -831,7 +802,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-    // sicCodes > company_sic4
+	// sicCodes > company_sic4
 	// filter company sic codes - ['8720', '9411', '273']
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
@@ -879,7 +850,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-    // naicsCodesExclude > company_naics
+	// naicsCodesExclude > company_naics
 	// -------------------------------------------------------------------------
 	if (body?.naicsCodesExclude instanceof Array && body?.naicsCodesExclude.length > 0) {
 		const fields = ['company_naics'];
@@ -897,7 +868,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-    // companyNames > company
+	// companyNames > company
 	// filter company name - ['google', 'microsoft']
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
@@ -931,7 +902,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-    // urls > company_domain | company_website
+	// urls > company_domain | company_website
 	// filter company urls/domains - ['rampedup.io', 'google.com']
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
@@ -967,7 +938,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-    // contactTitles > job_title
+	// contactTitles > job_title
 	// filter job titles - ['CEO', 'Owner', 'Software Engineer']
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
@@ -1235,7 +1206,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-    // hasPrimaryContactsOnly > work_email
+	// hasPrimaryContactsOnly > work_email
 	// filter primary contact presence
 	// @see https://stackoverflow.com/questions/14745210/create-elasticsearch-curl-query-for-not-null-and-not-empty
 	// -------------------------------------------------------------------------
@@ -1685,12 +1656,11 @@ const esGetById2 = async (id) => {
 };
 
 module.exports = {
-	// elasticClient,
-	// esGetOptionValues2,
-	// esGetOptionsFromBody,
-	// esGetFilters,
-	// esGetPaginationQuery,
-	// esNormalizeDocument,
+	esGetOptionValues2,
+	esGetOptionsFromBody2,
+	esGetFilters2,
+	esGetPaginationQuery2,
+	esNormalizeDocument2,
 	esSearch2,
 	esGetById2,
 	esRequest2,
