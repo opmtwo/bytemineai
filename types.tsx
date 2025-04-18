@@ -831,3 +831,90 @@ export interface IBytemineContact {
 	company_naics_description: string;
 	company_type: string;
 }
+
+export interface IContactPersonalEmailEntry {
+	personal_email: string;
+	yyyyqq: string;
+}
+
+export interface IContactPhoneMobileEntry {
+	phone_mobile: string;
+	yyyyqq: string;
+}
+
+export interface IContactEducationEntry {
+	school: string;
+	start_date: string;
+	end_date: string;
+	degrees: string[];
+}
+
+export interface IContactWorkExperienceEntry {
+	title: string;
+	start_date: string;
+	end_date: string;
+	company: string;
+}
+
+export interface IContact {
+	pid: number;
+	first_name: string;
+	last_name: string;
+	middle_name: string;
+	full_name: string;
+	job_title: string;
+	job_level: string;
+	job_function: string;
+	enhanced_job_function: string;
+	job_sub_function: string;
+	linkedin_url: string;
+	linkedin_connection_count: number;
+	work_email: string;
+	work_email_dispo: string;
+	work_email_array: string;
+	email_domain: string;
+	personal_email: string;
+	personal_email_2: string;
+	personal_email_array: IContactPersonalEmailEntry[];
+	phone_1_dd: string;
+	phone_mobile: string;
+	phone_mobile_array: IContactPhoneMobileEntry[];
+	phone_2_org: string;
+	education: IContactEducationEntry[];
+	skills: string[];
+	interests: string;
+	linkedin_headline: string;
+	facebook_url: string;
+	twitter_url: string;
+	work_experience: IContactWorkExperienceEntry[];
+	compensation: string;
+	birth_year: number;
+	approximate_age: number;
+	gender: string;
+	recent_job_change: boolean;
+	job_start_date: string;
+	org_name: string;
+	org_domain: string;
+	org_website: string;
+	org_linkedin_url: string;
+	org_linkedin_followers: number;
+	address1_line1: string;
+	address1_city: string;
+	address1_state: string;
+	address1_postal: string | number;
+	address2_line1: string;
+	address2_city: string;
+	address2_state: string;
+	address2_postal: string | number;
+	address3_city: string;
+	address3_state: string;
+	address3_postal: string | number;
+	employee_range: string;
+	revenue_range: string;
+	industry: string;
+	sic_4d: number;
+	sic_4d_desc: string;
+	naics: number;
+	naics_desc: string;
+	org_ownership_status: string;
+}
