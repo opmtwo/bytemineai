@@ -171,6 +171,11 @@ const createEnrichment = async (body) => {
 	}
 };
 
+const getErrorMsg = (err) =>
+	err?.errorMessage || err?.reason?.errorMessage || err?.reason?.raw?.message || err?.response?.data?.message || err?.response?.statusText || err?.message;
+
+const getErrorCode = (err) => err?.statusCode || err?.reason?.statusCode || err?.reason?.raw?.statusCode || err?.response?.data?.statusCode || err?.code;
+
 module.exports = {
 	safeJsonDecode,
 	safelyParseJSON,
@@ -178,5 +183,6 @@ module.exports = {
 	getErrorResponse,
 	getNestedKey,
 	createEnrichment,
-	//
+	getErrorMsg,
+	getErrorCode,
 };
