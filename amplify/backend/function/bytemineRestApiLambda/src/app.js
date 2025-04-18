@@ -28,6 +28,7 @@ const usersRouter = require('./v1/users');
 const searchRouter = require('./v1/search');
 const csvFiltersRouter = require('./v1/csv-filters');
 const authRouter = require('./v1/auth');
+const contactsRouter = require('./v1/contacts');
 
 // declare a new express app
 const app = express()
@@ -47,6 +48,7 @@ app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/search', searchRouter);
 app.use('/api/v1/csv-filters', csvFiltersRouter);
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/contacts', contactsRouter);
 
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from
