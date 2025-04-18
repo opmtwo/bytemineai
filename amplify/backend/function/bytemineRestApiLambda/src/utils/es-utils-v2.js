@@ -86,74 +86,91 @@ const esRequest2 = async (method, url, data) => {
 	}
 };
 
-const esGetOptionValues2 = (optionValues, incexclude = 'include') => {
-	console.log('esGetOptionValues2 - optionValues - ', optionValues);
+/**
+ * Extracts and returns a list of option values from an object, based on include/exclude flags.
+ *
+ * @param {Object|Array} optionValues - The input containing options (with optional include/exclude keys or raw array).
+ * @param {String} incexclude - Determines whether to extract from 'include', 'exclude', or use the array directly. Default is 'include'.
+ * @returns {Array} - Cleaned array of non-empty string values.
+ */
+const esGetOptionValuesV2 = (optionValues, incexclude = 'include') => {
+	console.log('esGetOptionValuesV2', JSON.stringify({ optionValues }));
+
 	let values = [];
+
+	// Return empty array if no optionValues provided
 	if (!optionValues) {
 		return values;
 	}
+
+	// Extract values based on incexclude mode
 	if (incexclude === 'include') {
+		// If 'include' key exists, push all its values
 		if ('include' in optionValues) {
 			optionValues.include.forEach((item) => values.push(item));
 		}
 	} else if (incexclude === 'exclude') {
+		// If 'exclude' key exists, push all its values
 		if ('exclude' in optionValues) {
 			optionValues.exclude.forEach((item) => values.push(item));
 		}
 	} else {
+		// If no specific mode, assume optionValues is a raw array
 		optionValues.forEach((item) => values.push(item));
 	}
 
+	// Filter out empty or whitespace-only values
 	values = values.filter((value) => value?.toString()?.trim()?.length !== 0);
-	console.log('esGetOptionValues2 - result - ', values);
+
+	console.log('esGetOptionValuesV2 - result - ', values);
 	return values;
 };
 
-const esGetOptionsFromBody2 = (body) => {
-	console.log('esGetOptionsFromBody2 body -', body);
+const esGetOptionsV2 = (body) => {
+	console.log('esGetOptionsV2 - input', JSON.stringify({ body }));
 
 	const options = {
-		keywords: esGetOptionValues2(body.keywords), // ['string'],
-		keywordsExclude: esGetOptionValues2(body.keywords, 'exclude'), // ['string'],
-		name_first: esGetOptionValues2(body.name_first),
-		name_last: esGetOptionValues2(body.name_last),
-		contactTitles: esGetOptionValues2(body.contactTitles),
-		contactTitlesExclude: esGetOptionValues2(body.contactTitles, 'exclude'),
-		contactEducation: esGetOptionValues2(body.contactEducation),
-		contactEducationExclude: esGetOptionValues2(body.contactEducation, 'exclude'),
-		contactSkills: esGetOptionValues2(body.contactSkills), // ['string'],
-		contactSkillsExclude: esGetOptionValues2(body.contactSkills, 'exclude'), // ['string'],
-		contactInterests: esGetOptionValues2(body.contactInterests), // ['string'],
-		contactInterestsExclude: esGetOptionValues2(body.contactInterests, 'exclude'), // ['string'],
-		seniorityLevels: esGetOptionValues2(body.contactLevels), // ['cxo', 'vp', 'director'],
-		seniorityLevelsExclude: esGetOptionValues2(body.contactLevels, 'exclude'), // ['cxo', 'vp', 'director'],
-		departments: esGetOptionValues2(body.contactJobFunctions), // ['customer_service', 'engineering', 'real_estate'],
-		departmentsExclude: esGetOptionValues2(body.contactJobFunctions, 'exclude'), // ['customer_service', 'engineering', 'real_estate'],
-		hqLocations: esGetOptionValues2(body.hqLocations), // ['United States', 'United Kingdom'],
-		cities: esGetOptionValues2(body.cities), // ['string'],
-		states: esGetOptionValues2(body.states), // ['NY', 'CA'],
-		statesExclude: esGetOptionValues2(body.states, 'exclude'), // ['NY', 'CA'],
-		industries: esGetOptionValues2(body.companyIndustries), // ['accounting', 'capital markets', 'architecture & planning'],
-		industriesExclude: esGetOptionValues2(body.companyIndustries, 'exclude'), // ['accounting', 'capital markets', 'architecture & planning'],
-		employeeSizes: esGetOptionValues2(body.companySizeIds), // [5, 8],
-		employeeSizesExclude: esGetOptionValues2(body.companySizeIds, 'exclude'), // [5, 8],
-		companyRevenues: esGetOptionValues2(body.companyRevenueIds), // [6, 7],
-		companyRevenuesExclude: esGetOptionValues2(body.companyRevenueIds, 'exclude'), // [6, 7],
-		sicCodes: esGetOptionValues2(body.companySicCodes), // ['8720', '9411', '273'],
-		sicCodesExclude: esGetOptionValues2(body.companySicCodes, 'exclude'), // ['8720', '9411', '273'],
-		naicsCodes: esGetOptionValues2(body.companyNaicsCodes), // ['8720', '9411', '273'],
-		naicsCodesExclude: esGetOptionValues2(body.companyNaicsCodes, 'exclude'), // ['8720', '9411', '273'],
-		companyNames: esGetOptionValues2(body.companyNames), // ['google', 'microsoft'],
-		companyNamesExclude: esGetOptionValues2(body.companyNames, 'exclude'), // ['google', 'microsoft'],
-		urls: esGetOptionValues2(body.uRLs), // ['rampedup.io', 'google.com'],
-		urlsExclude: esGetOptionValues2(body.uRLs, 'exclude'), // ['rampedup.io', 'google.com'],
+		keywords: esGetOptionValuesV2(body.keywords), // ['string'],
+		keywordsExclude: esGetOptionValuesV2(body.keywords, 'exclude'), // ['string'],
+		name_first: esGetOptionValuesV2(body.name_first),
+		name_last: esGetOptionValuesV2(body.name_last),
+		contactTitles: esGetOptionValuesV2(body.contactTitles),
+		contactTitlesExclude: esGetOptionValuesV2(body.contactTitles, 'exclude'),
+		contactEducation: esGetOptionValuesV2(body.contactEducation),
+		contactEducationExclude: esGetOptionValuesV2(body.contactEducation, 'exclude'),
+		contactSkills: esGetOptionValuesV2(body.contactSkills), // ['string'],
+		contactSkillsExclude: esGetOptionValuesV2(body.contactSkills, 'exclude'), // ['string'],
+		contactInterests: esGetOptionValuesV2(body.contactInterests), // ['string'],
+		contactInterestsExclude: esGetOptionValuesV2(body.contactInterests, 'exclude'), // ['string'],
+		seniorityLevels: esGetOptionValuesV2(body.contactLevels), // ['cxo', 'vp', 'director'],
+		seniorityLevelsExclude: esGetOptionValuesV2(body.contactLevels, 'exclude'), // ['cxo', 'vp', 'director'],
+		departments: esGetOptionValuesV2(body.contactJobFunctions), // ['customer_service', 'engineering', 'real_estate'],
+		departmentsExclude: esGetOptionValuesV2(body.contactJobFunctions, 'exclude'), // ['customer_service', 'engineering', 'real_estate'],
+		hqLocations: esGetOptionValuesV2(body.hqLocations), // ['United States', 'United Kingdom'],
+		cities: esGetOptionValuesV2(body.cities), // ['string'],
+		states: esGetOptionValuesV2(body.states), // ['NY', 'CA'],
+		statesExclude: esGetOptionValuesV2(body.states, 'exclude'), // ['NY', 'CA'],
+		industries: esGetOptionValuesV2(body.companyIndustries), // ['accounting', 'capital markets', 'architecture & planning'],
+		industriesExclude: esGetOptionValuesV2(body.companyIndustries, 'exclude'), // ['accounting', 'capital markets', 'architecture & planning'],
+		employeeSizes: esGetOptionValuesV2(body.companySizeIds), // [5, 8],
+		employeeSizesExclude: esGetOptionValuesV2(body.companySizeIds, 'exclude'), // [5, 8],
+		companyRevenues: esGetOptionValuesV2(body.companyRevenueIds), // [6, 7],
+		companyRevenuesExclude: esGetOptionValuesV2(body.companyRevenueIds, 'exclude'), // [6, 7],
+		sicCodes: esGetOptionValuesV2(body.companySicCodes), // ['8720', '9411', '273'],
+		sicCodesExclude: esGetOptionValuesV2(body.companySicCodes, 'exclude'), // ['8720', '9411', '273'],
+		naicsCodes: esGetOptionValuesV2(body.companyNaicsCodes), // ['8720', '9411', '273'],
+		naicsCodesExclude: esGetOptionValuesV2(body.companyNaicsCodes, 'exclude'), // ['8720', '9411', '273'],
+		companyNames: esGetOptionValuesV2(body.companyNames), // ['google', 'microsoft'],
+		companyNamesExclude: esGetOptionValuesV2(body.companyNames, 'exclude'), // ['google', 'microsoft'],
+		urls: esGetOptionValuesV2(body.uRLs), // ['rampedup.io', 'google.com'],
+		urlsExclude: esGetOptionValuesV2(body.uRLs, 'exclude'), // ['rampedup.io', 'google.com'],
 		hasChangedJobRecently: body.hasChangedJobRecently ? true : false,
-		urlsToSuppress: esGetOptionValues2(body.urlsToSuppress), // ['microsoft.com', 'yahoo.com'],
-		linkedinUrls: esGetOptionValues2(body.linkedinUrls), // ['microsoft.com', 'yahoo.com'],
-		linkedinUrlsExclude: esGetOptionValues2(body.linkedinUrls, 'exclude'), // ['microsoft.com', 'yahoo.com'],
-		titlesToSuppress: esGetOptionValues2(body.titlesToSuppress), // ['Administrator', 'Software Developer'],
-		emailsToSuppress: esGetOptionValues2(body.emailsToSuppress), // ['test@testemail.com'],
-		emailAddresses: esGetOptionValues2(body.emailAddresses), // ['test@testemail.com'],
+		urlsToSuppress: esGetOptionValuesV2(body.urlsToSuppress), // ['microsoft.com', 'yahoo.com'],
+		linkedinUrls: esGetOptionValuesV2(body.linkedinUrls), // ['microsoft.com', 'yahoo.com'],
+		linkedinUrlsExclude: esGetOptionValuesV2(body.linkedinUrls, 'exclude'), // ['microsoft.com', 'yahoo.com'],
+		titlesToSuppress: esGetOptionValuesV2(body.titlesToSuppress), // ['Administrator', 'Software Developer'],
+		emailsToSuppress: esGetOptionValuesV2(body.emailsToSuppress), // ['test@testemail.com'],
+		emailAddresses: esGetOptionValuesV2(body.emailAddresses), // ['test@testemail.com'],
 		hasRequiredEmail: body.requiredEmail ? true : false,
 		hasValidateEmails: body.hasValidateEmails ? true : false,
 		hasPrimaryContactsOnly: body.hasPrimaryContactsOnly ? true : false,
@@ -164,19 +181,20 @@ const esGetOptionsFromBody2 = (body) => {
 		hasPhoneCell: body.hasPhoneCell ? true : false,
 		hasWorkEmail: body.hasWorkEmail ? true : false,
 		hasPersonalEmail: body.hasPersonalEmail ? true : false,
-		md5HashedEmailAddresses: esGetOptionValues2(body.md5HashedEmailAddresses),
-		facebookUrls: esGetOptionValues2(body.facebookUrls),
-		mobilePhones: esGetOptionValues2(body.mobilePhones),
+		md5HashedEmailAddresses: esGetOptionValuesV2(body.md5HashedEmailAddresses),
+		facebookUrls: esGetOptionValuesV2(body.facebookUrls),
+		mobilePhones: esGetOptionValuesV2(body.mobilePhones),
 		audience: body.audience ? true : false,
 		page: body.page || 0, // using default page 1
 		pageSize: Math.max(body.pageSize || 10, 10), // using default / max page size of 10
 	};
-	console.log('getOptions - result - ', options);
+
+	console.log('esGetOptionsV2 - result', JSON.stringify(options));
 	return options;
 };
 
 const esGetFilters2 = (rawBody, append = false) => {
-	const body = esGetOptionsFromBody2(rawBody);
+	const body = esGetOptionsV2(rawBody);
 
 	//console.log('esGetFilters - input - ', JSON.stringify({ rawBody, body }, null, 2));
 	let filters = [];
@@ -205,6 +223,38 @@ const esGetFilters2 = (rawBody, append = false) => {
                     },
                 });
     */
+
+	// -------------------------------------------------------------------------
+	// keywords > first_name | last_name | job_title | seniority | department | primary_role
+	// -------------------------------------------------------------------------
+	if (body?.keywords instanceof Array && body?.keywords.length > 0) {
+		const fields = ['first_name', 'last_name', 'job_title', 'seniority', 'department', 'primary_role'];
+		const query = [];
+		for (let i = 0; i < fields.length; i++) {
+			for (let j = 0; j < body.keywords.length; j++) {
+				query.push({ match: { [fields[i]]: body.keywords[j] } });
+			}
+		}
+		filters.push({ bool: { should: [...query] } });
+	}
+
+	// -------------------------------------------------------------------------
+	// keywords > first_name | last_name | job_title | seniority | department | primary_role
+	// -------------------------------------------------------------------------
+	if (body?.keywordsExclude instanceof Array && body?.keywordsExclude.length > 0) {
+		const fields = ['first_name', 'last_name', 'job_title', 'seniority', 'department', 'primary_role'];
+		const query = [];
+		for (let i = 0; i < fields.length; i++) {
+			for (let j = 0; j < body.keywordsExclude.length; j++) {
+				query.push({
+					bool: {
+						must_not: { match: { [fields[i]]: body.keywordsExclude[j] } },
+					},
+				});
+			}
+		}
+		filters.push({ bool: { filter: [...query] } });
+	}
 
 	// -------------------------------------------------------------------------
 	// contactSkills > skills
@@ -738,7 +788,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
 	if (body?.employeeSizes instanceof Array && body?.employeeSizes.length > 0) {
-		const fields = ['company_employeecount'];
+		const fields = ['company_employee_range'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.employeeSizes.length; j++) {
@@ -873,7 +923,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
 	if (body?.companyNames instanceof Array && body?.companyNames.length > 0) {
-		const fields = ['company'];
+		const fields = ['company_name'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.companyNames.length; j++) {
@@ -1026,7 +1076,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 				query.push({
 					match_phrase_prefix: {
 						[fields[i]]:
-							'+1' + body.mobilePhones[j].replace('(', '').replace(')', '').replace('-', '').replace(' ', '').replace('+1', '').replace('1 '),
+							'+1' + body.mobilePhones[j].replace('(', '').replace(')', '').replace('-', '').replace(' ', '').replace('+1', '').replace('1 ', ''),
 					},
 				});
 			}
@@ -1039,7 +1089,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
 	if (body?.contactEducation instanceof Array && body?.contactEducation.length > 0) {
-		const fields = ['contact_education.school'];
+		const fields = ['education.school'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.contactEducation.length; j++) {
@@ -1092,7 +1142,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	// @see https://stackoverflow.com/questions/22777700/elasticsearch-match-list-against-field
 	// -------------------------------------------------------------------------
 	if (body?.urlsToSuppress instanceof Array && body?.urlsToSuppress.length > 0) {
-		const fields = ['company_domain'];
+		const fields = ['company_domain', 'company_website'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.urlsToSuppress.length; j++) {
@@ -1132,7 +1182,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	// @see https://stackoverflow.com/questions/22777700/elasticsearch-match-list-against-field
 	// -------------------------------------------------------------------------
 	if (body?.emailsToSuppress instanceof Array && body?.emailsToSuppress.length > 0) {
-		const fields = ['work_email', 'work_email_history'];
+		const fields = ['work_email', 'personal_email'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.emailsToSuppress.length; j++) {
@@ -1150,12 +1200,11 @@ const esGetFilters2 = (rawBody, append = false) => {
 	// emailAddresses > work_email | work_email_history | personal_email | personal_email2 | personal_email_history
 	// -------------------------------------------------------------------------
 	if (body?.emailAddresses instanceof Array && body?.emailAddresses.length > 0) {
-		const fields = ['work_email', 'email_personal', 'email_historical', 'emails.email'];
+		const fields = ['work_email', 'personal_email', 'personal_email2', 'personal_email_history.personal_email'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.emailAddresses.length; j++) {
 				//query_strings.push({ query_string: { "query": [fields[i]]+".keyword:"+body.emailAddresses[j] } });
-
 				query.push({ match_phrase_prefix: { [fields[i]]: body.emailAddresses[j] } });
 			}
 		}
@@ -1174,7 +1223,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { 'email_work.keyword': '' } },
+					must_not: { term: { [fields[i] + '.keyword']: '' } },
 				},
 			});
 		}
@@ -1191,7 +1240,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { 'email_personal.keyword': '' } },
+					must_not: { term: { [fields[i] + '.keyword']: '' } },
 				},
 			});
 		}
@@ -1217,7 +1266,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { [fields[i].keyword]: '' } },
+					must_not: { term: { [fields[i] + '.keyword']: '' } },
 				},
 			});
 		}
@@ -1245,13 +1294,13 @@ const esGetFilters2 = (rawBody, append = false) => {
 	// @see https://stackoverflow.com/questions/28538760/elasticsearch-bool-query-combine-must-with-or
 	// -------------------------------------------------------------------------
 	if (body.hasDirectDialOnly === true) {
-		const fields = ['direct_dial'];
+		const fields = ['direct_dial', 'work_number'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { 'phone_cell.keyword': '' } },
+					must_not: { term: { [fields[i] + '.keyword']: '' } },
 				},
 			});
 		}
@@ -1268,7 +1317,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { 'phone_cell.keyword': '' } },
+					must_not: { term: { [fields[i] + '.keyword']: '' } },
 				},
 			});
 		}
@@ -1285,7 +1334,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { 'work_email.keyword': '' } },
+					must_not: { term: { [fields[i] + '.keyword']: '' } },
 				},
 			});
 		}
@@ -1296,13 +1345,13 @@ const esGetFilters2 = (rawBody, append = false) => {
 	// hasPersonalEmail > personal_email
 	// -------------------------------------------------------------------------
 	if (body.hasPersonalEmail === true) {
-		const fields = ['personal_email'];
+		const fields = ['personal_email', 'personal_email2'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { 'personal_email.keyword': '' } },
+					must_not: { term: { [fields[i] + '.keyword']: '' } },
 				},
 			});
 		}
@@ -1330,11 +1379,11 @@ const esGetFilters2 = (rawBody, append = false) => {
 	}
 
 	// -------------------------------------------------------------------------
-	// audience > direct_dial | mobile_number | work_number | personal_email | personal_email2 | work_email
+	// audience > None
 	// -------------------------------------------------------------------------
 	if (body.audience === true) {
 		console.log('body audience searching for cell personal and work email');
-		const fields = ['direct_dial', 'mobile_number', 'work_number', 'personal_email', 'personal_email2', 'work_email'];
+		const fields = [];
 		let query = [];
 		for (let i = 0; i < fields.length; i++) {
 			query.push({
@@ -1364,7 +1413,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	// @see https://stackoverflow.com/questions/28538760/elasticsearch-bool-query-combine-must-with-or
 	// -------------------------------------------------------------------------
 	if (body.hasLocalAddress === true) {
-		const fields = [];
+		const fields = ['person_postal'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			query.push({
@@ -1656,8 +1705,8 @@ const esGetById2 = async (id) => {
 };
 
 module.exports = {
-	esGetOptionValues2,
-	esGetOptionsFromBody2,
+	esGetOptionValuesV2,
+	esGetOptionsV2,
 	esGetFilters2,
 	esGetPaginationQuery2,
 	esNormalizeDocument2,
