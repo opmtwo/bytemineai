@@ -1,12 +1,16 @@
+import { fetchAuthSession } from 'aws-amplify/auth';
 import { orderBy } from 'lodash';
 import moment from 'moment';
 import { toast } from 'react-toastify';
+import { CloseButton } from 'react-toastify/dist/components';
 import isEmpty from 'validator/lib/isEmpty';
+
+import NotificationPopup from '../components/sections/prospect-finder/NotificationPopup';
 import { genericErrorMessage } from '../consts';
 import countryCodes from '../data/country-codes';
+import awsmobile from '../src/aws-exports';
 import { Contact, RampedUpFilter, SortData, SortOrder } from '../types';
-import NotificationPopup from '../components/sections/prospect-finder/NotificationPopup';
-import { CloseButton } from 'react-toastify/dist/components';
+
 export const timestampToMoment = (timestamp: string | number) => moment(new Date(parseInt(timestamp.toString())));
 
 export const formatDate = (timestamp?: string | number) => {
@@ -295,3 +299,88 @@ export const downloadUrl = (url: string, filename: string) => {
 
 export const getErrorMessage = (err: any, message?: string) =>
 	err?.response?.data?.message || err?.message || err?.response?.statusText || message || genericErrorMessage;
+
+/**
+ * Makes an HTTP request to a specified endpoint.
+ *
+ * @param {string} accessToken - The API access token for authorization.
+ * @param {string} endPoint - The API endpoint to call.
+ * @param {RequestInit} config - The request configuration options.
+ * @param {URLSearchParams | Record<string, string>} queryParams - The query parameters to include in the request.
+ * @param {HeadersInit} headers - The headers to include in the request.
+ * @param {boolean} [verbose=true] - Whether to log verbose output.
+ * @returns {Promise<any>} - A promise that resolves with the response data or rejects with an error.
+ * @throws {Error} If the HTTP response is not successful or if an error occurs during the request.
+ */
+export const callApi = async (
+	accessToken: string | null,
+	path: string,
+	config: RequestInit,
+	queryParams: URLSearchParams | Record<string, string> = {},
+	headers: HeadersInit = {},
+	verbose = false // boolean = true
+) =>
+	new Promise(async (resolve, reject) => {
+		let queryString = '';
+		if (queryParams) {
+			if (queryParams instanceof URLSearchParams) {
+				queryString = queryParams.toString();
+			} else {
+				const params = new URLSearchParams(queryParams);
+				queryString = params.toString();
+			}
+		}
+		const endpoint = awsmobile.aws_cloud_logic_custom[0].endpoint;
+		const url = `${endpoint}/${path}${queryString ? `?${queryString}` : ''}`;
+		try {
+			const userId = new URLSearchParams(window.location.search).get('userId');
+			const response = await fetch(url, {
+				...config,
+				method: config.method || 'GET', // Add a default method if not specified in config
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: accessToken || (await fetchAuthSession()).tokens?.accessToken?.toString()!,
+					'X-Amz-Security-Token': userId ?? localStorage.getItem('userId') ?? '',
+					...headers,
+				},
+				body: config.body ? config.body : undefined, // Convert body to JSON if present
+			});
+			if (!response.ok) {
+				const data = await response.json();
+				if (verbose) {
+					console.log('callApi - error', data);
+				}
+				return reject(data);
+			}
+			const data = await response.json();
+			if (verbose) {
+				console.log('callApi - success', data);
+			}
+			return resolve(data);
+		} catch (err: any) {
+			if (verbose) {
+				console.log('callApi - error - ', await err.json());
+			}
+			return reject(err);
+		}
+	});
+
+/**
+ * Get an error message from various sources, prioritizing specific fields and a fallback message.
+ *
+ * @param {any} err - The error object from which to extract the error message.
+ * @param {string} [message] - A custom error message to use if not found in the error object.
+ * @param {ELocale} [locale] - The desired locale for the error message. Defaults to 'en'.
+ * @returns {string} The error message.
+ */
+export const getErrorMsg = (err: any, message?: string) =>
+	err?.detail ||
+	err?.reason?.raw?.detail ||
+	err?.response?.data?.detail ||
+	err?.errorMessage ||
+	err?.reason?.errorMessage ||
+	err?.response?.data?.errorMessage ||
+	err?.message ||
+	err?.reason?.raw?.message ||
+	err?.response?.data?.message ||
+	message;
