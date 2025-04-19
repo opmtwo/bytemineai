@@ -131,7 +131,7 @@ router.post('/auth-key', async function (req, res) {
 		var params = {
 			AuthFlow: 'ADMIN_NO_SRP_AUTH',
 			ClientId: process.env.clientId,
-			UserPoolId: userPoolId,
+			UserPoolId: USERPOOLID,
 			AuthParameters: {
 				USERNAME: user.Username,
 				PASSWORD: req.body.password.trim(),
@@ -205,7 +205,7 @@ router.post('/auth-sumo', async function (req, res) {
 		var params = {
 			AuthFlow: 'ADMIN_NO_SRP_AUTH',
 			ClientId: process.env.clientId,
-			UserPoolId: userPoolId,
+			UserPoolId: USERPOOLID,
 			AuthParameters: {
 				USERNAME: user.Username,
 				PASSWORD: req.body.password.trim(),
@@ -265,7 +265,7 @@ router.post('/verify-email', async function (req, res) {
 						},
 						/* more items */
 					],
-					UserPoolId: userPoolId /* required */,
+					UserPoolId: USERPOOLID /* required */,
 					Username: user.Username /* required */,
 				};
 				const resp_verify = await cognitoidentityserviceprovider.adminUpdateUserAttributes(update_params).promise();
@@ -321,7 +321,7 @@ router.post('/resend-email-verification', async function (req, res) {
 					},
 					/* more items */
 				],
-				UserPoolId: userPoolId /* required */,
+				UserPoolId: USERPOOLID /* required */,
 				Username: user.Username /* required */,
 			};
 			const resp_verify = await cognitoidentityserviceprovider.adminUpdateUserAttributes(update_params).promise();
@@ -370,7 +370,7 @@ router.post('/resend-email-verification', async function (req, res) {
 					},
 					/* more items */
 				],
-				UserPoolId: userPoolId /* required */,
+				UserPoolId: USERPOOLID /* required */,
 				Username: user.Username /* required */,
 			};
 			const resp_verify = await cognitoidentityserviceprovider.adminUpdateUserAttributes(update_params).promise();
@@ -600,7 +600,7 @@ router.post('/register-email', async function (req, res) {
 						},
 						/* more items */
 					],
-					UserPoolId: userPoolId /* required */,
+					UserPoolId: USERPOOLID /* required */,
 					Username: user.Username /* required */,
 				};
 				const resp_verify = await cognitoidentityserviceprovider.adminUpdateUserAttributes(update_params).promise();
