@@ -1,21 +1,41 @@
-import { AppProps } from "next/app";
-import Head from "next/head";
-import Amplify from "@aws-amplify/core";
-import { ToastContainer } from "react-toastify";
+import '../styles/index.scss';
 
-import amplifyConfig from "../src/aws-exports";
-import AuthDataProvider from "../providers/auth-data-provider";
-import SettingsProvider from "../providers/settings-provider";
-import StripeProvider from "../providers/stripe-provider";
-import "../styles/index.scss";
-import { AnimateSharedLayout } from "framer-motion";
-import SettingsLoader from "../components/SettingsLoader";
-import Favicon from "../components/Favicon";
-import Script from "next/script";
-import EnrichmentsInProgress from "../components/enrich/EnrichmentsInProgress";
+// import Amplify from "@aws-amplify/core";
+import { Amplify } from 'aws-amplify';
+import { fetchAuthSession } from 'aws-amplify/auth';
+import { LayoutGroup } from 'framer-motion';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import Script from 'next/script';
+import { ToastContainer } from 'react-toastify';
 
+import EnrichmentsInProgress from '../components/enrich/EnrichmentsInProgress';
+import Favicon from '../components/Favicon';
+import SettingsLoader from '../components/SettingsLoader';
+import AuthDataProvider from '../providers/auth-data-provider';
+import SettingsProvider from '../providers/settings-provider';
+import StripeProvider from '../providers/stripe-provider';
+import amplifyConfig from '../src/aws-exports';
 
-Amplify.configure(amplifyConfig);
+// Amplify.configure(amplifyConfig);
+
+Amplify.configure(amplifyConfig, {
+	API: {
+		REST: {
+			headers: async () => {
+				try {
+					const session = await fetchAuthSession();
+					const token = session.tokens?.accessToken?.toString();
+					return { Authorization: token! };
+				} catch (err) {
+					console.log('Error fetching access token in amplify configuration', err);
+					return { Authorization: '' };
+				}
+			},
+		},
+	},
+});
+
 
 const NewApp = ({ Component, pageProps }: AppProps) => {
   return (
@@ -40,10 +60,10 @@ const NewApp = ({ Component, pageProps }: AppProps) => {
           <StripeProvider>
             <SettingsLoader />
             <Favicon />
-            <AnimateSharedLayout>
+            <LayoutGroup>
               <Component {...pageProps} />
               <EnrichmentsInProgress />
-            </AnimateSharedLayout>
+            </LayoutGroup>
           </StripeProvider>
         </SettingsProvider>
       </AuthDataProvider>
