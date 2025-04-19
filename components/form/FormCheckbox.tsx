@@ -62,7 +62,7 @@ const FormCheckbox = ({
 				/>
 				<span className={cssClassNames} style={{ width: 20, height: 20 }}>
 					<span className="is-overlay is-flex is-align-items-center is-justify-content-center">
-						<AnimatePresence exitBeforeEnter={true}>
+						<AnimatePresence presenceAffectsLayout={true}>
 							{isChecked && (
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width={16} height={16}>
 									<motion.line
