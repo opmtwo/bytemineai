@@ -1,25 +1,13 @@
-import { CSSProperties, HTMLAttributeAnchorTarget, MouseEvent, ReactNode } from 'react';
 import Link from 'next/link';
+import { AnchorHTMLAttributes, ReactNode } from 'react';
 
-const Anchor = ({
-	href,
-	children,
-	className,
-	style,
-	target,
-	onClick,
-}: {
+interface AnchorProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 	href: string;
-	children: ReactNode;
-	className?: string;
-	style?: CSSProperties;
-	target?: HTMLAttributeAnchorTarget;
-	onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
-}) => (
-	<Link href={href}>
-		<a className={className} onClick={onClick} style={style} target={target}>
-			{children}
-		</a>
+}
+
+const Anchor = ({ children, href, ...rest }: AnchorProps) => (
+	<Link href={href} {...rest}>
+		{children}
 	</Link>
 );
 
