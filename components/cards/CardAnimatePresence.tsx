@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 const transition = { duration: 0.25, yoyo: 0, ease: 'easeInOut' };
 
 const CardAnimatePresence = ({ children, isActive }: { children?: ReactNode; isActive: boolean }) => (
-	<AnimatePresence exitBeforeEnter={true}>
+	<AnimatePresence presenceAffectsLayout={true}>
 		{isActive && (
 			<motion.div
 				layout="position"
