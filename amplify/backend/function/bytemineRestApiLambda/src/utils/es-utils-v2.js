@@ -37,52 +37,61 @@ const esGetHeaders2 = () => {
  * @param {string} path
  * @returns
  */
-const esSignRequest2 = (host, path, headers, body = undefined) => {
-	//console.log('esSignRequest - ', { headers, path });
-	const sig = aws4.sign(
+const esSignRequestV2 = (host, path, method, headers, body = undefined) => {
+	return aws4.sign(
 		{
 			host,
+			method,
 			path,
 			headers,
-			body,
+			body: method?.toLowerCase() === 'get' ? undefined : body,
 		},
 		{
 			accessKeyId: 'AKIAVYOMUDYWFGRZPNQK',
 			secretAccessKey: '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',
 		}
 	);
-	//console.log('esSignRequest - success - ', sig);
-	return sig;
 };
 
-const esRequest2 = async (method, url, data) => {
-	//console.log('esRequest - input - ', { method, url, data });
-	const body = JSON.stringify(data);
-	const headers = esGetHeaders2();
-	const sig = esSignRequest2(ES_HOST, url, headers, body);
-	const config = {
-		method,
-		url: `${ES_DOMAIN}${url}`,
-		headers: {
-			...headers,
-			Authorization: sig.headers.Authorization,
-		},
-		...(data ? { data: body } : {}),
+const esRequest2 = async (method, path, data) => {
+	const body = data ? JSON.stringify(data) : undefined;
+
+	// Initial headers
+	const headers = {
+		'Content-Type': 'application/json',
+		// 'X-Amz-Date': new Date().toISOString().replace(/[:-]|\.\d{3}/g, '') + 'Z',
 	};
-	console.log('esRequest - config - ', config);
+
+	// Sign with AWS credentials
+	const signed = esSignRequestV2(ES_HOST, path, method, headers, body);
+
+	// Prepare fetch options
+	const fetchOptions = {
+		method,
+		headers: signed.headers,
+		...(method !== 'GET' && body ? { body } : {}), // <- this avoids body on GET
+	};
+
+	const url = `${ES_DOMAIN}${path}`;
+	console.log('esRequest fetch:', fetchOptions);
+	console.log('esRequest2', JSON.stringify({ fetchOptions, url }));
+
 	try {
-		const starttime = new Date();
-		const response = await axios(config);
-		const endtime = new Date();
-		const diffTime = Math.abs(endtime - starttime);
-		const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-		console.log(diffTime + ' milliseconds');
-		console.log('start - ', starttime, ' - end - ', endtime, ' - difference - ', diffTime);
-		//console.log('esRequest - success - ', JSON.stringify(response.data, null, 2));
-		return response.data;
-	} catch (err) {
-		console.log('esRequest - error - ', err.message);
-		throw err;
+		const start = Date.now();
+		const response = await fetch(url, fetchOptions);
+		const end = Date.now();
+
+		console.log(`Request took ${end - start}ms`);
+
+		if (!response.ok) {
+			const errorText = await response.text();
+			throw new Error(`ES error (${response.status}): ${errorText}`);
+		}
+
+		return await response.json();
+	} catch (error) {
+		console.error('ES Request failed:', error.message);
+		throw error;
 	}
 };
 
@@ -93,8 +102,10 @@ const esRequest2 = async (method, url, data) => {
  * @param {String} incexclude - Determines whether to extract from 'include', 'exclude', or use the array directly. Default is 'include'.
  * @returns {Array} - Cleaned array of non-empty string values.
  */
-const esGetOptionValuesV2 = (optionValues, incexclude = 'include') => {
-	console.log('esGetOptionValuesV2', JSON.stringify({ optionValues }));
+const esGetOptionValuesV2 = (optionValues, incexclude = 'include', verbose = false) => {
+	if (verbose) {
+		console.log('esGetOptionValuesV2', JSON.stringify({ optionValues }));
+	}
 
 	let values = [];
 
@@ -122,7 +133,9 @@ const esGetOptionValuesV2 = (optionValues, incexclude = 'include') => {
 	// Filter out empty or whitespace-only values
 	values = values.filter((value) => value?.toString()?.trim()?.length !== 0);
 
-	console.log('esGetOptionValuesV2 - result - ', values);
+	if (verbose) {
+		console.log('esGetOptionValuesV2 - result - ', values);
+	}
 	return values;
 };
 
@@ -1223,7 +1236,8 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { [fields[i] + '.keyword']: '' } },
+					// must_not: { term: { [fields[i] + '.keyword']: '' } },
+					must_not: { term: { [fields[i]]: '' } },
 				},
 			});
 		}
@@ -1240,7 +1254,8 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { [fields[i] + '.keyword']: '' } },
+					// must_not: { term: { [fields[i] + '.keyword']: '' } },
+					must_not: { term: { [fields[i]]: '' } },
 				},
 			});
 		}
@@ -1266,7 +1281,8 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { [fields[i] + '.keyword']: '' } },
+					// must_not: { term: { [fields[i] + '.keyword']: '' } },
+					must_not: { term: { [fields[i]]: '' } },
 				},
 			});
 		}
@@ -1300,7 +1316,8 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { [fields[i] + '.keyword']: '' } },
+					// must_not: { term: { [fields[i] + '.keyword']: '' } },
+					must_not: { term: { [fields[i]]: '' } },
 				},
 			});
 		}
@@ -1317,7 +1334,8 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { [fields[i] + '.keyword']: '' } },
+					// must_not: { term: { [fields[i] + '.keyword']: '' } },
+					must_not: { term: { [fields[i]]: '' } },
 				},
 			});
 		}
@@ -1334,7 +1352,8 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { [fields[i] + '.keyword']: '' } },
+					// must_not: { term: { [fields[i] + '.keyword']: '' } },
+					must_not: { term: { [fields[i]]: '' } },
 				},
 			});
 		}
@@ -1351,7 +1370,8 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { [fields[i] + '.keyword']: '' } },
+					// must_not: { term: { [fields[i] + '.keyword']: '' } },
+					must_not: { term: { [fields[i]]: '' } },
 				},
 			});
 		}
@@ -1389,7 +1409,8 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { [fields[i] + '.keyword']: '' } },
+					// must_not: { term: { [fields[i] + '.keyword']: '' } },
+					must_not: { term: { [fields[i]]: '' } },
 				},
 			});
 		}
@@ -1399,7 +1420,8 @@ const esGetFilters2 = (rawBody, append = false) => {
 			query.push({
 				bool: {
 					must: { exists: { field: fields[i] } },
-					must_not: { term: { [fields[i] + '.keyword']: 'null' } },
+					// must_not: { term: { [fields[i] + '.keyword']: 'null' } },
+					must_not: { term: { [fields[i]]: 'null' } },
 				},
 			});
 		}
@@ -1446,7 +1468,7 @@ const esGetPaginationQuery2 = (body) => {
 
 	// parse page size
 	try {
-		size = Math.min(Math.abs(parseInt(body.pageSize || '0')), 500);
+		size = Math.min(Math.abs(parseInt(body.pageSize || '10')), 500);
 		if (isNaN(size)) {
 			size = 10;
 		}
@@ -1456,7 +1478,7 @@ const esGetPaginationQuery2 = (body) => {
 
 	// parse page
 	try {
-		page = Math.max(Math.abs(parseInt(body.page || '0')), 0);
+		page = Math.max(Math.abs(parseInt(body.page || '10')), 0);
 		from = size * page;
 		if (isNaN(from)) {
 			from = 0;
@@ -1473,16 +1495,17 @@ const esGetPaginationQuery2 = (body) => {
 };
 
 const esNormalizeDocument2 = (document) => {
-	//console.log('document  - ',document);
+	console.log('esNormalizeDocument2 - input', JSON.stringify({ document }));
 	const data = document._source;
 
-	//console.log('data  - ',data);
+	// Normalize personal email
 	let personal_email = '';
-	if (data.email_personal !== null) {
-		personal_email = data.email_personal.replace(/\[|\]|\'/g, '');
-		let personal_emails = personal_email.split(',');
+	if (data.personal_email) {
+		personal_email = data.personal_email.replace(/\[|\]|\'/g, '');
+		const personal_emails = personal_email.split(',');
 		personal_email = personal_emails[0].trim();
 	}
+
 	const doc = {
 		nymblr_id: data.nymblr_id,
 		ruid: document._id,
@@ -1644,15 +1667,20 @@ const esSearch2 = async (body, mask = true, append = false, api = false) => {
 		// const responseCount = await elasticClient.count({ index, body: options });
 		// console.log('esSearch - success - ', response.hits.total);
 		// console.log('esSearch - responseCount', responseCount);
+
+		// Query results count path
 		const urlSearch = `/${ES_INDEX}/_count`;
 		let responseCount = {};
 		responseCount.count = 0;
 		if (!api) {
 			responseCount = await esRequest2('POST', urlSearch, options);
 		}
+		console.log('esSearch2 - total number of records in query', JSON.stringify({ responseCount }));
+
+		// Search path
 		const url = `/${ES_INDEX}/_search?from=${from}&size=${size}`;
 		let main_options = options;
-		main_options.sort = ['_id'];
+		// main_options.sort = ['_id'];
 		if (append) {
 			//options = await esGetFilters(body,true);
 			//main_options = options;
@@ -1661,6 +1689,18 @@ const esSearch2 = async (body, mask = true, append = false, api = false) => {
 			main_options = options;
 			//main_options.sort = ['_score'];
 		}
+		console.log('esSearch2 - search query without sort', JSON.stringify({ url, main_options }));
+
+		// Add sorting
+		main_options = {
+			...main_options,
+			sort: [
+				{ _score: { order: 'asc' } }, // or 'desc' for descending order
+				{ id: 'asc' },
+			],
+		};
+		console.log('esSearch2 - search query with sort', JSON.stringify({ url, main_options }));
+
 		const response = await esRequest2('POST', url, main_options);
 		console.log(' mask value: ', mask);
 		let results = [];

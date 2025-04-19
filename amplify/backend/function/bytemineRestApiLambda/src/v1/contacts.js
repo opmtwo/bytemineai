@@ -26,9 +26,9 @@ router.post('/search', verifyToken, verifyTeam, async (req, res) => {
 	console.log(' before search - ', startsearchtime);
 
 	//let options = body
-	let options = esGetOptionsV2(body);
+	// let options = esGetOptionsV2(body);
 
-	const response = await searchContactsV2(options, true, true, false, false);
+	const response = await searchContactsV2(body, true, true, false, false);
 	if (response instanceof Error === true) {
 		return res.status(getErrorCode(response) || 422).json({ message: getErrorMsg(response) });
 	}
