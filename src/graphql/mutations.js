@@ -13,7 +13,81 @@ export const createBytemineCollection = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      user {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEmailVerified
+        contactEmailStatusCode
+        contactEmailDomainType
+        personalEmailStatusCode
+        personalEmailDomainType
+        contactPersonalEmailStatusCode
+        contactPersonalEmailDomainType
+        first_name
+        last_name
+        middle_name
+        full_name
+        job_title
+        seniority
+        department
+        primary_role
+        secondary_role
+        linkedin_profile
+        linkedin_connection_count
+        work_email
+        work_email_history
+        personal_email
+        personal_email2
+        personal_email_history
+        direct_dial
+        mobile_number
+        mobile_number_history
+        work_number
+        education
+        skills
+        interests
+        linkedin_headline
+        facebook_profile
+        twitter_profile
+        work_experience
+        salary
+        birth_year
+        age
+        gender
+        new_hire
+        job_start_date
+        company_name
+        company_domain
+        company_website
+        company_linkedin_profile
+        company_linkedin_followers
+        company_local_address
+        company_local_city
+        company_local_state
+        company_local_address_postal
+        company_hq_address
+        company_hq_city
+        company_hq_state
+        company_hq_postal
+        person_city
+        person_state
+        person_postal
+        company_employee_range
+        company_revenue_range
+        company_industry
+        company_sic4
+        company_sic4_description
+        company_naics
+        company_naics_description
+        company_type
+        __typename
+      }
       name
+      slug
       __typename
     }
   }
@@ -30,7 +104,81 @@ export const updateBytemineCollection = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      user {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEmailVerified
+        contactEmailStatusCode
+        contactEmailDomainType
+        personalEmailStatusCode
+        personalEmailDomainType
+        contactPersonalEmailStatusCode
+        contactPersonalEmailDomainType
+        first_name
+        last_name
+        middle_name
+        full_name
+        job_title
+        seniority
+        department
+        primary_role
+        secondary_role
+        linkedin_profile
+        linkedin_connection_count
+        work_email
+        work_email_history
+        personal_email
+        personal_email2
+        personal_email_history
+        direct_dial
+        mobile_number
+        mobile_number_history
+        work_number
+        education
+        skills
+        interests
+        linkedin_headline
+        facebook_profile
+        twitter_profile
+        work_experience
+        salary
+        birth_year
+        age
+        gender
+        new_hire
+        job_start_date
+        company_name
+        company_domain
+        company_website
+        company_linkedin_profile
+        company_linkedin_followers
+        company_local_address
+        company_local_city
+        company_local_state
+        company_local_address_postal
+        company_hq_address
+        company_hq_city
+        company_hq_state
+        company_hq_postal
+        person_city
+        person_state
+        person_postal
+        company_employee_range
+        company_revenue_range
+        company_industry
+        company_sic4
+        company_sic4_description
+        company_naics
+        company_naics_description
+        company_type
+        __typename
+      }
       name
+      slug
       __typename
     }
   }
@@ -47,7 +195,81 @@ export const deleteBytemineCollection = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      user {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEmailVerified
+        contactEmailStatusCode
+        contactEmailDomainType
+        personalEmailStatusCode
+        personalEmailDomainType
+        contactPersonalEmailStatusCode
+        contactPersonalEmailDomainType
+        first_name
+        last_name
+        middle_name
+        full_name
+        job_title
+        seniority
+        department
+        primary_role
+        secondary_role
+        linkedin_profile
+        linkedin_connection_count
+        work_email
+        work_email_history
+        personal_email
+        personal_email2
+        personal_email_history
+        direct_dial
+        mobile_number
+        mobile_number_history
+        work_number
+        education
+        skills
+        interests
+        linkedin_headline
+        facebook_profile
+        twitter_profile
+        work_experience
+        salary
+        birth_year
+        age
+        gender
+        new_hire
+        job_start_date
+        company_name
+        company_domain
+        company_website
+        company_linkedin_profile
+        company_linkedin_followers
+        company_local_address
+        company_local_city
+        company_local_state
+        company_local_address_postal
+        company_hq_address
+        company_hq_city
+        company_hq_state
+        company_hq_postal
+        person_city
+        person_state
+        person_postal
+        company_employee_range
+        company_revenue_range
+        company_industry
+        company_sic4
+        company_sic4_description
+        company_naics
+        company_naics_description
+        company_type
+        __typename
+      }
       name
+      slug
       __typename
     }
   }
@@ -387,7 +609,81 @@ export const createBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        user {
+          id
+          owner
+          teamId
+          userId
+          createdAt
+          updatedAt
+          isEmailVerified
+          contactEmailStatusCode
+          contactEmailDomainType
+          personalEmailStatusCode
+          personalEmailDomainType
+          contactPersonalEmailStatusCode
+          contactPersonalEmailDomainType
+          first_name
+          last_name
+          middle_name
+          full_name
+          job_title
+          seniority
+          department
+          primary_role
+          secondary_role
+          linkedin_profile
+          linkedin_connection_count
+          work_email
+          work_email_history
+          personal_email
+          personal_email2
+          personal_email_history
+          direct_dial
+          mobile_number
+          mobile_number_history
+          work_number
+          education
+          skills
+          interests
+          linkedin_headline
+          facebook_profile
+          twitter_profile
+          work_experience
+          salary
+          birth_year
+          age
+          gender
+          new_hire
+          job_start_date
+          company_name
+          company_domain
+          company_website
+          company_linkedin_profile
+          company_linkedin_followers
+          company_local_address
+          company_local_city
+          company_local_state
+          company_local_address_postal
+          company_hq_address
+          company_hq_city
+          company_hq_state
+          company_hq_postal
+          person_city
+          person_state
+          person_postal
+          company_employee_range
+          company_revenue_range
+          company_industry
+          company_sic4
+          company_sic4_description
+          company_naics
+          company_naics_description
+          company_type
+          __typename
+        }
         name
+        slug
         __typename
       }
       contactId
@@ -489,7 +785,81 @@ export const updateBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        user {
+          id
+          owner
+          teamId
+          userId
+          createdAt
+          updatedAt
+          isEmailVerified
+          contactEmailStatusCode
+          contactEmailDomainType
+          personalEmailStatusCode
+          personalEmailDomainType
+          contactPersonalEmailStatusCode
+          contactPersonalEmailDomainType
+          first_name
+          last_name
+          middle_name
+          full_name
+          job_title
+          seniority
+          department
+          primary_role
+          secondary_role
+          linkedin_profile
+          linkedin_connection_count
+          work_email
+          work_email_history
+          personal_email
+          personal_email2
+          personal_email_history
+          direct_dial
+          mobile_number
+          mobile_number_history
+          work_number
+          education
+          skills
+          interests
+          linkedin_headline
+          facebook_profile
+          twitter_profile
+          work_experience
+          salary
+          birth_year
+          age
+          gender
+          new_hire
+          job_start_date
+          company_name
+          company_domain
+          company_website
+          company_linkedin_profile
+          company_linkedin_followers
+          company_local_address
+          company_local_city
+          company_local_state
+          company_local_address_postal
+          company_hq_address
+          company_hq_city
+          company_hq_state
+          company_hq_postal
+          person_city
+          person_state
+          person_postal
+          company_employee_range
+          company_revenue_range
+          company_industry
+          company_sic4
+          company_sic4_description
+          company_naics
+          company_naics_description
+          company_type
+          __typename
+        }
         name
+        slug
         __typename
       }
       contactId
@@ -591,7 +961,81 @@ export const deleteBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        user {
+          id
+          owner
+          teamId
+          userId
+          createdAt
+          updatedAt
+          isEmailVerified
+          contactEmailStatusCode
+          contactEmailDomainType
+          personalEmailStatusCode
+          personalEmailDomainType
+          contactPersonalEmailStatusCode
+          contactPersonalEmailDomainType
+          first_name
+          last_name
+          middle_name
+          full_name
+          job_title
+          seniority
+          department
+          primary_role
+          secondary_role
+          linkedin_profile
+          linkedin_connection_count
+          work_email
+          work_email_history
+          personal_email
+          personal_email2
+          personal_email_history
+          direct_dial
+          mobile_number
+          mobile_number_history
+          work_number
+          education
+          skills
+          interests
+          linkedin_headline
+          facebook_profile
+          twitter_profile
+          work_experience
+          salary
+          birth_year
+          age
+          gender
+          new_hire
+          job_start_date
+          company_name
+          company_domain
+          company_website
+          company_linkedin_profile
+          company_linkedin_followers
+          company_local_address
+          company_local_city
+          company_local_state
+          company_local_address_postal
+          company_hq_address
+          company_hq_city
+          company_hq_state
+          company_hq_postal
+          person_city
+          person_state
+          person_postal
+          company_employee_range
+          company_revenue_range
+          company_industry
+          company_sic4
+          company_sic4_description
+          company_naics
+          company_naics_description
+          company_type
+          __typename
+        }
         name
+        slug
         __typename
       }
       contactId

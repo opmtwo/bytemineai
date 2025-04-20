@@ -11,6 +11,7 @@ exports.getBytemineCollection = /* GraphQL */ `
       createdAt
       updatedAt
       name
+      slug
       __typename
     }
   }
@@ -34,6 +35,7 @@ exports.listBytemineCollections = /* GraphQL */ `
         createdAt
         updatedAt
         name
+        slug
         __typename
       }
       nextToken
@@ -277,6 +279,7 @@ exports.getBytemineCollectionContact = /* GraphQL */ `
         createdAt
         updatedAt
         name
+        slug
         __typename
       }
       contactId
@@ -385,6 +388,7 @@ exports.listBytemineCollectionContacts = /* GraphQL */ `
           createdAt
           updatedAt
           name
+          slug
           __typename
         }
         contactId
@@ -1180,6 +1184,7 @@ exports.listCollectionByTeamId = /* GraphQL */ `
         createdAt
         updatedAt
         name
+        slug
         __typename
       }
       nextToken
@@ -1212,6 +1217,40 @@ exports.listCollectionByUserId = /* GraphQL */ `
         createdAt
         updatedAt
         name
+        slug
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+exports.listCollectionBySlug = /* GraphQL */ `
+  query ListCollectionBySlug(
+    $slug: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelBytemineCollectionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCollectionBySlug(
+      slug: $slug
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        name
+        slug
         __typename
       }
       nextToken
@@ -1562,6 +1601,7 @@ exports.listCollectionContactByTeamId = /* GraphQL */ `
           createdAt
           updatedAt
           name
+          slug
           __typename
         }
         contactId
@@ -1679,6 +1719,7 @@ exports.listCollectionContactByUserId = /* GraphQL */ `
           createdAt
           updatedAt
           name
+          slug
           __typename
         }
         contactId
@@ -1796,6 +1837,7 @@ exports.listCollectionContactByCollectionId = /* GraphQL */ `
           createdAt
           updatedAt
           name
+          slug
           __typename
         }
         contactId

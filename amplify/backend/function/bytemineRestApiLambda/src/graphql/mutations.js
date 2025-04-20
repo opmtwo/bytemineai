@@ -14,6 +14,7 @@ exports.createBytemineCollection = /* GraphQL */ `
       createdAt
       updatedAt
       name
+      slug
       __typename
     }
   }
@@ -31,6 +32,7 @@ exports.updateBytemineCollection = /* GraphQL */ `
       createdAt
       updatedAt
       name
+      slug
       __typename
     }
   }
@@ -48,6 +50,7 @@ exports.deleteBytemineCollection = /* GraphQL */ `
       createdAt
       updatedAt
       name
+      slug
       __typename
     }
   }
@@ -388,6 +391,7 @@ exports.createBytemineCollectionContact = /* GraphQL */ `
         createdAt
         updatedAt
         name
+        slug
         __typename
       }
       contactId
@@ -490,6 +494,7 @@ exports.updateBytemineCollectionContact = /* GraphQL */ `
         createdAt
         updatedAt
         name
+        slug
         __typename
       }
       contactId
@@ -592,6 +597,7 @@ exports.deleteBytemineCollectionContact = /* GraphQL */ `
         createdAt
         updatedAt
         name
+        slug
         __typename
       }
       contactId
