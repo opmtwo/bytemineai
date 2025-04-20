@@ -14,7 +14,10 @@ type BytemineCollection @model @auth(rules: [{ allow: private, operations: [] }]
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
 
+	user: BytemineContact @hasOne(fields: ["userId"])
+
 	name: String
+	slug: ID @index(name: "listCollectionBySlug", queryField: "listCollectionBySlug", sortKeyFields: ["createdAt"]) # slug of {teamId}-{name}
 }
 
 type BytemineUser @model @auth(rules: [{ allow: private, operations: [] }]) {
