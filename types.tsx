@@ -1,4 +1,5 @@
-import { CognitoUser } from '@aws-amplify/auth';
+import { AuthUser, FetchUserAttributesOutput } from '@aws-amplify/auth';
+import { ReactNode } from 'react';
 
 /*
  * Custom attributes type defined according to the attributes used in this app
@@ -77,24 +78,21 @@ export const renewalPeriodOptions = Object.entries(RenewalPeriod).map((type: [st
  * no longer get an error accessing a CognitoUser's 'attribute' property) you
  * will be able to use the CognitoUser type instead of CognitoUserExt.
  */
-export interface CognitoUserExt extends CognitoUser {
+export interface CognitoUserExt extends AuthUser {
 	attributes: UserAttributes;
 }
 
 export interface AuthContextInterface {
 	user?: CognitoUserExt;
+	attributes?: FetchUserAttributesOutput;
 	authError?: Error;
 	isAuthBusy: boolean;
 	isRoot: boolean;
 	isAdmin: boolean;
 	isManager: boolean;
-	groups: string[];
-	allGroups: string[];
 	isExpired: () => boolean;
 	onSignIn: Function;
 	onSignOut: Function;
-	getGroupName: Function;
-	getUserGroups: Function;
 	updateAttributes: Function;
 }
 
