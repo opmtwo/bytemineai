@@ -1,30 +1,27 @@
-import { ReactNode } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
-import { useAuthContext } from '../providers/auth-data-provider';
+import { ReactNode } from 'react';
+
 import Redirect from '../components/Redirect';
+import { useAuthContext } from '../providers/auth-data-provider';
 
 const UserGuard = ({ children }: { children: ReactNode }) => {
 	const router = useRouter();
 	const { isAuthBusy, user, isExpired } = useAuthContext();
+	const searchParams = useSearchParams();
+
+	let asPath;
+	if (typeof searchParams.get('asPath') === 'string') {
+		asPath = searchParams.get('asPath');
+	}
 
 	if (isAuthBusy) {
 		return null;
 	}
 
-
-	if (!user || !user.attributes.sub) {
-		return <Redirect pathname="/login" continuePath={router.asPath} />;
+	if (!user?.attributes?.sub) {
+		return <Redirect pathname="/login" continuePath={asPath ? (asPath as string) : undefined} />;
 	}
-
-	if (user && user.attributes.sub && !user.attributes['custom:verificationdate'] &&  router.pathname !== '/verify-email' &&  router.pathname !== '/resend'){
-
-		let outemail = user?.attributes.email || '';
-		router.push({pathname:"/verify-email", query: {email:outemail}});
-	}
-
-	// if (isExpired() &&  router.pathname !== '/') {
-	// 	return <Redirect pathname="/" />;
-	// }
 
 	return <>{children}</>;
 };
