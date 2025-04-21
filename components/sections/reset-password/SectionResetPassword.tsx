@@ -1,25 +1,26 @@
-import { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import ResetPasswordEmailForm from './ResetPasswordEmailForm';
+import { useState } from 'react';
+
 import ResetPasswordCodeForm from './ResetPasswordCodeForm';
+import ResetPasswordEmailForm from './ResetPasswordEmailForm';
 
 const SectionResetPassword = () => {
 	const [email, setEmail] = useState('');
-	const [activeForm, setActiveForm] = useState('email-form');
+	const [activeForm, setActiveForm] = useState<'email' | 'code'>('email');
 
 	const onEmailFormSubmit = (newEmail: string) => {
 		setEmail(newEmail);
-		setActiveForm('code-form');
+		setActiveForm('code');
 	};
 
 	const onVerificationCodeFormCancel = () => {
-		setActiveForm('email-form');
-	}
+		setActiveForm('email');
+	};
 
 	return (
 		<AnimatePresence>
-			{activeForm === 'email-form' && <ResetPasswordEmailForm onSubmit={onEmailFormSubmit} />}
-			{activeForm === 'code-form' && <ResetPasswordCodeForm email={email} onCancel={onVerificationCodeFormCancel} />}
+			{activeForm === 'email' && <ResetPasswordEmailForm onSubmit={onEmailFormSubmit} />}
+			{activeForm === 'code' && <ResetPasswordCodeForm email={email} onCancel={onVerificationCodeFormCancel} />}
 		</AnimatePresence>
 	);
 };
