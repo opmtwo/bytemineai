@@ -1,20 +1,26 @@
-import {FormEvent, useEffect, useState} from 'react';
+import { signIn } from 'aws-amplify/auth';
 import { useRouter } from 'next/router';
-import { Auth } from 'aws-amplify';
-import isEmail from 'validator/lib/isEmail';
-import Anchor from '../../Anchor';
-import FormInput from '../../form/FormInput';
-import FormButton from '../../form/FormButton';
-import ErrorNotificaition from '../../notifications/ErrorNotification';
+import { FormEvent, useState } from 'react';
+
 import { useAuthContext } from '../../../providers/auth-data-provider';
-import Slot from '../../Slot';
+import { callApi } from '../../../utils/helper-utils';
+import { isEmailValid, isPasswordValid } from '../../../utils/user-utils';
+import Anchor from '../../Anchor';
 import Card from '../../cards/Card';
 import CardRelated from '../../cards/CardRelated';
+import FormButton from '../../form/FormButton';
+import FormInput from '../../form/FormInput';
 import Logo from '../../Logo';
-import { UserAttributes } from '../../../types';
-import { getSubdomain } from '../../../utils/helper-utils';
+import ErrorNotificaition from '../../notifications/ErrorNotification';
+import Slot from '../../Slot';
 
-const LoginForm = () => {
+const LoginForm = ({
+	onVerify,
+	onNewPassword,
+}: {
+	onVerify?: (username: string, password: string) => void;
+	onNewPassword: (username: string, password: string) => void;
+}) => {
 	const router = useRouter();
 	const { onSignIn } = useAuthContext();
 
@@ -24,88 +30,60 @@ const LoginForm = () => {
 	const [passwordError, setPasswordError] = useState<Error>();
 	const [error, setError] = useState<Error>();
 	const [isBusy, setIsBusy] = useState(false);
-    const [isVerified, setIsVerified] = useState<Boolean>(false);
+	const [isVerified, setIsVerified] = useState<Boolean>(false);
 
-	useEffect(()=>{
-		const query = router.query;
-		if(query?.verify_email && query.verify_email === 'true'){
-			setIsVerified(true);
-		}
-
-	},[])
-	const isFormValid = (usernameNormalized: string, passwordNormalized: string) => {
+	const isFormValid = async () => {
+		let err;
 		let isValid = true;
-		if (!usernameNormalized || !isEmail(usernameNormalized)) {
-			setUsernameError(new Error('Invalid email'));
-			isValid = false;
-		}
-		if (!passwordNormalized || passwordNormalized.length < 8) {
-			setPasswordError(new Error('Invalid password'));
-			isValid = false;
-		}
+
+		err = (await isEmailValid(username || '')) ? undefined : new Error('Invalid email address');
+		isValid = err ? false : isValid;
+		setUsernameError(err);
+
+		err = (await isPasswordValid(password || ''))
+			? undefined
+			: new Error('Password must be at least 8 characters long, contain one lowercase letter, one uppercase letter, one digit, and no spaces');
+		isValid = err ? false : isValid;
+		setPasswordError(err);
+
 		return isValid;
 	};
 
-	const isValidLoginOrigin = (attributes: UserAttributes) => {
-		const subdomain = getSubdomain()?.toLowerCase();
-		if (!subdomain) {
-			return true;
-		}
-		if (subdomain === 'dev' || subdomain === 'www') {
-			return true;
-		}
-		if (attributes['custom:group_name']?.toLowerCase() === subdomain) {
-			return true;
-		}
-		return false;
-	};
-
 	const onSubmit = async (e: FormEvent) => {
-		debugger;
 		e.preventDefault();
-		setError(undefined);
-
-		const usernameNormalized = username.toLowerCase().trim();
-		const passwordNormalized = password.trim();
-
-		setUsernameError(undefined);
-		setPasswordError(undefined);
-		if (!isFormValid(usernameNormalized, passwordNormalized)) {
+		const isValid = await isFormValid();
+		if (!isValid) {
 			return;
 		}
-
+		setError(undefined);
 		setIsBusy(true);
+		const usernameNormalized = username?.toLowerCase().trim()!;
+		const passwordNormalized = password?.trim()!;
 		try {
-			const user = await Auth.signIn({
+			const user = await signIn({
 				username: usernameNormalized,
 				password: passwordNormalized,
 			});
-			setIsBusy(false);
-
-			// if (!isValidLoginOrigin(user.attributes)) {
-			// 	try {
-			// 		await Auth.signOut();
-			// 	} catch (error) {
-			// 		// in case user password needs to be changed, we will be here
-			// 	}
-			// 	setError(new Error('Invalid username or password'));
-			// 	return;
-			// }
-
-			if (user && user.attributes && user.attributes.sub) {
-				await onSignIn(user, router.query.continue);
+			const continueUrl = router.query.continue?.length ? (router.query.continue[0] as string) : undefined;
+			if (user.nextStep.signInStep === 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED') {
+				onNewPassword && onNewPassword(usernameNormalized, passwordNormalized);
 				return;
 			}
-			if (user && user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-				await router.push({ pathname: '/new-password', query: { username, password } });
-				return;
-			}
-			setError(new Error('Something went wrong - please try again.'));
-		} catch (err) {
+			await callApi(null, '/api/v1/me/login', {
+				method: 'POST',
+				body: JSON.stringify({}),
+			});
+			window.location.href = continueUrl ?? '/';
+		} catch (err: any) {
 			console.log('Sign in error', err);
+			if (err.toString().indexOf('UserNotConfirmedException') !== -1 && onVerify) {
+				setIsBusy(false);
+				onVerify(usernameNormalized, passwordNormalized);
+				return;
+			}
 			setError(err);
-			setIsBusy(false);
 		}
+		setIsBusy(false);
 	};
 
 	return (
@@ -113,11 +91,7 @@ const LoginForm = () => {
 			<div className="has-text-centered" style={{ paddingBottom: 20 }}>
 				<Logo />
 			</div>
-			<CardRelated>
-				{isVerified
-					? `Thanks for verifying your email, please login to continue.`
-					: ` `}
-			</CardRelated>
+			<CardRelated>{isVerified ? `Thanks for verifying your email, please login to continue.` : ` `}</CardRelated>
 			<Card>
 				<Slot slot="header">
 					<strong>
@@ -129,14 +103,7 @@ const LoginForm = () => {
 				</Slot>
 				<Slot slot="body">
 					<div className="panel-block is-block">
-						<FormInput
-							name="username"
-							value={username}
-							label="Email Address"
-							onChange={setUsername}
-							required={true}
-							error={usernameError}
-						/>
+						<FormInput name="username" value={username} label="Email Address" onChange={setUsername} required={true} error={usernameError} />
 						<FormInput
 							name="password"
 							value={password}
@@ -151,20 +118,11 @@ const LoginForm = () => {
 				</Slot>
 				<Slot slot="footer">
 					<Anchor href="/register">Create Account</Anchor>
-					<FormButton
-						type="submit"
-						className="ml-5"
-						loading={isBusy}
-						disabled={isBusy}
-						variant={['is-ui-button']}
-					>
+					<FormButton type="submit" className="ml-5" loading={isBusy} disabled={isBusy} variant={['is-ui-button']}>
 						Log in
 					</FormButton>
 				</Slot>
 			</Card>
-
-
-
 			<CardRelated />
 		</form>
 	);
