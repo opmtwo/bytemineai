@@ -392,3 +392,16 @@ export const getErrorMsg = (err: any, message?: string) =>
 	err?.reason?.raw?.message ||
 	err?.response?.data?.message ||
 	message;
+
+export const unpackErrors = (error: any, formErrors: {}, setFormErrors: Dispatch<SetStateAction<{}>>) => {
+	if (!error?.response?.data?.details) {
+		return;
+	}
+	const newErrors: Record<string, Error> = {};
+	error.response.data.details.forEach((_value: { path: string[]; type: string; message: string }) => {
+		newErrors[_value.path.join('.')] = new Error(sentenceCase(_value.message));
+	});
+	setFormErrors(newErrors);
+	return newErrors;
+};
+
