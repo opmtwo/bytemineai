@@ -971,3 +971,13 @@ export enum EActionSelect {
 	'ToggleCurrentPage' = 'Toggle Current Page',
 }
 
+export interface ISortData {
+	id: string;
+	children: ReactNode;
+	sortOrder?: ESortOrder;
+	isActive?: boolean;
+	isSortable?: boolean;
+	size?: string;
+	callback?: (value: any, index?: number) => ReactNode;
+}
+
