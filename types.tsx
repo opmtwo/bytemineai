@@ -964,3 +964,10 @@ export enum ESortOrder {
 	'asc',
 	'desc',
 }
+
+export enum EActionSelect {
+	'SelectAll' = 'Select All',
+	'SelectCurrentPage' = 'Select Current Page',
+	'ToggleCurrentPage' = 'Toggle Current Page',
+}
+
