@@ -1,20 +1,19 @@
-const { createSub } = require('../graphql/mutations');
+const { createBytemineSub } = require('../graphql/mutations');
+const { listSubByTeamId } = require('../graphql/queries');
+const { apsGql } = require('./aps-utils');
 
-const subGet = async (groupId) => {
-	//console.log('get nymblr subscription-',groupId);
-	const options = {
-		groupId: groupId
-	};
-	//const options = {};
-	const response = await appSyncQuery(queries.listNymblrSubscriptionsByGroupId, options);
+const subGet = async (teamId) => {
+	const response = await apsGql(listSubByTeamId, { teamId });
 	return response.data;
 };
 
-const subAddTrial = async (groupId, groupName, userId) => {
+const subAddTrial = async (teamId, groupName, userId) => {
 	const input = {
-		groupId: groupId,
-		groupName: groupName,
+		id: teamId,
+		owner: teamId,
 		userId: userId,
+		teamId: teamId,
+		groupName: groupName,
 		subscriptionStatus: 'Trial',
 		subscriptionPeriod: 'Monthly',
 		monthlyCredits: '10',
@@ -22,10 +21,11 @@ const subAddTrial = async (groupId, groupName, userId) => {
 		annualCredits: '0',
 		currentCredits: '10',
 	};
-	const response = await appSyncMutation(createSub, { input });
+	const response = await appSyncMutation(createBytemineSub, { input });
 	return response.data;
 };
 
 module.exports = {
+	subGet,
 	subAddTrial,
 };
