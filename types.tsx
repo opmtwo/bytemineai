@@ -47,10 +47,11 @@ export interface UserAttributes {
 export enum Roles {
 	'Admin' = 'Admin',
 	'Manager' = 'Manager',
-	'User' = 'User',
+	'Editor' = 'Editor',
+	'Viewer' = 'Viewer',
 }
 
-export const roleOptions = Object.entries(Roles).map((type: [string, string]) => ({ id: type[0], name: type[1] }));
+export const roleOptions = Object.entries(Roles).filter((value) => value[0] !== 'Admin').map((type: [string, string]) => ({ id: type[0], name: type[1] }));
 
 export enum AccountType {
 	'ActiveCustomer' = 'Active Customer',
