@@ -917,3 +917,45 @@ export interface IContact {
 	naics_desc: string;
 	org_ownership_status: string;
 }
+
+export interface IBytemineUser {
+	id: string;
+	owner: string;
+	teamId?: string;
+	userId?: string;
+
+	createdAt: string; // ISO timestamp (AWSDateTime)
+	updatedAt: string;
+
+	isSelected?: boolean;
+
+	isEnabled?: boolean;
+	role?: 'Admin' | 'Manager' | 'Editor' | 'Viewer'; // example enum, adjust as needed
+
+	email?: string;
+	phone?: string;
+
+	name?: string;
+	givenName?: string;
+	familyName?: string;
+
+	company?: string;
+
+	passwordHash?: string;
+
+	accountType?: string;
+	bonusCredits?: string;
+	colorCode?: string;
+	country?: string;
+	credits?: string;
+	groupName?: string;
+	hasApi?: string;
+	hasEmail?: string;
+	iconS3Key?: string;
+	logoS3Key?: string;
+	isBlocked?: string;
+	lastLoginAt?: string;
+	renewalPeriod?: string;
+	seats?: string;
+}
+
