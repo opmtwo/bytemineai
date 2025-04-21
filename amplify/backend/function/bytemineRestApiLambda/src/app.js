@@ -23,6 +23,7 @@ const bodyParser = require('body-parser')
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 
 const helloRouter = require('./v1/hello');
+const meRouter = require('./v1/me');
 const collectionsRouter = require('./v1/collections');
 const usersRouter = require('./v1/users');
 const searchRouter = require('./v1/search');
@@ -43,6 +44,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/api/v1/hello', helloRouter);
+app.use('/api/v1/me', meRouter);
 app.use('/api/v1/collections', collectionsRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/search', searchRouter);
