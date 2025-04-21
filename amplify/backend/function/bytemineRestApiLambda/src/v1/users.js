@@ -22,9 +22,20 @@ const router = Router();
 router.get('/', verifyToken, verifyTeam, async (req, res) => {
 	const { id: teamId } = res.locals.owner;
 
-	const users = await apsGql(listUserByTeamId, { teamId, limit: 1000, sortDirection: 'DESC' }, 'data.listUserByTeamId');
+	const users = await apsGql(listUserByTeamId, { teamId, limit: 1000, sortDirection: 'DESC' }, 'data.listUserByTeamId.items');
 
 	return res.json(users);
+});
+
+router.get('/available', verifyToken, verifyTeam, async (req, res) => {
+	const { id: teamId } = res.locals.team;
+	const { email } = req.query;
+	const emailClean = email.toLowerCase().trim();
+
+	const users = await apsGql(listUserByEmail, { email: emailClean }, 'data.listUserByEmail.items');
+	console.log('users', { length: users.length });
+
+	return res.json({ id: users?.[0]?.id });
 });
 
 router.get('/:id', verifyToken, verifyTeam, async (req, res) => {
@@ -59,13 +70,16 @@ router.post('/', schemaValidate(IUser), verifyToken, verifyTeam, async (req, res
 
 	const cognitoUser = await idpAdminCreateUser(USERPOOLID, emailClean, ['EMAIL'], {
 		email: emailClean,
-		// phone_number: `${data.zoneinfo}${data.phone}`,
+		phone_number: data.phone,
 		name: data.name,
 		given_name: data.givenName ?? '',
 		family_name: data.familyName ?? '',
 	});
 
 	const sub = (cognitoUser.User?.Attributes ?? []).find((_attr) => _attr.Name === 'sub')?.Value;
+
+	const role = data.role.toLowerCase().trim() !== 'admin' ? data.role : 'Viewer';
+
 	const input = {
 		...data,
 		id: sub,
@@ -73,6 +87,7 @@ router.post('/', schemaValidate(IUser), verifyToken, verifyTeam, async (req, res
 		userId: sub,
 		teamId: teamId,
 		email: emailClean,
+		role: role,
 		isEnabled: true,
 	};
 	const user = await apsGql(createBytemineUser, { input }, 'data.createBytemineUser');
@@ -97,7 +112,9 @@ router.put('/:id', schemaValidate(IUser), verifyToken, verifyTeam, async (req, r
 
 	delete data.email;
 
-	const input = { id, _version: user._version, ...data };
+	const role = data.role.toLowerCase().trim() !== 'admin' ? data.role : 'Viewer';
+
+	const input = { id, _version: user._version, ...data, role };
 	const userUpdated = await apsGql(updateBytemineUser, { input }, 'data.updateBytemineUser');
 
 	return res.json(userUpdated);
