@@ -1,8 +1,12 @@
-import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { sortBy } from 'lodash';
+import { useEffect, useState } from 'react';
+
 import { ITEMS_PER_PAGE } from '../../../consts';
-import { UserAttributes } from '../../../types';
+import { useAuthContext } from '../../../providers/auth-data-provider';
+import { useCrudContext } from '../../../providers/crud-provider';
+import { IBytemineUser, UserAttributes } from '../../../types';
+import { decodeJson } from '../../../utils/helper-utils';
 import { searchUserItems } from '../../../utils/user-utils';
 import Card from '../../cards/Card';
 import CardAnimatePresence from '../../cards/CardAnimatePresence';
@@ -10,116 +14,84 @@ import EmptyMsg from '../../EmptyMsg';
 import FormButton from '../../form/FormButton';
 import FormInput from '../../form/FormInput';
 import IconSearch from '../../icons/IconSearch';
+import ListView from '../../ListView';
 import Loader from '../../Loader';
 import Pagination, { paginate } from '../../Pagination';
 import Slot from '../../Slot';
 import UserEntry from '../../UserEntry';
 import ViewToggle from '../../ViewToggle';
-import ListView from '../../ListView';
-import { useAuthContext } from '../../../providers/auth-data-provider';
-import { decodeJson } from '../../../utils/helper-utils';
+import PaginationNew from '../../PaginationNew';
 
-const UserItems = ({
-	items = [],
-	isBusy,
-	isNewDisabled,
-	onNew,
-	onEdit,
-	onDelete,
-}: {
-	items: UserAttributes[];
-	isBusy: boolean;
-	isNewDisabled?: boolean;
-	onNew: Function;
-	onEdit: Function;
-	onDelete: Function;
-}) => {
-	const [query, setQuery] = useState('');
-	const [activePage, setActivePage] = useState(0);
-	const [activePerPage, setActivePerPage] = useState(ITEMS_PER_PAGE);
-	const [isSorted, setIsSorted] = useState(false);
-	const [filteredItems, setFilteredItems] = useState<UserAttributes[]>([]);
+const UserItems = () => {
 	const [isListMode, setIsListMode] = useState(false);
 
-	const { user } = useAuthContext();
+	const { attributes } = useAuthContext();
+
+	const {
+		isBusy: userIsBusy,
+		items: userItems,
+		itemsInUse: userItemsInUse,
+		page: userPage,
+		perPage: userPerPage,
+		onPageChange: userOnPageChange,
+		query: userQuery,
+		onQueryChange: userOnQueryChange,
+		onConfirmOpen: userOnConfirmOpen,
+		onConfirmCancel: userOnConfirmCancel,
+		onAdd: userOnAdd,
+		onDelete: userOnDelete,
+		onDeleteMany: userOnDeleteMany,
+	} = useCrudContext<IBytemineUser>();
 
 	useEffect(() => {
-		onQueryChange(query);
-	}, [items]);
-
-	useEffect(() => {
-		const profile = decodeJson(user?.attributes.profile);
+		const profile = decodeJson(attributes?.profile);
 		if (profile?.listModes?.userItems) {
 			setIsListMode(true);
 		}
 	}, []);
 
-	const searchAndSort = (term: string, shouldSort = false) => {
-		const queryNormalized = term.toLowerCase().trim();
-		let newItems = items;
-		if (queryNormalized) {
-			newItems = searchUserItems(items, queryNormalized);
-		}
-		if (shouldSort) {
-			newItems = sortBy(newItems, 'given_name');
-		}
-		return newItems;
-	};
-
-	const onQueryChange = (newQuery: string) => {
-		setQuery(newQuery);
-		setActivePage(0);
-		setFilteredItems(searchAndSort(newQuery, isSorted));
-	};
-
-	const onSortToggle = () => {
-		setIsSorted(!isSorted);
-		setFilteredItems(searchAndSort(query, !isSorted));
-	};
-
-	const displayItems = paginate(filteredItems, activePerPage, activePage);
-	const itemsList = displayItems.map((user, index) => (
-		<UserEntry
-			key={user.sub}
-			index={index}
-			user={user}
-			isListMode={isListMode}
-			onEdit={onEdit}
-			onDelete={onDelete}
-		/>
+	const itemsList = paginate(userItemsInUse, userPerPage, userPage).map((item: IBytemineUser, index: number) => (
+		<>
+			<UserEntry key={item.id} index={index} user={item} isListMode={isListMode} />
+		</>
 	));
 
-	const onPageChange = async (newPage: number, newPerPage: number) => {
-		setActivePage(newPage);
-		if (newPerPage) {
-			setActivePerPage(newPerPage);
-		}
+	const selectedItems = userItems.filter((_item) => _item.isSelected);
+
+	const handleDeleteMany = async () => {
+		const ids = selectedItems.map((_item) => _item.id);
+		const onSubmit = () => async () => {
+			await userOnDeleteMany(ids, {}, {}, {});
+			window.dispatchEvent(new Event('logs.refresh'));
+		};
+		const onCancel = () => async () => await userOnConfirmCancel();
+		userOnConfirmOpen(
+			'Delete seeding mailbox?',
+			'Are you sure you want to the selected seeding mailbox? This can not be undone!',
+			onSubmit,
+			onCancel
+		);
 	};
 
 	const pagination = (
-		<Pagination
-			totalItems={filteredItems.length}
-			activePage={activePage}
-			isTrialAccount={false}
-			setIsUpgradeModalActive={() => {}}
-			itemsPerPage={activePerPage}
-			onPageChange={onPageChange}
+		<PaginationNew
+			totalCount={userItemsInUse.length}
+			currentPage={userPage}
+			itemsPerPage={userPerPage}
+			onPageChange={userOnPageChange}
+			pageSizeOptions={[10, 25, 50]}
 		/>
 	);
+
+	const isNewDisabled = false;
 
 	return (
 		<Card className="is-scroll-view">
 			<Slot slot="header">
 				<div className="is-flex is-align-items-center mr-a is-flex-grow-1">
-					<FormInput
-						fieldClassName="is-flex-grow-1"
-						value={query}
-						onChange={onQueryChange}
-						isLast={true}
-						iconLeft={<IconSearch />}
-					/>
+					<FormInput fieldClassName="is-flex-grow-1" value={userQuery} onChange={userOnQueryChange} isLast={true} iconLeft={<IconSearch />} />
 				</div>
-				<span className="has-text-grey ml-5">{filteredItems.length} results</span>
+				<span className="has-text-grey ml-5">{userItemsInUse.length} results</span>
 				<div className="ml-6 mr-5">{pagination}</div>
 				{/* <span
 						className={classNames('is-clickable', isSorted ? 'has-text-primary' : 'has-text-grey')}
@@ -128,20 +100,16 @@ const UserItems = ({
 						Sort by name
 					</span> */}
 				<CardAnimatePresence isActive={isNewDisabled ? false : true}>
-					<FormButton
-						onClick={isNewDisabled ? undefined : onNew}
-						variant={['is-outlined']}
-						disabled={isNewDisabled}
-					>
+					<FormButton onClick={isNewDisabled ? undefined : userOnAdd} variant={['is-outlined']} disabled={isNewDisabled}>
 						New User
 					</FormButton>
 				</CardAnimatePresence>
 			</Slot>
 			<Slot slot="body">
-				<CardAnimatePresence isActive={isBusy && !items.length}>
+				<CardAnimatePresence isActive={userIsBusy && !userItems.length}>
 					<Loader />
 				</CardAnimatePresence>
-				<CardAnimatePresence isActive={displayItems.length === 0 && !isBusy}>
+				<CardAnimatePresence isActive={!userIsBusy && !userItemsInUse.length}>
 					<EmptyMsg msg="No users found" />
 				</CardAnimatePresence>
 				{isListMode ? <ListView>{itemsList}</ListView> : itemsList}
