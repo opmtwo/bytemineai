@@ -405,3 +405,5 @@ export const unpackErrors = (error: any, formErrors: {}, setFormErrors: Dispatch
 	return newErrors;
 };
 
+export const paginate = (items: any[], itemsPerPage: number, activePage: number) =>
+	items.slice(activePage * itemsPerPage, activePage * itemsPerPage + itemsPerPage);
