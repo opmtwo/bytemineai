@@ -13,6 +13,38 @@ exports.createBytemineCollection = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      user {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEnabled
+        role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
+        passwordHash
+        accountType
+        bonusCredits
+        colorCode
+        country
+        credits
+        groupName
+        hasApi
+        hasEmail
+        iconS3Key
+        logoS3Key
+        isBlocked
+        lastLoginAt
+        renewalPeriod
+        seats
+        __typename
+      }
       name
       slug
       __typename
@@ -31,6 +63,38 @@ exports.updateBytemineCollection = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      user {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEnabled
+        role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
+        passwordHash
+        accountType
+        bonusCredits
+        colorCode
+        country
+        credits
+        groupName
+        hasApi
+        hasEmail
+        iconS3Key
+        logoS3Key
+        isBlocked
+        lastLoginAt
+        renewalPeriod
+        seats
+        __typename
+      }
       name
       slug
       __typename
@@ -49,6 +113,38 @@ exports.deleteBytemineCollection = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      user {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEnabled
+        role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
+        passwordHash
+        accountType
+        bonusCredits
+        colorCode
+        country
+        credits
+        groupName
+        hasApi
+        hasEmail
+        iconS3Key
+        logoS3Key
+        isBlocked
+        lastLoginAt
+        renewalPeriod
+        seats
+        __typename
+      }
       name
       slug
       __typename
@@ -76,6 +172,20 @@ exports.createBytemineUser = /* GraphQL */ `
       familyName
       company
       passwordHash
+      accountType
+      bonusCredits
+      colorCode
+      country
+      credits
+      groupName
+      hasApi
+      hasEmail
+      iconS3Key
+      logoS3Key
+      isBlocked
+      lastLoginAt
+      renewalPeriod
+      seats
       __typename
     }
   }
@@ -101,6 +211,20 @@ exports.updateBytemineUser = /* GraphQL */ `
       familyName
       company
       passwordHash
+      accountType
+      bonusCredits
+      colorCode
+      country
+      credits
+      groupName
+      hasApi
+      hasEmail
+      iconS3Key
+      logoS3Key
+      isBlocked
+      lastLoginAt
+      renewalPeriod
+      seats
       __typename
     }
   }
@@ -126,6 +250,20 @@ exports.deleteBytemineUser = /* GraphQL */ `
       familyName
       company
       passwordHash
+      accountType
+      bonusCredits
+      colorCode
+      country
+      credits
+      groupName
+      hasApi
+      hasEmail
+      iconS3Key
+      logoS3Key
+      isBlocked
+      lastLoginAt
+      renewalPeriod
+      seats
       __typename
     }
   }
@@ -390,6 +528,38 @@ exports.createBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        user {
+          id
+          owner
+          teamId
+          userId
+          createdAt
+          updatedAt
+          isEnabled
+          role
+          email
+          phone
+          name
+          givenName
+          familyName
+          company
+          passwordHash
+          accountType
+          bonusCredits
+          colorCode
+          country
+          credits
+          groupName
+          hasApi
+          hasEmail
+          iconS3Key
+          logoS3Key
+          isBlocked
+          lastLoginAt
+          renewalPeriod
+          seats
+          __typename
+        }
         name
         slug
         __typename
@@ -493,6 +663,38 @@ exports.updateBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        user {
+          id
+          owner
+          teamId
+          userId
+          createdAt
+          updatedAt
+          isEnabled
+          role
+          email
+          phone
+          name
+          givenName
+          familyName
+          company
+          passwordHash
+          accountType
+          bonusCredits
+          colorCode
+          country
+          credits
+          groupName
+          hasApi
+          hasEmail
+          iconS3Key
+          logoS3Key
+          isBlocked
+          lastLoginAt
+          renewalPeriod
+          seats
+          __typename
+        }
         name
         slug
         __typename
@@ -596,6 +798,38 @@ exports.deleteBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        user {
+          id
+          owner
+          teamId
+          userId
+          createdAt
+          updatedAt
+          isEnabled
+          role
+          email
+          phone
+          name
+          givenName
+          familyName
+          company
+          passwordHash
+          accountType
+          bonusCredits
+          colorCode
+          country
+          credits
+          groupName
+          hasApi
+          hasEmail
+          iconS3Key
+          logoS3Key
+          isBlocked
+          lastLoginAt
+          renewalPeriod
+          seats
+          __typename
+        }
         name
         slug
         __typename

@@ -19,70 +19,29 @@ export const onCreateBytemineCollection = /* GraphQL */ `
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
-        first_name
-        last_name
-        middle_name
-        full_name
-        job_title
-        seniority
-        department
-        primary_role
-        secondary_role
-        linkedin_profile
-        linkedin_connection_count
-        work_email
-        work_email_history
-        personal_email
-        personal_email2
-        personal_email_history
-        direct_dial
-        mobile_number
-        mobile_number_history
-        work_number
-        education
-        skills
-        interests
-        linkedin_headline
-        facebook_profile
-        twitter_profile
-        work_experience
-        salary
-        birth_year
-        age
-        gender
-        new_hire
-        job_start_date
-        company_name
-        company_domain
-        company_website
-        company_linkedin_profile
-        company_linkedin_followers
-        company_local_address
-        company_local_city
-        company_local_state
-        company_local_address_postal
-        company_hq_address
-        company_hq_city
-        company_hq_state
-        company_hq_postal
-        person_city
-        person_state
-        person_postal
-        company_employee_range
-        company_revenue_range
-        company_industry
-        company_sic4
-        company_sic4_description
-        company_naics
-        company_naics_description
-        company_type
+        isEnabled
+        role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
+        passwordHash
+        accountType
+        bonusCredits
+        colorCode
+        country
+        credits
+        groupName
+        hasApi
+        hasEmail
+        iconS3Key
+        logoS3Key
+        isBlocked
+        lastLoginAt
+        renewalPeriod
+        seats
         __typename
       }
       name
@@ -109,70 +68,29 @@ export const onUpdateBytemineCollection = /* GraphQL */ `
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
-        first_name
-        last_name
-        middle_name
-        full_name
-        job_title
-        seniority
-        department
-        primary_role
-        secondary_role
-        linkedin_profile
-        linkedin_connection_count
-        work_email
-        work_email_history
-        personal_email
-        personal_email2
-        personal_email_history
-        direct_dial
-        mobile_number
-        mobile_number_history
-        work_number
-        education
-        skills
-        interests
-        linkedin_headline
-        facebook_profile
-        twitter_profile
-        work_experience
-        salary
-        birth_year
-        age
-        gender
-        new_hire
-        job_start_date
-        company_name
-        company_domain
-        company_website
-        company_linkedin_profile
-        company_linkedin_followers
-        company_local_address
-        company_local_city
-        company_local_state
-        company_local_address_postal
-        company_hq_address
-        company_hq_city
-        company_hq_state
-        company_hq_postal
-        person_city
-        person_state
-        person_postal
-        company_employee_range
-        company_revenue_range
-        company_industry
-        company_sic4
-        company_sic4_description
-        company_naics
-        company_naics_description
-        company_type
+        isEnabled
+        role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
+        passwordHash
+        accountType
+        bonusCredits
+        colorCode
+        country
+        credits
+        groupName
+        hasApi
+        hasEmail
+        iconS3Key
+        logoS3Key
+        isBlocked
+        lastLoginAt
+        renewalPeriod
+        seats
         __typename
       }
       name
@@ -199,70 +117,29 @@ export const onDeleteBytemineCollection = /* GraphQL */ `
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
-        first_name
-        last_name
-        middle_name
-        full_name
-        job_title
-        seniority
-        department
-        primary_role
-        secondary_role
-        linkedin_profile
-        linkedin_connection_count
-        work_email
-        work_email_history
-        personal_email
-        personal_email2
-        personal_email_history
-        direct_dial
-        mobile_number
-        mobile_number_history
-        work_number
-        education
-        skills
-        interests
-        linkedin_headline
-        facebook_profile
-        twitter_profile
-        work_experience
-        salary
-        birth_year
-        age
-        gender
-        new_hire
-        job_start_date
-        company_name
-        company_domain
-        company_website
-        company_linkedin_profile
-        company_linkedin_followers
-        company_local_address
-        company_local_city
-        company_local_state
-        company_local_address_postal
-        company_hq_address
-        company_hq_city
-        company_hq_state
-        company_hq_postal
-        person_city
-        person_state
-        person_postal
-        company_employee_range
-        company_revenue_range
-        company_industry
-        company_sic4
-        company_sic4_description
-        company_naics
-        company_naics_description
-        company_type
+        isEnabled
+        role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
+        passwordHash
+        accountType
+        bonusCredits
+        colorCode
+        country
+        credits
+        groupName
+        hasApi
+        hasEmail
+        iconS3Key
+        logoS3Key
+        isBlocked
+        lastLoginAt
+        renewalPeriod
+        seats
         __typename
       }
       name
@@ -291,6 +168,20 @@ export const onCreateBytemineUser = /* GraphQL */ `
       familyName
       company
       passwordHash
+      accountType
+      bonusCredits
+      colorCode
+      country
+      credits
+      groupName
+      hasApi
+      hasEmail
+      iconS3Key
+      logoS3Key
+      isBlocked
+      lastLoginAt
+      renewalPeriod
+      seats
       __typename
     }
   }
@@ -315,6 +206,20 @@ export const onUpdateBytemineUser = /* GraphQL */ `
       familyName
       company
       passwordHash
+      accountType
+      bonusCredits
+      colorCode
+      country
+      credits
+      groupName
+      hasApi
+      hasEmail
+      iconS3Key
+      logoS3Key
+      isBlocked
+      lastLoginAt
+      renewalPeriod
+      seats
       __typename
     }
   }
@@ -339,6 +244,20 @@ export const onDeleteBytemineUser = /* GraphQL */ `
       familyName
       company
       passwordHash
+      accountType
+      bonusCredits
+      colorCode
+      country
+      credits
+      groupName
+      hasApi
+      hasEmail
+      iconS3Key
+      logoS3Key
+      isBlocked
+      lastLoginAt
+      renewalPeriod
+      seats
       __typename
     }
   }
@@ -606,70 +525,29 @@ export const onCreateBytemineCollectionContact = /* GraphQL */ `
           userId
           createdAt
           updatedAt
-          isEmailVerified
-          contactEmailStatusCode
-          contactEmailDomainType
-          personalEmailStatusCode
-          personalEmailDomainType
-          contactPersonalEmailStatusCode
-          contactPersonalEmailDomainType
-          first_name
-          last_name
-          middle_name
-          full_name
-          job_title
-          seniority
-          department
-          primary_role
-          secondary_role
-          linkedin_profile
-          linkedin_connection_count
-          work_email
-          work_email_history
-          personal_email
-          personal_email2
-          personal_email_history
-          direct_dial
-          mobile_number
-          mobile_number_history
-          work_number
-          education
-          skills
-          interests
-          linkedin_headline
-          facebook_profile
-          twitter_profile
-          work_experience
-          salary
-          birth_year
-          age
-          gender
-          new_hire
-          job_start_date
-          company_name
-          company_domain
-          company_website
-          company_linkedin_profile
-          company_linkedin_followers
-          company_local_address
-          company_local_city
-          company_local_state
-          company_local_address_postal
-          company_hq_address
-          company_hq_city
-          company_hq_state
-          company_hq_postal
-          person_city
-          person_state
-          person_postal
-          company_employee_range
-          company_revenue_range
-          company_industry
-          company_sic4
-          company_sic4_description
-          company_naics
-          company_naics_description
-          company_type
+          isEnabled
+          role
+          email
+          phone
+          name
+          givenName
+          familyName
+          company
+          passwordHash
+          accountType
+          bonusCredits
+          colorCode
+          country
+          credits
+          groupName
+          hasApi
+          hasEmail
+          iconS3Key
+          logoS3Key
+          isBlocked
+          lastLoginAt
+          renewalPeriod
+          seats
           __typename
         }
         name
@@ -781,70 +659,29 @@ export const onUpdateBytemineCollectionContact = /* GraphQL */ `
           userId
           createdAt
           updatedAt
-          isEmailVerified
-          contactEmailStatusCode
-          contactEmailDomainType
-          personalEmailStatusCode
-          personalEmailDomainType
-          contactPersonalEmailStatusCode
-          contactPersonalEmailDomainType
-          first_name
-          last_name
-          middle_name
-          full_name
-          job_title
-          seniority
-          department
-          primary_role
-          secondary_role
-          linkedin_profile
-          linkedin_connection_count
-          work_email
-          work_email_history
-          personal_email
-          personal_email2
-          personal_email_history
-          direct_dial
-          mobile_number
-          mobile_number_history
-          work_number
-          education
-          skills
-          interests
-          linkedin_headline
-          facebook_profile
-          twitter_profile
-          work_experience
-          salary
-          birth_year
-          age
-          gender
-          new_hire
-          job_start_date
-          company_name
-          company_domain
-          company_website
-          company_linkedin_profile
-          company_linkedin_followers
-          company_local_address
-          company_local_city
-          company_local_state
-          company_local_address_postal
-          company_hq_address
-          company_hq_city
-          company_hq_state
-          company_hq_postal
-          person_city
-          person_state
-          person_postal
-          company_employee_range
-          company_revenue_range
-          company_industry
-          company_sic4
-          company_sic4_description
-          company_naics
-          company_naics_description
-          company_type
+          isEnabled
+          role
+          email
+          phone
+          name
+          givenName
+          familyName
+          company
+          passwordHash
+          accountType
+          bonusCredits
+          colorCode
+          country
+          credits
+          groupName
+          hasApi
+          hasEmail
+          iconS3Key
+          logoS3Key
+          isBlocked
+          lastLoginAt
+          renewalPeriod
+          seats
           __typename
         }
         name
@@ -956,70 +793,29 @@ export const onDeleteBytemineCollectionContact = /* GraphQL */ `
           userId
           createdAt
           updatedAt
-          isEmailVerified
-          contactEmailStatusCode
-          contactEmailDomainType
-          personalEmailStatusCode
-          personalEmailDomainType
-          contactPersonalEmailStatusCode
-          contactPersonalEmailDomainType
-          first_name
-          last_name
-          middle_name
-          full_name
-          job_title
-          seniority
-          department
-          primary_role
-          secondary_role
-          linkedin_profile
-          linkedin_connection_count
-          work_email
-          work_email_history
-          personal_email
-          personal_email2
-          personal_email_history
-          direct_dial
-          mobile_number
-          mobile_number_history
-          work_number
-          education
-          skills
-          interests
-          linkedin_headline
-          facebook_profile
-          twitter_profile
-          work_experience
-          salary
-          birth_year
-          age
-          gender
-          new_hire
-          job_start_date
-          company_name
-          company_domain
-          company_website
-          company_linkedin_profile
-          company_linkedin_followers
-          company_local_address
-          company_local_city
-          company_local_state
-          company_local_address_postal
-          company_hq_address
-          company_hq_city
-          company_hq_state
-          company_hq_postal
-          person_city
-          person_state
-          person_postal
-          company_employee_range
-          company_revenue_range
-          company_industry
-          company_sic4
-          company_sic4_description
-          company_naics
-          company_naics_description
-          company_type
+          isEnabled
+          role
+          email
+          phone
+          name
+          givenName
+          familyName
+          company
+          passwordHash
+          accountType
+          bonusCredits
+          colorCode
+          country
+          credits
+          groupName
+          hasApi
+          hasEmail
+          iconS3Key
+          logoS3Key
+          isBlocked
+          lastLoginAt
+          renewalPeriod
+          seats
           __typename
         }
         name

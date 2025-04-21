@@ -10,6 +10,38 @@ exports.getBytemineCollection = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      user {
+        id
+        owner
+        teamId
+        userId
+        createdAt
+        updatedAt
+        isEnabled
+        role
+        email
+        phone
+        name
+        givenName
+        familyName
+        company
+        passwordHash
+        accountType
+        bonusCredits
+        colorCode
+        country
+        credits
+        groupName
+        hasApi
+        hasEmail
+        iconS3Key
+        logoS3Key
+        isBlocked
+        lastLoginAt
+        renewalPeriod
+        seats
+        __typename
+      }
       name
       slug
       __typename
@@ -34,6 +66,38 @@ exports.listBytemineCollections = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        user {
+          id
+          owner
+          teamId
+          userId
+          createdAt
+          updatedAt
+          isEnabled
+          role
+          email
+          phone
+          name
+          givenName
+          familyName
+          company
+          passwordHash
+          accountType
+          bonusCredits
+          colorCode
+          country
+          credits
+          groupName
+          hasApi
+          hasEmail
+          iconS3Key
+          logoS3Key
+          isBlocked
+          lastLoginAt
+          renewalPeriod
+          seats
+          __typename
+        }
         name
         slug
         __typename
@@ -61,6 +125,20 @@ exports.getBytemineUser = /* GraphQL */ `
       familyName
       company
       passwordHash
+      accountType
+      bonusCredits
+      colorCode
+      country
+      credits
+      groupName
+      hasApi
+      hasEmail
+      iconS3Key
+      logoS3Key
+      isBlocked
+      lastLoginAt
+      renewalPeriod
+      seats
       __typename
     }
   }
@@ -88,6 +166,20 @@ exports.listBytemineUsers = /* GraphQL */ `
         familyName
         company
         passwordHash
+        accountType
+        bonusCredits
+        colorCode
+        country
+        credits
+        groupName
+        hasApi
+        hasEmail
+        iconS3Key
+        logoS3Key
+        isBlocked
+        lastLoginAt
+        renewalPeriod
+        seats
         __typename
       }
       nextToken
@@ -278,6 +370,38 @@ exports.getBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        user {
+          id
+          owner
+          teamId
+          userId
+          createdAt
+          updatedAt
+          isEnabled
+          role
+          email
+          phone
+          name
+          givenName
+          familyName
+          company
+          passwordHash
+          accountType
+          bonusCredits
+          colorCode
+          country
+          credits
+          groupName
+          hasApi
+          hasEmail
+          iconS3Key
+          logoS3Key
+          isBlocked
+          lastLoginAt
+          renewalPeriod
+          seats
+          __typename
+        }
         name
         slug
         __typename
@@ -1183,6 +1307,38 @@ exports.listCollectionByTeamId = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        user {
+          id
+          owner
+          teamId
+          userId
+          createdAt
+          updatedAt
+          isEnabled
+          role
+          email
+          phone
+          name
+          givenName
+          familyName
+          company
+          passwordHash
+          accountType
+          bonusCredits
+          colorCode
+          country
+          credits
+          groupName
+          hasApi
+          hasEmail
+          iconS3Key
+          logoS3Key
+          isBlocked
+          lastLoginAt
+          renewalPeriod
+          seats
+          __typename
+        }
         name
         slug
         __typename
@@ -1216,6 +1372,38 @@ exports.listCollectionByUserId = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        user {
+          id
+          owner
+          teamId
+          userId
+          createdAt
+          updatedAt
+          isEnabled
+          role
+          email
+          phone
+          name
+          givenName
+          familyName
+          company
+          passwordHash
+          accountType
+          bonusCredits
+          colorCode
+          country
+          credits
+          groupName
+          hasApi
+          hasEmail
+          iconS3Key
+          logoS3Key
+          isBlocked
+          lastLoginAt
+          renewalPeriod
+          seats
+          __typename
+        }
         name
         slug
         __typename
@@ -1249,6 +1437,38 @@ exports.listCollectionBySlug = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        user {
+          id
+          owner
+          teamId
+          userId
+          createdAt
+          updatedAt
+          isEnabled
+          role
+          email
+          phone
+          name
+          givenName
+          familyName
+          company
+          passwordHash
+          accountType
+          bonusCredits
+          colorCode
+          country
+          credits
+          groupName
+          hasApi
+          hasEmail
+          iconS3Key
+          logoS3Key
+          isBlocked
+          lastLoginAt
+          renewalPeriod
+          seats
+          __typename
+        }
         name
         slug
         __typename
@@ -1291,6 +1511,20 @@ exports.listUserByTeamId = /* GraphQL */ `
         familyName
         company
         passwordHash
+        accountType
+        bonusCredits
+        colorCode
+        country
+        credits
+        groupName
+        hasApi
+        hasEmail
+        iconS3Key
+        logoS3Key
+        isBlocked
+        lastLoginAt
+        renewalPeriod
+        seats
         __typename
       }
       nextToken
@@ -1331,6 +1565,20 @@ exports.listUserByUserId = /* GraphQL */ `
         familyName
         company
         passwordHash
+        accountType
+        bonusCredits
+        colorCode
+        country
+        credits
+        groupName
+        hasApi
+        hasEmail
+        iconS3Key
+        logoS3Key
+        isBlocked
+        lastLoginAt
+        renewalPeriod
+        seats
         __typename
       }
       nextToken
@@ -1371,6 +1619,20 @@ exports.listUserByEmail = /* GraphQL */ `
         familyName
         company
         passwordHash
+        accountType
+        bonusCredits
+        colorCode
+        country
+        credits
+        groupName
+        hasApi
+        hasEmail
+        iconS3Key
+        logoS3Key
+        isBlocked
+        lastLoginAt
+        renewalPeriod
+        seats
         __typename
       }
       nextToken
