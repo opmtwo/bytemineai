@@ -1,113 +1,145 @@
 import { FormEvent, useEffect, useState } from 'react';
-import API, { graphqlOperation } from '@aws-amplify/api';
-import { List } from '../../../types';
+
+import { genericErrorMessage } from '../../../consts';
+import { useAuthContext } from '../../../providers/auth-data-provider';
+import { useCrudContext } from '../../../providers/crud-provider';
+import { IBytemineCollection, List } from '../../../types';
 import Card from '../../cards/Card';
+import CardTitle from '../../CardTitle';
 import FormButton from '../../form/FormButton';
 import FormInput from '../../form/FormInput';
-import Slot from '../../Slot';
-import { createList, updateList } from '../../../src/graphql/mutations';
-import ErrorNotificaition from '../../notifications/ErrorNotification';
 import IconClose from '../../icons/IconClose';
-import { useAuthContext } from '../../../providers/auth-data-provider';
-import CardTitle from '../../CardTitle';
-import { genericErrorMessage } from '../../../consts';
+import ErrorNotificaition from '../../notifications/ErrorNotification';
+import Slot from '../../Slot';
+import { isLength } from 'validator';
+import { callApi } from '../../../utils/helper-utils';
 
-const MyListForm = ({ item, onCreate, onUpdate, onCancel ,itemsList}: { item?: List; onCreate: Function; onUpdate: Function; onCancel: () => void;itemsList:any }) => {
-    const listNames: Array<string> = itemsList.map((item:any) => item.name.trim().toLowerCase());
-    const [isBusy, setIsBusy] = useState(false);
-    const [error, setError] = useState<Error>();
-    const [id, setId] = useState('');
-    const [name, setName] = useState('');
-    const [nameError, setNameError] = useState<Error>();
+const MyListForm = () => {
+	const [isBusy, setIsBusy] = useState(false);
+	const [error, setError] = useState<Error>();
 
-    const { user } = useAuthContext();
-    const groupname = user?.attributes['custom:group_name'];
+	const [id, setId] = useState('');
 
-    useEffect(() => {
-        if (!item) {
-            setId('');
-            setName('');
-            return;
-        }
-        setId(item.id);
-        setName(item.name);
-    }, [item]);
+	const [name, setName] = useState('');
+	const [nameError, setNameError] = useState<Error>();
 
-    const isFormValid = async () => {
-        let err;
-        let isValid = true;
-        err = name && name.trim().length ? listNames.includes(name.trim().toLowerCase()) ? new Error("List with the same name already exists"): undefined: new Error('Invalid name');
-        isValid = err ? false : isValid;
-        setNameError(err);
-        return isValid;
-    };
+	// const { attributes } = useAuthContext();
+	// const groupname = attributes?.['custom:group_name'];
 
-    const getInput = () => {
-        let operation = createList;
-        let operationName = 'createList';
-        let input = {
-            name,
-            groupId: groupname,
-            tenants: [groupname],
-        };
-        if (id) {
-            operation = updateList;
-            operationName = 'updateList';
-            input = { ...input, ...{ id } };
-        }
-        return { operation, operationName, input };
-    };
+	// crud context
+	const {
+		isBusy: collectionIsBusy,
+		error: collectionError,
+		formErrors: collectionFormErrors,
+		activeItem: collectionActiveItem,
+		onCreate: collectionOnCreate,
+		onUpdate: collectionOnUpdate,
+		onFormCancel: onCollectionFormCancel,
+	} = useCrudContext<IBytemineCollection>();
 
-    const onSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        if (await isFormValid() !== true) {
-            return;
-        }
-        setIsBusy(true);
-        const { operation, operationName, input } = getInput();
-        let response: any;
-        try {
-            response = await API.graphql(graphqlOperation(operation, { input }));
-            (await id) ? onUpdate(response.data[operationName]) : onCreate(response.data[operationName]);
-        } catch (err) {
-            console.log(`Error in ${operationName} - ${JSON.stringify(err, null, 2)}`);
-            setError(new Error(genericErrorMessage));
-        }
-        setIsBusy(false);
-    };
+	useEffect(() => {
+		loadFormData();
+	}, [collectionActiveItem]);
 
-    return (
-        <form method="POST" onSubmit={onSubmit}>
-            <Card>
-                <Slot slot="header">
-                    <CardTitle>New List</CardTitle>
-                    <span className="is-clickable" onClick={onCancel}>
-                        <IconClose />
-                    </span>
-                </Slot>
-                <Slot slot="body">
-                    <div className="panel-block is-block">
-                        <FormInput
-                            name="name"
-                            type="search"
-                            label="List Name"
-                            value={name}
-                            onChange={setName}
-                            placeholder="Enter name of your list"
-                            isLast={true}
-                            error={nameError}
-                        />
-                        <ErrorNotificaition error={error} />
-                    </div>
-                </Slot>
-                <Slot slot="footer">
-                    <FormButton variant={['is-outlined', 'is-ui-button']} disabled={isBusy} loading={isBusy} type="submit">
-                        Create
-                    </FormButton>
-                </Slot>
-            </Card>
-        </form>
-    );
+	const loadFormData = async () => {
+		if (!collectionActiveItem?.id) {
+			resetForm();
+			return;
+		}
+		setId(collectionActiveItem.id);
+		setName(collectionActiveItem.name);
+	};
+
+	const resetForm = async () => {
+		setId('');
+		setName('');
+	};
+
+	const getFormData = () =>
+		({
+			name,
+		} as Partial<IBytemineCollection>);
+
+	const isFormValid = async () => {
+		let err;
+		let isValid = true;
+
+		err = (await isLength(name.trim(), { min: 2 })) ? undefined : new Error(`Name is required and must be at least 2 characters.`);
+		isValid = err ? false : isValid;
+		setNameError(err);
+
+		if (isValid) {
+			const available = (await callApi(null, `api/v1/collections/available?name=${name}`, {})) as { id?: string };
+			err = !available.id || available.id === id ? undefined : new Error(`Name already in use.`);
+			isValid = err ? false : isValid;
+			setNameError(err);
+		}
+
+		return isValid;
+	};
+
+	const onSuccess = async (value: IBytemineCollection) => {
+		// const asPath = `/help/${value.id}/edit`;
+		// if (router.asPath !== asPath) {
+		// 	router.push(asPath);
+		// }
+		return value;
+	};
+
+	const create = async () => {
+		await collectionOnCreate(getFormData() as Partial<IBytemineCollection>, {}, {}, {}, onSuccess);
+		window.dispatchEvent(new Event('logs.refresh'));
+	};
+
+	const update = async () => {
+		await collectionOnUpdate(getFormData(), {}, {}, {}, onSuccess);
+		window.dispatchEvent(new Event('logs.refresh'));
+	};
+
+	const handleSubmit = async (e: FormEvent) => {
+		e.preventDefault();
+		setIsBusy(true);
+		const isValid = await isFormValid();
+		if (!isValid) {
+			setIsBusy(false);
+			return;
+		}
+		id ? await update() : await create();
+		setIsBusy(false);
+	};
+
+	return (
+		<form method="POST" onSubmit={handleSubmit}>
+			<Card>
+				<Slot slot="header">
+					<CardTitle>{id ? 'Edit List' : 'New List'}</CardTitle>
+					<span className="is-clickable" onClick={onCollectionFormCancel}>
+						<IconClose />
+					</span>
+				</Slot>
+				<Slot slot="body">
+					<div className="panel-block is-block">
+						<FormInput
+							name="name"
+							type="search"
+							label="List Name"
+							value={name}
+							onChange={setName}
+							placeholder="Enter name of your list"
+							isLast={true}
+							error={nameError || collectionFormErrors?.['name']}
+						/>
+						<ErrorNotificaition error={collectionError} />
+					</div>
+				</Slot>
+				<Slot slot="footer">
+					<FormButton variant={['is-outlined', 'is-ui-button']} disabled={isBusy} loading={isBusy} type="submit">
+						{id ? 'Update' : 'Create'}
+					</FormButton>
+				</Slot>
+			</Card>
+		</form>
+	);
 };
 
 export default MyListForm;
