@@ -959,3 +959,8 @@ export interface IBytemineUser {
 	seats?: string;
 }
 
+export enum ESortOrder {
+	'none',
+	'asc',
+	'desc',
+}
