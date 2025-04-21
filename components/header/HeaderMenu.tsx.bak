@@ -1,16 +1,14 @@
-import classNames from 'classnames';
-import { useRouter } from 'next/router';
-
-import { useAuthContext } from '../../providers/auth-data-provider';
-import { Roles } from '../../types';
-import Anchor from '../Anchor';
+import classNames from "classnames";
+import { useRouter } from "next/router";
+import { useAuthContext } from "../../providers/auth-data-provider";
+import { Roles } from "../../types";
+import Anchor from "../Anchor";
 
 const HeaderMenu = () => {
   const router = useRouter();
-  const { attributes } = useAuthContext();
-  
-  const isUser = attributes?.["custom:role"] === Roles.User;
-  const isManager = attributes?.["custom:role"] === Roles.Manager;
+  const { isAdmin, isRoot, user } = useAuthContext();
+  const isUser = user?.attributes["custom:role"] === Roles.User;
+  const isManager = user?.attributes["custom:role"] === Roles.Manager;
 
   const menuItems = [
 
