@@ -1,6 +1,8 @@
 import { fetchAuthSession } from 'aws-amplify/auth';
+import { sentenceCase } from 'change-case';
 import { orderBy } from 'lodash';
 import moment from 'moment';
+import { Dispatch, SetStateAction } from 'react';
 import { toast } from 'react-toastify';
 import { CloseButton } from 'react-toastify/dist/components';
 import isEmpty from 'validator/lib/isEmpty';
@@ -9,7 +11,7 @@ import NotificationPopup from '../components/sections/prospect-finder/Notificati
 import { genericErrorMessage } from '../consts';
 import countryCodes from '../data/country-codes';
 import awsmobile from '../src/aws-exports';
-import { Contact, RampedUpFilter, SortData, SortOrder } from '../types';
+import { Contact, ESortOrder, ISortData, RampedUpFilter, SortData, SortOrder } from '../types';
 
 export const timestampToMoment = (timestamp: string | number) => moment(new Date(parseInt(timestamp.toString())));
 
