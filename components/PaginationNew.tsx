@@ -53,7 +53,7 @@ const PaginationNew: React.FC<PaginationProps> = ({ currentPage, itemsPerPage, t
 	};
 
 	return (
-		<div className="pagination-container is-flex is-justify-content-space-between is-align-items-center mt-4">
+		<div className="pagination-container is-flex is-justify-content-space-between is-align-items-center">
 			<div className="select">
 				<select value={itemsPerPage} onChange={handlePageSizeChange}>
 					{pageSizeOptions.map((size) => (
