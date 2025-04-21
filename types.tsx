@@ -981,3 +981,14 @@ export interface ISortData {
 	callback?: (value: any, index?: number) => ReactNode;
 }
 
+export type IBytemineCollection = {
+	id: string;
+	owner: string;
+	userId: string;
+	teamId: string;
+	createdAt: string;
+	updatedAt: string;
+	isSelected?: boolean;
+	name: string;
+	user: IBytemineUser;
+};
