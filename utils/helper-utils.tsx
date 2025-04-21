@@ -248,6 +248,13 @@ export const getSortedData = (contactItems: Contact[], sortMap: SortData[]) => {
 	return orderBy(contactItems, sortFields, sortOrders);
 };
 
+export const getSortedItems = (items: any[], sortMap: ISortData[]) => {
+	const sorts = sortMap.filter((item) => item.sortOrder === ESortOrder.asc || item.sortOrder === ESortOrder.desc);
+	const sortFields = sorts.map((item) => item.id);
+	const sortOrders = sorts.map((item) => (item.sortOrder === ESortOrder.asc ? 'asc' : 'desc'));
+	return orderBy(items, sortFields, sortOrders);
+};
+
 export const formatNumber = (value: string) => {
 	const result = parseFloat(value?.toString()?.replace(/,/gi, ''));
 	if (!result || isNaN(result)) {
