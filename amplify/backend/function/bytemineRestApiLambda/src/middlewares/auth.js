@@ -28,32 +28,30 @@ const verifyToken = async (req, res, next) => {
 	let user;
 	let userInfo;
 
+	// Try and fetch user via user id
 	if (userId) {
-		// If trying to auth via user id then check access token and retrieve team member
-		if (token?.length > 100) {
-			try {
-				// Retrieve user information using the provided token.
-				userInfo = await idpGetUserByToken({ AccessToken: token });
-				console.log(JSON.stringify({ userInfo }));
-
-				// Retrieve full user information using
-				user = await idpAdminGetUser(USERPOOLID, userInfo.Username);
-
-				// Log info
-				console.log('verifyToken', JSON.stringify({ userInfo, user }));
-			} catch (err) {
-				console.log('Error fetching access token by token', { token });
-			}
+		try {
+			user = await idpAdminGetUser(USERPOOLID, userId);
+			console.log(JSON.stringify({ user }));
+		} catch (err) {
+			console.log('verifyToken - error fetching user details via userid', err);
 		}
+	}
 
-		// Save team member in team
-		if (userId) {
-			try {
-				user = await idpAdminGetUser(USERPOOLID, userId);
-				console.log(JSON.stringify({ user }));
-			} catch (err) {
-				console.log('verifyToken - error fetching user details via userid', err);
-			}
+	// Check access token and retrieve team member
+	if (!user && token) {
+		try {
+			// Retrieve user information using the provided token.
+			userInfo = await idpGetUserByToken(token);
+			console.log(JSON.stringify({ userInfo }));
+
+			// Retrieve full user information using
+			user = await idpAdminGetUser(USERPOOLID, userInfo.Username);
+
+			// Log info
+			console.log('verifyToken', JSON.stringify({ userInfo, user }));
+		} catch (err) {
+			console.log('Error fetching access token by token', { token });
 		}
 	}
 
