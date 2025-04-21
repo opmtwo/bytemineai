@@ -334,12 +334,13 @@ export const callApi = async (
 		const url = `${endpoint}/${path}${queryString ? `?${queryString}` : ''}`;
 		try {
 			const userId = new URLSearchParams(window.location.search).get('userId');
+			const token = accessToken || (await fetchAuthSession()).tokens?.accessToken?.toString();
 			const response = await fetch(url, {
 				...config,
 				method: config.method || 'GET', // Add a default method if not specified in config
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: accessToken || (await fetchAuthSession()).tokens?.accessToken?.toString()!,
+					Authorization: token || '',
 					'X-Amz-Security-Token': userId ?? localStorage.getItem('userId') ?? '',
 					...headers,
 				},
