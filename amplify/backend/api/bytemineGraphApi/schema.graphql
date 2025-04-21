@@ -14,7 +14,7 @@ type BytemineCollection @model @auth(rules: [{ allow: private, operations: [] }]
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
 
-	user: BytemineContact @hasOne(fields: ["userId"])
+	user: BytemineUser @hasOne(fields: ["userId"])
 
 	name: String
 	slug: ID @index(name: "listCollectionBySlug", queryField: "listCollectionBySlug", sortKeyFields: ["createdAt"]) # slug of {teamId}-{name}
@@ -55,6 +55,60 @@ type BytemineUser @model @auth(rules: [{ allow: private, operations: [] }]) {
 
 	# password hash
 	passwordHash: String
+
+	# account_type: String
+	# bonus_credits: String
+	# color_code: String
+	# company: String
+	# connect_email_code: String
+	# connect_email_token: String
+	# country: String
+	# created_at: String
+	# credits: String
+	# email_google: String
+	# email_status_code: String
+	# group_name: String
+	# has_api: String
+	# has_email: String
+	# icon_s3_key: String
+	# isBlocked: String
+	# last_login_at: String
+	# lastaudiencesample: String
+	# logo_s3_key: String
+	# renewal_period: String
+	# role: String
+	# seats: String
+	# temp_code: String
+	# verificationdate: String
+	# veriflastsent: String
+
+	accountType: String
+	
+	bonusCredits: Int
+	
+	colorCode: String
+	
+	country: String
+	
+	credits: Int
+	
+	groupName: String
+	
+	hasApi: Boolean
+	
+	hasEmail: Boolean
+	
+	iconS3Key: String
+	
+	logoS3Key: String
+	
+	isBlocked: Boolean
+	
+	lastLoginAt: String
+	
+	renewalPeriod: String
+	
+	seats: Int
 }
 
 type BytemineContact @model @auth(rules: [{ allow: private, operations: [] }]) {
