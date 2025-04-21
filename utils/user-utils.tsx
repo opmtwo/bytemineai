@@ -105,6 +105,10 @@ export const isPhoneValid = async (phone: string) => {
 	return phone && phone.trim().length && isMobilePhone(phone);
 };
 
+export const isPhoneValidStrict = async (phone: string) => {
+	return phone && phone.trim().length && isMobilePhone(phone, 'any', { strictMode: true });
+};
+
 /**
  * Validate password
  * @see https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
