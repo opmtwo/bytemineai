@@ -1,12 +1,12 @@
-import classNames from 'classnames';
-import { useRouter } from 'next/router';
 import { Children, ReactElement, ReactNode, useEffect, useState } from 'react';
-
+import classNames from 'classnames';
 import { useAuthContext } from '../../providers/auth-data-provider';
 import { useSettingsContext } from '../../providers/settings-provider';
 import ContactForm from '../ContactForm';
 import Header from '../header/Header';
 import Modal from '../modals/Modal';
+import { useRouter } from "next/router"
+
 
 const PageLayout = ({
 	children,
@@ -20,9 +20,9 @@ const PageLayout = ({
 	const childrenArray = Children.toArray(children) as unknown as ReactElement[];
 	const [isContactModalActive, setIsContactModalActive] = useState(false);
 
-	const { attributes } = useAuthContext();
+	const { user } = useAuthContext();
 	const { settings, initSettings } = useSettingsContext();
-	const groupName = attributes?.['custom:group_name'];
+	const groupName = user?.attributes['custom:group_name'];
 		const currentPathName = (pathName ==="/campaigns/summary/" || pathName === "/campaigns/contacts/" ||  pathName ===  "/campaigns/settings/" ||  pathName ===  "/campaigns/builder/")
 	useEffect(() => {
 		groupName && initSettings(groupName);
