@@ -56,6 +56,9 @@ type BytemineUser @model @auth(rules: [{ allow: private, operations: [] }]) {
 	# password hash
 	passwordHash: String
 
+	avatarS3Key: String
+	avatarS3Url: String
+
 	# account_type: String
 	# bonus_credits: String
 	# color_code: String
@@ -358,8 +361,8 @@ type BytemineSub @model @auth(rules: [{ allow: private, operations: [] }]) {
 
 	color_code: String
 
-	icon_s3_key: String
-	logo_s3_key: String
+	iconS3Key: String
+	logoS3Key: String
 
 	isApiBlocked: Boolean # block_api
 	isEmailBlocked: Boolean # block_email
