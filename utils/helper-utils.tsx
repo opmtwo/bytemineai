@@ -437,3 +437,6 @@ export const uploadToSignedUrl = async (url: string, data: Buffer, contentType: 
 		throw err;
 	}
 };
+
+export const formatNum = (value: string, options: Intl.NumberFormatOptions = { maximumFractionDigits: 2 }) =>
+	parseFloat(value?.toString()?.replace(/,/gi, '')).toLocaleString('en-US', options);
