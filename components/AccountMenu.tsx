@@ -17,19 +17,20 @@ const AccountMenu = () => {
 
 	const canUpgrade = isRoot || isAdmin || isManager || true;
 
-	const subscriptionsURL = canUpgrade ? '/account-settings/subscription-billing/plan' : 'https://billing.stripe.com/p/login/4gwg0Lep1aYO6JOcMM';
+	// const subscriptionsURL = canUpgrade ? '/account-settings/subscription-billing/plan' : 'https://billing.stripe.com/p/login/4gwg0Lep1aYO6JOcMM';
+	// const subscriptionsURL = canUpgrade ? '/account-settings/subscription-billing/plan' : 'https://billing.stripe.com/p/login/4gwg0Lep1aYO6JOcMM';
 
 	const menuItems = [
 		{
-			icon: <IconNewAccount width={18} />,
+			icon: <IconNewAccount width={18} stroke="currentColor" />,
 			title: <span>Account Settings</span>,
 			href: '/settings/account',
 			canAccess: true,
 		},
 		{
-			icon: <IconNewSubscription width={18} />,
+			icon: <IconNewSubscription width={18} stroke="currentColor" />,
 			title: <span>Subscription & Billing</span>,
-			href: subscriptionsURL,
+			href: '/settings/subscription',
 			canAccess: canUpgrade,
 		},
 		// {
@@ -38,15 +39,15 @@ const AccountMenu = () => {
 		// 	canAccess: isManager || isAdmin || isRoot || true,
 		// },
 		{
-			icon: <IconNewTeam width={18} />,
+			icon: <IconNewTeam width={18} stroke="currentColor" />,
 			title: <span>My Team</span>,
-			href: '/account-settings/my-team',
+			href: '/settings/team',
 			canAccess: isManager || isAdmin || isRoot || true,
 		},
 		{
-			icon: <IconNewUsage width={18} />,
+			icon: <IconNewUsage width={18} stroke="currentColor" />,
 			title: <span>Usage</span>,
-			href: '/account-settings/usage',
+			href: '/settings/usage',
 			canAccess: isManager || isAdmin || isRoot || true,
 		},
 	];
