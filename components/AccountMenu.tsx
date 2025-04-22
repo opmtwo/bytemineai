@@ -1,55 +1,54 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
+
 import { useAuthContext } from '../providers/auth-data-provider';
-import { useSettingsContext } from '../providers/settings-provider';
-import { Roles } from '../types';
 import Anchor from './Anchor';
+import Card from './Card';
+import Slot from './Slot';
+import IconNewAccount from './icons/IconNewAccount';
+import IconNewSubscription from './icons/IconNewSubscription';
+import IconNewTeam from './icons/IconNewTeam';
+import IconNewUsage from './icons/IconNewUsage';
 
 const AccountMenu = () => {
 	const router = useRouter();
-	const { isAdmin, isRoot, user } = useAuthContext();
-	const { settings, canUpgrade } = useSettingsContext();
-	const isUser = user?.attributes['custom:role'] === Roles.User;
-	const isManager = user?.attributes['custom:role'] === Roles.Manager;
-	const canAccess = isRoot || isAdmin || isManager;
-    //const subscriptionsURL = canUpgrade ? '/account-settings/subscription-billing/plan' : '/account-settings/subscription-billing';
-    const subscriptionsURL = canUpgrade ? '/account-settings/subscription-billing/plan' : 'https://billing.stripe.com/p/login/4gwg0Lep1aYO6JOcMM';
-    const menuItems = [
+
+	const { isRoot, isAdmin, isManager, isEditor, isViewer } = useAuthContext();
+
+	const canUpgrade = isRoot || isAdmin || isManager || true;
+
+	const subscriptionsURL = canUpgrade ? '/account-settings/subscription-billing/plan' : 'https://billing.stripe.com/p/login/4gwg0Lep1aYO6JOcMM';
+
+	const menuItems = [
 		{
-			title: 'Account Settings',
-			href: '/account-settings',
-			canAccess: canAccess,
-        },
-        {
-            title: 'Subscription & Billing',
-            href: subscriptionsURL,
-            canAccess: canAccess,
-        },
-		{
-			title: 'White Label Settings',
-			href: '/account-settings/white-label-settings',
-			canAccess: isManager || isAdmin || isRoot,
+			icon: <IconNewAccount width={18} />,
+			title: <span>Account Settings</span>,
+			href: '/settings/account',
+			canAccess: true,
 		},
 		{
-			title: 'My Team',
+			icon: <IconNewSubscription width={18} />,
+			title: <span>Subscription & Billing</span>,
+			href: subscriptionsURL,
+			canAccess: canUpgrade,
+		},
+		// {
+		// 	title: 'White Label Settings',
+		// 	href: '/account-settings/white-label-settings',
+		// 	canAccess: isManager || isAdmin || isRoot || true,
+		// },
+		{
+			icon: <IconNewTeam width={18} />,
+			title: <span>My Team</span>,
 			href: '/account-settings/my-team',
-			canAccess: isManager || isAdmin || isRoot,
+			canAccess: isManager || isAdmin || isRoot || true,
 		},
 		{
-			title: 'Usage',
+			icon: <IconNewUsage width={18} />,
+			title: <span>Usage</span>,
 			href: '/account-settings/usage',
-			canAccess: isManager || isAdmin || isRoot,
+			canAccess: isManager || isAdmin || isRoot || true,
 		},
-		{
-			title: 'Connect Email',
-			href: '/account-settings/connect-email',
-			canAccess: settings?.['custom:has_email'],
-		},
-		{
-			title: 'API',
-			href: '/account-settings/api',
-			canAccess: settings?.['custom:has_api'],
-		}
 	];
 
 	const items = menuItems
@@ -58,16 +57,23 @@ const AccountMenu = () => {
 			const isActive = router.pathname === item.href;
 			return (
 				<Anchor
-					key={item.title}
+					key={item.href}
 					href={item.href}
-					className={classNames('is-size-6 py-3', isActive ? 'has-text-primary' : 'has-text-grey')}
+					className={classNames('is-flex is-align-items-center is-size-6 p-4', isActive ? 'has-radius has-text-primary has-background-white-bis' : 'has-text-grey')}
 				>
-					{item.title}
+					{item.icon}
+					<span className="ml-3">{item.title}</span>
 				</Anchor>
 			);
 		});
 
-	return <div className="is-flex is-flex-direction-column">{items}</div>;
+	return (
+		<Card>
+			<Slot slot="body">
+				<div className="panel-block is-flex-direction-column is-align-items-stretch has-text-weight-semibold">{items}</div>
+			</Slot>
+		</Card>
+	);
 };
 
 export default AccountMenu;
