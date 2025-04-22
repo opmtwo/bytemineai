@@ -45,6 +45,11 @@ const ICSVFilter = Joi.object({
 	name: Joi.string().max(100).required(),
 }).options({ abortEarly: false });
 
+const IPublicUpload = Joi.object({
+	mime: Joi.string().max(100).required(),
+	size: Joi.number().required(),
+}).options({ abortEarly: false });
+
 module.exports = {
 	schemaValidate,
 	ICollection,
@@ -54,4 +59,5 @@ module.exports = {
 	IPassword,
 	IDomainSearch,
 	ICSVFilter,
+	IPublicUpload,
 };
