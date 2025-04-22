@@ -3,12 +3,12 @@ import classNames from 'classnames';
 
 type ButtonVariant = 'default' | 'active' | 'muted';
 
-interface FormButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface FormButtonNewProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	variant?: ButtonVariant;
 	icon?: React.ReactNode;
 }
 
-const FormButton: React.FC<FormButtonProps> = ({ children, variant = 'default', icon, className, style, ...props }) => {
+const FormButtonNew: React.FC<FormButtonNewProps> = ({ children, variant = 'default', icon, className, style, ...props }) => {
 	const stylesByVariant: Record<ButtonVariant, React.CSSProperties> = {
 		default: {
 			backgroundColor: '#F9F9F9',
@@ -30,6 +30,7 @@ const FormButton: React.FC<FormButtonProps> = ({ children, variant = 'default', 
 	const sharedStyles: React.CSSProperties = {
 		display: 'flex',
 		alignItems: 'center',
+		justifyContent: 'center',
 		gap: '0.5rem',
 		height: '2.75rem',
 		padding: '0.5rem 1.25rem',
@@ -53,4 +54,4 @@ const FormButton: React.FC<FormButtonProps> = ({ children, variant = 'default', 
 	);
 };
 
-export default FormButton;
+export default FormButtonNew;
