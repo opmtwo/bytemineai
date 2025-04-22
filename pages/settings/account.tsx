@@ -1,0 +1,22 @@
+import Head from 'next/head';
+
+import PageLayout from '../../components/layouts/PageLayout';
+import AdminGuard from '../../guards/AdminGuard';
+import SectionAccountSettings from '../../components/sections/account-settings/SectionAccountSettings';
+import SectionSettingsAccount from '../../components/sections/settings/account';
+
+const SettingsAccount = () => {
+	return (
+		<>
+			<Head>
+				<title>Account Settings</title>
+				<meta name="description" content="" />
+			</Head>
+			<PageLayout size="is-max-widescreen">
+				<SectionSettingsAccount />
+			</PageLayout>
+		</>
+	);
+};
+
+export default SettingsAccount;
