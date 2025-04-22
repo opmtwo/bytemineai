@@ -26,6 +26,8 @@ exports.getBytemineCollection = /* GraphQL */ `
         familyName
         company
         passwordHash
+        avatarS3Key
+        avatarS3Url
         accountType
         bonusCredits
         colorCode
@@ -82,6 +84,8 @@ exports.listBytemineCollections = /* GraphQL */ `
           familyName
           company
           passwordHash
+          avatarS3Key
+          avatarS3Url
           accountType
           bonusCredits
           colorCode
@@ -125,6 +129,8 @@ exports.getBytemineUser = /* GraphQL */ `
       familyName
       company
       passwordHash
+      avatarS3Key
+      avatarS3Url
       accountType
       bonusCredits
       colorCode
@@ -166,6 +172,8 @@ exports.listBytemineUsers = /* GraphQL */ `
         familyName
         company
         passwordHash
+        avatarS3Key
+        avatarS3Url
         accountType
         bonusCredits
         colorCode
@@ -386,6 +394,8 @@ exports.getBytemineCollectionContact = /* GraphQL */ `
           familyName
           company
           passwordHash
+          avatarS3Key
+          avatarS3Url
           accountType
           bonusCredits
           colorCode
@@ -1129,8 +1139,8 @@ exports.getBytemineSub = /* GraphQL */ `
       tenant
       notes
       color_code
-      icon_s3_key
-      logo_s3_key
+      iconS3Key
+      logoS3Key
       isApiBlocked
       isEmailBlocked
       isProspectBlocked
@@ -1173,8 +1183,8 @@ exports.listBytemineSubs = /* GraphQL */ `
         tenant
         notes
         color_code
-        icon_s3_key
-        logo_s3_key
+        iconS3Key
+        logoS3Key
         isApiBlocked
         isEmailBlocked
         isProspectBlocked
@@ -1323,6 +1333,8 @@ exports.listCollectionByTeamId = /* GraphQL */ `
           familyName
           company
           passwordHash
+          avatarS3Key
+          avatarS3Url
           accountType
           bonusCredits
           colorCode
@@ -1388,6 +1400,8 @@ exports.listCollectionByUserId = /* GraphQL */ `
           familyName
           company
           passwordHash
+          avatarS3Key
+          avatarS3Url
           accountType
           bonusCredits
           colorCode
@@ -1453,6 +1467,8 @@ exports.listCollectionBySlug = /* GraphQL */ `
           familyName
           company
           passwordHash
+          avatarS3Key
+          avatarS3Url
           accountType
           bonusCredits
           colorCode
@@ -1511,6 +1527,8 @@ exports.listUserByTeamId = /* GraphQL */ `
         familyName
         company
         passwordHash
+        avatarS3Key
+        avatarS3Url
         accountType
         bonusCredits
         colorCode
@@ -1565,6 +1583,8 @@ exports.listUserByUserId = /* GraphQL */ `
         familyName
         company
         passwordHash
+        avatarS3Key
+        avatarS3Url
         accountType
         bonusCredits
         colorCode
@@ -1619,6 +1639,8 @@ exports.listUserByEmail = /* GraphQL */ `
         familyName
         company
         passwordHash
+        avatarS3Key
+        avatarS3Url
         accountType
         bonusCredits
         colorCode
@@ -2962,8 +2984,8 @@ exports.listSubByTeamId = /* GraphQL */ `
         tenant
         notes
         color_code
-        icon_s3_key
-        logo_s3_key
+        iconS3Key
+        logoS3Key
         isApiBlocked
         isEmailBlocked
         isProspectBlocked
@@ -3019,8 +3041,8 @@ exports.listSubByUserId = /* GraphQL */ `
         tenant
         notes
         color_code
-        icon_s3_key
-        logo_s3_key
+        iconS3Key
+        logoS3Key
         isApiBlocked
         isEmailBlocked
         isProspectBlocked
@@ -3076,8 +3098,8 @@ exports.listSubByStripeCustomerId = /* GraphQL */ `
         tenant
         notes
         color_code
-        icon_s3_key
-        logo_s3_key
+        iconS3Key
+        logoS3Key
         isApiBlocked
         isEmailBlocked
         isProspectBlocked
