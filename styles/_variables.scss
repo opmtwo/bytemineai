@@ -26,7 +26,8 @@ $family-primary: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Robot
 // colors
 $primary: #f72707;
 $danger: #e02020;
-$link: var(--primary);
+$info: #1570EF;
+$link: $info;
 $dark: #0C111D;
 $grey: #475467;
 $grey-light: #eae7e7;
