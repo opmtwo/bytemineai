@@ -7,8 +7,9 @@ const { verifyToken, verifyTeam } = require('../middlewares/auth');
 const { getBytemineSub, listUserByEmail, getBytemineUser } = require('../graphql/queries');
 const { IUser, schemaValidate, IPublicUpload } = require('../schemas');
 const { v4 } = require('uuid');
+const { idpAdminDisableUser, idpAdminDeleteUser } = require('../utils/idp-utils');
 
-const { STORAGE_BYTEMINESTORAGE_BUCKETNAME: BUCKETNAME, REGION } = process.env;
+const { REGION, STORAGE_BYTEMINESTORAGE_BUCKETNAME: BUCKETNAME, AUTH_BYTEMINEF573E062_USERPOOLID: USERPOOLID } = process.env;
 
 const router = Router();
 
@@ -47,11 +48,11 @@ router.post('/onboard', verifyToken, async (req, res, next) => {
 
 	let isTeamUpdate = false;
 	let userId = sub;
-	const users = await apsGql(listUserByEmail, { email: emailClean, limit: 1000, sortDirection: 'DESC' }, 'data.listUserByEmail.items');
-	if (users.length > 0) {
-		isTeamUpdate = true;
-		userId = users[0].id;
-	}
+	// const users = await apsGql(listUserByEmail, { email: emailClean, limit: 1000, sortDirection: 'DESC' }, 'data.listUserByEmail.items');
+	// if (users.length > 0) {
+	// 	isTeamUpdate = true;
+	// 	userId = users[0].id;
+	// }
 
 	let userTeam;
 	const userInput = { id: userId, owner: userId, userId, teamId: userId, givenName, familyName, name, company, role: 'Admin' };
@@ -147,5 +148,27 @@ router.delete('/avatar', verifyToken, verifyTeam, async (req, res) => {
 	return res.json(selfUpdated);
 });
 
+router.delete('/', verifyToken, async (req, res) => {
+	const { sub, team: self } = res.locals;
+	console.log(JSON.stringify({ sub, self }));
+
+	if (!sub) {
+		console.log('User not found - skipping');
+		return res.status(404).json({ message: 'User not found' });
+	}
+
+	await idpAdminDisableUser(USERPOOLID, sub);
+	await idpAdminDeleteUser({ UserPoolId: USERPOOLID, Username: sub });
+
+	if (self?.id) {
+		const input = { id: self.id, _version: self._version };
+		await apsGql(deleteBytemineUser, { input });
+	} else {
+		const input = { id: sub };
+		await apsGql(deleteBytemineUser, { input });
+	}
+
+	return res.json({});
+});
 
 module.exports = router;
