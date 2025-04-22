@@ -1,4 +1,6 @@
 const aws = require('aws-sdk');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const S3_PREFIX = 's3://';
 
 const s3GetPathBucket = async (s3Path, verbose = true) => {
@@ -396,6 +398,26 @@ const s3DeleteObject = async (bucket, key, verbose = true) => {
 	}
 };
 
+const s3GeneratePresignedUploadUrl = async (options, verbose) => {
+	if (verbose) {
+		console.log(`s3GeneratePresignedUploadUrl - options: ${options}`);
+	}
+	try {
+		const s3 = new S3Client();
+		const command = new PutObjectCommand(options);
+		const res = await getSignedUrl(s3, command);
+		if (verbose) {
+			console.log('s3GeneratePresignedUploadUrl - res', res);
+		}
+		return res;
+	} catch (err) {
+		if (verbose) {
+			console.log('😱 - s3GeneratePresignedUploadUrl - err', err);
+		}
+		throw err;
+	}
+};
+
 module.exports = {
 	s3GetPathBucket,
 	s3GetPathPrefix,
@@ -412,4 +434,5 @@ module.exports = {
 	s3GeneratePresignedUrl,
 	s3CreatePresignedPostCommand,
 	s3DeleteObject,
+	s3GeneratePresignedUploadUrl,
 };
