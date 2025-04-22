@@ -68,7 +68,7 @@ const FormInput = ({
 		<>
 			<FormField isLast={isLast} className={fieldClassName}>
 				{isColorPickerActive === true && <span className="is-overlay is-fixed" style={{ zIndex: 1 }} onClick={onColorPickerToggle}></span>}
-				<FormLabel label={label} error={error} iconLabel={iconLabel}  /> 
+				<FormLabel label={label} error={error} iconLabel={iconLabel} required={required} /> 
 				<div className={classNames('control', { 'has-icons-left': iconLeft }, { 'has-icons-right': iconRight || isColorPicker })}>
 					{multiline ? (
 						<textarea
