@@ -13,9 +13,24 @@ const { STORAGE_BYTEMINESTORAGE_BUCKETNAME: BUCKETNAME, REGION } = process.env;
 const router = Router();
 
 router.get('/', verifyToken, verifyTeam, async (req, res, next) => {
-	const { team: user, owner: team } = res.locals;
-	console.log(JSON.stringify({ user, team }));
-	return res.json({ user, team });
+	const { team: self, owner: team } = res.locals;
+	console.log(JSON.stringify({ self, team }));
+
+	// Get subscription info
+	const sub = await apsGql(getBytemineSub, { id: team.id });
+	console.log(JSON.stringify({ sub }));
+
+	return res.json({ self, team, sub });
+});
+
+router.post('/', schemaValidate(IUser), verifyToken, verifyTeam, async (req, res, next) => {
+	const { team: self } = res.locals;
+	const { phone, name, givenName, familyName, company } = req.body;
+
+	const input = { id: self.id, phone, name, givenName, familyName, company };
+	const selfUpdated = await apsGql(updateBytemineUser, { input }, 'data.updateBytemineUser');
+
+	return res.json(selfUpdated);
 });
 
 router.post('/onboard', verifyToken, async (req, res, next) => {
