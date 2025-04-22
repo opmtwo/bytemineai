@@ -144,9 +144,10 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs18.x",
+        "Runtime": "nodejs22.x",
         "Layers": [],
-        "Timeout": 25
+        "Timeout": 25,
+        "MemorySize": 1280
       }
     },
     "LambdaExecutionRole": {
