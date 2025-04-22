@@ -306,6 +306,25 @@ const idpAdminDisableUser = async (userPoolId, username, verbose = true) => {
 	}
 };
 
+const idpAdminDeleteUser = async (options, verbose = true) => {
+	if (verbose) {
+		console.log(`idpAdminDeleteUser - options`, JSON.stringify({ options }));
+	}
+	try {
+		const idp = new AWS.CognitoIdentityServiceProvider();
+		const res = await idp.adminDeleteUser(options).promise();
+		if (verbose) {
+			console.log('idpAdminDeleteUser - res', res);
+		}
+		return res;
+	} catch (err) {
+		if (verbose) {
+			console.error('😱 - idpAdminDeleteUser - err', err);
+		}
+		throw err;
+	}
+};
+
 const idpAdminEnableUser = async (userPoolId, username, verbose = true) => {
 	if (verbose) {
 		console.log(`idpAdminEnableUser - userPoolId=${userPoolId}, username=${username}`);
@@ -614,6 +633,7 @@ module.exports = {
 	idpAdminRemoveUserFromGroup,
 	idpAdminConfirmSignUp,
 	idpAdminDisableUser,
+	idpAdminDeleteUser,
 	idpAdminEnableUser,
 	idpListGroups,
 	idpAdminListGroupsForUser,
