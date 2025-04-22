@@ -13,17 +13,21 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import shortHash from 'shorthash2';
 import { UrlObject } from 'url';
 
-import { AccountType, AuthContextInterface, CognitoUserExt } from '../types';
+import { AccountType, AuthContextInterface, CognitoUserExt, IBytemineSub, IBytemineUser, Roles } from '../types';
+import { callApi } from '../utils/helper-utils';
 
 export const AuthContext = createContext<AuthContextInterface>({
 	isAuthBusy: false,
 	isRoot: false,
 	isAdmin: false,
 	isManager: false,
+	isEditor: false,
+	isViewer: false,
 	isExpired: () => false,
 	onSignIn: () => {},
 	onSignOut: () => {},
 	updateAttributes: () => {},
+	refresh: () => {},
 });
 
 const defaultUser = {};
@@ -33,10 +37,17 @@ const AuthDataProvider = (props: any) => {
 
 	const [authError, setAuthError] = useState();
 	const [isAuthBusy, setIsAuthBusy] = useState(true);
+
+	const [self, setSelf] = useState<IBytemineUser>();
+	const [team, setTeam] = useState<IBytemineUser>();
+
+	const [sub, setSub] = useState<IBytemineSub>();
+
 	const [isRoot, setIsRoot] = useState(false);
-	const [isAdmin, setIsAdmin] = useState(false);
-	const [groups, setGroups] = useState<string[]>([]);
-	const [allGroups, setAllGroups] = useState<string[]>([]);
+	const [isAdmin, setisAdmin] = useState(false);
+	const [isManager, setisManager] = useState(false);
+	const [isEditor, setisEditor] = useState(false);
+	const [isViewer, setisViewer] = useState(false);
 
 	// current logged in user
 	const [user, setUser] = useState<AuthUser>();
@@ -71,6 +82,13 @@ const AuthDataProvider = (props: any) => {
 		})();
 	}, [router.pathname]);
 
+	useEffect(() => {
+		if (!attributes?.sub) {
+			return;
+		}
+		getUserAndTeam();
+	}, [attributes?.sub]);
+
 	/**
 	 * Get current authenticated user
 	 * @returns {Void}
@@ -85,6 +103,21 @@ const AuthDataProvider = (props: any) => {
 		} catch (err: any) {
 			console.log('getCurrentAuthenticatedUser - error', err);
 			setAuthError(err);
+		}
+	};
+
+	const getUserAndTeam = async () => {
+		try {
+			const res = (await callApi(null, '/api/v1/me', {})) as { self: IBytemineUser; team: IBytemineUser; sub: IBytemineSub };
+			setSelf(res.self);
+			setTeam(res.team);
+			const { role } = res.self;
+			setisAdmin(role === Roles.Admin);
+			setisManager(role === Roles.Manager);
+			setisEditor(role === Roles.Editor);
+			setisViewer(role === Roles.Viewer);
+		} catch (err) {
+			console.log('getUserAndTeam - error', err);
 		}
 	};
 
@@ -169,21 +202,30 @@ const AuthDataProvider = (props: any) => {
 		return false;
 	};
 
+	const refresh = async () => {
+		await Promise.all([getCurrentAuthenticatedUser(), getUserAndTeam()]);
+	};
+
 	return (
 		<AuthContext.Provider
 			value={{
 				isAuthBusy,
+				user,
+				self,
+				team,
+				sub,
 				isRoot,
 				isAdmin,
-				groups,
-				allGroups,
-				user,
+				isManager,
+				isEditor,
+				isViewer,
 				attributes,
 				authError,
 				isExpired,
 				onSignIn,
 				onSignOut,
 				updateAttributes,
+				refresh,
 			}}
 			{...props}
 		/>

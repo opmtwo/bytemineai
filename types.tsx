@@ -85,16 +85,22 @@ export interface CognitoUserExt extends AuthUser {
 
 export interface AuthContextInterface {
 	user?: CognitoUserExt;
+	self?: IBytemineUser;
+	team?: IBytemineUser;
+	sub?: IBytemineSub;
 	attributes?: FetchUserAttributesOutput;
 	authError?: Error;
 	isAuthBusy: boolean;
 	isRoot: boolean;
 	isAdmin: boolean;
 	isManager: boolean;
+	isEditor: boolean;
+	isViewer: boolean;
 	isExpired: () => boolean;
 	onSignIn: Function;
 	onSignOut: Function;
 	updateAttributes: Function;
+	refresh: () => void;
 }
 
 export interface CognitoUserDataAttribute {
