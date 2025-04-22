@@ -29,6 +29,8 @@ export const createBytemineCollection = /* GraphQL */ `
         familyName
         company
         passwordHash
+        avatarS3Key
+        avatarS3Url
         accountType
         bonusCredits
         colorCode
@@ -79,6 +81,8 @@ export const updateBytemineCollection = /* GraphQL */ `
         familyName
         company
         passwordHash
+        avatarS3Key
+        avatarS3Url
         accountType
         bonusCredits
         colorCode
@@ -129,6 +133,8 @@ export const deleteBytemineCollection = /* GraphQL */ `
         familyName
         company
         passwordHash
+        avatarS3Key
+        avatarS3Url
         accountType
         bonusCredits
         colorCode
@@ -172,6 +178,8 @@ export const createBytemineUser = /* GraphQL */ `
       familyName
       company
       passwordHash
+      avatarS3Key
+      avatarS3Url
       accountType
       bonusCredits
       colorCode
@@ -211,6 +219,8 @@ export const updateBytemineUser = /* GraphQL */ `
       familyName
       company
       passwordHash
+      avatarS3Key
+      avatarS3Url
       accountType
       bonusCredits
       colorCode
@@ -250,6 +260,8 @@ export const deleteBytemineUser = /* GraphQL */ `
       familyName
       company
       passwordHash
+      avatarS3Key
+      avatarS3Url
       accountType
       bonusCredits
       colorCode
@@ -544,6 +556,8 @@ export const createBytemineCollectionContact = /* GraphQL */ `
           familyName
           company
           passwordHash
+          avatarS3Key
+          avatarS3Url
           accountType
           bonusCredits
           colorCode
@@ -679,6 +693,8 @@ export const updateBytemineCollectionContact = /* GraphQL */ `
           familyName
           company
           passwordHash
+          avatarS3Key
+          avatarS3Url
           accountType
           bonusCredits
           colorCode
@@ -814,6 +830,8 @@ export const deleteBytemineCollectionContact = /* GraphQL */ `
           familyName
           company
           passwordHash
+          avatarS3Key
+          avatarS3Url
           accountType
           bonusCredits
           colorCode
@@ -1637,8 +1655,8 @@ export const createBytemineSub = /* GraphQL */ `
       tenant
       notes
       color_code
-      icon_s3_key
-      logo_s3_key
+      iconS3Key
+      logoS3Key
       isApiBlocked
       isEmailBlocked
       isProspectBlocked
@@ -1679,8 +1697,8 @@ export const updateBytemineSub = /* GraphQL */ `
       tenant
       notes
       color_code
-      icon_s3_key
-      logo_s3_key
+      iconS3Key
+      logoS3Key
       isApiBlocked
       isEmailBlocked
       isProspectBlocked
@@ -1721,8 +1739,8 @@ export const deleteBytemineSub = /* GraphQL */ `
       tenant
       notes
       color_code
-      icon_s3_key
-      logo_s3_key
+      iconS3Key
+      logoS3Key
       isApiBlocked
       isEmailBlocked
       isProspectBlocked
