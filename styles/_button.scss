@@ -57,3 +57,7 @@
 fieldset[disabled] .button.is-primary.is-outlined {
 	background-color: $primary;
 }
+
+.btn:hover {
+	text-decoration: underline;
+}
