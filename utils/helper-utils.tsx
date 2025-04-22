@@ -1,4 +1,5 @@
 import { fetchAuthSession } from 'aws-amplify/auth';
+import axios from 'axios';
 import { sentenceCase } from 'change-case';
 import { orderBy } from 'lodash';
 import moment from 'moment';
@@ -409,3 +410,30 @@ export const unpackErrors = (error: any, formErrors: {}, setFormErrors: Dispatch
 
 export const paginate = (items: any[], itemsPerPage: number, activePage: number) =>
 	items.slice(activePage * itemsPerPage, activePage * itemsPerPage + itemsPerPage);
+
+/**
+ * Uploads data to a specified signed URL using the PUT method.
+ *
+ * @param {string} url - The signed URL where the data will be uploaded.
+ * @param {Buffer} data - The data to be uploaded as a Buffer.
+ * @param {string} contentType - The content type of the data being uploaded.
+ * @returns {Promise<any>} A Promise that resolves with the response data upon successful upload.
+ * @throws {Error} If an error occurs during the upload process.
+ */
+export const uploadToSignedUrl = async (url: string, data: Buffer, contentType: string) => {
+	try {
+		const response = await axios({
+			method: 'put',
+			url,
+			data,
+			headers: {
+				'Content-Type': contentType,
+			},
+		});
+		console.log('uploadToSignedUrl - success', response.data);
+		return response.data;
+	} catch (err) {
+		console.log('uploadToSignedUrl - error - ', err);
+		throw err;
+	}
+};
