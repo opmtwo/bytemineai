@@ -2,8 +2,8 @@ import { ReactNode } from 'react';
 
 import Card from './Card';
 import CardTitle from './CardTitle';
-import FormButton from './form/FormButton';
-import IconClose from './icons/IconClose';
+import FormButtonNew from './form/FormButtonNew';
+import IconNewClose from './icons/IconNewClose';
 import Modal from './Modal';
 
 const Confirm = ({
@@ -30,7 +30,7 @@ const Confirm = ({
 			<header>
 				<CardTitle className="has-text-danger has-text-weight-bold">{title}</CardTitle>
 				<span className="is-clickable" onClick={onCancel}>
-					<IconClose />
+					<IconNewClose width={16} />
 				</span>
 			</header>
 			<main>
@@ -44,8 +44,8 @@ const Confirm = ({
 				</div>
 			</main>
 			<footer>
-				<FormButton onClick={onCancel}>{cancelLabel}</FormButton>
-				<FormButton onClick={onSubmit}>{submitLabel}</FormButton>
+				<FormButtonNew variant="default" onClick={() => onCancel()}>{cancelLabel}</FormButtonNew>
+				<FormButtonNew variant="active" onClick={() => onSubmit()}>{submitLabel}</FormButtonNew>
 			</footer>
 		</Card>
 	</Modal>
