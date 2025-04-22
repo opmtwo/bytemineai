@@ -1,9 +1,14 @@
 const { Router } = require('express');
 
 const { apsGql } = require('../utils/aps-utils');
-const { updateBytemineUser, createBytemineUser, updateBytemineSub, createBytemineSub } = require('../graphql/mutations');
+const { s3GeneratePresignedUploadUrl } = require('../utils/s3-utils');
+const { updateBytemineUser, createBytemineUser, updateBytemineSub, createBytemineSub, deleteBytemineUser } = require('../graphql/mutations');
 const { verifyToken, verifyTeam } = require('../middlewares/auth');
-const { getBytemineSub, listUserByEmail } = require('../graphql/queries');
+const { getBytemineSub, listUserByEmail, getBytemineUser } = require('../graphql/queries');
+const { IUser, schemaValidate, IPublicUpload } = require('../schemas');
+const { v4 } = require('uuid');
+
+const { STORAGE_BYTEMINESTORAGE_BUCKETNAME: BUCKETNAME, REGION } = process.env;
 
 const router = Router();
 
@@ -80,5 +85,52 @@ router.post('/login', verifyToken, async (req, res, next) => {
 	console.log('All done', JSON.stringify({ userUpdated }));
 	return res.json(userUpdated);
 });
+
+router.post('/avatar', schemaValidate(IPublicUpload), verifyToken, verifyTeam, async (req, res) => {
+	const { sub, team: self } = res.locals;
+	const { mime, size } = req.body;
+	console.log(JSON.stringify({ sub, self, mime, size }));
+
+	const key = `avatars/${sub}/${new Date().toISOString().substring(0, 10)}/${v4()}`;
+	const url = `https://${BUCKETNAME}.s3.${REGION}.amazonaws.com/${key}`;
+	console.log(JSON.stringify({ key, url }));
+
+	// generate signed upload url
+	const uploadUrl = await s3GeneratePresignedUploadUrl({
+		Bucket: BUCKETNAME,
+		Key: key,
+		ContentLength: size,
+		ContentType: mime,
+		ACL: 'public-read',
+	});
+
+	// Update user avatar
+	const input = {
+		id: self.id,
+		avatarS3Key: key,
+		avatarS3Url: url,
+	};
+	const selfUpdated = await apsGql(updateBytemineUser, { input }, 'data.updateBytemineUser');
+	console.log(JSON.stringify({ input, selfUpdated }));
+
+	return res.json({ key, url, uploadUrl: uploadUrl });
+});
+
+router.delete('/avatar', verifyToken, verifyTeam, async (req, res) => {
+	const { sub, team: self } = res.locals;
+	console.log(JSON.stringify({ sub, self }));
+
+	// Update user avatar
+	const input = {
+		id: self.id,
+		avatarS3Key: null,
+		avatarS3Url: null,
+	};
+	const selfUpdated = await apsGql(updateBytemineUser, { input }, 'data.updateBytemineUser');
+	console.log(JSON.stringify({ input, selfUpdated }));
+
+	return res.json(selfUpdated);
+});
+
 
 module.exports = router;
