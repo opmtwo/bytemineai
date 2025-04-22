@@ -7,73 +7,79 @@ const { AUTH_BYTEMINEF573E062_USERPOOLID: USERPOOLID } = process.env;
 
 const verifyToken = async (req, res, next) => {
 	// Define a default error response.
-	const defaultResponse = { error: 'Unauthorized' };
+	const defaultResponse = { error: 'Unauthorized! Token verification failed.' };
 
-	// Extract the token from the Authorization header in the request.
-	const token = req.headers.Authorization || req.headers.authorization;
+	try {
+		// Extract the token from the Authorization header in the request.
+		const token = req.headers.Authorization || req.headers.authorization;
 
-	// Extract the user id directly from the header
-	// This is passed in header when using partner mode to browse team member
-	const userId = req.headers['x-amz-security-token'];
+		// Extract the user id directly from the header
+		// This is passed in header when using partner mode to browse team member
+		const userId = req.headers['x-amz-security-token'];
 
-	// Log the token for debugging purposes.
-	console.log('verifyToken', { USERPOOLID, token, userId });
+		// Log the token for debugging purposes.
+		console.log('verifyToken', { USERPOOLID, token, userId });
 
-	// If no token is found in the request headers, log an error, return a 401 status, and send the default error response.
-	if (!token && !userId) {
-		console.log(`verifyToken - token not found`);
-		return res.status(401).json(defaultResponse);
-	}
-
-	let user;
-	let userInfo;
-
-	// Try and fetch user via user id
-	if (userId) {
-		try {
-			user = await idpAdminGetUser(USERPOOLID, userId);
-			console.log(JSON.stringify({ user }));
-		} catch (err) {
-			console.log('verifyToken - error fetching user details via userid', err);
+		// If no token is found in the request headers, log an error, return a 401 status, and send the default error response.
+		if (!token && !userId) {
+			console.log(`verifyToken - token not found`);
+			return res.status(401).json(defaultResponse);
 		}
-	}
 
-	// Check access token and retrieve team member
-	if (!user && token) {
-		try {
-			// Retrieve user information using the provided token.
-			userInfo = await idpGetUserByToken(token);
-			console.log(JSON.stringify({ userInfo }));
+		let user;
+		let userInfo;
 
-			// Retrieve full user information using
-			user = await idpAdminGetUser(USERPOOLID, userInfo.Username);
-
-			// Log info
-			console.log('verifyToken', JSON.stringify({ userInfo, user }));
-		} catch (err) {
-			console.log('Error fetching access token by token', { token });
+		// Try and fetch user via user id
+		if (userId) {
+			try {
+				user = await idpAdminGetUser(USERPOOLID, userId);
+				console.log(JSON.stringify({ user }));
+			} catch (err) {
+				console.log('verifyToken - error fetching user details via userid', err);
+			}
 		}
+
+		// Check access token and retrieve team member
+		if (!user && token) {
+			try {
+				// Retrieve user information using the provided token.
+				userInfo = await idpGetUserByToken(token);
+				console.log(JSON.stringify({ userInfo }));
+
+				// Retrieve full user information using
+				user = await idpAdminGetUser(USERPOOLID, userInfo.Username);
+
+				// Log info
+				console.log('verifyToken', JSON.stringify({ userInfo, user }));
+			} catch (err) {
+				console.log('Error fetching access token by token', { token });
+			}
+		}
+
+		// If the user is not enabled, log an error, return a 401 status, and send the default error response.
+		console.log(JSON.stringify({ user, userInfo }));
+		if (user?.Enabled === false) {
+			console.error('verifyToken - err - user not enabled');
+			return res.status(401).json(defaultResponse);
+		}
+
+		// Attach user-related information to the response locals for further use.
+		res.locals.token = token;
+		res.locals.userId = userId;
+		res.locals.user = user;
+		res.locals.userInfo = userInfo;
+		res.locals.sub = (user?.UserAttributes || userInfo?.UserAttributes || []).find((_attr) => _attr.Name === 'sub')?.Value;
+		res.locals.username = user?.Username || userInfo?.Username;
+
+		console.log({ user, userInfo });
+
+		// Call the next middleware in the chain.
+		return next();
+	} catch (err) {
+		// If an error occurs during the process, log the error, return a 403 status, and send the default error response.
+		console.log(`😱 - verifyToken - error`, err);
+		return res.status(403).json(defaultResponse);
 	}
-
-	// If the user is not enabled, log an error, return a 401 status, and send the default error response.
-	console.log(JSON.stringify({ user, userInfo }));
-	if (user?.Enabled === false) {
-		console.error('verifyToken - err - user not enabled');
-		return res.status(401).json(defaultResponse);
-	}
-
-	// Attach user-related information to the response locals for further use.
-	res.locals.token = token;
-	res.locals.userId = userId;
-	res.locals.user = user;
-	res.locals.userInfo = userInfo;
-	res.locals.sub = (user?.UserAttributes || userInfo?.UserAttributes || []).find((_attr) => _attr.Name === 'sub')?.Value;
-	res.locals.username = user?.Username || userInfo?.Username;
-
-	console.log({ user, userInfo });
-
-	// Call the next middleware in the chain.
-	return next();
 };
 
 const verifyGroup = async (req, res, next) => {
@@ -141,13 +147,13 @@ const verifyPlan = async (req, res, next) => {
 	} catch (err) {
 		// If an error occurs during the process, log the error, return a 403 status, and send the default error response.
 		console.log(`😱 - verifyPlan - error`, err);
-		return res.status(403).json({ error: 'Subscription failed' }).send();
+		return res.status(403).json({ error: 'Subscription check failed' }).send();
 	}
 };
 
 const verifyTeam = async (req, res, next) => {
 	// Define a default error response.
-	const defaultResponse = { error: 'Unauthorized' };
+	const defaultResponse = { error: 'Unauthorized! Team verification failed.' };
 
 	try {
 		// Extract the username from the local storage of the response object.
