@@ -55,7 +55,7 @@ router.post('/onboard', verifyToken, async (req, res, next) => {
 	// }
 
 	let userTeam;
-	const userInput = { id: userId, owner: userId, userId, teamId: userId, givenName, familyName, name, company, role: 'Admin' };
+	const userInput = { id: userId, owner: userId, userId, teamId: userId, email: emailClean, givenName, familyName, name, company, role: 'Admin' };
 	if (isTeamUpdate) {
 		userTeam = apsGql(updateBytemineUser, { input: userInput }, 'data.updateBytemineUser');
 	} else {
@@ -66,6 +66,7 @@ router.post('/onboard', verifyToken, async (req, res, next) => {
 	const teamSub = await apsGql(getBytemineSub, { id: userId }, 'data.getBytemineSub');
 	if (teamSub?.id) {
 		isSubUpdate = true;
+		this.delete(userInput.email);
 	}
 
 	let userSub;
