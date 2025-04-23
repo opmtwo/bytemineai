@@ -4,6 +4,7 @@ import { useAuthContext } from '../../providers/auth-data-provider';
 import Anchor from '../Anchor';
 import FormButton from '../form/FormButton';
 import IconAvatar from '../icons/IconAvatar';
+import { cleanupBodyClassList } from '../../utils/helper-utils';
 
 const HeaderQuickMenu = () => {
 	const { user, isAdmin, isRoot, attributes } = useAuthContext();
@@ -60,7 +61,7 @@ const HeaderQuickMenu = () => {
 						<Anchor href="/my-contacts" className="navbar-item py-3">
 							All Contacts
 						</Anchor>*/}
-						<Anchor href="/logout" className="navbar-item py-3 has-text-weight-normal">
+						<Anchor href="/logout" className="navbar-item py-3 has-text-weight-normal" onClick={cleanupBodyClassList}>
 							Log out
 						</Anchor>
 					</div>

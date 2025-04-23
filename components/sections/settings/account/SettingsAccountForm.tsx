@@ -2,7 +2,7 @@ import { signOut, updatePassword } from 'aws-amplify/auth';
 import { FormEvent, useEffect, useState } from 'react';
 
 import { useAuthContext } from '../../../../providers/auth-data-provider';
-import { callApi, notifyError } from '../../../../utils/helper-utils';
+import { callApi, cleanupBodyClassList, notifyError } from '../../../../utils/helper-utils';
 import { isFirstNameValid, isLastNameValid, isPasswordValid, isPhoneValidStrict } from '../../../../utils/user-utils';
 import AvatarForm from '../../../AvatarForm';
 import Card from '../../../Card';
@@ -190,7 +190,7 @@ const SettingsAccountForm = () => {
 			await callApi(null, 'api/v1/me', { method: 'DELETE' });
 			await signOut();
 			await onSignOut();
-			document.body.classList.remove('is-open', 'is-drawer-open');
+			await cleanupBodyClassList();
 			window.location.href = '/';
 		} catch (err) {
 			notifyError(`We encountered an error while processing your request. Please try again later.`);
