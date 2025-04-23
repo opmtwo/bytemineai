@@ -51,7 +51,9 @@ export enum Roles {
 	'Viewer' = 'Viewer',
 }
 
-export const roleOptions = Object.entries(Roles).filter((value) => value[0] !== 'Admin').map((type: [string, string]) => ({ id: type[0], name: type[1] }));
+export const roleOptions = Object.entries(Roles)
+	.filter((value) => value[0] !== 'Admin')
+	.map((type: [string, string]) => ({ id: type[0], name: type[1] }));
 
 export enum AccountType {
 	'ActiveCustomer' = 'Active Customer',
@@ -1022,3 +1024,48 @@ export type IBytemineCollection = {
 	name: string;
 	user: IBytemineUser;
 };
+
+export interface IBytemineSub {
+	id: string;
+	owner: string;
+	teamId?: string;
+	userId?: string;
+
+	createdAt: string; // AWSDateTime
+	updatedAt: string;
+
+	subscriptionStatus?: string;
+	subscriptionPeriod?: string;
+
+	monthlyCredits?: number;
+	quarterlyCredits?: number;
+	annualCredits?: number;
+	currentCredits?: number;
+
+	stripeCustomerId?: string;
+	stripeSubscriptionID?: string[];
+
+	seats?: string;
+
+	block?: boolean;
+
+	notes?: string;
+
+	colorCode?: string;
+
+	iconS3Key?: string;
+	logoS3Key?: string;
+
+	isApiBlocked?: boolean;
+	isEmailBlocked?: boolean;
+	isProspectBlocked?: boolean;
+	isEnrichBlocked?: boolean;
+	isFilesBlocked?: boolean;
+	isAutoComposeBlocked?: boolean;
+	isAssistantsBlocked?: boolean;
+	isSubProcessingBlocked?: boolean;
+
+	firstPaid?: string; // AWSDateTime
+	lastPaid?: string;
+	nextPay?: string;
+}
