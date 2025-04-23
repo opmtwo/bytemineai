@@ -1,0 +1,35 @@
+.sidebar {
+	display: flex;
+	flex-direction: column;
+	width: var(--sidebar-width);
+	height: 100vh;
+	padding: 5rem 1rem 2rem;
+	transition: all 0.2s ease;
+}
+
+.sidebar.compact {
+	width: 70px;
+	padding-right: 0;
+	padding-left: 0;
+}
+
+.sidebar.mobile {
+	position: fixed;
+	top: 0;
+	left: -260px;
+	z-index: 1000;
+	background: white;
+	height: 100vh;
+	transition: left 0.3s ease;
+}
+
+.sidebar.mobile.open {
+	left: 0;
+}
+
+.mobileToggle {
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	z-index: 1100;
+}
