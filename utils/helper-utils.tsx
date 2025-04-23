@@ -440,3 +440,5 @@ export const uploadToSignedUrl = async (url: string, data: Buffer, contentType: 
 
 export const formatNum = (value: string, options: Intl.NumberFormatOptions = { maximumFractionDigits: 2 }) =>
 	parseFloat(value?.toString()?.replace(/,/gi, '')).toLocaleString('en-US', options);
+
+export const cleanupBodyClassList = () => document.body.classList.remove('is-open', 'is-drawer-open');
