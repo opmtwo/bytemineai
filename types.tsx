@@ -949,20 +949,44 @@ export interface IBytemineUser {
 
 	passwordHash?: string;
 
-	accountType?: string;
-	bonusCredits?: string;
-	colorCode?: string;
-	country?: string;
-	credits?: string;
-	groupName?: string;
-	hasApi?: string;
-	hasEmail?: string;
-	iconS3Key?: string;
-	logoS3Key?: string;
-	isBlocked?: string;
-	lastLoginAt?: string;
-	renewalPeriod?: string;
-	seats?: string;
+	avatarS3Key?: string;
+	avatarS3Url?: string;
+
+	subscriptionStatus: string;
+	subscriptionPeriod: string;
+
+	monthlyCredits: number;
+	quarterlyCredits: number;
+	annualCredits: number;
+	currentCredits: number;
+
+	stripeCustomerId: string;
+	stripeSubscriptionID: string[];
+
+	seats: string;
+
+	block: Boolean;
+
+	tenant: Boolean;
+
+	notes: string;
+
+	color_code: string;
+
+	iconS3Key: string;
+	logoS3Key: string;
+
+	isApiBlocked: boolean; // block_api
+	isEmailBlocked: boolean; // block_email
+	isProspectBlocked: boolean; // block_prospect
+	isEnrichBlocked: boolean; // block_enrich
+	isFilesBlocked: boolean; // block_files
+	isAutoComposeBlocked: boolean; // block_auto_compose
+	isAssistantsBlocked: boolean; // block_assistants
+	isSubProcessingBlocked: boolean; // block_sub_processing
+	firstPaid: string;
+	lastPaid: string;
+	nextPay: string;
 }
 
 export enum ESortOrder {
