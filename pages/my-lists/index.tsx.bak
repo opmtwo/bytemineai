@@ -10,7 +10,7 @@ const MyLists = () => {
 				<title>My Lists</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionMyLists />
 			</PageLayout>
 		</UserGuard>
