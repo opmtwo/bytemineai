@@ -1069,3 +1069,30 @@ export interface IBytemineSub {
 	lastPaid?: string;
 	nextPay?: string;
 }
+
+export interface IBytemineEnrichment {
+	id: string;
+	owner: string;
+	teamId?: string;
+	userId?: string;
+
+	createdAt: string; // AWSDateTime
+	updatedAt: string;
+
+	s3Key: string;
+	s3KeyOutput: string;
+	
+	name: string;
+	size: number;
+	
+	recordsUploaded: number;
+	recordsEnriched: number;
+	recordsProcessed: number;
+	
+	isCompleted: boolean;
+	
+	keyEmail: string;
+	keyPhone: string;
+	keyLinkedin: string;
+	status: string;
+}
