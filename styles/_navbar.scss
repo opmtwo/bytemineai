@@ -1,13 +1,12 @@
+.navbar {
+	padding: 0 1rem;
+}
+
 .navbar-brand {
 	margin-right: 1rem;
 }
 
-.navbar-item {
-	height: 2.5rem;
-	transition: all $animation-time $animation-method;
-}
-
-.navbar.is-spaced .navbar-dropdown {
+.navbar .navbar-dropdown {
 	position: absolute;
 	top: 100%;
 	right: 0;
@@ -15,23 +14,22 @@
 	padding-top: 1rem;
 	background-color: transparent;
 	box-shadow: none;
+	border-top: none;
 
 	.navbar-item {
 		border-radius: 0;
 	}
 
 	.navbar-dropdown-card {
-		padding: 1em 0;
+		padding: 2em 0;
 		background-color: #fff;
+		border: $panel-item-border;
 		border-radius: 4px;
-		box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
+		// box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
 	}
 }
 
 @media (max-width: ($widescreen+$gutter+101-101-41)) {
-	.navbar {
-		padding: 0 1rem;
-	}
 	.navbar-brand {
 		width: 100%;
 	}
