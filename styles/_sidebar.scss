@@ -8,12 +8,16 @@ body {
 	padding-bottom: 80px;
 }
 
+main.container.is-fluid {
+	padding-top: 1rem;
+}
+
 @media (min-width: 1024px) {
-	body {
+	.is-dashboard {
 		padding-left: var(--sidebar-width);
 	}
 
-	.is-compact {
+	.is-dashboard.is-compact {
 		padding-left: var(--sidebar-compact-width);
 	}
 
