@@ -11,7 +11,7 @@ const Home = () => {
 				<title>Dashboard</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				{/* <SectionHome /> */}
 				<SectionDashboard />
 			</PageLayout>
