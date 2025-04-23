@@ -9,7 +9,7 @@ const subscriptionBilling = () => {
         <title>Subscription & Billing</title>
         <meta name="description" content="" />
       </Head>
-      <PageLayout size="is-max-widescreen">
+      <PageLayout>
         <SectionSubscriptionBilling />
       </PageLayout>
     </ModGuard>

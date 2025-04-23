@@ -10,7 +10,7 @@ const WhiteLabelSettings = () => {
 				<title>White-Label Settings</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionWhiteLabelSettings />
 			</PageLayout>
 		</ModGuard>

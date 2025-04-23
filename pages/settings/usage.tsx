@@ -11,7 +11,7 @@ const SettingsUsage = () => {
 				<title>Account Info | Usage</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionSettingsUsage />
 			</PageLayout>
 		</>

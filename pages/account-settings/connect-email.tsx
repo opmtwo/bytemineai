@@ -10,7 +10,7 @@ const ConnectEmail = () => {
 				<title>Connect Email</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionConnectEmail />
 			</PageLayout>
 		</UserGuard>

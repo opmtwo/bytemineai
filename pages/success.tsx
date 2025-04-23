@@ -12,7 +12,7 @@ const Success = () => {
 				<title>Dashboard</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				{/* <SectionHome /> */}
                 <SuccessPurchase />
 			</PageLayout>

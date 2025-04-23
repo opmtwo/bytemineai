@@ -10,7 +10,7 @@ const EnrichBulk = () => {
 				<title>API Enrichment</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionEnrichApi />
 			</PageLayout>
 		</UserGuard>

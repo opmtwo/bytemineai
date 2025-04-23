@@ -10,7 +10,7 @@ const Usage = () => {
 				<title>Usage</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionUsage />
 			</PageLayout>
 		</ModGuard>

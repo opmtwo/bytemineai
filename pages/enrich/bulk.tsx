@@ -10,7 +10,7 @@ const EnrichBulk = () => {
 				<title>Bulk Enrichment</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionEnrichBulk />
 			</PageLayout>
 		</UserGuard>

@@ -11,7 +11,7 @@ const SettingsSubscription = () => {
 				<title>Subscription Info</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionSettingsSubscription />
 			</PageLayout>
 		</>

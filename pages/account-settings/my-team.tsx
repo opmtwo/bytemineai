@@ -10,7 +10,7 @@ const MyTeam = () => {
 				<title>My Team</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionMyTeam />
 			</PageLayout>
 		</ModGuard>

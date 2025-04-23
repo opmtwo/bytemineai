@@ -13,7 +13,7 @@ const MyLists = () => {
 				<title>My Lists</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<CrudProvider baseApi={awsmobile.aws_cloud_logic_custom[0].name} baseUrl="api/v1/collections" searchKeys={['name', 'slug']} baseSortMap={[]}>
 					<SectionMyLists />
 				</CrudProvider>

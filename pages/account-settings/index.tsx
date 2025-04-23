@@ -10,7 +10,7 @@ const AdminAccount = () => {
 				<title>Account Settings</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionUserAccountSettings />
 			</PageLayout>
 		</AdminGuard>

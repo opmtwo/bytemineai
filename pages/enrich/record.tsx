@@ -10,7 +10,7 @@ const EnrichRecord = () => {
 				<title>Record Enrichment</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionEnrichRecord />
 			</PageLayout>
 		</UserGuard>

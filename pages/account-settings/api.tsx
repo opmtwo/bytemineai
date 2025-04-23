@@ -10,7 +10,7 @@ const Api = () => {
 				<title>API</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionApi />
 			</PageLayout>
 		</ModGuard>

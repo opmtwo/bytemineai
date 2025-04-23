@@ -12,7 +12,7 @@ const SettingsAccount = () => {
 				<title>Account Settings</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionSettingsAccount />
 			</PageLayout>
 		</>

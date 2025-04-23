@@ -13,7 +13,7 @@ const Plan = () => {
         <img src="https://ct.capterra.com/capterra_tracker.gif?vid=2224570&vkey=abc74a82315214f8537ce165337e9ff0" alt="" />
       </Head>
       <ModGuard>
-        <PageLayout size="is-max-widescreen">
+        <PageLayout>
           <SectionPlan />
         </PageLayout>
       </ModGuard>

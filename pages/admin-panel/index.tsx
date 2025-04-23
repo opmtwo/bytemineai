@@ -10,7 +10,7 @@ const AdminPanel = () => {
 				<title>Admin Panel</title>
 				<meta name="description" content="" />
 			</Head>
-			<PageLayout size="is-max-widescreen">
+			<PageLayout>
 				<SectionAdminPanel />
 			</PageLayout>
 		</RootGuard>
