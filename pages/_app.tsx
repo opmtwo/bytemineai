@@ -11,6 +11,7 @@ import EnrichmentsInProgress from '../components/enrich/EnrichmentsInProgress';
 import Favicon from '../components/Favicon';
 import SettingsLoader from '../components/SettingsLoader';
 import AuthDataProvider from '../providers/auth-data-provider';
+import { HeaderContextProvider } from '../providers/header-provider';
 import StripeProvider from '../providers/stripe-provider';
 import amplifyConfig from '../src/aws-exports';
 
@@ -31,28 +32,29 @@ Amplify.configure(amplifyConfig, {
 	},
 });
 
-
 const NewApp = ({ Component, pageProps }: AppProps) => {
-  return (
-    <>
-      <Head>
-        <meta charSet="UTF-8" />
-        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </Head>
-      <ToastContainer />
-      <AuthDataProvider>
-        <StripeProvider>
-          <SettingsLoader />
-          <Favicon />
-          <LayoutGroup>
-            <Component {...pageProps} />
-            <EnrichmentsInProgress />
-          </LayoutGroup>
-        </StripeProvider>
-      </AuthDataProvider>
-    </>
-  );
+	return (
+		<>
+			<Head>
+				<meta charSet="UTF-8" />
+				<meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+			</Head>
+			<ToastContainer />
+			<HeaderContextProvider>
+				<AuthDataProvider>
+					<StripeProvider>
+						<SettingsLoader />
+						<Favicon />
+						<LayoutGroup>
+							<Component {...pageProps} />
+							<EnrichmentsInProgress />
+						</LayoutGroup>
+					</StripeProvider>
+				</AuthDataProvider>
+			</HeaderContextProvider>
+		</>
+	);
 };
 
 export default NewApp;
