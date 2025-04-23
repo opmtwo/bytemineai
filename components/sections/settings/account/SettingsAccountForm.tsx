@@ -190,6 +190,7 @@ const SettingsAccountForm = () => {
 			await callApi(null, 'api/v1/me', { method: 'DELETE' });
 			await signOut();
 			await onSignOut();
+			document.body.classList.remove('is-open', 'is-drawer-open');
 			window.location.href = '/';
 		} catch (err) {
 			notifyError(`We encountered an error while processing your request. Please try again later.`);
