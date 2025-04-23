@@ -1,0 +1,9 @@
+.navbar-brand {
+    width: var(--sidebar-width);
+    margin-left: -1rem;
+    background-color: $white-bis;
+}
+
+.is-compact .navbar-brand {
+    width: auto;
+}
