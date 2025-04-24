@@ -63,9 +63,9 @@ const PageLayout = ({
 	const menuItemsTop: SidebarMenuItem[] = [
 		{ label: 'Dashboard', icon: <IconNewDashboard width={18} />, href: '/' },
 		{ label: 'Prospect Finder', icon: <IconNewProspectFinder width={18} />, href: '/' },
-		{ label: 'My Lists', icon: <IconNewMyLists width={18} />, href: '/' },
-		{ label: 'My Team', icon: <IconNewTeam width={18} />, href: '/' },
-		{ label: 'Enrich', icon: <IconNewEnrich width={18} />, href: '/' },
+		{ label: 'My Lists', icon: <IconNewMyLists width={18} />, href: '/my-lists' },
+		{ label: 'My Team', icon: <IconNewTeam width={18} />, href: '/my-team' },
+		{ label: 'Enrich', icon: <IconNewEnrich width={18} />, href: '/enrichment' },
 		{ label: 'API', icon: <IconNewApi width={18} />, href: '/' },
 	];
 
