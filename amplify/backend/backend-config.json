@@ -95,6 +95,41 @@
           ],
           "category": "api",
           "resourceName": "bytemineGraphApi"
+        },
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "bytemineaiEnrichLambda"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "bytemineaiEnrichLambda": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "byteminef573e062"
+        },
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "bytemineStorage"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "bytemineGraphApi"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -131,6 +166,30 @@
         {
           "category": "function",
           "resourceName": "bytemineRestApiLambda"
+        }
+      ]
+    },
+    "AMPLIFY_function_bytemineaiEnrichLambda_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "bytemineaiEnrichLambda"
+        }
+      ]
+    },
+    "AMPLIFY_function_bytemineaiEnrichLambda_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "bytemineaiEnrichLambda"
+        }
+      ]
+    },
+    "AMPLIFY_function_bytemineaiEnrichLambda_selfArn": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "bytemineaiEnrichLambda"
         }
       ]
     }
