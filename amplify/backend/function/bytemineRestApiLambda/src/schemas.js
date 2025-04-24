@@ -50,6 +50,10 @@ const IPublicUpload = Joi.object({
 	size: Joi.number().required(),
 }).options({ abortEarly: false });
 
+const IEnrichmentPreview = Joi.object({
+	key: Joi.string().max(200).required(),
+});
+
 module.exports = {
 	schemaValidate,
 	ICollection,
