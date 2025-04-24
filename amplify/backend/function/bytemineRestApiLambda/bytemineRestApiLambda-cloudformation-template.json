@@ -32,6 +32,10 @@
       "Type": "String",
       "Default": "apibytemineGraphApiGraphQLAPIEndpointOutput"
     },
+    "functionbytemineaiEnrichLambdaName": {
+      "Type": "String",
+      "Default": "functionbytemineaiEnrichLambdaName"
+    },
     "stripeClientSecret": {
       "Type": "String"
     },
@@ -129,6 +133,9 @@
                   }
                 ]
               ]
+            },
+            "FUNCTION_BYTEMINEAIENRICHLAMBDA_NAME": {
+              "Ref": "functionbytemineaiEnrichLambdaName"
             },
             "STRIPE_CLIENT_SECRET": {
               "Ref": "stripeClientSecret"
@@ -523,6 +530,35 @@
                         "Ref": "apibytemineGraphApiGraphQLAPIIdOutput"
                       },
                       "/types/Subscription/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functionbytemineaiEnrichLambdaName"
+                      }
                     ]
                   ]
                 }
