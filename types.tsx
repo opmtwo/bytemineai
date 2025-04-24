@@ -1079,6 +1079,8 @@ export interface IBytemineEnrichment {
 	createdAt: string; // AWSDateTime
 	updatedAt: string;
 
+	isSelected?: boolean;
+
 	s3Key: string;
 	s3KeyOutput: string;
 	
