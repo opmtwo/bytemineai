@@ -31,6 +31,9 @@
     "apibytemineGraphApiGraphQLAPIEndpointOutput": {
       "Type": "String",
       "Default": "apibytemineGraphApiGraphQLAPIEndpointOutput"
+    },
+    "selfArn": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -97,6 +100,113 @@
             },
             "API_BYTEMINEGRAPHAPI_GRAPHQLAPIENDPOINTOUTPUT": {
               "Ref": "apibytemineGraphApiGraphQLAPIEndpointOutput"
+            },
+            "API_BYTEMINEGRAPHAPI_BYTEMINECONTACTTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineContactTable:Name"
+              }
+            },
+            "API_BYTEMINEGRAPHAPI_BYTEMINECONTACTTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineContactTable:Name"
+                    }
+                  }
+                ]
+              ]
+            },
+            "API_BYTEMINEGRAPHAPI_BYTEMINEENRICHMENTTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineEnrichmentTable:Name"
+              }
+            },
+            "API_BYTEMINEGRAPHAPI_BYTEMINEENRICHMENTTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineEnrichmentTable:Name"
+                    }
+                  }
+                ]
+              ]
+            },
+            "API_BYTEMINEGRAPHAPI_BYTEMINESUBTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineSubTable:Name"
+              }
+            },
+            "API_BYTEMINEGRAPHAPI_BYTEMINESUBTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineSubTable:Name"
+                    }
+                  }
+                ]
+              ]
+            },
+            "API_BYTEMINEGRAPHAPI_BYTEMINEUSAGETABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineUsageTable:Name"
+              }
+            },
+            "API_BYTEMINEGRAPHAPI_BYTEMINEUSAGETABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineUsageTable:Name"
+                    }
+                  }
+                ]
+              ]
+            },
+            "SELF_ARN": {
+              "Ref": "selfArn"
             }
           }
         },
@@ -106,9 +216,10 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs18.x",
+        "Runtime": "nodejs22.x",
         "Layers": [],
-        "Timeout": 25
+        "Timeout": 25,
+        "MemorySize": 1024
       }
     },
     "LambdaExecutionRole": {
@@ -349,6 +460,270 @@
                         "Ref": "storagebytemineStorageBucketName"
                       },
                       "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PartiQLInsert",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:PartiQLSelect",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:PartiQLUpdate",
+                "dynamodb:Delete*",
+                "dynamodb:PartiQLDelete"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineContactTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineContactTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PartiQLInsert",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:PartiQLSelect",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:PartiQLUpdate",
+                "dynamodb:Delete*",
+                "dynamodb:PartiQLDelete"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineEnrichmentTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineEnrichmentTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PartiQLInsert",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:PartiQLSelect",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:PartiQLUpdate",
+                "dynamodb:Delete*",
+                "dynamodb:PartiQLDelete"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineSubTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineSubTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PartiQLInsert",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:PartiQLSelect",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:PartiQLUpdate",
+                "dynamodb:Delete*",
+                "dynamodb:PartiQLDelete"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineUsageTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apibytemineGraphApiGraphQLAPIIdOutput}:GetAtt:BytemineUsageTable:Name"
+                        }
+                      },
+                      "/index/*"
                     ]
                   ]
                 }
