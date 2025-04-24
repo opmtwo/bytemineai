@@ -54,6 +54,18 @@ const IEnrichmentPreview = Joi.object({
 	key: Joi.string().max(200).required(),
 });
 
+const IEnrichment = Joi.object({
+	key: Joi.string().max(200).required(),
+	name: Joi.string().max(200).required(),
+	size: Joi.number().required(),
+	email: Joi.string().allow('', null).max(200).optional(),
+	phone: Joi.string().allow('', null).max(200).optional(),
+	linkedin: Joi.string().allow('', null).max(200).optional(),
+	facebook: Joi.string().allow('', null).max(200).optional(),
+	phoneRequired: Joi.boolean().allow('', null).optional(),
+	workEmailRequired: Joi.boolean().allow('', null).optional(),
+}).options({ abortEarly: false });
+
 module.exports = {
 	schemaValidate,
 	ICollection,
@@ -64,4 +76,6 @@ module.exports = {
 	IDomainSearch,
 	ICSVFilter,
 	IPublicUpload,
+	IEnrichmentPreview,
+	IEnrichment,
 };
