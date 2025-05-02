@@ -10,10 +10,15 @@ See the License for the specific language governing permissions and limitations 
 /* Amplify Params - DO NOT EDIT
 	API_BYTEMINEGRAPHAPI_BYTEMINEFILTERITEMTABLE_ARN
 	API_BYTEMINEGRAPHAPI_BYTEMINEFILTERITEMTABLE_NAME
+	API_BYTEMINEGRAPHAPI_BYTEMINESUBTABLE_ARN
+	API_BYTEMINEGRAPHAPI_BYTEMINESUBTABLE_NAME
+	API_BYTEMINEGRAPHAPI_BYTEMINEUSAGETABLE_ARN
+	API_BYTEMINEGRAPHAPI_BYTEMINEUSAGETABLE_NAME
 	API_BYTEMINEGRAPHAPI_GRAPHQLAPIENDPOINTOUTPUT
 	API_BYTEMINEGRAPHAPI_GRAPHQLAPIIDOUTPUT
 	AUTH_BYTEMINEF573E062_USERPOOLID
 	ENV
+	FUNCTION_BYTEMINEAIENRICHLAMBDA_NAME
 	REGION
 	STORAGE_BYTEMINESTORAGE_BUCKETNAME
 Amplify Params - DO NOT EDIT */
@@ -30,6 +35,7 @@ const searchRouter = require('./v1/search');
 const csvFiltersRouter = require('./v1/csv-filters');
 const authRouter = require('./v1/auth');
 const contactsRouter = require('./v1/contacts');
+const enrichmentsRouter = require('./v1/enrich');
 
 // declare a new express app
 const app = express()
@@ -51,6 +57,7 @@ app.use('/api/v1/search', searchRouter);
 app.use('/api/v1/csv-filters', csvFiltersRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/contacts', contactsRouter);
+app.use('/api/v1/enrichments', enrichmentsRouter);
 
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from
