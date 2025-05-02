@@ -282,10 +282,11 @@ type BytemineEnrichment @model @auth(rules: [{ allow: private, operations: [] }]
 	recordsUploaded: Int # number of records in the file
 	recordsEnriched: Int # number of records enriched - this is updated as records are processed
 	recordsProcessed: Int # number of records processed - this is updated as records are processed
-	isCompleted: Boolean # whether the operation is completed or not
+	isCompleted: Boolean # whether the operation is completed or not - False by default - True when processing has either completed or failed
 	keyEmail: String # csv key for the email field
 	keyPhone: String # csv key for the phone field
 	keyLinkedin: String # csv key for the linkedin field
+	keyFacebook: String # csv key for the facebook field
 	status: String # one of - pending / processing / completed / failed
 }
 
