@@ -20,6 +20,18 @@
         "read",
         "update",
         "delete"
+      ],
+      "BytemineSub:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "BytemineUsage:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
       ]
     },
     "api": {
@@ -27,6 +39,11 @@
         "Query",
         "Mutation",
         "Subscription"
+      ]
+    },
+    "function": {
+      "bytemineaiEnrichLambda": [
+        "read"
       ]
     }
   },
