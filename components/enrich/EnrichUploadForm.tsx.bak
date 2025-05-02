@@ -1,5 +1,6 @@
 import { CSSProperties, FormEvent, useState } from 'react';
-
+import API from '@aws-amplify/api';
+import { Auth } from '@aws-amplify/auth';
 import { useAuthContext } from '../../providers/auth-data-provider';
 import Card from '../cards/Card';
 import Slot from '../Slot';
@@ -10,10 +11,10 @@ import IconBulb from '../icons/IconBulb';
 import IconInfo from '../icons/IconInfo';
 import IconClose from '../icons/IconClose';
 import Uploader from '../Uploader';
-import { IBytemineEnrichment, Upload } from '../../types';
+import { Enrichment, Upload } from '../../types';
 import IconEnrichBulk from '../icons/IconEnrichBulk';
 import FormSelect from '../form/FormSelect';
-import { callApi, formatNumber, getErrorMessage } from '../../utils/helper-utils';
+import { formatNumber, getErrorMessage } from '../../utils/helper-utils';
 import FormCheckbox from '../form/FormCheckbox';
 
 const EnrichUploadForm = ({
@@ -23,7 +24,7 @@ const EnrichUploadForm = ({
 	onUpgrade,
 }: {
 	isActive?: boolean;
-	onSubmit: (value: IBytemineEnrichment) => void;
+	onSubmit: (value: Enrichment) => void;
 	onCancel: () => void;
 	onUpgrade: () => void;
 }) => {
@@ -49,12 +50,8 @@ const EnrichUploadForm = ({
 	const [linkedin, setLinkedin] = useState('');
 	const [facebook, setFacebook] = useState('');
 
-	const [key, setKey] = useState<string>();
-	const [name, setName] = useState<string>();
-	const [size, setSize] = useState<number>();
-
-	const [phoneRequired, setphoneRequired] = useState(false);
-	const [workEmailRequired, setworkEmailRequired] = useState(false);
+	const [phoneRequired, setphoneRequired] = useState(false)
+	const [workEmailRequired, setworkEmailRequired] = useState(false)
 
 	// current uploads
 	const [uploads, setUploads] = useState<Upload[]>([]);
@@ -63,21 +60,31 @@ const EnrichUploadForm = ({
 	const [isUploaded, setIsUploaded] = useState(false);
 
 	// current user
-	const { attributes } = useAuthContext();
+	const { user } = useAuthContext();
+	// const groupname = user?.attributes['custom:group_name'];
+	const groupname = '';
 
-	const onUpload = async (s3Key: string, name: string, size: number, createdAt: string) => {
+	const getInput = async (body: any) => {
+		const options = {
+			body,
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+			},
+		};
+		return options;
+	};
+
+	const onUpload = async (uploads: Upload[]) => {
 		try {
 			setError(undefined);
-			setKey(s3Key);
-			setName(name);
-			setSize(size);
-			const response = (await callApi(null, '/api/v1/enrichments/preview', {
-				method: 'POST',
-				body: JSON.stringify({
-					key: s3Key,
-				}),
-			})) as { credits: number; csv: { headers: string[]; records: number; sample: Record<string, string> } };
-			// setUploads(uploads);
+			const params = await getInput({ key: uploads[0].key, groupId: groupname });
+			const response: { credits: number; csv: { headers: string[]; records: number; sample: Record<string, string> } } = await API.post(
+				'restApiExpress',
+				'/restapi/enrich/preview',
+				params
+			);
+			setUploads(uploads);
 			setCsvFields(response.csv.headers);
 			setNoOfCsvRecords(response.csv.records);
 			setSample(response.csv.sample);
@@ -96,12 +103,7 @@ const EnrichUploadForm = ({
 	const isFormValid = () => {
 		let isValid = true;
 
-		// if (!uploads?.length) {
-		// 	setError(new Error('You must upload a valid csv file'));
-		// 	return false;
-		// }
-
-		if (!key || !name || !size) {
+		if (!uploads?.length) {
 			setError(new Error('You must upload a valid csv file'));
 			return false;
 		}
@@ -120,7 +122,9 @@ const EnrichUploadForm = ({
 	};
 
 	const handleSubmit = async (e: FormEvent) => {
+		debugger;
 		e.preventDefault();
+		setError(undefined);
 		setIsBusy(true);
 		const isValid = await isFormValid();
 		if (!isValid) {
@@ -129,12 +133,8 @@ const EnrichUploadForm = ({
 		}
 		setIsBusy(true);
 		try {
-			// const params = await getInput({ ...uploads[0], groupId: groupname, userId: user?.attributes.sub, email, phone, linkedin, facebook, phoneRequired, workEmailRequired });
-			const newEnrichment = (await callApi(null, 'api/v1/enrichments', {
-				method: 'POST',
-				body: JSON.stringify({ email, phone, linkedin, facebook, key, name, size }),
-			})) as IBytemineEnrichment;
-			// const newEnrichment: any = await API.post('restApiExpress', '/restapi/enrich/start', params);
+			const params = await getInput({ ...uploads[0], groupId: groupname, userId: user?.attributes.sub, email, phone, linkedin, facebook, phoneRequired, workEmailRequired });
+			const newEnrichment: any = await API.post('restApiExpress', '/restapi/enrich/start', params);
 			onSubmit(newEnrichment);
 		} catch (err) {
 			console.log('handleSubmit - error', err);
@@ -151,7 +151,7 @@ const EnrichUploadForm = ({
 		width: '14rem',
 		textOverflow: 'ellipsis',
 		whiteSpace: 'nowrap',
-	};
+	}
 
 	const isColumnSelected = email || phone || linkedin || facebook;
 
@@ -201,9 +201,7 @@ const EnrichUploadForm = ({
 										<FormSelect placeholder="None" options={csvOptions} value={linkedin} onChange={setLinkedin} />
 									</div>
 									<div className="column is-5 is-flex is-justify-content-center">
-										<span style={style} title={sample?.[linkedin]}>
-											{sample?.[linkedin]}
-										</span>
+										<span style={style} title={sample?.[linkedin]}>{sample?.[linkedin]}</span>
 									</div>
 
 									<div className="column is-3">
@@ -213,9 +211,7 @@ const EnrichUploadForm = ({
 										<FormSelect placeholder="None" options={csvOptions} value={email} onChange={setEmail} />
 									</div>
 									<div className="column is-5 is-flex is-justify-content-center">
-										<span style={style} title={sample?.[email]}>
-											{sample?.[email]}
-										</span>
+										<span style={style} title={sample?.[email]}>{sample?.[email]}</span>
 									</div>
 
 									<div className="column is-3">
@@ -225,9 +221,7 @@ const EnrichUploadForm = ({
 										<FormSelect placeholder="None" options={csvOptions} value={phone} onChange={setPhone} />
 									</div>
 									<div className="column is-5 is-flex is-justify-content-center">
-										<span style={style} title={sample?.[phone]}>
-											{sample?.[phone]}
-										</span>
+										<span style={style} title={sample?.[phone]}>{sample?.[phone]}</span>
 									</div>
 
 									<div className="column is-3">
@@ -237,29 +231,36 @@ const EnrichUploadForm = ({
 										<FormSelect placeholder="None" options={csvOptions} value={facebook} onChange={setFacebook} />
 									</div>
 									<div className="column is-5 is-flex is-justify-content-center">
-										<span style={style} title={sample?.[facebook]}>
-											{sample?.[facebook]}
-										</span>
+										<span style={style} title={sample?.[facebook]}>{sample?.[facebook]}</span>
 									</div>
 								</div>
-								{/* <p className="mb-5">
-									<strong className="has-text-grey">Show contacts that must contain:</strong>
-								</p>
-								<div className="is-block">
-									<FormCheckbox value={phoneRequired} label="Phone Number" isChecked={phoneRequired} onChange={setphoneRequired} />
-									<FormCheckbox value={workEmailRequired} label="Work Email" isChecked={workEmailRequired} onChange={setworkEmailRequired} />
-								</div> */}
+								<p className='mb-5'><strong className="has-text-grey">Show contacts that must contain:</strong></p>
+								<div className='is-block'>
+									<FormCheckbox
+										value={phoneRequired}
+										label='Phone Number'
+										isChecked={phoneRequired}
+										onChange={setphoneRequired}
+									/>
+									<FormCheckbox
+										value={workEmailRequired}
+										label='Work Email'
+										isChecked={workEmailRequired}
+										onChange={setworkEmailRequired}
+									/>
+								</div>
+								
 							</div>
 						</>
 					) : (
 						<div className="panel-block is-block">
 							<ErrorNotificaition error={error} className="has-text-centered pb-5" />
-							<Uploader uploadPath={`public/${attributes?.sub}/uploads`} uploads={uploads} onUpload={onUpload} />
+							<Uploader uploads={uploads} onUpload={onUpload} />
 							<div className="is-flex is-align-items-center my-6">
 								<IconBulb width={32} />
 								<p className="ml-3">
-									Your file must be a CSV format and contain at lease one column with email addresses, phone numbers, or personal LinkedIn or
-									FaceBook profile URLs.
+									Your file must be a CSV format and contain at lease one column with email addresses, phone numbers, or personal LinkedIn or FaceBook 
+									profile URLs.
 								</p>
 							</div>
 						</div>
