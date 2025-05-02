@@ -1,7 +1,8 @@
-const { sentenceCase } = require('sentence-case');
+// const { sentenceCase } = require('sentence-case');
 const { v4: uuidv4, v4 } = require('uuid');
 const { ddbEncode, ddbDecode, ddbGetItem, ddbPutItem, ddbQuery, ddbUpdateItem, ddbDeleteItem } = require('./ddb-utils');
 const {
+	REGION: AWS_REGION,
 	API_BYTEMINEGRAPHAPI_BYTEMINESUBTABLE_NAME: SUBSCRIPTIONTABLE_NAME,
 	API_BYTEMINEGRAPHAPI_BYTEMINEENRICHMENTTABLE_NAME: ENRICHMENTTABLE_NAME,
 	API_BYTEMINEGRAPHAPI_BYTEMINECONTACTTABLE_NAME: CONTACTTABLE_NAME,
@@ -123,9 +124,9 @@ const getEsFilter = async (csvRow, email, phone, linkedin, facebook, verbose = t
 		const fields = ['direct_dial', 'mobile_number', 'work_number'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
-			query.push({ match_phrase_prefix: { [fields[i]]: phoneValue } });
+			query.push({ prefix: { [fields[i]]: phoneValue } });
 			query.push({
-				match_phrase_prefix: {
+				prefix: {
 					[fields[i]]: '+1' + phoneValue.replace('(', '').replace(')', '').replace('-', '').replace(' ', '').replace('+1', '').replace('1 '),
 				},
 			});
@@ -160,8 +161,8 @@ const getEsFilter = async (csvRow, email, phone, linkedin, facebook, verbose = t
 			if (linkedinValue.startsWith('link')) {
 				linkedinValue = linkedinValue.replace('link', 'https://www.link');
 			}
-			query.push({ match_phrase_prefix: { [fields[i]]: linkedinValue } });
-			query.push({ match_phrase_prefix: { [fields[i]]: linkedinValue.replace('https://', '').replace('www.', '') } });
+			query.push({ prefix: { [fields[i]]: linkedinValue } });
+			query.push({ prefix: { [fields[i]]: linkedinValue.replace('https://', '').replace('www.', '') } });
 		}
 		filters.push({ bool: { should: [...query] } });
 	}
@@ -185,8 +186,8 @@ const getEsFilter = async (csvRow, email, phone, linkedin, facebook, verbose = t
 			if (facebookValue.startsWith('face')) {
 				facebookValue = facebookValue.replace('face', 'https://www.face');
 			}
-			query.push({ match_phrase_prefix: { [fields[i]]: facebookValue } });
-			query.push({ match_phrase_prefix: { [fields[i]]: facebookValue.replace('https://', '').replace('www.', '') } });
+			query.push({ prefix: { [fields[i]]: facebookValue } });
+			query.push({ prefix: { [fields[i]]: facebookValue.replace('https://', '').replace('www.', '') } });
 		}
 		filters.push({ bool: { should: [...query] } });
 	}
@@ -412,7 +413,8 @@ const getExportLabels = (addnl_keys) => {
 	if (!addnl_keys) {
 		addnl_keys = [];
 	}
-	let keysOut = keysToExport.map((key) => sentenceCase(key));
+	// let keysOut = keysToExport.map((key) => sentenceCase(key));
+	let keysOut = keysToExport.map((key) => key);
 	return [...addnl_keys, ...keysOut];
 };
 
@@ -429,6 +431,8 @@ const getExportData = (data, addnl_keys) => {
 	return newItem;
 };
 
+const getEnrichLambdaName = () => `bytemineaiEnrichLambda-${AWS_REGION}`;
+
 module.exports = {
 	updateCredits,
 	getEsFilter,
@@ -441,4 +445,5 @@ module.exports = {
 	getExportLabels,
 	getExportData,
 	addUsage,
+	getEnrichLambdaName,
 };
