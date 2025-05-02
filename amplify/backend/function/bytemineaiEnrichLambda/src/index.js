@@ -17,8 +17,9 @@ Amplify Params - DO NOT EDIT */
 
 const { csvReadStream } = require('./utils/csv-utils');
 const { ddbGetItem, ddbEncode, ddbDecode } = require('./utils/ddb-utils');
+const { deleteLambdaSchedule, scheduleLambdaAfterMinutes } = require('./utils/eb-utils');
 // const { scheduleLambdaAfterOneMinute, ebScheduleLambdaAfterOneMinute } = require('./utils/eb-utils');
-const { esRequest } = require('./utils/es-utils');
+const { esRequest2: esRequest } = require('./utils/es-utils-v2');
 const {
 	updateCredits,
 	getEsFilter,
@@ -29,6 +30,7 @@ const {
 	getExportData,
 	arrayToCsv,
 	addUsage,
+	getEnrichLambdaName,
 } = require('./utils/helper-utils');
 const { lambdaInvokeFunction } = require('./utils/lambda-utils');
 const { s3PutObject, s3GetObject } = require('./utils/s3-utils');
@@ -46,7 +48,7 @@ const ES_DOMAIN = `https://${ES_HOST}`;
 //const ES_INDEX = 'nymblr_20221107';
 const ES_INDEX = 'contacts';
 
-const eventBridge = new EventBridgeClient({});
+// const eventBridge = new EventBridgeClient({});
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -66,24 +68,6 @@ exports.handler = async (event, context) => {
 	console.log(`EVENT: ${JSON.stringify(event)}`);
 	console.log(`CONTEXT: ${JSON.stringify(context)}`);
 
-	// const ruleName = process.env.SCHEDULE_RULE_NAME;
-
-	// // 1. Delete existing rule and target if present
-	// if (ruleName) {
-	// 	console.log(`Deleting rule and target: ${ruleName}`);
-	// 	try {
-	// 		await eventBridge.send(
-	// 			new RemoveTargetsCommand({
-	// 				Rule: ruleName,
-	// 				Ids: ['lambda-target'],
-	// 			})
-	// 		);
-	// 		await eventBridge.send(new DeleteRuleCommand({ Name: ruleName }));
-	// 	} catch (err) {
-	// 		console.error('Error deleting rule/target:', err);
-	// 	}
-	// }
-
 	// use event or previous result
 	let source = event;
 	if (source.result?.Payload) {
@@ -93,6 +77,18 @@ exports.handler = async (event, context) => {
 	// extract event
 	let { id, batchSize, start, total, hasMore } = source;
 	console.log({ id, batchSize, start, total, hasMore });
+
+	const lambdaName = getEnrichLambdaName();
+	const ruleName = process.env.SCHEDULE_RULE_NAME || `${lambdaName}-${id.substring(0, id.indexOf('-'))}`;
+
+	// 1. Delete existing rule and target if present
+	if (ruleName) {
+		try {
+			await deleteLambdaSchedule(ruleName);
+		} catch (err) {
+			console.error('Error deleting rule/target:', err);
+		}
+	}
 
 	// check if we have reached end
 	if (hasMore === false) {
@@ -108,8 +104,8 @@ exports.handler = async (event, context) => {
 
 	// check batch size
 	if (!batchSize) {
-		console.log('Batch size not found - using default batch size of 10');
-		batchSize = 500;
+		console.log('Batch size not found - using default batch size of 10000');
+		batchSize = 10000;
 	}
 
 	// check start index
@@ -149,7 +145,7 @@ exports.handler = async (event, context) => {
 		}
 
 		// search row in es
-		const esResult = await esRequest(ES_HOST, 'POST', `/${ES_INDEX}/_search`, esFilter);
+		const esResult = await esRequest('POST', `/${ES_INDEX}/_search`, esFilter);
 		const contact = esResult?.hits?.hits?.[0];
 
 		// if row found then update else add 1 credit to user account
@@ -243,9 +239,14 @@ exports.handler = async (event, context) => {
 		start: nextStart,
 		hasMore: !hasEnded,
 	};
+	console.log(JSON.stringify({ result }));
 
 	if (!hasEnded) {
-		await lambdaInvokeFunction(`bytemineaiEnrichLambda-${ENV}`, result);
+		try {
+			await scheduleLambdaAfterMinutes(ruleName, SELF_ARN, 1, result);
+		} catch (err) {
+			console.log('Error scheduling lambda', err);
+		}
 	}
 
 	console.log('Completed execution of batch - result ', result);
