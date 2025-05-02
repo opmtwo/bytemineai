@@ -218,7 +218,7 @@
         },
         "Runtime": "nodejs22.x",
         "Layers": [],
-        "Timeout": 25,
+        "Timeout": 900,
         "MemorySize": 1024
       }
     },
@@ -796,6 +796,29 @@
                   ]
                 }
               ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "events:*"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:*"
+              ],
+              "Resource": "*"
             }
           ]
         }
