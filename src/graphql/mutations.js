@@ -1398,6 +1398,7 @@ export const createBytemineEnrichment = /* GraphQL */ `
       keyEmail
       keyPhone
       keyLinkedin
+      keyFacebook
       status
       __typename
     }
@@ -1426,6 +1427,7 @@ export const updateBytemineEnrichment = /* GraphQL */ `
       keyEmail
       keyPhone
       keyLinkedin
+      keyFacebook
       status
       __typename
     }
@@ -1454,6 +1456,7 @@ export const deleteBytemineEnrichment = /* GraphQL */ `
       keyEmail
       keyPhone
       keyLinkedin
+      keyFacebook
       status
       __typename
     }

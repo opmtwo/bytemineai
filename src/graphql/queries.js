@@ -943,6 +943,7 @@ export const getBytemineEnrichment = /* GraphQL */ `
       keyEmail
       keyPhone
       keyLinkedin
+      keyFacebook
       status
       __typename
     }
@@ -977,6 +978,7 @@ export const listBytemineEnrichments = /* GraphQL */ `
         keyEmail
         keyPhone
         keyLinkedin
+        keyFacebook
         status
         __typename
       }
@@ -2657,6 +2659,7 @@ export const listEnrichmentByTeamId = /* GraphQL */ `
         keyEmail
         keyPhone
         keyLinkedin
+        keyFacebook
         status
         __typename
       }
@@ -2700,6 +2703,7 @@ export const listEnrichmentByUserId = /* GraphQL */ `
         keyEmail
         keyPhone
         keyLinkedin
+        keyFacebook
         status
         __typename
       }
