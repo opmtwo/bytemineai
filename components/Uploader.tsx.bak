@@ -1,10 +1,8 @@
-import React, { CSSProperties, useMemo, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
 import slugify from 'slugify';
+import React, { CSSProperties, useMemo, useState } from 'react';
 import { v4 } from 'uuid';
-
-import { uploadData } from '@aws-amplify/storage';
-
+import { Storage } from '@aws-amplify/storage';
+import { useDropzone } from 'react-dropzone';
 import { Upload } from '../types';
 import { notifyError } from '../utils/helper-utils';
 import IconUpload from './icons/IconUpload';
@@ -43,17 +41,7 @@ const rejectStyle: CSSProperties = {
 	borderColor: '#ff1744',
 };
 
-const Uploader = ({
-	uploadPath,
-	uploads = [],
-	maxSize = 100,
-	onUpload,
-}: {
-	uploadPath: string;
-	uploads: Upload[];
-	maxSize?: number;
-	onUpload: (s3Key: string, name: string, size: number, createdAt: string) => void;
-}) => {
+const Uploader = ({ uploads = [], maxSize = 100, onUpload }: { uploads: Upload[]; maxSize?: number; onUpload: (uploads: Upload[]) => void }) => {
 	const [isBusy, setIsBusy] = useState(false);
 	const [error, setError] = useState<Error>();
 
@@ -89,21 +77,12 @@ const Uploader = ({
 					}
 					const binaryStr = reader.result;
 					const slug = slugify(file.name);
-					const key = `${uploadPath}/${v4()}/${slug}`;
-					await uploadData({
-						path: key,
-						data: binaryStr as ArrayBuffer,
-						options: {
-							contentType: file.type,
-							onProgress: async (e) => {
-								if (e.transferredBytes !== e.totalBytes) {
-									return;
-								}
-								const s3Key = key;
-								await onUpload(s3Key, file.name, file.size, new Date().toISOString());
-							},
-						},
+					const key = `${v4()}/${slug}`;
+					await Storage.put(key, binaryStr, {
+						level: 'public',
 					});
+					const s3Key = `public/${key}`;
+					await onUpload([...uploads, { key: s3Key, name: file.name, size: file.size, createdAt: +new Date() }]);
 				} catch (err) {
 					const msg = `Error uploading ${file.name}`;
 					console.log(msg, err);
