@@ -1,25 +1,25 @@
 import { motion } from 'framer-motion';
 import { uniqBy } from 'lodash';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { useCrudContext } from '../../../providers/crud-provider';
-import { IBytemineEnrichment, List, ListContactModel, UserAttributes } from '../../../types';
+import { IBytemineEnrichment, ListContactModel, SortData } from '../../../types';
+import { forceDownloadS3File } from '../../../utils/helper-utils';
 import Anchor from '../../Anchor';
-import FormButton from '../../form/FormButton';
-import IconAdd from '../../icons/IconAdd';
-import IconDelete from '../../icons/IconDelete';
-import IconDownload from '../../icons/IconDownload';
-import Loader from '../../Loader';
-import QueryLoader from '../../QueryLoader';
-import FlexBox from '../../FlexBox';
 import FormCheckbox from '../../form/FormCheckbox';
-import IconEdit from '../../icons/IconEdit';
+import IconDelete from '../../icons/IconDelete';
+import IconNewDownload from '../../icons/IconNewDownload';
+import Loader from '../../Loader';
 
 const EnrichmentEntry = ({
+	sortMap,
+	isSticky,
 	item,
 	isListMode = false,
 	onExport,
 }: {
+	sortMap: SortData[];
+	isSticky?: boolean;
 	item: IBytemineEnrichment;
 	isListMode?: boolean;
 	onExport: (listContacts: ListContactModel[]) => void;
@@ -41,6 +41,9 @@ const EnrichmentEntry = ({
 		listContactItems.filter((item) => item.contact?.ruid),
 		'contactId'
 	);
+
+	// Compute match rate
+	item.matchRate = Math.round((item.recordsEnriched / item.recordsUploaded) * 100).toFixed(0) + '%';
 
 	const handleExport = () => onExport(uniqueContacts);
 
@@ -66,7 +69,15 @@ const EnrichmentEntry = ({
 
 	const handleEdit = () => {
 		enrichmentOnEdit(item.id);
-	}
+	};
+
+	const handleDownload = async () => {
+		try {
+			await forceDownloadS3File(item.s3KeyOutput);
+		} catch (err) {
+			console.log('handleDownload - error', err);
+		}
+	};
 
 	const handleSelect = (isSelected: boolean) => {
 		enrichmentOnSelect(item.id, isSelected);
@@ -78,26 +89,30 @@ const EnrichmentEntry = ({
 		</span>
 	);
 
-	const fullName = (
-		<span className="has-text-primary">
-			{/* {item?.user?.givenName} {item?.user?.familyName} */}
-		</span>
+	const fullName = <span className="has-text-primary">{/* {item?.user?.givenName} {item?.user?.familyName} */}</span>;
+
+	const itemCheckbox = (
+		<FormCheckbox
+			value={item.id}
+			isChecked={item.isSelected}
+			onChange={(isChecked: boolean) => {
+				enrichmentOnSelect(item.id, isChecked);
+			}}
+		/>
 	);
 
 	const controls = (
 		<>
 			<span className="is-clickable icon-text" onClick={handleDelete}>
-				<span className="icon">
-					<IconDelete width={24} />
-				</span>
+				<div className="is-flex is-align-items-center is-justify-content-center image is-32x32">
+					<IconDelete width={16} />
+				</div>
 			</span>
-			<span className="is-clickable icon-text" onClick={handleEdit}>
-				<span className="icon">
-					<IconEdit width={24} />
-				</span>
+			<span className="is-clickable icon-text" onClick={item.isCompleted ? handleDownload : undefined}>
+				<div className="is-flex is-align-items-center is-justify-content-center image is-32x32 has-border has-radius-small">
+					<IconNewDownload width={16} />
+				</div>
 			</span>
-			{/* <FormButton className="ml-3" onClick={handleDelete} variant={['is-icon', 'is-outlined', 'is-rounded']} icon={<IconDelete />} />
-			<FormButton className="ml-3" onClick={handleExport} variant={['is-icon', 'is-outlined', 'is-rounded']} icon={<IconDownload />} /> */}
 		</>
 	);
 
@@ -105,16 +120,12 @@ const EnrichmentEntry = ({
 
 	if (isListMode) {
 		return (
-			<tr className="is-relative">
-				<td>
-					{item.name}
-					<Anchor href={url} className="is-overlay">
-						<span></span>
-					</Anchor>
-				</td>
-				<td>{numberOfContacts}</td>
-				<td>{fullName}</td>
-				<td className="action-buttons">{controls}</td>
+			<tr>
+				{isSticky ? <td className="action-select is-sticky">{itemCheckbox}</td> : null}
+				{sortMap.map((value, index) => {
+					return <td key={value.id}>{(item as any)[value.id]}</td>;
+				})}
+				<td className="is-sticky">{controls}</td>
 			</tr>
 		);
 	}
@@ -125,9 +136,13 @@ const EnrichmentEntry = ({
 				<div className="column is-10">
 					<Anchor href={url} className="columns is-mobile is-align-items-center has-text-dark">
 						<div className="column is-4 is-flex">
-							<span className="is-relative" style={{ zIndex: 1 }} onClick={(e) => {
-								e.stopPropagation();
-							}}>
+							<span
+								className="is-relative"
+								style={{ zIndex: 1 }}
+								onClick={(e) => {
+									e.stopPropagation();
+								}}
+							>
 								<FormCheckbox className="relative" value="accept" isChecked={item.isSelected ? true : false} onChange={handleSelect} />
 							</span>
 							{item.name}
