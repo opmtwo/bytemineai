@@ -1090,6 +1090,8 @@ export interface IBytemineEnrichment {
 	recordsUploaded: number;
 	recordsEnriched: number;
 	recordsProcessed: number;
+
+	matchRate?: number | string;
 	
 	isCompleted: boolean;
 	
