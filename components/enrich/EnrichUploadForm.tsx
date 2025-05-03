@@ -1,20 +1,21 @@
 import { CSSProperties, FormEvent, useState } from 'react';
 
 import { useAuthContext } from '../../providers/auth-data-provider';
-import Card from '../cards/Card';
-import Slot from '../Slot';
-import CardTitle from '../CardTitle';
-import ErrorNotificaition from '../notifications/ErrorNotification';
-import FormButton from '../form/FormButton';
-import IconBulb from '../icons/IconBulb';
-import IconInfo from '../icons/IconInfo';
-import IconClose from '../icons/IconClose';
-import Uploader from '../Uploader';
 import { IBytemineEnrichment, Upload } from '../../types';
-import IconEnrichBulk from '../icons/IconEnrichBulk';
+import { callApi, formatNumber, getErrorMessage, humanFileSize } from '../../utils/helper-utils';
+import Card from '../cards/Card';
+import CardTitle from '../CardTitle';
+import FormButton from '../form/FormButton';
+import FormButtonNew from '../form/FormButtonNew';
 import FormSelect from '../form/FormSelect';
-import { callApi, formatNumber, getErrorMessage } from '../../utils/helper-utils';
-import FormCheckbox from '../form/FormCheckbox';
+import IconBulb from '../icons/IconBulb';
+import IconClose from '../icons/IconClose';
+import IconInfo from '../icons/IconInfo';
+import IconNewBulkEnrichment from '../icons/IconNewBulkEnrichment';
+import LoaderFullscreen from '../LoaderFullscreen';
+import ErrorNotificaition from '../notifications/ErrorNotification';
+import Slot from '../Slot';
+import Uploader from '../Uploader';
 
 const EnrichUploadForm = ({
 	isActive,
@@ -49,6 +50,7 @@ const EnrichUploadForm = ({
 	const [linkedin, setLinkedin] = useState('');
 	const [facebook, setFacebook] = useState('');
 
+	const [file, setFile] = useState<File>();
 	const [key, setKey] = useState<string>();
 	const [name, setName] = useState<string>();
 	const [size, setSize] = useState<number>();
@@ -65,12 +67,13 @@ const EnrichUploadForm = ({
 	// current user
 	const { attributes } = useAuthContext();
 
-	const onUpload = async (s3Key: string, name: string, size: number, createdAt: string) => {
+	const onUpload = async (s3Key: string, file: File) => {
 		try {
 			setError(undefined);
 			setKey(s3Key);
-			setName(name);
-			setSize(size);
+			setFile(file);
+			setName(file.name);
+			setSize(file.size);
 			const response = (await callApi(null, '/api/v1/enrichments/preview', {
 				method: 'POST',
 				body: JSON.stringify({
@@ -127,7 +130,6 @@ const EnrichUploadForm = ({
 			setIsBusy(false);
 			return;
 		}
-		setIsBusy(true);
 		try {
 			// const params = await getInput({ ...uploads[0], groupId: groupname, userId: user?.attributes.sub, email, phone, linkedin, facebook, phoneRequired, workEmailRequired });
 			const newEnrichment = (await callApi(null, 'api/v1/enrichments', {
@@ -157,91 +159,120 @@ const EnrichUploadForm = ({
 
 	return (
 		<form method="POST" onSubmit={handleSubmit}>
+			{isBusy ? <LoaderFullscreen /> : null}
 			<Card>
-				<Slot slot="header">
-					<>
-						<CardTitle>Bulk Enrichment</CardTitle>
-						<span className="is-clickable" onClick={onCancel}>
+				<Slot slot="body">
+					<div className="is-flex is-align-items-center is-justify-content-space-between px-5 pt-5">
+						<div className="is-flex is-align-items-center">
+							<IconNewBulkEnrichment width={56} className="mr-5" />
+							<CardTitle>
+								Bulk Enrichment
+								<br />
+								<small className="has-text-weight-light is-size-6">Upload and attach files to this project.</small>
+							</CardTitle>
+						</div>
+						<span className="is-clickable mb-auto ml-auto" onClick={onCancel}>
 							<IconClose />
 						</span>
-					</>
-				</Slot>
-				<Slot slot="body">
+					</div>
+
 					{isUploaded ? (
 						<>
-							<div className="panel-block is-flex is-align-items-center is-justify-content-space-between py-6">
-								<span className="is-flex is-align-items-center">
-									<IconEnrichBulk width={20} fill="var(--primary)" />
-									<span className="ml-3">{uploads?.[0]?.name || '-'}</span>
-									<span className="tag is-success ml-3">Uploaded</span>
-								</span>
-								<span className="is-flex is-align-items-center">
-									<strong>{formatNumber(noOfCsvRecords.toString())}</strong>
-									<span>&nbsp;rows</span>
-								</span>
-							</div>
-							<div className="panel-block is-block py-6">
+							<div className="panel-block is-block">
 								<ErrorNotificaition error={error} className="has-text-centered pb-4" />
-								<p className="mb-5">Map at least one of the following fields:</p>
-								<div className="columns is-mobile is-align-items-center is-multiline">
-									<div className="column is-3 ">
-										<strong className="has-text-grey ml-2">Our Fields</strong>
-									</div>
-									<div className="column is-4 is-flex is-justify-content-center">
-										<strong className="has-text-grey">File Column Header</strong>
-									</div>
-									<div className="column is-5 is-flex is-justify-content-center">
-										<strong className="has-text-grey">Example Data</strong>
+
+								{/* {file ? (
+									<>
+										<div className="has-border has-radius is-clipped p-5 is-flex is-align-items-center mb-5">
+											<IconNewCsv width={32} />
+											<span className="ml-3">
+												<strong>{file.name}</strong>
+												<br />
+												<span>{humanFileSize(file.size)}</span>
+												&nbsp;
+												<span>100% uploaded</span>
+											</span>
+											<span className="ml-auto is-clickable">
+												<IconNewTrash width={20} onClick={onCancel} />
+											</span>
+										</div>
+									</>
+								) : null} */}
+
+								<p className="has-text-centered mb-5">
+									<strong>Map at least one of the following fields:</strong>
+								</p>
+
+								<div className="has-border has-radius is-clipped">
+									<div className="columns is-mobile is-align-items-center is-multiline p-3 has-background-white-bis">
+										<div className="column is-3 ">
+											<strong className="has-text-grey ml-2">Field</strong>
+										</div>
+										<div className="column is-4 is-flex is-justify-content-center">
+											<strong className="has-text-grey">Your CSV Field</strong>
+										</div>
+										<div className="column is-5 is-flex is-justify-content-center">
+											<strong className="has-text-grey">Example Data</strong>
+										</div>
 									</div>
 
-									<div className="column is-3">
-										<span>LinkedIn URL</span>
-									</div>
-									<div className="column is-4">
-										<FormSelect placeholder="None" options={csvOptions} value={linkedin} onChange={setLinkedin} />
-									</div>
-									<div className="column is-5 is-flex is-justify-content-center">
-										<span style={style} title={sample?.[linkedin]}>
-											{sample?.[linkedin]}
-										</span>
-									</div>
-
-									<div className="column is-3">
-										<span>Email Address</span>
-									</div>
-									<div className="column is-4">
-										<FormSelect placeholder="None" options={csvOptions} value={email} onChange={setEmail} />
-									</div>
-									<div className="column is-5 is-flex is-justify-content-center">
-										<span style={style} title={sample?.[email]}>
-											{sample?.[email]}
-										</span>
+									<div className="columns is-mobile is-align-items-center is-multiline px-3 py-1 has-border-b">
+										<div className="column is-3">
+											<span>LinkedIn URL</span>
+										</div>
+										<div className="column is-4">
+											<FormSelect placeholder="None" options={csvOptions} value={linkedin} onChange={setLinkedin} />
+										</div>
+										<div className="column is-5 is-flex is-justify-content-center">
+											<span style={style} title={sample?.[linkedin]}>
+												{sample?.[linkedin]}
+											</span>
+										</div>
 									</div>
 
-									<div className="column is-3">
-										<span>Phone Number</span>
-									</div>
-									<div className="column is-4">
-										<FormSelect placeholder="None" options={csvOptions} value={phone} onChange={setPhone} />
-									</div>
-									<div className="column is-5 is-flex is-justify-content-center">
-										<span style={style} title={sample?.[phone]}>
-											{sample?.[phone]}
-										</span>
+									<div className="columns is-mobile is-align-items-center is-multiline px-3 py-1 has-border-b">
+										<div className="column is-3">
+											<span>Email Address</span>
+										</div>
+										<div className="column is-4">
+											<FormSelect placeholder="None" options={csvOptions} value={email} onChange={setEmail} />
+										</div>
+										<div className="column is-5 is-flex is-justify-content-center">
+											<span style={style} title={sample?.[email]}>
+												{sample?.[email]}
+											</span>
+										</div>
 									</div>
 
-									<div className="column is-3">
-										<span>Facebook URL</span>
+									<div className="columns is-mobile is-align-items-center is-multiline px-3 py-1 has-border-b">
+										<div className="column is-3">
+											<span>Phone Number</span>
+										</div>
+										<div className="column is-4">
+											<FormSelect placeholder="None" options={csvOptions} value={phone} onChange={setPhone} />
+										</div>
+										<div className="column is-5 is-flex is-justify-content-center">
+											<span style={style} title={sample?.[phone]}>
+												{sample?.[phone]}
+											</span>
+										</div>
 									</div>
-									<div className="column is-4">
-										<FormSelect placeholder="None" options={csvOptions} value={facebook} onChange={setFacebook} />
-									</div>
-									<div className="column is-5 is-flex is-justify-content-center">
-										<span style={style} title={sample?.[facebook]}>
-											{sample?.[facebook]}
-										</span>
+
+									<div className="columns is-mobile is-align-items-center is-multiline px-3 py-1 pb-5">
+										<div className="column is-3">
+											<span>Facebook URL</span>
+										</div>
+										<div className="column is-4">
+											<FormSelect placeholder="None" options={csvOptions} value={facebook} onChange={setFacebook} />
+										</div>
+										<div className="column is-5 is-flex is-justify-content-center">
+											<span style={style} title={sample?.[facebook]}>
+												{sample?.[facebook]}
+											</span>
+										</div>
 									</div>
 								</div>
+
 								{/* <p className="mb-5">
 									<strong className="has-text-grey">Show contacts that must contain:</strong>
 								</p>
@@ -255,7 +286,7 @@ const EnrichUploadForm = ({
 						<div className="panel-block is-block">
 							<ErrorNotificaition error={error} className="has-text-centered pb-5" />
 							<Uploader uploadPath={`public/${attributes?.sub}/uploads`} uploads={uploads} onUpload={onUpload} />
-							<div className="is-flex is-align-items-center my-6">
+							<div className="is-flex is-align-items-center pt-5">
 								<IconBulb width={32} />
 								<p className="ml-3">
 									Your file must be a CSV format and contain at lease one column with email addresses, phone numbers, or personal LinkedIn or
@@ -267,13 +298,13 @@ const EnrichUploadForm = ({
 				</Slot>
 				{isUploaded ? (
 					<Slot slot="footer">
-						<div className="is-fullwidth is-flex is-align-items-center is-justify-content-space-between py-2">
+						<div className="is-fullwidth is-flex is-align-items-center is-justify-content-space-between">
 							{credits >= noOfCsvRecords ? (
 								<>
-									<div className="is-flex is-align-items-center">
+									<div className="is-flex is-align-items-center mr-auto">
 										<p>You will use up to {noOfCsvRecords} credits.</p>
 									</div>
-									<FormButton
+									{/* <FormButton
 										type="submit"
 										onClick={handleSubmit}
 										disabled={isBusy || !isColumnSelected}
@@ -281,7 +312,16 @@ const EnrichUploadForm = ({
 										variant={['is-outlined', 'is-ui-button']}
 									>
 										Enrich
-									</FormButton>
+									</FormButton> */}
+
+									<div className="is-flex is-justify-content-flex-end ml-auto">
+										<FormButtonNew type="button" variant="default" className="mr-5" onClick={onCancel} disabled={!file}>
+											Back
+										</FormButtonNew>
+										<FormButtonNew type="button" variant="active" onClick={handleSubmit} disabled={!file || isBusy || !isColumnSelected}>
+											Next
+										</FormButtonNew>
+									</div>
 								</>
 							) : (
 								<>
