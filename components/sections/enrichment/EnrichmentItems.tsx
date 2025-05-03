@@ -1,9 +1,10 @@
+import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
 
 import { useAuthContext } from '../../../providers/auth-data-provider';
 import { useCrudContext } from '../../../providers/crud-provider';
-import { IBytemineEnrichment, ListContactModel } from '../../../types';
-import { decodeJson } from '../../../utils/helper-utils';
+import { IBytemineEnrichment, ListContactModel, SortData, SortOrder } from '../../../types';
+import { decodeJson, getSortedItems } from '../../../utils/helper-utils';
 import Card from '../../cards/Card';
 import CardAnimatePresence from '../../cards/CardAnimatePresence';
 import EmptyMsg from '../../EmptyMsg';
@@ -17,7 +18,7 @@ import Slot from '../../Slot';
 import EnrichmentEntry from './EnrichmentEntry';
 
 const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactModel[]) => void }) => {
-	const [isListMode, setIsListMode] = useState(false);
+	const [isListMode, setIsListMode] = useState(true);
 
 	const { attributes } = useAuthContext();
 
@@ -44,9 +45,34 @@ const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactMod
 		}
 	}, []);
 
-	const itemsList = paginate(enrichmentItemsInUse, enrichmentPerPage, enrichmentPage).map((item) => (
+	const keysToExport = ['name', 'recordsUploaded', 'recordsEnriched', 'matchRate', 'status'];
+
+	const keysToExportMap: SortData[] = keysToExport.map((value) => ({
+		id: value,
+		content: sentenceCase(value),
+		sortOrder: SortOrder.none,
+		order: undefined,
+	}));
+
+	const [sortMap, setSortMap] = useState<SortData[]>(keysToExportMap);
+
+	const onSort = (key: string, order: SortOrder) => {
+		let newMap = [...sortMap].map((value) => {
+			if (value.id === key) {
+				value.sortOrder = order;
+			}
+			return value;
+		});
+		setSortMap(newMap);
+	};
+
+	const onReorder = (newMap: SortData[]) => setSortMap(newMap);
+
+	const enrichmentItemsInUseSorted = getSortedItems(enrichmentItemsInUse, sortMap as any);
+
+	const itemsList = paginate(enrichmentItemsInUseSorted, enrichmentPerPage, enrichmentPage).map((item) => (
 		<>
-			<EnrichmentEntry key={item.id} item={item} isListMode={isListMode} onExport={onExport} />
+			<EnrichmentEntry key={item.id} item={item} sortMap={sortMap} isSticky={false} isListMode={isListMode} onExport={onExport} />
 		</>
 	));
 
@@ -101,10 +127,19 @@ const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactMod
 				<CardAnimatePresence isActive={!enrichmentIsBusy && !enrichmentItemsInUse.length}>
 					<EmptyMsg msg="No enrichments found" />
 				</CardAnimatePresence>
-				{isListMode ? <ListView>{itemsList}</ListView> : itemsList}
+				{enrichmentItemsInUse.length ? (
+					<>
+						{isListMode ? (
+							<ListView headings={sortMap} isSticky={false} className="is-comfortable is-resizable" onReorder={onReorder} onSort={onSort}>
+								{itemsList}
+							</ListView>
+						) : (
+							itemsList
+						)}
+					</>
+				) : null}
 			</Slot>
-
-			<Slot slot="footer">{pagination}</Slot>
+			{enrichmentItemsInUse.length ? <Slot slot="footer">{pagination}</Slot> : null}
 		</Card>
 	);
 };
