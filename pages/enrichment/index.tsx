@@ -8,7 +8,7 @@ import awsmobile from '../../src/aws-exports';
 
 const EnrichmentsIndex = () => {
 	return (
-		<>
+		<UserGuard>
 			<Head>
 				<title>Bulk Enrichment</title>
 				<meta name="description" content="" />
@@ -18,7 +18,7 @@ const EnrichmentsIndex = () => {
 					<SectionEnrichments />
 				</CrudProvider>
 			</PageLayout>
-		</>
+		</UserGuard>
 	);
 };
 
