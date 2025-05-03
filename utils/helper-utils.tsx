@@ -279,7 +279,7 @@ export const hexToRgb = (hex: string) => {
 
 export const humanFileSize = (size: number) => {
 	var i = size ? Math.floor(Math.log(size) / Math.log(1024)) : 0;
-	return (size / Math.pow(1024, i)).toFixed(2) + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+	return (size / Math.pow(1024, i)).toFixed(2) + ' ' + ['B', 'KB', 'MB', 'GB', 'TB'][i];
 };
 
 export const downloadBlob = (blob: Blob, filename: string) => {
