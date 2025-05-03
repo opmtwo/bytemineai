@@ -11,6 +11,12 @@
 	margin-right: 6px;
 }
 
+.select.is-small::after {
+	margin-top: -6px !important;
+	margin-right: 8px !important;
+	transform: scale(0.8) !important;
+}
+
 .is-react-select.is-danger [class*="-control"] {
 	border-color: $danger;
 }
