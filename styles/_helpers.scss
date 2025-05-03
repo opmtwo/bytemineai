@@ -10,6 +10,10 @@
 	border-radius: $radius !important;
 }
 
+.has-radius-small {
+	border-radius: $radius-small;
+}
+
 .is-rounded {
 	border-radius: 50% !important;
 }
