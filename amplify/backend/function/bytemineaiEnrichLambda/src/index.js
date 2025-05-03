@@ -136,6 +136,13 @@ exports.handler = async (event, context) => {
 		// get es filter for row data
 		const esFilter = await getEsFilter(row, keyEmail, keyPhone, keyLinkedin, keyFacebook, true);
 		console.log('setting addnl_cols - ', Object.keys(row));
+
+		// Modify source keys - fix duplicate key issue which breaks csv output
+		Object.keys(row).forEach((key) => {
+			row[`source_${key}`] = row[key];
+			delete row[key];
+		});
+
 		addnl_cols = Object.keys(row);
 
 		// esFilter is null if a row filter is missing
