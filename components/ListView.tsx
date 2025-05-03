@@ -126,7 +126,7 @@ const ListView = ({
 									</SortableItem>
 								))}
 							</SortableContext>
-							{isSticky ? <th className="action-buttons is-sticky">Action</th> : null}
+							{isSticky ? <th className="action-buttons is-sticky">Action</th> : <th></th>}
 						</tr>
 					</thead>
 					<tbody>{children}</tbody>
