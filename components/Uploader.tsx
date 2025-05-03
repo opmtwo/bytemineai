@@ -6,8 +6,11 @@ import { v4 } from 'uuid';
 import { uploadData } from '@aws-amplify/storage';
 
 import { Upload } from '../types';
-import { notifyError } from '../utils/helper-utils';
-import IconUpload from './icons/IconUpload';
+import { humanFileSize, notifyError, sleep } from '../utils/helper-utils';
+import FormButtonNew from './form/FormButtonNew';
+import IconNewBulkEnrichUpload from './icons/IconNewBulkEnrichUpload';
+import IconNewCsv from './icons/IconNewCsv';
+import IconNewTrash from './icons/IconNewTrash';
 import Loader from './Loader';
 import ErrorNotificaition from './notifications/ErrorNotification';
 
@@ -52,10 +55,16 @@ const Uploader = ({
 	uploadPath: string;
 	uploads: Upload[];
 	maxSize?: number;
-	onUpload: (s3Key: string, name: string, size: number, createdAt: string) => void;
+	onUpload: (s3Key: string, file: File) => void;
 }) => {
 	const [isBusy, setIsBusy] = useState(false);
 	const [error, setError] = useState<Error>();
+
+	const [binaryStr, setBinaryStr] = useState<string | ArrayBuffer | null>();
+	const [file, setFile] = useState<File>();
+
+	const [totalBytes, setTotalBytes] = useState(0);
+	const [transferredBytes, setTransferredBytes] = useState(0);
 
 	const onDrop = (acceptedFiles: File[]) => {
 		setIsBusy(true);
@@ -87,23 +96,8 @@ const Uploader = ({
 						setIsBusy(false);
 						return;
 					}
-					const binaryStr = reader.result;
-					const slug = slugify(file.name);
-					const key = `${uploadPath}/${v4()}/${slug}`;
-					await uploadData({
-						path: key,
-						data: binaryStr as ArrayBuffer,
-						options: {
-							contentType: file.type,
-							onProgress: async (e) => {
-								if (e.transferredBytes !== e.totalBytes) {
-									return;
-								}
-								const s3Key = key;
-								await onUpload(s3Key, file.name, file.size, new Date().toISOString());
-							},
-						},
-					});
+					setFile(file);
+					setBinaryStr(reader.result);
 				} catch (err) {
 					const msg = `Error uploading ${file.name}`;
 					console.log(msg, err);
@@ -114,6 +108,47 @@ const Uploader = ({
 			};
 			reader.readAsArrayBuffer(file);
 		});
+	};
+
+	const onSubmit = async () => {
+		if (!file || !binaryStr) {
+			return;
+		}
+		setIsBusy(true);
+		try {
+			const slug = slugify(file.name);
+			const key = `${uploadPath}/${v4()}/${slug}`;
+			await uploadData({
+				path: key,
+				data: binaryStr as ArrayBuffer,
+				options: {
+					contentType: file.type,
+					onProgress: async (e) => {
+						setTotalBytes(e.totalBytes || 0);
+						setTransferredBytes(e.transferredBytes);
+						if (e.transferredBytes !== e.totalBytes) {
+							return;
+						}
+						await sleep(1000);
+						const s3Key = key;
+						await onUpload(s3Key, file);
+						setIsBusy(false);
+					},
+				},
+			});
+		} catch (err) {
+			console.log('onSubmit - error', err);
+			const msg = `Error uploading ${file.name}`;
+			console.log(msg, err);
+			setError(new Error(msg));
+			notifyError(null, msg);
+			setIsBusy(false);
+		}
+	};
+
+	const onCancel = async () => {
+		setFile(undefined);
+		setBinaryStr(undefined);
 	};
 
 	const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
@@ -137,13 +172,41 @@ const Uploader = ({
 			<ErrorNotificaition error={error} className="has-text-centered pb-5" />
 			<div className="has-border has-radius is-clipped" {...getRootProps({ style })}>
 				<input {...getInputProps()} accept=".csv" />
-				<IconUpload width={20} />
-				<p className="has-text-weight-light">Click to upload or drag a file</p>
+				<IconNewBulkEnrichUpload width={56} />
+				<p>
+					<strong className="has-text-link">Click to upload</strong>
+					&nbsp;
+					<span>or drag and drop</span>
+				</p>
 				{isBusy && (
 					<div className="is-overlay has-background-white" style={{ opacity: 0.9 }}>
 						<Loader />
 					</div>
 				)}
+			</div>
+			{file ? (
+				<>
+					<div className="has-border has-radius is-clipped p-5 is-flex is-align-items-center my-5">
+						<IconNewCsv width={32} />
+						<span className="ml-3">
+							<strong>{file.name}</strong>
+							<br />
+							<span>{humanFileSize(file.size)}</span>
+							{transferredBytes ? <span>{Math.round((transferredBytes / totalBytes) * 100)}% uploaded</span> : null}
+						</span>
+						<span className="ml-auto is-clickable">
+							<IconNewTrash width={20} onClick={onCancel} />
+						</span>
+					</div>
+				</>
+			) : null}
+			<div className="is-flex is-justify-content-flex-end mt-5">
+				<FormButtonNew type="button" variant="default" className="mr-5" onClick={onCancel} disabled={!file}>
+					Back
+				</FormButtonNew>
+				<FormButtonNew type="button" variant="active" onClick={onSubmit} disabled={!file}>
+					Next
+				</FormButtonNew>
 			</div>
 		</>
 	);
