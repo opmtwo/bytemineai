@@ -145,6 +145,10 @@ section.section {
 	text-align: left;
 }
 
+.table.is-comfortable th .is-compact {
+	min-height: auto;
+}
+
 .table.is-comfortable th div[style*="width"] {
 	min-width: 120px;
 }
