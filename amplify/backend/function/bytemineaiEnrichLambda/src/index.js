@@ -217,7 +217,8 @@ exports.handler = async (event, context) => {
 			items.push(getExportData(contacts[i], addnl_cols));
 		}
 
-		const newCsvData = arrayToCsv(items).replace(/,/g, '&&&').replace(/\|/g, ',').replace(/&&&/g, '|');
+		// const newCsvData = arrayToCsv(items).replace(/,/g, '&&&').replace(/\|/g, ',').replace(/&&&/g, '|');
+		const newCsvData = await stringify(items);
 		const s3File = await s3GetObject(s3KeyOutput, BUCKETNAME);
 		const fileContent = s3File.Body.toString('utf-8') + newCsvData;
 
