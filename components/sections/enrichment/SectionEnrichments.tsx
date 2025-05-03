@@ -5,7 +5,9 @@ import { useAuthContext } from '../../../providers/auth-data-provider';
 import { useCrudContext } from '../../../providers/crud-provider';
 import { useSettingsContext } from '../../../providers/settings-provider';
 import { Contact, IBytemineEnrichment, ListContactModel } from '../../../types';
+import Breadcrumb from '../../Breadcrumb';
 import EnrichUploadForm from '../../enrich/EnrichUploadForm';
+import LoaderFullscreen from '../../LoaderFullscreen';
 import Modal from '../../modals/Modal';
 import TrialNotice from '../../TrialNotice';
 import EnrichmentItems from './EnrichmentItems';
@@ -23,7 +25,7 @@ const SectionEnrichments = () => {
 			return;
 		}
 		isMounted.current = true;
-		enrichmentOnRead();
+		init();
 	}, []);
 
 	// crud context
@@ -43,6 +45,12 @@ const SectionEnrichments = () => {
 	const router = useRouter();
 
 	const { settings, canUpgrade } = useSettingsContext();
+
+	const init = async () => {
+		setIsBusy(true);
+		await enrichmentOnRead();
+		setIsBusy(false);
+	};
 
 	const onCustomize = async () => {
 		await router.push({ pathname: '/settings/subscription' });
@@ -69,12 +77,8 @@ const SectionEnrichments = () => {
 	const onExportCancel = () => setIsExportModalActive(false);
 
 	const onEnrichmentUploadFormSubmit = async (value: IBytemineEnrichment) => {
-		// debugger;
-		// setEnrichmentItems([value, ...enrichmentItems]);
-		// setIsUploadModalActive(false);
-
-		// check _app.tsx - cross screen list of enrichments
-		document.body.dispatchEvent(new Event('nymblr.enrichments.reload'));
+		enrichmentOnFormCancel();
+		await init();
 	};
 
 	const onEnrichmentUploadFormCancel = async () => {
@@ -85,6 +89,10 @@ const SectionEnrichments = () => {
 	return (
 		<>
 			{isTrailAccount ? <TrialNotice onCustomize={onCustomize} /> : <div></div>}
+
+			{enrichmentIsBusy || isBusy ? <LoaderFullscreen /> : null}
+
+			<Breadcrumb title="Enrich" items={[{ label: 'Enrich', href: '/enrichment', isCurrent: true }]} />
 
 			<EnrichmentItems onExport={onExport} />
 
