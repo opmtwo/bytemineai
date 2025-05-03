@@ -15,8 +15,9 @@
 	STORAGE_BYTEMINESTORAGE_BUCKETNAME
 Amplify Params - DO NOT EDIT */
 
+const { stringify } = require('csv-stringify/sync');
 const { csvReadStream } = require('./utils/csv-utils');
-const { ddbGetItem, ddbEncode, ddbDecode } = require('./utils/ddb-utils');
+const { ddbGetItem, ddbEncode, ddbDecode, ddbUpdateItem } = require('./utils/ddb-utils');
 const { deleteLambdaSchedule, scheduleLambdaAfterMinutes } = require('./utils/eb-utils');
 // const { scheduleLambdaAfterOneMinute, ebScheduleLambdaAfterOneMinute } = require('./utils/eb-utils');
 const { esRequest2: esRequest } = require('./utils/es-utils-v2');
@@ -248,6 +249,20 @@ exports.handler = async (event, context) => {
 		} catch (err) {
 			console.log('Error scheduling lambda', err);
 		}
+	} else {
+		await ddbUpdateItem(
+			ENRICHMENTTABLE_NAME,
+			ddbEncode({ id }),
+			'set #isCompleted=:isCompleted, #status=:status',
+			{
+				'#isCompleted': 'isCompleted',
+				'#status': 'status',
+			},
+			ddbEncode({
+				':isCompleted': true,
+				':status': 'completed',
+			})
+		);
 	}
 
 	console.log('Completed execution of batch - result ', result);
