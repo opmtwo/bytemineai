@@ -7,7 +7,7 @@ import { useAuthContext } from '../providers/auth-data-provider';
 
 const UserGuard = ({ children }: { children: ReactNode }) => {
 	const router = useRouter();
-	const { isAuthBusy, user, isExpired } = useAuthContext();
+	const { isAuthBusy, attributes, isExpired } = useAuthContext();
 	const searchParams = useSearchParams();
 
 	let asPath;
@@ -19,7 +19,7 @@ const UserGuard = ({ children }: { children: ReactNode }) => {
 		return null;
 	}
 
-	if (!user?.attributes?.sub) {
+	if (!attributes?.sub) {
 		return <Redirect pathname="/login" continuePath={asPath ? (asPath as string) : undefined} />;
 	}
 
