@@ -6,6 +6,22 @@
 	border: $panel-item-border !important; 
 }
 
+.has-border-b {
+	border-bottom: $panel-item-border !important; 
+}
+
+.has-border-t {
+	border-top: $panel-item-border !important; 
+}
+
+.has-border-r {
+	border-right: $panel-item-border !important; 
+}
+
+.has-border-l {
+	border-left: $panel-item-border !important; 
+}
+
 .has-radius {
 	border-radius: $radius !important;
 }
