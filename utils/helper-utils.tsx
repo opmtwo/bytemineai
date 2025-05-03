@@ -13,6 +13,7 @@ import { genericErrorMessage } from '../consts';
 import countryCodes from '../data/country-codes';
 import awsmobile from '../src/aws-exports';
 import { Contact, ESortOrder, ISortData, RampedUpFilter, SortData, SortOrder } from '../types';
+import { getUrl } from 'aws-amplify/storage';
 
 export const timestampToMoment = (timestamp: string | number) => moment(new Date(parseInt(timestamp.toString())));
 
@@ -442,3 +443,24 @@ export const formatNum = (value: string, options: Intl.NumberFormatOptions = { m
 	parseFloat(value?.toString()?.replace(/,/gi, '')).toLocaleString('en-US', options);
 
 export const cleanupBodyClassList = () => document.body.classList.remove('is-open', 'is-drawer-open');
+
+export const forceDownloadS3File = async (path: string, fileName = 'downloaded-file.ext') => {
+	try {
+		const { url } = await getUrl({
+			path,
+			options: {
+				expiresIn: 3600, // URL valid for 1 hour
+				validateObjectExistence: true, // Optional: throws if file doesn't exist
+			},
+		});
+
+		const link = document.createElement('a');
+		link.href = url.toString();
+		link.setAttribute('download', fileName);
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	} catch (err) {
+		console.error('Download failed:', err);
+	}
+}
