@@ -1,5 +1,8 @@
-// components/Pagination.tsx
-import React from 'react';
+import React, { CSSProperties } from 'react';
+
+import FormButtonNew from './form/FormButtonNew';
+import IconNewArrowLeft from './icons/IconNewArrowLeft';
+import IconNewArrowRight from './icons/IconNewArrowRight';
 
 interface PaginationProps {
 	currentPage: number; // 0-indexed
@@ -52,49 +55,58 @@ const PaginationNew: React.FC<PaginationProps> = ({ currentPage, itemsPerPage, t
 		onPageChange(0, newSize); // Reset to page 0 on size change
 	};
 
+	const buttonStyle: CSSProperties = { height: '2rem', padding: '0 0.75rem' };
+
 	return (
-		<div className="pagination-container is-flex is-justify-content-space-between is-align-items-center">
-			<div className="select">
-				<select value={itemsPerPage} onChange={handlePageSizeChange}>
-					{pageSizeOptions.map((size) => (
-						<option key={size} value={size}>
-							{size}
-						</option>
-					))}
-				</select>
+		<div className="pagination-container is-flex is-justify-content-space-between is-align-items-center is-fullwidth">
+			<div className="is-flex is-align-items-center mr-auto">
+				<div className="select is-small is-flex is-align-items-center mr-2">
+					<select value={itemsPerPage} style={{ ...buttonStyle, padding: '0 2rem 0 1rem' }} onChange={handlePageSizeChange}>
+						{pageSizeOptions.map((size) => (
+							<option key={size} value={size}>
+								{size}
+							</option>
+						))}
+					</select>
+				</div>
+				<span className="ml-2">
+					Showing {(currentPage + 1) * itemsPerPage} of {totalCount} enties
+				</span>
 			</div>
 
 			<nav className="pagination" role="navigation" aria-label="pagination">
-				<a
-					className="pagination-previous"
+				<FormButtonNew
+					className="mx-1"
+					style={{ height: '2rem', padding: '0 0.75rem' }}
 					onClick={() => handlePageChange(currentPage - 1)}
-					style={{ pointerEvents: currentPage === 0 ? 'none' : 'auto', opacity: currentPage === 0 ? 0.5 : 1 }}
+					disabled={currentPage === 0}
 				>
-					Previous
-				</a>
-				<a
-					className="pagination-next"
-					onClick={() => handlePageChange(currentPage + 1)}
-					style={{ pointerEvents: currentPage === totalPages - 1 ? 'none' : 'auto', opacity: currentPage === totalPages - 1 ? 0.5 : 1 }}
-				>
-					Next
-				</a>
-
-				<ul className="pagination-list">
+					<IconNewArrowLeft width={6} />
+					<span className="ml-1">Previous</span>
+				</FormButtonNew>
+				<ul className="is-flex is-align-items-center">
 					{getPageNumbers().map((page, index) =>
 						page === '...' ? (
 							<li key={`ellipsis-${index}`}>
 								<span className="pagination-ellipsis">&hellip;</span>
 							</li>
 						) : (
-							<li key={page}>
-								<a className={`pagination-link ${page === currentPage ? 'is-current' : ''}`} onClick={() => handlePageChange(Number(page))}>
+							<li key={page} className="mx-1">
+								<FormButtonNew
+									variant={page === currentPage ? 'active' : 'default'}
+									style={buttonStyle}
+									onClick={() => handlePageChange(Number(page))}
+								>
 									{Number(page) + 1}
-								</a>
+								</FormButtonNew>
 							</li>
 						)
 					)}
 				</ul>
+				<FormButtonNew className="mx-1" style={buttonStyle} onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages - 1}>
+					<span className="mr-1">Next</span>
+					<IconNewArrowRight width={6} />
+				</FormButtonNew>
 			</nav>
 		</div>
 	);
