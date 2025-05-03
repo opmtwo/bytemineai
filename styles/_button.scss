@@ -61,3 +61,8 @@ fieldset[disabled] .button.is-primary.is-outlined {
 .btn:hover {
 	text-decoration: underline;
 }
+
+.btn[disabled] {
+	opacity: 0.5;
+	pointer-events: none !important;
+}
