@@ -70,9 +70,9 @@ const PageLayout = ({
 	];
 
 	const menuItemsBottom: SidebarMenuItem[] = [
-		{ label: 'Account Settings', icon: <IconNewSettings width={18} />, href: '/' },
-		{ label: 'Support', icon: <IconNewSupport width={18} />, href: '/' },
-		{ label: 'Sign out', icon: <IconNewSignOut width={18} />, href: '/' },
+		{ label: 'Account Settings', icon: <IconNewSettings width={18} />, href: '/settings/account' },
+		{ label: 'Support', icon: <IconNewSupport width={18} />, href: 'https://www.google.com', },
+		{ label: 'Sign out', icon: <IconNewSignOut width={18} />, href: '/logout' },
 		{
 			label: 'Toggle',
 			icon: <IconNewToggleSidebar width={18} />,
