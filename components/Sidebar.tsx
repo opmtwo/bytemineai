@@ -2,7 +2,7 @@
 
 import classNames from 'classnames';
 import Link from 'next/link';
-import React, { MouseEvent, ReactNode, useState } from 'react';
+import React, { HTMLAttributeAnchorTarget, MouseEvent, ReactNode, useState } from 'react';
 
 import styles from './Sidebar.module.css';
 import IconNewList from './icons/IconNewList';
@@ -12,6 +12,7 @@ export type SidebarMenuItem = {
 	label: string;
 	icon: ReactNode;
 	href: string;
+	target?: HTMLAttributeAnchorTarget;
 	onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
 };
 
@@ -49,12 +50,13 @@ const Sidebar: React.FC<SidebarProps> = ({ items, bottomItems = [], compact = fa
 
 				{/* Top Menu */}
 				<ul className="menu-list">
-					{items.map(({ label, icon, href, onClick }) => (
+					{items.map(({ label, icon, href, target, onClick }) => (
 						<li key={label}>
 							<Link
 								href={href}
 								className={classNames('is-flex is-align-items-center py-4 px-5', { 'is-justify-content-center': isCompact })}
 								title={label}
+								target={target}
 								onClick={onClick}
 							>
 								{icon}
@@ -68,12 +70,13 @@ const Sidebar: React.FC<SidebarProps> = ({ items, bottomItems = [], compact = fa
 
 				{/* Bottom Menu */}
 				<ul className="menu-list mt-auto">
-					{bottomItems.map(({ label, icon, href, onClick }) => (
+					{bottomItems.map(({ label, icon, href, target, onClick }) => (
 						<li key={label}>
 							<Link
 								href={href}
 								className={classNames('is-flex is-align-items-center py-4 px-5', { 'is-justify-content-center': isCompact })}
 								title={label}
+								target={target}
 								onClick={onClick}
 							>
 								{icon}
