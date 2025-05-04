@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { useEffect, useState } from 'react';
+
 import { useAuthContext } from '../providers/auth-data-provider';
 import { useSettingsContext } from '../providers/settings-provider';
 import { AccountType } from '../types';
@@ -11,24 +12,18 @@ const TrialNotice = ({ onCustomize }: { onCustomize: () => void }) => {
 	const [message, setMessage] = useState<string>();
 	const [creditsLeft, setCreditsLeft] = useState(0);
 
-	const { user, isRoot } = useAuthContext();
-	const { getGroupUsage, settings } = useSettingsContext();
-
-	const groupname = user?.attributes['custom:group_name'];
-
-    
+	const { sub, team, isRoot } = useAuthContext();
 
 	useEffect(() => {
-		if (!groupname || !settings?.['custom:created_at']) {
+		if (!team?.id) {
 			return;
 		}
 		(async () => {
 			try {
-				const usage = await getGroupUsage(groupname);
 				const now = moment();				
-				const then = moment.unix(parseInt(settings?.['custom:created_at'] || '') / 1000).add(1, 'days');
-				setCreditsLeft((usage?.totalCredits || 0) - (usage?.totalUsage || 0));
-				if (now > then || usage?.isExpired) {
+				const then = moment.unix(parseInt(team?.createdAt || '') / 1000).add(1, 'days');
+				setCreditsLeft(team?.currentCredits || 0);
+				if (now > then || sub?.currentCredits === 0) {
                     setMessage('Upgrade now and save 15%, use code NYMBLR15 at checkout.');
 				} else {
 					const diffDates=then.diff(now)
@@ -55,10 +50,9 @@ const TrialNotice = ({ onCustomize }: { onCustomize: () => void }) => {
 				console.log('Error fetching usage details', err);
 			}
 		})();
-	}, [groupname, settings?.['custom:created_at']]);
-
+	}, [team?.id]);
     
-	const isActive = !isRoot && settings?.['custom:account_type'] === AccountType.Trial && message !== undefined;
+	const isActive = !isRoot && sub?.subscriptionStatus !== AccountType.Trial && message !== undefined;
 
 	return (
 		<CardAnimatePresence isActive={isActive}>
