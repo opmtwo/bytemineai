@@ -2,7 +2,7 @@ import { CSSProperties, FormEvent, useState } from 'react';
 
 import { useAuthContext } from '../../providers/auth-data-provider';
 import { IBytemineEnrichment, Upload } from '../../types';
-import { callApi, formatNumber, getErrorMessage, humanFileSize } from '../../utils/helper-utils';
+import { callApi, getErrorMessage } from '../../utils/helper-utils';
 import Card from '../cards/Card';
 import CardTitle from '../CardTitle';
 import FormButton from '../form/FormButton';
@@ -206,12 +206,12 @@ const EnrichUploadForm = ({
 								<div className="has-border has-radius is-clipped">
 									<div className="columns is-mobile is-align-items-center is-multiline p-3 has-background-white-bis">
 										<div className="column is-3 ">
-											<strong className="has-text-grey ml-2">Field</strong>
+											<strong className="has-text-grey">Field</strong>
 										</div>
-										<div className="column is-4 is-flex is-justify-content-center">
+										<div className="column is-4">
 											<strong className="has-text-grey">Your CSV Field</strong>
 										</div>
-										<div className="column is-5 is-flex is-justify-content-center">
+										<div className="column is-5">
 											<strong className="has-text-grey">Example Data</strong>
 										</div>
 									</div>
@@ -223,7 +223,7 @@ const EnrichUploadForm = ({
 										<div className="column is-4">
 											<FormSelect placeholder="None" options={csvOptions} value={linkedin} onChange={setLinkedin} />
 										</div>
-										<div className="column is-5 is-flex is-justify-content-center">
+										<div className="column is-5">
 											<span style={style} title={sample?.[linkedin]}>
 												{sample?.[linkedin]}
 											</span>
