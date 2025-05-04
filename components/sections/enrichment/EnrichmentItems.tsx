@@ -1,5 +1,5 @@
 import { sentenceCase } from 'change-case';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 import { useAuthContext } from '../../../providers/auth-data-provider';
 import { useCrudContext } from '../../../providers/crud-provider';
@@ -9,6 +9,7 @@ import Card from '../../cards/Card';
 import CardAnimatePresence from '../../cards/CardAnimatePresence';
 import EmptyMsg from '../../EmptyMsg';
 import FormButtonNew from '../../form/FormButtonNew';
+import IconNewProcessing from '../../icons/IconNewProcessing';
 import IconNewUpload from '../../icons/IconNewUpload';
 import ListView from '../../ListView';
 import Loader from '../../Loader';
@@ -52,6 +53,20 @@ const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactMod
 		content: sentenceCase(value),
 		sortOrder: SortOrder.none,
 		order: undefined,
+		render: (item: IBytemineEnrichment, key: string, content: ReactNode | string) => {
+			if (['processing'].includes(item.status?.trim().toLowerCase()) === false) {
+				return content;
+			}
+			if (['recordsEnriched', 'matchRate', 'status'].includes(key) === false) {
+				return content;
+			}
+			return (
+				<span className="is-inline-flex is-align-items-center px-2 py-1" style={{ backgroundColor: '#eaecf0', borderRadius: 20 }}>
+					<IconNewProcessing width={12} />
+					<span className="ml-2">Processing</span>
+				</span>
+			);
+		},
 	}));
 
 	const [sortMap, setSortMap] = useState<SortData[]>(keysToExportMap);

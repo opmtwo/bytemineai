@@ -13,19 +13,18 @@ import TrialNotice from '../../TrialNotice';
 import EnrichmentItems from './EnrichmentItems';
 
 const SectionEnrichments = () => {
-	const isMounted = useRef(false);
-
 	const [isBusy, setIsBusy] = useState(false);
 
 	const [activeContacts, setActiveContacts] = useState<Contact[]>([]);
 	const [isExportModalActive, setIsExportModalActive] = useState(false);
 
 	useEffect(() => {
-		if (isMounted.current) {
-			return;
-		}
-		isMounted.current = true;
 		init();
+		const refreshIntervalId = setInterval(enrichmentOnRead, 10000);
+		return () => {
+			console.log('Clearing refresh interval', { refreshIntervalId });
+			clearInterval(refreshIntervalId);
+		};
 	}, []);
 
 	// crud context
@@ -78,7 +77,7 @@ const SectionEnrichments = () => {
 
 	const onEnrichmentUploadFormSubmit = async (value: IBytemineEnrichment) => {
 		enrichmentOnFormCancel();
-		await init();
+		await enrichmentOnRead();
 	};
 
 	const onEnrichmentUploadFormCancel = async () => {

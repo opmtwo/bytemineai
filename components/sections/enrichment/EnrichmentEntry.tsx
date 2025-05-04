@@ -1,3 +1,4 @@
+import { sentenceCase } from 'change-case';
 import { motion } from 'framer-motion';
 import { uniqBy } from 'lodash';
 import { useState } from 'react';
@@ -44,6 +45,9 @@ const EnrichmentEntry = ({
 
 	// Compute match rate
 	item.matchRate = Math.round((item.recordsEnriched / item.recordsUploaded) * 100).toFixed(0) + '%';
+
+	// Update status
+	item.status = sentenceCase(item.status);
 
 	const handleExport = () => onExport(uniqueContacts);
 
@@ -123,7 +127,8 @@ const EnrichmentEntry = ({
 			<tr>
 				{isSticky ? <td className="action-select is-sticky">{itemCheckbox}</td> : null}
 				{sortMap.map((value, index) => {
-					return <td key={value.id}>{(item as any)[value.id]}</td>;
+					const content = (item as any)[value.id];
+					return <td key={value.id}>{value.render ? value.render(item, value.id, content) : content}</td>;
 				})}
 				<td className="is-sticky">{controls}</td>
 			</tr>
