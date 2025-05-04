@@ -491,6 +491,7 @@ export interface SortData {
 	id: string;
 	content: string;
 	sortOrder?: SortOrder;
+	render?: (item: any, key: string, content: ReactNode) => ReactNode;
 }
 
 export interface ContactCompany {
