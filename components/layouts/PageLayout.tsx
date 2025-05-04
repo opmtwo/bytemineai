@@ -66,12 +66,12 @@ const PageLayout = ({
 		{ label: 'My Lists', icon: <IconNewMyLists width={18} />, href: '/my-lists' },
 		{ label: 'My Team', icon: <IconNewTeam width={18} />, href: '/my-team' },
 		{ label: 'Enrich', icon: <IconNewEnrich width={18} />, href: '/enrichment' },
-		{ label: 'API', icon: <IconNewApi width={18} />, href: '/' },
+		{ label: 'API', icon: <IconNewApi width={18} />, href: '/settings/api' },
 	];
 
 	const menuItemsBottom: SidebarMenuItem[] = [
 		{ label: 'Account Settings', icon: <IconNewSettings width={18} />, href: '/settings/account' },
-		{ label: 'Support', icon: <IconNewSupport width={18} />, href: 'https://www.google.com', },
+		{ label: 'Support', icon: <IconNewSupport width={18} />, href: 'https://bytemin.ai/support', target: '_blank' },
 		{ label: 'Sign out', icon: <IconNewSignOut width={18} />, href: '/logout' },
 		{
 			label: 'Toggle',
