@@ -132,7 +132,7 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: ListContactModel[]
 	return (
 		<Card className="is-scroll-view">
 			<Slot slot="header">
-				<div className="is-flex is-align-items-center is-flex-grow-1 mr-a">
+				<div className="is-flex is-align-items-center mr-auto">
 					<FormInput
 						fieldClassName="is-flex-grow-1"
 						value={collectionQuery}
@@ -140,9 +140,9 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: ListContactModel[]
 						isLast={true}
 						iconLeft={<IconSearch />}
 					/>
-					<span className="has-text-grey ml-5">{collectionItemsInUse.length} results</span>
+					{/* <span className="has-text-grey ml-5">{collectionItemsInUse.length} results</span> */}
 				</div>
-				<div className="ml-6 mr-5">{pagination}</div>
+				{/* <div className="ml-6 mr-5">{pagination}</div> */}
 				<FormButton onClick={collectionOnAdd} variant={['is-outlined', 'is-ui-button']} className="ml-5">
 					New List
 				</FormButton>
@@ -158,7 +158,7 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: ListContactModel[]
 				{isListMode ? <ListView>{itemsList}</ListView> : itemsList}
 			</Slot>
 
-			<Slot slot="footer">{pagination}</Slot>
+			{collectionItemsInUse.length ? <Slot slot="footer">{pagination}</Slot> : null}
 		</Card>
 	);
 };
