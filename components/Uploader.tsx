@@ -12,6 +12,7 @@ import IconNewBulkEnrichUpload from './icons/IconNewBulkEnrichUpload';
 import IconNewCsv from './icons/IconNewCsv';
 import IconNewTrash from './icons/IconNewTrash';
 import Loader from './Loader';
+import LoaderFullscreen from './LoaderFullscreen';
 import ErrorNotificaition from './notifications/ErrorNotification';
 
 const baseStyle: CSSProperties = {
@@ -129,7 +130,7 @@ const Uploader = ({
 						if (e.transferredBytes !== e.totalBytes) {
 							return;
 						}
-						await sleep(1000);
+						await sleep(2000);
 						const s3Key = key;
 						await onUpload(s3Key, file);
 						setIsBusy(false);
@@ -178,11 +179,11 @@ const Uploader = ({
 					&nbsp;
 					<span>or drag and drop</span>
 				</p>
-				{isBusy && (
+				{/* {isBusy && (
 					<div className="is-overlay has-background-white" style={{ opacity: 0.9 }}>
 						<Loader />
 					</div>
-				)}
+				)} */}
 			</div>
 			{file ? (
 				<>
@@ -192,6 +193,7 @@ const Uploader = ({
 							<strong>{file.name}</strong>
 							<br />
 							<span>{humanFileSize(file.size)}</span>
+							&nbsp;
 							{transferredBytes ? <span>{Math.round((transferredBytes / totalBytes) * 100)}% uploaded</span> : null}
 						</span>
 						<span className="ml-auto is-clickable">
@@ -208,6 +210,7 @@ const Uploader = ({
 					Next
 				</FormButtonNew>
 			</div>
+			{isBusy ? <LoaderFullscreen /> : null}
 		</>
 	);
 };
