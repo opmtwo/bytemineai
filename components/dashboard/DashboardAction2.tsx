@@ -59,10 +59,8 @@ const DashboardAction2 = () => {
                     <p style={{fontSize:'8px',color:'#444'}}>&nbsp;</p>
                     <p style={{fontSize:'18px',color:'#444'}}>Get the LinkedIn Chrome Extension and unlock contact information for people directly on their LinkedIn profile.</p>
                     <p style={{fontSize:'12px',color:'#444'}}>&nbsp;</p>
-                    <Link href='https://chrome.google.com/webstore/detail/nymblr-connect/nnbppllimdmkmlhaknfgafolieocaofd'>
-                      <a target="_blank" rel="noopener noreferrer">
-                        <FormButton   type='button' color='is-primary' size='is-medium' className='is-primary' >Install for Free</FormButton>
-                      </a>
+                    <Link href='https://chrome.google.com/webstore/detail/nymblr-connect/nnbppllimdmkmlhaknfgafolieocaofd' target="_blank" rel="noopener noreferrer">
+                      <FormButton   type='button' color='is-primary' size='is-medium' className='is-primary' >Install for Free</FormButton>
                     </Link>
 
                       <div style={{position:'absolute',right:'140px',bottom:'10px'}}><IconJohnSmith /></div>
