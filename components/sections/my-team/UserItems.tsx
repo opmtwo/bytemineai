@@ -88,11 +88,11 @@ const UserItems = () => {
 	return (
 		<Card className="is-scroll-view">
 			<Slot slot="header">
-				<div className="is-flex is-align-items-center mr-a is-flex-grow-1">
+				<div className="is-flex is-align-items-center mr-auto">
 					<FormInput fieldClassName="is-flex-grow-1" value={userQuery} onChange={userOnQueryChange} isLast={true} iconLeft={<IconSearch />} />
 				</div>
-				<span className="has-text-grey ml-5">{userItemsInUse.length} results</span>
-				<div className="ml-6 mr-5">{pagination}</div>
+				{/* <span className="has-text-grey ml-5">{userItemsInUse.length} results</span> */}
+				{/* <div className="ml-6 mr-5">{pagination}</div> */}
 				{/* <span
 						className={classNames('is-clickable', isSorted ? 'has-text-primary' : 'has-text-grey')}
 						onClick={onSortToggle}
@@ -114,7 +114,7 @@ const UserItems = () => {
 				</CardAnimatePresence>
 				{isListMode ? <ListView>{itemsList}</ListView> : itemsList}
 			</Slot>
-			<Slot slot="footer">{pagination}</Slot>
+			{userItemsInUse.length ? <Slot slot="footer">{pagination}</Slot> : null}
 		</Card>
 	);
 };
