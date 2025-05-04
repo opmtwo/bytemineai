@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 
 import { useCrudContext } from '../../../providers/crud-provider';
 import { IBytemineUser } from '../../../types';
+import Breadcrumb from '../../Breadcrumb';
 import Modal from '../../modals/Modal';
 import UserForm from '../../UserForm';
 import UserItems from './UserItems';
@@ -37,6 +38,8 @@ const SectionMyTeam = () => {
 
 	return (
 		<>
+			<Breadcrumb title="My Team" items={[{ label: 'My Team', href: '/my-team', isCurrent: true }]} />
+
 			<UserItems />
 
 			<Modal isActive={userIsFormActive} onCancel={userOnFormCancel}>
