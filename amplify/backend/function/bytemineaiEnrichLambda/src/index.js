@@ -120,6 +120,19 @@ exports.handler = async (event, context) => {
 	const jobItem = await ddbDecode(job.Item);
 	console.log('jobItem', jobItem);
 
+	if (start === 0) {
+		// Mark enrichment as in progress
+		console.log('Updating status to processing');
+		const processingUpdateResponse = await ddbUpdateItem(
+			ENRICHMENTTABLE_NAME,
+			ddbEncode({ id }),
+			'set #status=:status',
+			{ '#status': 'status' },
+			ddbEncode({ ':status': 'processing' })
+		);
+		console.log({ processingUpdateResponse });
+	}
+
 	// extract job data
 	const { owner, userId, teamId, s3Key, s3KeyOutput, keyEmail, keyPhone, keyLinkedin, keyFacebook, phoneRequired, workEmailRequired } = jobItem;
 
@@ -130,9 +143,6 @@ exports.handler = async (event, context) => {
 
 	// callback to process csv row data
 	const callback = async (row, rowCount) => {
-		// increment processing count in ddb
-		await updateEnrichment(id, rowCount, false);
-
 		// get es filter for row data
 		const esFilter = await getEsFilter(row, keyEmail, keyPhone, keyLinkedin, keyFacebook, true);
 		console.log('setting addnl_cols - ', Object.keys(row));
@@ -191,6 +201,13 @@ exports.handler = async (event, context) => {
 			console.log('callback - could not find any matching found contact', { rowCount });
 			// add 1 credit to the user as no results were found
 			creditRefund++;
+		}
+
+		// increment processing count in ddb
+		if (rowCount && rowCount % 100 === 0) {
+			await updateEnrichment(id, rowCount, false);
+			await updateEnrichmentCount(id, enrichedCount);
+			enrichedCount = 0;
 		}
 	};
 
