@@ -2,9 +2,11 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
 import { useAuthContext } from '../../../providers/auth-data-provider';
+import { useCrudContext } from '../../../providers/crud-provider';
 import { useSettingsContext } from '../../../providers/settings-provider';
 import { CognitoUserData, Contact, IBytemineCollection, List, ListContactModel, UserAttributes } from '../../../types';
 import { parseCognitoUser } from '../../../utils/user-utils';
+import Breadcrumb from '../../Breadcrumb';
 import Card from '../../cards/Card';
 import CardTitle from '../../CardTitle';
 import ExportContacts from '../../ExportContacts';
@@ -17,7 +19,6 @@ import TrialNotice from '../../TrialNotice';
 import UsersLoaderNonAdmin from '../../UsersLoaderNonAdmin';
 import MyListForm from './MyListForm';
 import MyListItems from './MyListItems';
-import { useCrudContext } from '../../../providers/crud-provider';
 
 const SectionMyLists = () => {
 	const isMounted = useRef(false);
@@ -49,13 +50,13 @@ const SectionMyLists = () => {
 	} = useCrudContext<IBytemineCollection>();
 
 	const router = useRouter();
-	
+
 	const { settings, canUpgrade } = useSettingsContext();
-	
+
 	const onCustomize = async () => {
 		await router.push({ pathname: '/account-settings/subscription-billing/plan' });
 	};
-	
+
 	const isTrailAccount = canUpgrade;
 
 	const { attributes } = useAuthContext();
@@ -80,17 +81,19 @@ const SectionMyLists = () => {
 	return (
 		<>
 			{isTrailAccount ? <TrialNotice onCustomize={onCustomize} /> : <div></div>}
-			
+
+			<Breadcrumb title="My Lists" items={[{ label: 'My Lists', href: '/my-lists', isCurrent: true }]} />
+
 			<MyListItems onExport={onExport} />
-			
+
 			<Modal isActive={isCollectionFormActive} onCancel={onCollectionFormCancel}>
 				<MyListForm />
 			</Modal>
-			
+
 			<ExportContacts contacts={activeContacts} isActive={isExportModalActive} onSubmit={onExportSubmit} onCancel={onExportCancel} />
-			
+
 			{/* {groupname && <UsersLoaderNonAdmin onLoad={onLoad} isBusy={isBusy} onBusy={setIsBusy} groupname={groupname} nextToken={nextToken} />} */}
-			
+
 			{/* <Modal isActive={isDeleteModalActive} onCancel={onCancelDeleteModal}>
 				<Card>
 					<Slot slot="header">
