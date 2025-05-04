@@ -173,9 +173,12 @@ export const CrudProvider = <T extends {}>({ children, idField = 'id', baseApi, 
 	const [confirmCancelCallback, setConfirmCancelCallback] = useState<() => () => Promise<void>>();
 	const [isConfirmActive, setIsConfirmActive] = useState(false);
 
+	// Force update
+	const [lastUpdatedAt, setLastUpdatedAt] = useState<Date>();
+
 	useEffect(() => {
 		onQueryChange(query);
-	}, [items.length, sortMap]);
+	}, [items.length, sortMap, lastUpdatedAt]);
 
 	// open form
 	const onFormOpen = async () => {
@@ -398,12 +401,13 @@ export const CrudProvider = <T extends {}>({ children, idField = 'id', baseApi, 
 	};
 
 	// get all items or the item with the specified id
-	const onRead = async (body: RequestInit = {}, query: URLSearchParams | Record<string, string> = {}, headers: HeadersInit = {}) => {
+	const onRead = async (body: RequestInit = {}, queryParam: URLSearchParams | Record<string, string> = {}, headers: HeadersInit = {}) => {
 		setIsLoading(true);
 		setError(undefined);
 		try {
-			const res: T[] = (await callApi(null, `${baseUrl}/`, { method: 'GET', ...body }, query, headers)) as T[];
+			const res: T[] = (await callApi(null, `${baseUrl}/`, { method: 'GET', ...body }, queryParam, headers)) as T[];
 			setItems(res);
+			setLastUpdatedAt(new Date());
 		} catch (err: any) {
 			console.log(`onRead - err - ${err}`);
 			setError(err);
