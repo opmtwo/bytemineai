@@ -1,4 +1,5 @@
 import { fetchAuthSession } from 'aws-amplify/auth';
+import { getUrl } from 'aws-amplify/storage';
 import axios from 'axios';
 import { sentenceCase } from 'change-case';
 import { orderBy } from 'lodash';
@@ -12,8 +13,7 @@ import NotificationPopup from '../components/sections/prospect-finder/Notificati
 import { genericErrorMessage } from '../consts';
 import countryCodes from '../data/country-codes';
 import awsmobile from '../src/aws-exports';
-import { Contact, ESortOrder, ISortData, RampedUpFilter, SortData, SortOrder } from '../types';
-import { getUrl } from 'aws-amplify/storage';
+import { Contact, ESortOrder, IBytemineContact, ISortData, RampedUpFilter, SortData, SortOrder } from '../types';
 
 export const timestampToMoment = (timestamp: string | number) => moment(new Date(parseInt(timestamp.toString())));
 
@@ -243,7 +243,7 @@ export const reorder = (list: any[], startIndex: number, endIndex: number) => {
  *
  * @returns {Array} sorted contacts data
  */
-export const getSortedData = (contactItems: Contact[], sortMap: SortData[]) => {
+export const getSortedData = (contactItems: IBytemineContact[], sortMap: SortData[]) => {
 	const sorts = sortMap.filter((item) => item.sortOrder === SortOrder.asc || item.sortOrder === SortOrder.desc);
 	const sortFields = sorts.map((item) => item.id);
 	const sortOrders = sorts.map((item) => (item.sortOrder === SortOrder.asc ? 'asc' : 'desc'));
@@ -463,4 +463,4 @@ export const forceDownloadS3File = async (path: string, fileName = 'downloaded-f
 	} catch (err) {
 		console.error('Download failed:', err);
 	}
-}
+};
