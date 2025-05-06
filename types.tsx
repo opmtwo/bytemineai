@@ -761,6 +761,27 @@ export interface FilterItem {
 
 export interface IBytemineContact {
 	id: string;
+	pid: string;
+	owner: string;
+	teamId?: string;
+	userId?: string;
+
+	createdAt: string; // AWSDateTime
+	updatedAt: string;
+
+	isSelected?: boolean;
+	isUnlocking?: boolean;
+	isUnlocked?: boolean;
+
+	isEmailVerified: boolean;
+	emailStatus?: string | null;
+	contactEmailStatusCode: string;
+	contactEmailDomainType: string;
+	personalEmailStatusCode: string;
+	personalEmailDomainType: string;
+	contactPersonalEmailStatusCode: string;
+	contactPersonalEmailDomainType: string;
+
 	linkedin_url: string;
 	first_name: string;
 	last_name: string;
