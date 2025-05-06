@@ -1,18 +1,19 @@
 import { CSSProperties, FormEvent, useState } from 'react';
-
+import API from '@aws-amplify/api';
+import { Auth } from '@aws-amplify/auth';
 import { useAuthContext } from '../../providers/auth-data-provider';
-import { FilterItem, Upload } from '../../types';
-import { formatNumber } from '../../utils/helper-utils';
-import Card from '../Card';
+import Card from '../cards/Card';
+import Slot from '../Slot';
 import CardTitle from '../CardTitle';
-import FormButtonNew from '../form/FormButtonNew';
-import FormSelect from '../form/FormSelect';
+import ErrorNotificaition from '../notifications/ErrorNotification';
+import FormButton from '../form/FormButton';
 import IconBulb from '../icons/IconBulb';
 import IconClose from '../icons/IconClose';
-import IconEnrichBulk from '../icons/IconEnrichBulk';
-import ErrorNotificaition from '../notifications/ErrorNotification';
-import Slot from '../Slot';
 import Uploader from '../Uploader';
+import { FilterItem, Upload } from '../../types';
+import IconEnrichBulk from '../icons/IconEnrichBulk';
+import FormSelect from '../form/FormSelect';
+import { formatNumber, getErrorMessage } from '../../utils/helper-utils';
 
 const FilterUploadForm = ({
 	fieldId,
@@ -51,7 +52,9 @@ const FilterUploadForm = ({
 	// csv upload status
 	const [isUploaded, setIsUploaded] = useState(false);
 
-	const { attributes } = useAuthContext();
+	// current user
+	const { user } = useAuthContext();
+	const groupname = user?.attributes['custom:group_name'];
 
 	const onReset = (): void => {
 		setError(undefined);
@@ -63,28 +66,39 @@ const FilterUploadForm = ({
 		setIsBusy(false);
 	};
 
-	const onUpload = async (s3Key: string, file: File) => {
-		// try {
-		// 	setError(undefined);
-		// 	const params = await getInput({ key: uploads[0].key });
-		// 	const response: { credits: number; csv: { headers: string[]; records: number; sample: Record<string, string> } } = await API.post(
-		// 		'restApiExpress',
-		// 		'/restapi/filters/preview',
-		// 		params
-		// 	);
-		// 	setUploads(uploads);
-		// 	setCsvFields(response.csv.headers);
-		// 	setNoOfCsvRecords(response.csv.records);
-		// 	setSample(response.csv.sample);
-		// 	setIsUploaded(true);
-		// 	const domainFieldIndex = Object.keys(response.csv.sample).findIndex((_key) => fieldFinder(response.csv.sample[_key].trim()));
-		// 	if (domainFieldIndex !== -1) {
-		// 		setColumnId(response.csv.headers[domainFieldIndex]);
-		// 	}
-		// } catch (err) {
-		// 	console.log('onUpload - error -', err);
-		// 	setError(err);
-		// }
+	const getInput = async (body: any) => {
+		const options = {
+			body,
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: (await Auth.currentSession()).getAccessToken().getJwtToken(),
+			},
+		};
+		return options;
+	};
+
+	const onUpload = async (uploads: Upload[]) => {
+		try {
+			setError(undefined);
+			const params = await getInput({ key: uploads[0].key });
+			const response: { credits: number; csv: { headers: string[]; records: number; sample: Record<string, string> } } = await API.post(
+				'restApiExpress',
+				'/restapi/filters/preview',
+				params
+			);
+			setUploads(uploads);
+			setCsvFields(response.csv.headers);
+			setNoOfCsvRecords(response.csv.records);
+			setSample(response.csv.sample);
+			setIsUploaded(true);
+			const domainFieldIndex = Object.keys(response.csv.sample).findIndex((_key) => fieldFinder(response.csv.sample[_key].trim()));
+			if (domainFieldIndex !== -1) {
+				setColumnId(response.csv.headers[domainFieldIndex]);
+			}
+		} catch (err) {
+			console.log('onUpload - error -', err);
+			setError(err);
+		}
 	};
 
 	const isFormValid = () => {
@@ -104,24 +118,24 @@ const FilterUploadForm = ({
 	};
 
 	const handleSubmit = async (e: FormEvent) => {
-		// e.preventDefault();
-		// setError(undefined);
-		// setIsBusy(true);
-		// const isValid = await isFormValid();
-		// if (!isValid) {
-		// 	setIsBusy(false);
-		// 	return;
-		// }
-		// setIsBusy(true);
-		// try {
-		// 	const params = await getInput({ ...uploads[0], key: uploads[0].key, fieldId, columnId });
-		// 	const newEnrichment: any = await API.post('restApiExpress', '/restapi/filters', params);
-		// 	onSubmit(newEnrichment);
-		// } catch (err) {
-		// 	console.log('handleSubmit - error', err);
-		// 	setError(new Error(getErrorMessage(err)));
-		// }
-		// setIsBusy(false);
+		e.preventDefault();
+		setError(undefined);
+		setIsBusy(true);
+		const isValid = await isFormValid();
+		if (!isValid) {
+			setIsBusy(false);
+			return;
+		}
+		setIsBusy(true);
+		try {
+			const params = await getInput({ ...uploads[0], key: uploads[0].key, fieldId, columnId });
+			const newEnrichment: any = await API.post('restApiExpress', '/restapi/filters', params);
+			onSubmit(newEnrichment);
+		} catch (err) {
+			console.log('handleSubmit - error', err);
+			setError(new Error(getErrorMessage(err)));
+		}
+		setIsBusy(false);
 	};
 
 	const csvOptions = csvFields.map((value) => ({ id: value, name: value }));
@@ -189,7 +203,7 @@ const FilterUploadForm = ({
 				) : (
 					<div className="panel-block is-block">
 						<ErrorNotificaition error={error} className="has-text-centered pb-5" />
-						<Uploader maxSize={5} uploadPath={`public/${attributes?.sub}/uploads`} uploads={uploads} onUpload={onUpload} />
+						<Uploader maxSize={5} uploads={uploads} onUpload={onUpload} />
 						<div className="is-flex is-align-items-center my-6">
 							<IconBulb width={32} />
 							<p className="ml-3">Your file must be a CSV format and contain at least one column with the {fieldLabel.toLowerCase()}.</p>
@@ -205,20 +219,26 @@ const FilterUploadForm = ({
 								<div className="is-flex is-align-items-center">
 									<p className="ml-3">Max of {maxSize} rows accepted in the CSV file</p>
 								</div>
-								<FormButtonNew type="submit" onClick={onReset}>
+								<FormButton type="submit" onClick={onReset} variant={['is-outlined', 'is-ui-button']}>
 									Upload new CSV
-								</FormButtonNew>
+								</FormButton>
 							</>
 						) : (
 							<>
 								<div className="is-flex is-align-items-center">
-									<FormButtonNew type="submit" onClick={onReset} disabled={isBusy}>
+									<FormButton type="submit" onClick={onReset} variant={['is-outlined', 'is-ui-button']} disabled={isBusy}>
 										Reset
-									</FormButtonNew>
+									</FormButton>
 								</div>
-								<FormButtonNew type="button" onClick={handleSubmit} disabled={isBusy || !columnId}>
+								<FormButton
+									type="button"
+									onClick={handleSubmit}
+									disabled={isBusy || !columnId}
+									loading={isBusy}
+									variant={['is-outlined', 'is-ui-button']}
+								>
 									Upload
-								</FormButtonNew>
+								</FormButton>
 							</>
 						)}
 					</div>
