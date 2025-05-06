@@ -1,7 +1,6 @@
 import Fuse from 'fuse.js';
 import { get } from 'lodash';
 import { sentenceCase } from 'sentence-case';
-
 import {
 	atDataResponseCodes,
 	exportContactCompanyLabels,
@@ -10,12 +9,12 @@ import {
 	keysToExportContactCompany,
 	keysToExportContactPerson,
 } from '../consts';
-import { Contact, ContactCompany, ContactPerson, IBytemineContact, RampedUpFilter, SelectOption } from '../types';
+import { Contact, ContactCompany, ContactPerson, RampedUpFilter, SelectOption } from '../types';
 import { arrayToCsv, download } from './helper-utils';
 
 export const getExportLabels = () => keysToExport.map((key) => sentenceCase(key));
 
-export const getExportData = (data: IBytemineContact) => {
+export const getExportData = (data: Contact) => {
 	const newItem: any = {};
 	const contact: any = data;
 	keysToExport.forEach((key) => {
@@ -24,27 +23,27 @@ export const getExportData = (data: IBytemineContact) => {
 	return newItem;
 };
 
-export const downloadContacts = (contacts: IBytemineContact[]) =>
+export const downloadContacts = (contacts: Contact[]) =>
 	download(arrayToCsv(contacts).replace(/,/g, '&&&').replace(/\|/g, ',').replace(/&&&/g, '|'), `contacts-${new Date().toISOString()}.csv`, 'data:text/csv');
 
-export const contactFuseOptions: Fuse.IFuseOptions<IBytemineContact> = {
-	keys: [
-		[
-			'contactFirstName',
-			'contactMiddleName',
-			'contactLastName',
-			'contactFullName',
-			'contactTitle',
-			'contactTitleLevel',
-			'contactJobFunctions',
-			'formerTitles',
-			'companyName',
-			'contactEmail',
-			'personalEmail',
-			'contactPhone',
-			'companyPhone',
-		],
-	],
+
+
+export const contactFuseOptions: Fuse.IFuseOptions<Contact> = {
+    keys: [[
+        'contactFirstName',
+        'contactMiddleName',
+        'contactLastName',
+        'contactFullName',
+        'contactTitle',
+        'contactTitleLevel',
+        'contactJobFunctions',
+        'formerTitles',
+        'companyName',
+        'contactEmail',
+        'personalEmail',
+        'contactPhone',
+        'companyPhone',
+        ]],
 	findAllMatches: true,
 	isCaseSensitive: false,
 	shouldSort: true,
@@ -52,38 +51,36 @@ export const contactFuseOptions: Fuse.IFuseOptions<IBytemineContact> = {
 	threshold: 0.55, // don't use default - found this after multiple trials
 };
 
-export const searchContactItems = (items: IBytemineContact[], query: string) => {
+export const searchContactItems = (items: Contact[], query: string) => {
 	const fuse = new Fuse(items, contactFuseOptions);
 	return fuse.search(`"${query}"`).map((item) => item.item);
 };
 
-const applyEmployeesCountFilter = (contact: IBytemineContact, countId: number) => {
-	// if (countId === undefined || contact?.companyEmployees == undefined) {
-	// 	return false;
-	// }
-	// const map = [
-	// 	{ min: 0, max: 10 },
-	// 	{ min: 11, max: 50 },
-	// 	{ min: 51, max: 200 },
-	// 	{ min: 201, max: 500 },
-	// 	{ min: 501, max: 1000 },
-	// 	{ min: 1001, max: 5000 },
-	// 	{ min: 5001, max: 10000 },
-	// 	{ min: 10001, max: Infinity },
-	// ];
-	// let index = countId - 1;
-	// if (!map[index]) {
-	// 	return false;
-	// }
-	// //return contact.companyEmployees >= map[index].min && contact.companyEmployees <= map[index].max;
-	// return contact.companyEmployees;
-
-	return false;
+const applyEmployeesCountFilter = (contact: Contact, countId: number) => {
+	if (countId === undefined || contact?.companyEmployees == undefined) {
+		return false;
+	}
+	const map = [
+		{ min: 0, max: 10 },
+		{ min: 11, max: 50 },
+		{ min: 51, max: 200 },
+		{ min: 201, max: 500 },
+		{ min: 501, max: 1000 },
+		{ min: 1001, max: 5000 },
+		{ min: 5001, max: 10000 },
+		{ min: 10001, max: Infinity },
+	];
+	let index = countId - 1;
+	if (!map[index]) {
+		return false;
+	}
+	//return contact.companyEmployees >= map[index].min && contact.companyEmployees <= map[index].max;
+	return contact.companyEmployees;
 };
 
-export const applyContactFilters = (contacts: IBytemineContact[], filter: RampedUpFilter) => {
+export const applyContactFilters = (contacts: Contact[], filter: RampedUpFilter) => {
 	let fuse;
-	let results: IBytemineContact[] = [...contacts];
+	let results: Contact[] = [...contacts];
 
 	// keywords
 	if (filter?.keywords?.length) {
@@ -128,7 +125,14 @@ export const applyContactFilters = (contacts: IBytemineContact[], filter: Ramped
 	if (filter?.hqLocations?.length) {
 		fuse = new Fuse(results, {
 			...contactFuseOptions,
-			keys: ['companyAddressLine1', 'companyAddressLine2', 'companyCity', 'companyRegion', 'companyCountry', 'companyZipCode'],
+			keys: [
+				'companyAddressLine1',
+				'companyAddressLine2',
+				'companyCity',
+				'companyRegion',
+				'companyCountry',
+				'companyZipCode',
+			],
 		});
 		results = fuse.search(filter.hqLocations.map((item) => `"${item.value}"`).join('|')).map((item) => item.item);
 	}
@@ -160,13 +164,17 @@ export const applyContactFilters = (contacts: IBytemineContact[], filter: Ramped
 	// revenue ranges
 	if (filter?.companyRevenues?.length) {
 		fuse = new Fuse(results, { ...contactFuseOptions, keys: ['companyRevenueRange'] });
-		results = fuse.search(filter.companyRevenues.map((item) => `"${item.label}"`).join('|')).map((item) => item.item);
+		results = fuse
+			.search(filter.companyRevenues.map((item) => `"${item.label}"`).join('|'))
+			.map((item) => item.item);
 	}
 
 	// seniority levels
 	if (filter?.seniorityLevels?.length) {
 		fuse = new Fuse(results, { ...contactFuseOptions, keys: ['contactTitleLevel'], threshold: 0.25 });
-		results = fuse.search(filter.seniorityLevels.map((item) => `"${item.value}"`).join('|')).map((item) => item.item);
+		results = fuse
+			.search(filter.seniorityLevels.map((item) => `"${item.value}"`).join('|'))
+			.map((item) => item.item);
 	}
 
 	// departments
@@ -179,12 +187,16 @@ export const applyContactFilters = (contacts: IBytemineContact[], filter: Ramped
 
 	if (filter.urlsToSuppress?.length) {
 		fuse = new Fuse(results, { ...contactFuseOptions, keys: ['companyDomain'] });
-		results = fuse.search(filter.urlsToSuppress.map((item) => `!"${item.value}"`).join(' ')).map((item) => item.item);
+		results = fuse
+			.search(filter.urlsToSuppress.map((item) => `!"${item.value}"`).join(' '))
+			.map((item) => item.item);
 	}
 
 	if (filter.titlesToSuppress?.length) {
 		fuse = new Fuse(results, { ...contactFuseOptions, keys: ['contactTitle', 'contactTitleLevel'] });
-		results = fuse.search(filter.titlesToSuppress.map((item) => `!"${item.value}"`).join(' ')).map((item) => item.item);
+		results = fuse
+			.search(filter.titlesToSuppress.map((item) => `!"${item.value}"`).join(' '))
+			.map((item) => item.item);
 	}
 
 	if (filter.emailsToSuppress?.length) {
@@ -192,49 +204,45 @@ export const applyContactFilters = (contacts: IBytemineContact[], filter: Ramped
 			...contactFuseOptions,
 			keys: ['contactEmail', 'personalEmail'],
 		});
-		results = fuse.search(filter.emailsToSuppress.map((item) => `!"${item.value}"`).join(' ')).map((item) => item.item);
+		results = fuse
+			.search(filter.emailsToSuppress.map((item) => `!"${item.value}"`).join(' '))
+			.map((item) => item.item);
 	}
 
 	// boolean
 
 	if (filter.hasChangedJobRecently) {
-		// results = contacts.filter((item) => item.hasChangedJobRecently);
-		results = contacts.filter((item) => item.new_hire);
+		results = contacts.filter((item) => item.hasChangedJobRecently);
 	}
 
 	if (filter.hasPrimaryContactsOnly) {
-		// results = contacts.filter((item) => item.contactPhone || item.contactPersonalEmail);
-		results = contacts.filter((item) => item.direct_dial || item.work_email || item.personal_email || item.personal_email2);
+		results = contacts.filter((item) => item.contactPhone || item.contactPersonalEmail);
 	}
 
 	if (filter.hasPhone) {
-		// results = contacts.filter((item) => item.companyPhone || item.contactPhone);
-		results = contacts.filter((item) => item.direct_dial || item.mobile_number);
+		results = contacts.filter((item) => item.companyPhone || item.contactPhone);
 	}
 
 	if (filter.hasDirectDialOnly) {
-		// results = contacts.filter((item) => item.directDialPhone);
-		results = contacts.filter((item) => item.direct_dial);
+		results = contacts.filter((item) => item.directDialPhone);
 	}
 
 	if (filter.hasRequiredEmail) {
-		// results = contacts.filter((item) => item.contactEmail || item.personalEmail);
-		results = contacts.filter((item) => item.work_email || item.personal_email || item.personal_email2);
+		results = contacts.filter((item) => item.contactEmail || item.personalEmail);
 	}
 
 	if (filter.hasPersonalEmailOnly) {
-		// results = contacts.filter((item) => item.personalEmail);
-		results = contacts.filter((item) => item.personal_email || item.personal_email2);
+		results = contacts.filter((item) => item.personalEmail);
 	}
 
 	if (filter.hasLocalAddress) {
-		// results = contacts.filter((item) => item.contactOfficeAddress || item.companyAddressLine1 || item.companyAddressLine2);
-		results = contacts.filter((item) => item.company_hq_address || item.company_local_address);
+		results = contacts.filter(
+			(item) => item.contactOfficeAddress || item.companyAddressLine1 || item.companyAddressLine2
+		);
 	}
 
 	if (filter.hasValidateEmails) {
-		// results = contacts.filter((item) => item.contactEmail || item.personalEmail || item.historicalEmails?.length);
-		results = contacts.filter((item) => item.work_email || item.personal_email || item.personal_email2 || item.personal_email_history.length);
+		results = contacts.filter((item) => item.contactEmail || item.personalEmail || item.historicalEmails?.length);
 	}
 
 	return results;
@@ -250,7 +258,7 @@ export const getEmailStatus = (contact: Contact) => {
 	return 'Invalid';
 };
 
-export const getEmailValidityStatus = (contact: IBytemineContact) => {
+export const getEmailValidityStatus = (contact: Contact) => {
 	let value;
 	if (contact.contactEmailStatusCode) {
 		value = (atDataResponseCodes as any)[contact.contactEmailStatusCode];
