@@ -392,6 +392,7 @@ export interface FilterModel {
 	groupId: string;
 	tenants: string[];
 	rampedUpFilter: RampedUpFilter;
+	bytemineFilter: IBytemineFilter;
 	savedFilter: boolean;
 	createdAt: string;
 	updatedAt: string;
