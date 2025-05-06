@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Contact } from '../types';
+
+import { IBytemineContact } from '../types';
 import { getEmailValidityStatus } from '../utils/contact-utilsx';
 
-const ContactEmailStatus = ({ contact }: { contact: Contact }) => {
+const ContactEmailStatus = ({ contact }: { contact: IBytemineContact }) => {
 	const [status, setStatus] = useState('');
 
 	useEffect(() => {
