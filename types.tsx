@@ -1101,3 +1101,43 @@ export interface IBytemineEnrichment {
 	keyLinkedin: string;
 	status: string;
 }
+
+export interface IBytemineFilter {
+	website?: string;
+	firstName?: SelectOption[];
+	lastName?: SelectOption[];
+	yearFounded?: string;
+	keywords?: SelectOption[];
+	urls?: SelectOption[];
+	industries?: SelectOption[];
+	jobTitles?: SelectOption[];
+	sicCodes?: SelectOption[];
+	companyNames?: SelectOption[];
+	employeeSizes?: SelectOption[];
+	departments?: SelectOption[];
+	interests?: SelectOption[];
+	skills?: SelectOption[];
+
+	schools?: SelectOption[];
+	seniorityLevels?: SelectOption[];
+	companyRevenues?: SelectOption[];
+	hqLocations?: SelectOption[];
+	cities?: SelectOption[];
+	states?: SelectOption[];
+	companyTypes?: SelectOption[];
+	urlsToSuppress?: SelectOption[];
+	titlesToSuppress?: SelectOption[];
+	emailsToSuppress?: SelectOption[];
+
+	hasChangedJobRecently?: boolean;
+	hasPrimaryContactsOnly?: boolean;
+	hasPhone?: boolean;
+	hasDirectDialOnly?: boolean;
+	hasRequiredEmail?: boolean;
+	hasPersonalEmailOnly?: boolean;
+	hasLocalAddress?: boolean;
+	hasValidateEmails?: boolean;
+	excludeExisting?: boolean;
+
+	page?: number;
+}
