@@ -2,7 +2,7 @@ import { sortBy } from 'lodash';
 import { Dispatch, SetStateAction } from 'react';
 
 import { FilterModel } from '../../../types';
-import Card from '../../Card';
+import Card from '../../cards/Card';
 import CardTitle from '../../CardTitle';
 import EmptyMsg from '../../EmptyMsg';
 import IconClose from '../../icons/IconClose';
@@ -33,24 +33,23 @@ const ProspectSearchHistory = ({
 		.map((search) => <ProspectSearchEntry key={search.id} item={search} onClick={onClick} />);
 
 	return (
-		console.log(itemsList, searchItems),
-		(
-			<Modal isActive={isActive} onCancel={onCancel}>
-				<Card>
-					<Slot slot="header">
-						<CardTitle>My Searches</CardTitle>
-						<span className="is-clickable" onClick={onCancel}>
-							<IconClose />
-						</span>
-					</Slot>
-					<Slot slot="body">
+		<Modal isActive={isActive} onCancel={onCancel}>
+			<Card>
+				<Slot slot="header">
+					<CardTitle>My Searches</CardTitle>
+					<span className="is-clickable" onClick={onCancel}>
+						<IconClose />
+					</span>
+				</Slot>
+				<Slot slot="body">
+					<div className="panel-block is-block">
 						{isBusy && !searchItems.length ? <Loader /> : null}
 						{searchItems.length === 0 && !isBusy ? <EmptyMsg msg="No search history found" /> : null}
 						{itemsList}
-					</Slot>
-				</Card>
-			</Modal>
-		)
+					</div>
+				</Slot>
+			</Card>
+		</Modal>
 	);
 };
 
