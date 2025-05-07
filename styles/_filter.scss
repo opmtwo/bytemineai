@@ -1,12 +1,13 @@
 .is-filter > .field {
-	padding: 1.25rem;
-	padding-top: 1rem;
+	padding: 1rem;
+	// padding-top: 1rem;
 
 	.label {
 		margin-bottom: 0;
-		margin-left: 2.75rem;
-		color: var(--primary);
-		font-weight: bold !important;
+		// margin-left: 2.75rem;
+		// color: var(--primary);
+		font-size: 1em;
+		font-weight: 500 !important;
 	}
 
 	.help {
@@ -25,7 +26,19 @@
 
 	.is-react-select {
 		flex: 1;
-		margin-left: 1rem;
+		// margin-left: 1rem;
+	}
+
+	.is-filter-checkbox {
+		width: 16px !important;
+		height: 16px !important;
+		margin: 0.4rem 0;
+		padding: 0 !important;
+		border-radius: 4px !important;
+	}
+
+	.has-text-grey {
+		color: $dark !important;
 	}
 }
 
@@ -96,13 +109,12 @@
 @include widescreen {
 	.filter-form {
 		z-index: 1;
-		position: fixed;
+		// position: fixed;
 		overflow-y: auto;
 		width: calc(25% - #{$gutter});
 		max-height: 85vh;
 		border-radius: $panel-radius;
   		box-shadow: $panel-shadow;
-
 	}
 }
 
@@ -127,4 +139,13 @@
 
 .audiencebuilderheader .is-scroll-view  {
 	max-height: 65vh;
+}
+
+.filter-form {
+	border: $panel-item-border;
+	border-radius: 20px;
+
+	.panel {
+		border-width: 0;
+	}
 }
