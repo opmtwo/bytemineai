@@ -50,6 +50,7 @@ router.post('/search', verifyToken, verifyTeam, async (req, res) => {
 	const diffTime = Math.abs(endtime - starttime);
 	const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 	console.log('overall search took ' + diffTime + ' milliseconds');
+
 	return res.json(response);
 });
 
