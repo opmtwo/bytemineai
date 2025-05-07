@@ -7,16 +7,17 @@ import Card from '../../cards/Card';
 import CardAnimatePresence from '../../cards/CardAnimatePresence';
 import CardTitle from '../../CardTitle';
 import EmptyMsg from '../../EmptyMsg';
+import FormField from '../../form/FormField';
+import FormInput from '../../form/FormInput';
 import IconLine from '../../icons/IconLine';
+import IconNewProspectFinder from '../../icons/IconNewProspectFinder';
+import IconNewProspectFinderAlt from '../../icons/IconNewProspectFinderAlt';
+import IconNewSearch from '../../icons/IconNewSearch';
 import Loader from '../../Loader';
 import SearchEntry from '../../SearchEntry';
 import SearchHistory from '../../SearchHistory';
 import Slot from '../../Slot';
-import IconNewProspectFinder from '../../icons/IconNewProspectFinder';
-import IconNewProspectFinderAlt from '../../icons/IconNewProspectFinderAlt';
-import FormInput from '../../form/FormInput';
-import FormField from '../../form/FormField';
-import IconNewSearch from '../../icons/IconNewSearch';
+import ProspectSearchEntry from './ProspectSearchEntry';
 
 const ProspectSearches = ({
 	searches,
@@ -81,7 +82,7 @@ const ProspectSearches = ({
 									<CardAnimatePresence isActive={searches.length === 0 && !isBusy}>
 										<EmptyMsg msg="No search history found" />
 									</CardAnimatePresence>
-									<div className="tab-content" style={{ overflowY: 'scroll', height: '520px' }}>
+									<div className="tab-content" style={{ overflowY: 'scroll', height: '40vh' }}>
 										<div
 											className={`tab-pane ${activeTab === 'tab1' ? 'is-active' : ''}`}
 											id="tab1"
@@ -91,7 +92,7 @@ const ProspectSearches = ({
 												.reverse()
 												.slice(0, limit)
 												.map((search) => (
-													<SearchEntry key={search.id} item={search} onClick={onClick} />
+													<ProspectSearchEntry key={search.id} item={search} onClick={onClick} />
 												))}
 										</div>
 										<div
