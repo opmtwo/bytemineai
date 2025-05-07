@@ -14,32 +14,20 @@ import bytemineSchools from '../../bytemine/bytemine-schools';
 import bytemineSicCodes from '../../bytemine/bytemine-sic-codes';
 import bytemineSkills from '../../bytemine/bytemine-skills';
 import { BytemineStatesOptions } from '../../bytemine/bytemine-states';
-import { genericErrorMessage } from '../../consts';
-import { useAuthContext } from '../../providers/auth-data-provider';
 import { RampedUpIndustryOptions } from '../../ramped-up/ramped-up-industries';
-import rampedUpSchools from '../../ramped-up/ramped-up-schools';
 import { FilterItem, FilterModel, IBytemineContact, IBytemineFilter, SelectOption } from '../../types';
 import Card from '../Card';
 import CardTitle from '../CardTitle';
 import FormButtonNew from '../form/FormButtonNew';
 import FormDoubleCheckbox from '../form/FormDoubleCheckbox';
 import FormField from '../form/FormField';
+import FormLabel from '../form/FormLabel';
 import FormSelectCreatable from '../form/FormSelectCreatable';
 import FormSelectSearchable from '../form/FormSelectSearchable';
-import IconFilter from '../icons/IconFilter';
 import ErrorNotificaition from '../notifications/ErrorNotification';
-import SaveFilterForm from '../SaveFilterForm';
+import ProspectSaveFilterForm from '../sections/prospects/ProspectSaveFilterForm';
 import Slot from '../Slot';
-import styles from './filter.module.css';
 import FilterUploadList from './FilterUploadList';
-
-//import ReactSelect, { ActionMeta, MultiValue, components } from "react-select";
-// import RampedUpCities from '../../ramped-up/ramped-up-cities';
-
-// enum FilterTab {
-//   "AdditionalOptions" = "Data Preferences",
-//   "Suppress" = "Suppress",
-// }
 
 const Filter = ({
 	isContactsOnly,
@@ -491,71 +479,92 @@ const Filter = ({
 				<ErrorNotificaition error={error} className="pb-5" />
 				<Card>
 					<Slot slot="header">
-						<CardTitle>Filters</CardTitle>
-						<div className="ml-a is-flex is-align-items-center">
-							<FormButtonNew type="reset" onClick={onReset}>
-								{clearLabel}
-							</FormButtonNew>
-							{onViewHistory && hasHistory && isProspectFinder && (
-								<FormButtonNew type="button" onClick={onViewHistory} disabled={isBusy}>
-									{historyLabel}
+						<div className="panel-block is-block p-4">
+							{/* <CardTitle>Filters</CardTitle> */}
+							<h2 className="title is-4 has-text-weight-medium">Filters</h2>
+							<div className="spacer mb-2"></div>
+							<div className="is-flex is-align-items-center is-justify-content-space-between">
+								<FormButtonNew style={{ fontSize: 12, padding: '0 10px', height: 30 }} type="reset" onClick={onReset}>
+									{clearLabel}
 								</FormButtonNew>
-							)}
-							{!isContactsOnly && isProspectFinder && (
-								<FormButtonNew className="ml-2" type="button" onClick={handleSave} disabled={isSaving} loading={isSaving}>
-									{saveLabel}
-								</FormButtonNew>
-							)}
 
-							{/* {isContactsOnly ? null : (
-								<FormButton
-									type="button"
-									variant={['is-inverted']}
-									color="is-primary"
-									className="ml-3 px-0"
-									onClick={handleSubmit}
-									loading={isBusy}
-									disabled={isBusy}
-								>
-									<IconSearchAlt />
-								</FormButton>
-							)} */}
+								{onViewHistory && hasHistory && isProspectFinder && (
+									<FormButtonNew
+										style={{ fontSize: 12, padding: '0 10px', height: 30 }}
+										type="button"
+										onClick={onViewHistory}
+										disabled={isBusy}
+									>
+										{historyLabel}
+									</FormButtonNew>
+								)}
+
+								{!isContactsOnly && isProspectFinder && (
+									<FormButtonNew
+										style={{ fontSize: 12, padding: '0 10px', height: 30 }}
+										type="button"
+										onClick={handleSave}
+										disabled={isSaving}
+										loading={isSaving}
+									>
+										{saveLabel}
+									</FormButtonNew>
+								)}
+
+								{/* {isContactsOnly ? null : (
+									<FormButton
+										type="button"
+										variant={['is-inverted']}
+										color="is-primary"
+										className="ml-3 px-0"
+										onClick={handleSubmit}
+										loading={isBusy}
+										disabled={isBusy}
+									>
+										<IconSearchAlt />
+									</FormButton>
+								)} */}
+							</div>
 						</div>
 					</Slot>
 					<Slot slot="body">
 						<div className="panel-block is-block is-filter p-0">
 							<div className="panel-block is-filter p-0">
 								<FormField isLast={isLast}>
-									<div className={styles.dataRequirement}>
+									{/* <div className={styles.dataRequirement}>
 										<IconFilter className={styles.filterIcon} />
 										<label>Data Requirements</label>
-									</div>
-									<div className={styles.dataRequirementFilter}>
-										<FormDoubleCheckbox
-											value={hasRequiredEmail}
-											label="Work Email"
-											isChecked={hasRequiredEmail}
-											onChange={setHasRequiredEmail}
-										/>
-										<FormDoubleCheckbox
-											value={hasPersonalEmailOnly}
-											label="Personal Email"
-											isChecked={hasPersonalEmailOnly}
-											onChange={setHasPersonalEmailOnly}
-										/>
-										<FormDoubleCheckbox
-											value={hasDirectDialOnly}
-											label="Cell Phone"
-											isChecked={hasDirectDialOnly}
-											onChange={setHasDirectDialOnly}
-										/>
-										<FormDoubleCheckbox
-											value={excludeExisting}
-											label="Exclude My Contacts"
-											isChecked={excludeExisting}
-											onChange={setExcludeExisting}
-										/>
-									</div>
+									</div> */}
+									<FormLabel label="Data Requirements" />
+									<div className="mb-2 spacer"></div>
+									<FormDoubleCheckbox
+										value={hasRequiredEmail}
+										label="Work Email"
+										className="is-filter-checkbox"
+										isChecked={hasRequiredEmail}
+										onChange={setHasRequiredEmail}
+									/>
+									<FormDoubleCheckbox
+										value={hasPersonalEmailOnly}
+										label="Personal Email"
+										className="is-filter-checkbox"
+										isChecked={hasPersonalEmailOnly}
+										onChange={setHasPersonalEmailOnly}
+									/>
+									<FormDoubleCheckbox
+										value={hasDirectDialOnly}
+										label="Cell Phone"
+										className="is-filter-checkbox"
+										isChecked={hasDirectDialOnly}
+										onChange={setHasDirectDialOnly}
+									/>
+									<FormDoubleCheckbox
+										value={excludeExisting}
+										label="Exclude My Contacts"
+										className="is-filter-checkbox"
+										isChecked={excludeExisting}
+										onChange={setExcludeExisting}
+									/>
 								</FormField>
 								{/* <Tabs
 									options={FilterTab}
@@ -640,7 +649,7 @@ const Filter = ({
 								onChange={setKeywords}
 								options={[]}
 								isMulti={true}
-								iconLeft={<span className="material-icons">work</span>}
+								// iconLeft={<span className="material-icons">work</span>}
 							/>
 
 							<FormSelectSearchable
@@ -655,7 +664,7 @@ const Filter = ({
 								callBack={setSeniorityLevels}
 								removedValue={removedValue}
 								isMulti={true}
-								iconLeft={<span className="material-icons">align_horizontal_center</span>}
+								// iconLeft={<span className="material-icons">align_horizontal_center</span>}
 							/>
 							<FormSelectSearchable
 								name="departments"
@@ -665,7 +674,7 @@ const Filter = ({
 								// onChange={setDepartments}
 								options={BytemineJobFunctionOptions}
 								isMulti={true}
-								iconLeft={<span className="material-icons">account_tree</span>}
+								// iconLeft={<span className="material-icons">account_tree</span>}
 								setIncluded={setIncluded}
 								setExcluded={setExcluded}
 								callBack={setDepartments}
@@ -680,7 +689,7 @@ const Filter = ({
 								options={bytemineSkills}
 								isMulti={true}
 								minChars={2}
-								iconLeft={<span className="material-icons">integration_instructions</span>}
+								// iconLeft={<span className="material-icons">integration_instructions</span>}
 								setIncluded={setIncluded}
 								setExcluded={setExcluded}
 								callBack={setSkills}
@@ -695,7 +704,7 @@ const Filter = ({
 								options={bytemineInterests}
 								isMulti={true}
 								minChars={2}
-								iconLeft={<span className="material-icons">integration_instructions</span>}
+								// iconLeft={<span className="material-icons">integration_instructions</span>}
 								setIncluded={setIncluded}
 								setExcluded={setExcluded}
 								callBack={setInterests}
@@ -709,7 +718,7 @@ const Filter = ({
 								onChange={setCompanyNames}
 								options={[]}
 								isMulti={true}
-								iconLeft={<span className="material-icons">domain</span>}
+								// iconLeft={<span className="material-icons">domain</span>}
 							/>
 							<FormSelectCreatable
 								name="urls"
@@ -720,7 +729,7 @@ const Filter = ({
 								options={urlOptions}
 								fieldClassName="is-relative"
 								error={urlsError}
-								iconLeft={<span className="material-icons">language</span>}
+								// iconLeft={<span className="material-icons">language</span>}
 								isMulti
 								hasComponents
 							>
@@ -762,7 +771,7 @@ const Filter = ({
 								// onChange={setIndustries}
 								options={RampedUpIndustryOptions}
 								isMulti={true}
-								iconLeft={<span className="material-icons">factory</span>}
+								// iconLeft={<span className="material-icons">factory</span>}
 								setIncluded={setIncluded}
 								setExcluded={setExcluded}
 								callBack={setIndustries}
@@ -777,7 +786,7 @@ const Filter = ({
 								options={bytemineSicCodes}
 								isMulti={true}
 								minChars={2}
-								iconLeft={<span className="material-icons">integration_instructions</span>}
+								// iconLeft={<span className="material-icons">integration_instructions</span>}
 								setIncluded={setIncluded}
 								setExcluded={setExcluded}
 								callBack={setSicCodes}
@@ -791,7 +800,7 @@ const Filter = ({
 								// onChange={setCompanyRevenues}
 								options={BytemineRevenueRangeOptions}
 								isMulti={true}
-								iconLeft={<span className="material-icons">attach_money</span>}
+								// iconLeft={<span className="material-icons">attach_money</span>}
 								setIncluded={setIncluded}
 								setExcluded={setExcluded}
 								callBack={setCompanyRevenues}
@@ -805,7 +814,7 @@ const Filter = ({
 								// onChange={setEmployeeSizes}
 								options={BytemineEmployeeSizeOptions}
 								isMulti={true}
-								iconLeft={<span className="material-icons">people_alt</span>}
+								// iconLeft={<span className="material-icons">people_alt</span>}
 								setIncluded={setIncluded}
 								setExcluded={setExcluded}
 								callBack={setEmployeeSizes}
@@ -831,7 +840,7 @@ const Filter = ({
 								// onChange={setStates}
 								options={BytemineStatesOptions}
 								isMulti={true}
-								iconLeft={<span className="material-icons">flag</span>}
+								// iconLeft={<span className="material-icons">flag</span>}
 								setIncluded={setIncluded}
 								setExcluded={setExcluded}
 								callBack={setStates}
@@ -846,7 +855,7 @@ const Filter = ({
 								options={[]}
 								isMulti={true}
 								minChars={3}
-								iconLeft={<span className="material-icons">location_on </span>}
+								// iconLeft={<span className="material-icons">location_on </span>}
 							/>
 							<FormSelectSearchable
 								name="contactEducation"
@@ -857,7 +866,7 @@ const Filter = ({
 								options={bytemineSchools}
 								isMulti={true}
 								minChars={2}
-								iconLeft={<span className="material-icons">school</span>}
+								// iconLeft={<span className="material-icons">school</span>}
 								setIncluded={setIncluded}
 								setExcluded={setExcluded}
 								callBack={setSchools}
@@ -871,7 +880,7 @@ const Filter = ({
 								onChange={setFirstName}
 								options={[]}
 								isMulti={true}
-								iconLeft={<span className="material-icons">person</span>}
+								// iconLeft={<span className="material-icons">person</span>}
 							/>
 							<FormSelectCreatable
 								name="name_last"
@@ -881,7 +890,7 @@ const Filter = ({
 								onChange={setLastName}
 								options={[]}
 								isMulti={true}
-								iconLeft={<span className="material-icons">person</span>}
+								// iconLeft={<span className="material-icons">person</span>}
 							/>
 						</div>
 
@@ -965,7 +974,7 @@ const Filter = ({
 				</Card>
 			</form>
 
-			<SaveFilterForm
+			<ProspectSaveFilterForm
 				//
 				isActive={isSaveModalActive}
 				filter={filterData}

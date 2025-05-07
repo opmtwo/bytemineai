@@ -15,10 +15,3 @@
     fill: var(--primary);
     width: 20px;
 }
-
-.dataRequirementFilter {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-left: 2.75rem;
-    row-gap: 8px;
-}
