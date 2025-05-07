@@ -66,6 +66,13 @@ const IEnrichment = Joi.object({
 	workEmailRequired: Joi.boolean().allow('', null).optional(),
 }).options({ abortEarly: false });
 
+const IFilter = Joi.object({
+	id: Joi.string().max(100).optional().allow(null, ''),
+	name: Joi.string().max(200).optional().allow(null, ''),
+	filter: Joi.string().required(),
+	isSaved: Joi.bool().optional().default(false),
+}).options({ abortEarly: false });
+
 module.exports = {
 	schemaValidate,
 	ICollection,
@@ -78,4 +85,5 @@ module.exports = {
 	IPublicUpload,
 	IEnrichmentPreview,
 	IEnrichment,
+	IFilter,
 };
