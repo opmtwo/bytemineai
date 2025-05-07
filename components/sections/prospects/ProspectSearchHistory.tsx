@@ -42,11 +42,9 @@ const ProspectSearchHistory = ({
 					</span>
 				</Slot>
 				<Slot slot="body">
-					<div className="panel-block is-block">
-						{isBusy && !searchItems.length ? <Loader /> : null}
-						{searchItems.length === 0 && !isBusy ? <EmptyMsg msg="No search history found" /> : null}
-						{itemsList}
-					</div>
+					{isBusy && !searchItems.length ? <Loader /> : null}
+					{searchItems.length === 0 && !isBusy ? <EmptyMsg msg="No search history found" /> : null}
+					{itemsList}
 				</Slot>
 			</Card>
 		</Modal>
