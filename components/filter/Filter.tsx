@@ -172,7 +172,7 @@ const Filter = ({
 		if (!activeFilter) {
 			return;
 		}
-		const rampedUpFilter: IBytemineFilter | Error = attempt(JSON.parse.bind(null, activeFilter.rampedUpFilter));
+		const rampedUpFilter: IBytemineFilter | Error = attempt(JSON.parse.bind(null, activeFilter.filter));
 		if (rampedUpFilter instanceof Error) {
 			return;
 		}
