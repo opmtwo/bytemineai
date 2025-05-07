@@ -386,16 +386,30 @@ export interface RampedUpFilter {
 }
 
 export interface FilterModel {
+	// id: string;
+	// name: string;
+	// userId: string;
+	// groupId: string;
+	// tenants: string[];
+	// rampedUpFilter: RampedUpFilter;
+	// bytemineFilter: IBytemineFilter;
+	// savedFilter: boolean;
+	// createdAt: string;
+	// updatedAt: string;
+
 	id: string;
-	name: string;
-	userId: string;
-	groupId: string;
-	tenants: string[];
-	rampedUpFilter: RampedUpFilter;
-	bytemineFilter: IBytemineFilter;
-	savedFilter: boolean;
+	owner: string;
+	teamId?: string;
+	userId?: string;
+
 	createdAt: string;
 	updatedAt: string;
+
+	isSelected?: boolean;
+
+	name: string;
+	filter: IBytemineFilter;
+	isSaved: boolean;
 }
 
 export interface CampaignModel {
