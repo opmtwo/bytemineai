@@ -163,6 +163,7 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 			response = (await callApi(null, '/api/v1/contacts/search', {
 				method: 'POST',
 				body: JSON.stringify({
+					...filter,
 					filterId: model?.id || randomId,
 					pageSize: itemsPerPage || contactsPerPage,
 				}),
@@ -342,13 +343,18 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 		setActiveFilter(value);
 	};
 
-	const saveFilter = async (value: FilterModel) => {
+	const saveFilter = async (value: Partial<FilterModel>): Promise<FilterModel | undefined> => {
 		let response: any;
-		// try {
-		// 	response = await API.graphql(graphqlOperation(createFilter, { input: value }));
-		// } catch (err) {
-		// 	console.log('Error in saveFilter - ', err);
-		// }
+		try {
+			response = (await callApi(null, '/api/v1/filters', {
+				method: 'POST',
+				body: JSON.stringify(value),
+			})) as IBytemineFilter;
+			console.log('saveFilter - success', response);
+			return response;
+		} catch (err) {
+			console.log('saveFilter - error', err);
+		}
 	};
 
 	const onFilterSubmit = async (value: IBytemineFilter, model?: FilterModel) => {
@@ -360,21 +366,17 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 			return;
 		}
 
-		// // save search temporarily
-		// const newFilterModel: FilterModel = {
-		// 	id: v4(),
-		// 	tenants: [user?.attributes['custom:group_name'] || ''],
-		// 	userId: user?.attributes.sub || '',
-		// 	groupId: user?.attributes['custom:group_name'] || '',
-		// 	name: getFilterLabel(value),
-		// 	rampedUpFilter: JSON.stringify(value) as any,
-		// 	savedFilter: false,
-		// 	createdAt: new Date().toISOString(),
-		// 	updatedAt: new Date().toISOString(),
-		// };
+		// save search temporarily
+		const payload: Partial<FilterModel> = {
+			name: getFilterLabel(value),
+			filter: JSON.stringify(value) as any,
+			isSaved: false,
+		};
 
-		// saveFilter(newFilterModel);
-		// historyItems.push(newFilterModel);
+		const newFilter = await saveFilter(payload);
+		if (newFilter) {
+			historyItems.push(newFilter);
+		}
 
 		setIsHistoryModalActive(false);
 
@@ -398,6 +400,7 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 		setContactItems(undefined);
 		setContactItems([]);
 		console.log('on filter submit after clear 2', contactItems);
+
 		const newContacts = await searchContacts(value, model);
 
 		setIsBusy(false);
