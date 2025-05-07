@@ -14,7 +14,7 @@ const ProspectSearchEntry = ({ item, onClick }: { item: FilterModel; onClick: Di
 	};
 
 	const getIncludedAndExcluded = () => {
-		const bytemineFilter: IBytemineFilter | Error = attempt(JSON.parse.bind(null, item.bytemineFilter));
+		const bytemineFilter: IBytemineFilter | Error = attempt(JSON.parse.bind(null, item.filter));
 		if (bytemineFilter instanceof Error) {
 			return 'NA';
 		}
@@ -51,7 +51,7 @@ const ProspectSearchEntry = ({ item, onClick }: { item: FilterModel; onClick: Di
 
 	const getLabel = () => {
 		console.log('item', item);
-		const bytemineFilter: IBytemineFilter | Error = attempt(JSON.parse.bind(null, item.bytemineFilter));
+		const bytemineFilter: IBytemineFilter | Error = attempt(JSON.parse.bind(null, item.filter));
 		if (bytemineFilter instanceof Error) {
 			return 'NA';
 		}
@@ -85,7 +85,7 @@ const ProspectSearchEntry = ({ item, onClick }: { item: FilterModel; onClick: Di
 	};
 
 	const getDataRequirementFilterLabel = () => {
-		const bytemineFilter: IBytemineFilter | Error = attempt(JSON.parse.bind(null, item.bytemineFilter));
+		const bytemineFilter: IBytemineFilter | Error = attempt(JSON.parse.bind(null, item.filter));
 		if (bytemineFilter instanceof Error) {
 			return 'NA';
 		}
@@ -104,7 +104,7 @@ const ProspectSearchEntry = ({ item, onClick }: { item: FilterModel; onClick: Di
 			{(included || excluded || label || dataRequirement) && (
 				<div className="panel-block is-block">
 					<Anchor className="is-block" href={url} onClick={handleClick}>
-						{item.savedFilter && (
+						{item.isSaved && (
 							<>
 								<span className="is-capitalized" style={{ color: 'black', fontWeight: '800' }}>
 									{item?.name || ''}
