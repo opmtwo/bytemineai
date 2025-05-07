@@ -1,18 +1,25 @@
 import { isEmpty, values } from 'lodash';
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+import { v4 } from 'uuid';
 
 import { genericErrorMessage, ITEMS_PER_PAGE } from '../../../consts';
 import { ActionAddToList, ActionExport, ActionSelect, FilterModel, IBytemineCollection, IBytemineContact, IBytemineFilter, SortData } from '../../../types';
 import { applyContactFilters } from '../../../utils/contact-utilsx';
-import { callApi, getSortedData } from '../../../utils/helper-utils';
+import { callApi, getFilterLabel, getSortedData } from '../../../utils/helper-utils';
 import Filter from '../../filter/Filter';
 import ProspectAddToCollection from './ProspectAddToCollection';
 import ProspectExportContacts from './ProspectExportContacts';
 import ProspectSearches from './ProspectSearches';
 import ProspectSearchHistory from './ProspectSearchHistory';
-import { v4 } from 'uuid';
 
 const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?: boolean; listId?: string }) => {
+	// -------------------------------------------------------------------------
+	// mounted status - used to prevent double api calls during mount
+	// -------------------------------------------------------------------------
+
+	const isMounted = useRef(false);
+
 	// -------------------------------------------------------------------------
 	// busy and error status
 	// -------------------------------------------------------------------------
@@ -68,6 +75,72 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 	//upgrade modal nd-85 brf 2022-12-16
 	// -------------------------------------------------------------------------
 	const [isUpgradeModalActive, setIsUpgradeModalActive] = useState(false);
+
+	// -------------------------------------------------------------------------
+	// Router - query params
+	// -------------------------------------------------------------------------
+	const searchParams = useSearchParams();
+	const filterId = searchParams.get('filterId');
+
+	// -------------------------------------------------------------------------
+	// Load data
+	// -------------------------------------------------------------------------
+
+	useEffect(() => {
+		if (isMounted.current) {
+			return;
+		}
+		isMounted.current = true;
+		getCollections();
+		getFilters();
+	}, []);
+
+	useEffect(() => {
+		if (!filterId) {
+			return;
+		}
+		getSelectedFilter(filterId);
+	}, [filterId]);
+
+	// Load collections / lists
+	const getCollections = async () => {
+		try {
+			const res = (await callApi(null, '/api/v1/collections', {})) as IBytemineCollection[];
+			setCollectionItems(res);
+		} catch (err) {
+			console.log('getCollections - error', err);
+		}
+	};
+
+	// Load filters
+	const getFilters = async () => {
+		setIsHistoryBusy(true);
+		try {
+			const res = (await callApi(null, '/api/v1/filters', {})) as FilterModel[];
+			console.log('getFilters - success', res);
+			setHistoryItems(res.filter((f) => f.isSaved === false));
+			setSavedHistoryItems(res.filter((f) => f.isSaved === true));
+		} catch (err) {
+			console.log('getFilters - error', err);
+		}
+		setIsHistoryBusy(false);
+	};
+
+	// Load selected filter from query search param
+	const getSelectedFilter = async (id: string) => {
+		setIsActiveFilterLoading(true);
+		try {
+			const res = (await callApi(null, `/api/v1/filters/${id}`, {})) as FilterModel;
+			setActiveFilterModel(res);
+		} catch (err) {
+			console.log('getCollections - error', err);
+		}
+		setIsActiveFilterLoading(false);
+	};
+
+	// -------------------------------------------------------------------------
+	// Search contacts - this looks up contacts via API
+	// -------------------------------------------------------------------------
 
 	const searchContacts = async (filter: IBytemineFilter, model?: FilterModel, itemsPerPage?: number) => {
 		console.log('searchContacts', { filter, model, itemsPerPage });
