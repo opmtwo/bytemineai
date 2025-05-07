@@ -19,7 +19,7 @@ const SearchEntry = ({
 	};
 
 	const getIncludedAndExcluded = () => {
-		const rampedUpFilter: RampedUpFilter | Error = attempt(JSON.parse.bind(null, item.rampedUpFilter));
+		const rampedUpFilter: RampedUpFilter | Error = attempt(JSON.parse.bind(null, item.filter));
 		if (rampedUpFilter instanceof Error) {
 			return 'NA';
 		}
@@ -52,7 +52,7 @@ const SearchEntry = ({
 
 	const getLabel = () => {
 		console.log('item', item);
-		const rampedUpFilter: RampedUpFilter | Error = attempt(JSON.parse.bind(null, item.rampedUpFilter));
+		const rampedUpFilter: RampedUpFilter | Error = attempt(JSON.parse.bind(null, item.filter));
 		if (rampedUpFilter instanceof Error) {
 			return 'NA';
 		}
@@ -97,7 +97,7 @@ const SearchEntry = ({
 	};
 
 	const getDataRequirementFilterLabel = () => {
-		const rampedUpFilter: RampedUpFilter | Error = attempt(JSON.parse.bind(null, item.rampedUpFilter));
+		const rampedUpFilter: RampedUpFilter | Error = attempt(JSON.parse.bind(null, item.filter));
 		if (rampedUpFilter instanceof Error) {
 			return 'NA';
 		}
@@ -115,7 +115,7 @@ const SearchEntry = ({
 		<>{(included || excluded || label || dataRequirement) &&
 			<div className="panel-block is-block">
 				<Anchor className="is-block" href={url} onClick={handleClick}>
-					{(item.savedFilter) && <><span className='is-capitalized' style={{ color: "black", fontWeight: "800" }}>{item?.name || ''}</span><br /></>}
+					{(item.isSaved) && <><span className='is-capitalized' style={{ color: "black", fontWeight: "800" }}>{item?.name || ''}</span><br /></>}
 					<>
 						{(included || label || dataRequirement) && <><span style={{ color: "grey", fontWeight: "500" }}>Included:</span> <span className=''>{included} {label} {dataRequirement[0] ? "Work Email" : dataRequirement[1] ? "Personal Email" : dataRequirement[2] ? "Cell Phone" : ""}</span><br /></>}
 						{excluded && <> <span style={{ color: "grey", fontWeight: "500" }}>Excluded:</span> <span className=''>{excluded}</span><br /></>}
