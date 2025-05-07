@@ -10,7 +10,7 @@ import {
 	keysToExportContactCompany,
 	keysToExportContactPerson,
 } from '../consts';
-import { Contact, ContactCompany, ContactPerson, IBytemineContact, RampedUpFilter, SelectOption } from '../types';
+import { Contact, ContactCompany, ContactPerson, IBytemineContact, IBytemineFilter, RampedUpFilter, SelectOption } from '../types';
 import { arrayToCsv, download } from './helper-utils';
 
 export const getExportLabels = () => keysToExport.map((key) => sentenceCase(key));
@@ -81,7 +81,7 @@ const applyEmployeesCountFilter = (contact: IBytemineContact, countId: number) =
 	return false;
 };
 
-export const applyContactFilters = (contacts: IBytemineContact[], filter: RampedUpFilter) => {
+export const applyContactFilters = (contacts: IBytemineContact[], filter: IBytemineFilter) => {
 	let fuse;
 	let results: IBytemineContact[] = [...contacts];
 
