@@ -1,7 +1,8 @@
 import { FormEvent, useEffect, useState } from 'react';
 
 import { FilterModel, IBytemineFilter } from '../../../types';
-import Card from '../../Card';
+import { callApi } from '../../../utils/helper-utils';
+import Card from '../../cards/Card';
 import CardTitle from '../../CardTitle';
 import FormButtonNew from '../../form/FormButtonNew';
 import FormInput from '../../form/FormInput';
@@ -21,7 +22,7 @@ const ProspectSaveFilterForm = ({
 	isActive: boolean;
 	item?: FilterModel;
 	filter?: IBytemineFilter;
-	onCreate: Function;
+	onCreate: (filter: FilterModel) => void;
 	onUpdate: (filter: FilterModel) => void;
 	onCancel: () => void;
 }) => {
@@ -52,41 +53,48 @@ const ProspectSaveFilterForm = ({
 		return isValid;
 	};
 
-	const getInput = () => {
-		// let operation = createFilter;
-		// let operationName = 'createFilter';
-		// let input = {
-		// 	name,
-		// 	userId: user?.attributes.sub,
-		// 	groupId: groupname,
-		// 	tenants: [groupname],
-		// 	rampedUpFilter: JSON.stringify(filter),
-		// 	savedFilter: true
-		// };
-		// if (id) {
-		// 	operation = updateFilter;
-		// 	operationName = 'updateFilter';
-		// 	input = { ...input, ...{ id } };
-		// }
-		// return { operation, operationName, input };
+	const getFormData = (): Partial<FilterModel> => ({
+		name,
+		filter: JSON.stringify(filter) as any,
+		isSaved: true,
+	});
+
+	const create = async () => {
+		try {
+			const input = await getFormData();
+			const res = (await callApi(null, '/api/v1/filters', {
+				method: 'POST',
+				body: JSON.stringify(input),
+			})) as FilterModel;
+			await onCreate(res);
+		} catch (err) {
+			console.log('create - err', err);
+		}
+	};
+
+	const update = async () => {
+		try {
+			const input = await getFormData();
+			const res = (await callApi(null, `/api/v1/filters/${item?.id}`, {
+				method: 'PUT',
+				body: JSON.stringify(input),
+			})) as FilterModel;
+			await onUpdate(res);
+		} catch (err) {
+			console.log('update - err', err);
+		}
 	};
 
 	const onSubmit = async (e: FormEvent) => {
+		setIsBusy(true);
 		e.preventDefault();
-		if ((await isFormValid()) !== true) {
+		const isValid = await isFormValid();
+		if (!isValid) {
+			setIsBusy(false);
 			return;
 		}
-		// setError(undefined);
-		// setIsBusy(true);
-		// const { operation, operationName, input } = getInput();
-		// let response: any;
-		// try {
-		// 	response = await API.graphql(graphqlOperation(operation, { input }));
-		// 	id ? await onUpdate(response.data[operationName]) : await onCreate(response.data[operationName]);
-		// } catch (err) {
-		// 	console.log(`Error in ${operationName} - ${JSON.stringify(err, null, 2)}`);
-		// 	setError(new Error(genericErrorMessage));
-		// }
+		setError(undefined);
+		id ? await update() : await create();
 		setIsBusy(false);
 	};
 
