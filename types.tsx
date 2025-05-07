@@ -1120,18 +1120,18 @@ export interface IBytemineEnrichment {
 
 	s3Key: string;
 	s3KeyOutput: string;
-	
+
 	name: string;
 	size: number;
-	
+
 	recordsUploaded: number;
 	recordsEnriched: number;
 	recordsProcessed: number;
 
 	matchRate?: number | string;
-	
+
 	isCompleted: boolean;
-	
+
 	keyEmail: string;
 	keyPhone: string;
 	keyLinkedin: string;
