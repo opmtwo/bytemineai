@@ -1,5 +1,5 @@
 import { sortBy } from 'lodash';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, FormEvent, SetStateAction, useState } from 'react';
 
 import { FilterModel } from '../../../types';
 import CardSkelton from '../../cards-skeleton';
@@ -25,18 +25,33 @@ const ProspectSearches = ({
 	limit = 10,
 	isBusy,
 	onClick,
+	onSearchByKeyword,
 }: {
 	searches: FilterModel[];
 	savedSearches: FilterModel[];
 	limit?: number;
 	isBusy: boolean;
 	onClick: Dispatch<SetStateAction<FilterModel | undefined>>;
+	onSearchByKeyword: (kwd: string) => void;
 }) => {
 	const [activeTab, setActiveTab] = useState('tab1');
+
+	const [kwd, setKwd] = useState('');
 
 	const handleTabClick = (tabName: any) => {
 		setActiveTab(tabName);
 	};
+
+	const handleFormSubmit = (e: FormEvent) => {
+		e.preventDefault();
+		const kwdClean = kwd.trim();
+		if (!kwdClean) {
+			return;
+		}
+		onSearchByKeyword(kwdClean);
+		setKwd('');
+	};
+
 	return (
 		<div className="columns is-centered is-sticky-top">
 			<div className="column is-12-mobile is-10-tablet">
@@ -60,7 +75,9 @@ const ProspectSearches = ({
 								<Slot slot="body">
 									<FormField className="is-flex is-align-items-center has-border-b p-3">
 										<IconNewSearch width={20} />
-										<FormInput className="is-borderless" placeholder="Search by keyword..." />
+										<form action="POST" onSubmit={handleFormSubmit}>
+											<FormInput className="is-borderless" placeholder="Search by keyword..." value={kwd} onChange={setKwd} />
+										</form>
 									</FormField>
 									<div className="tabs has-text-weight-semibold is-fullWidth pt-0 mb-0" style={{ width: '100%' }}>
 										<ul>

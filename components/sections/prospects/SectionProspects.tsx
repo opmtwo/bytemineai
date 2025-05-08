@@ -77,6 +77,12 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 	const [isUpgradeModalActive, setIsUpgradeModalActive] = useState(false);
 
 	// -------------------------------------------------------------------------
+	// Keywords - used in search form
+	// -------------------------------------------------------------------------
+	const [keywords, setKeywords] = useState<SelectOption[]>([]);
+
+
+	// -------------------------------------------------------------------------
 	// Router - query params
 	// -------------------------------------------------------------------------
 	const searchParams = useSearchParams();
@@ -220,6 +226,28 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 	const onSearchHistorySelect = (value: FilterModel) => {
 		setActiveFilterModel(value);
 		setIsHistoryModalActive(false);
+	};
+
+	const onSearchByKeyword = (kwd: string) => {
+		const newFilter = { ...activeFilter };
+		if (!newFilter.keywords) {
+			newFilter.keywords = [];
+		}
+
+		const index = newFilter.keywords.findIndex((val) => val.value.toLowerCase().trim() === kwd);
+		if (index === -1) {
+			newFilter.keywords.push({ value: kwd, label: kwd });
+		}
+
+		if (activeFilterModel) {
+			const newFilterModel = { ...activeFilterModel };
+			newFilterModel.filter = JSON.stringify(newFilter) as any;
+			setActiveFilterModel(newFilterModel);
+		}
+
+		setKeywords(newFilter.keywords);
+		setActiveFilter(newFilter);
+		onFilterSubmit(newFilter);
 	};
 
 	const onSearchHistoryCancel = () => setIsHistoryModalActive(false);
