@@ -118,7 +118,10 @@ const ProspectSearchEntry = ({ item, onClick }: { item: FilterModel; onClick: Di
 									<span style={{ color: 'grey', fontWeight: '500' }}>Included:</span>{' '}
 									<span className="">
 										{included} {label}{' '}
-										{dataRequirement[0] ? 'Work Email' : dataRequirement[1] ? 'Personal Email' : dataRequirement[2] ? 'Cell Phone' : ''}
+										{/* {dataRequirement[0] ? 'Work Email' : dataRequirement[1] ? 'Personal Email' : dataRequirement[2] ? 'Cell Phone' : ''} */}
+										{dataRequirement[0] ? 'Work Email ' : null}
+										{dataRequirement[1] ? 'Personal Email ' : null}
+										{dataRequirement[2] ? 'Cell Phone ' : null}
 									</span>
 									<br />
 								</>
