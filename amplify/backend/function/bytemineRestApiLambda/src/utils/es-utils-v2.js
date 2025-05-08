@@ -1498,6 +1498,13 @@ const esNormalizeDocument2 = (document) => {
 	console.log('esNormalizeDocument2 - input', JSON.stringify({ document }));
 	const data = document._source;
 
+	// Add back pid - this is also available as uuid
+	data.pid = data._id;
+	data.uuid = data._id;
+
+	// Data is already normalized in our OpenSearch instance - no need to process any further
+	return data;
+
 	// Normalize personal email
 	let personal_email = '';
 	if (data.personal_email) {
