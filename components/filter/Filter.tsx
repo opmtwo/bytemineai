@@ -40,6 +40,7 @@ const Filter = ({
 	clearLabel = 'Clear',
 	historyLabel = 'My Searches',
 	contacts,
+	kwds,
 	onFilterUpdate,
 	isLast = false,
 	isProspectFinder = true,
@@ -54,6 +55,7 @@ const Filter = ({
 	clearLabel?: string;
 	historyLabel?: string;
 	contacts?: IBytemineContact[];
+	kwds?: SelectOption[];
 	isLast?: boolean;
 	isProspectFinder?: boolean;
 	onFilterUpdate?: (newFilter: IBytemineFilter) => void;
@@ -210,6 +212,10 @@ const Filter = ({
 		setHasValidateEmails(rampedUpFilter?.hasValidateEmails || false);
 		setExcludeExisting(rampedUpFilter?.excludeExisting || false);
 	}, [activeFilter]);
+
+	useEffect(() => {
+		setKeywords(kwds);
+	}, [kwds]);
 
 	/**
 	 * @summary
