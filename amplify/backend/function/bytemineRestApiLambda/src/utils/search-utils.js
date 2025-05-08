@@ -1,4 +1,5 @@
 const { updateBytemineContact, createBytemineContact } = require('../graphql/mutations');
+const { getBytemineContact } = require('../graphql/queries');
 const { apsGql } = require('./aps-utils');
 const { atDataVerifyEmailAccounts } = require('./atdata-utils');
 const { esGetById2, esSearch2 } = require('./es-utils-v2');
@@ -345,6 +346,40 @@ const getAndSaveAllContacts = async (pids, teamId, userId) => {
 	return savedContacts;
 };
 
+const getSavedContact = async (pid, teamId) => {
+	const options = { id: `${pid}-${teamId}` };
+	let response;
+	try {
+		response = await apsGql(getBytemineContact, options);
+	} catch (err) {
+		console.log('getSavedContact - error', err);
+	}
+	return response;
+};
+
+const getAllSavedContacts = async (pids, teamId) => {
+	console.log('getAllSavedContacts', { pids, length: pids.length });
+
+	let promises = [];
+	let results = [];
+
+	for (let i = 0; i < pids.length; i++) {
+		promises.push(getSavedContact(pids[i], teamId));
+
+		if (promises.length > BATCH_SIZE) {
+			results = results.concat(await Promise.allSettled(promises));
+			promises = [];
+		}
+	}
+
+	results = results.concat(await Promise.allSettled(promises));
+
+	const validResults = results.filter((item) => item?.value?.data.getBytemineContact?.id).map((item) => item?.value?.data.getBytemineContact);
+	console.log('getAllSavedContacts', JSON.stringify({ results: results.length, validResults: validResults.length }));
+
+	return validResults;
+};
+
 module.exports = {
 	searchContactsV2,
 	getContact,
@@ -353,4 +388,6 @@ module.exports = {
 	saveAllContacts,
 	updateAllContacts,
 	getAndSaveAllContacts,
+	getSavedContact,
+	getAllSavedContacts,
 };
