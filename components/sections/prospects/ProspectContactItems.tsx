@@ -33,7 +33,7 @@ import Pagination from '../../Pagination';
 const ProspectContactItems = ({
 	items = [],
 	emailAccounts = [],
-	idsBeingUnlocked = [],
+	pidsBeingUnlocked = [],
 	itemsPerPage = ITEMS_PER_PAGE,
 	isLocked,
 	isBusy,
@@ -62,7 +62,7 @@ const ProspectContactItems = ({
 }: {
 	items: IBytemineContact[];
 	emailAccounts: EmailAccountModel[];
-	idsBeingUnlocked: string[];
+	pidsBeingUnlocked: string[];
 	itemsPerPage: number;
 	isLocked: boolean;
 	isBusy: boolean;
@@ -118,7 +118,7 @@ const ProspectContactItems = ({
 			return;
 		}
 		const newItems = filteredItems.map((item) => {
-			if (idsBeingUnlocked.includes(item.id)) {
+			if (pidsBeingUnlocked.includes(item.id)) {
 				item.isUnlocking = true;
 			} else {
 				item.isUnlocking = false;
@@ -127,7 +127,7 @@ const ProspectContactItems = ({
 		});
 		setFilteredItems(newItems);
 		setDisplayItems(paginate(newItems, itemsPerPage, activePage));
-	}, [idsBeingUnlocked]);
+	}, [pidsBeingUnlocked]);
 
 	const handlePageChange = (newPage: number, newPerPage: number) => {
 		console.log('handlePageChange - newPage ', newPage);
