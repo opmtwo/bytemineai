@@ -1177,3 +1177,9 @@ export interface IBytemineFilter {
 
 	page?: number;
 }
+
+export interface IExportContactState {
+	type: ActionExport;
+	targetIds?: string[];
+	startExporting: boolean;
+}
