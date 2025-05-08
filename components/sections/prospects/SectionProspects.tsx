@@ -4,14 +4,34 @@ import { useEffect, useRef, useState } from 'react';
 import { v4 } from 'uuid';
 
 import { genericErrorMessage, ITEMS_PER_PAGE } from '../../../consts';
-import { ActionAddToList, ActionExport, ActionSelect, FilterModel, IBytemineCollection, IBytemineContact, IBytemineFilter, SortData } from '../../../types';
-import { applyContactFilters } from '../../../utils/contact-utilsx';
+import {
+	ActionAddToList,
+	ActionExport,
+	ActionSelect,
+	ActionUnlock,
+	FilterModel,
+	IBytemineCollection,
+	IBytemineContact,
+	IBytemineFilter,
+	IExportContactState,
+	SelectOption,
+	SortData,
+} from '../../../types';
+import { applyContactFilters, downloadContacts, getExportData, getExportLabels } from '../../../utils/contact-utilsx';
 import { callApi, getFilterLabel, getSortedData } from '../../../utils/helper-utils';
 import Filter from '../../filter/Filter';
+import ErrorNotificaition from '../../notifications/ErrorNotification';
 import ProspectAddToCollection from './ProspectAddToCollection';
 import ProspectExportContacts from './ProspectExportContacts';
 import ProspectSearches from './ProspectSearches';
 import ProspectSearchHistory from './ProspectSearchHistory';
+import ProspectContactItems from './ProspectContactItems';
+
+const exportContactInitState = {
+	type: ActionExport.Selected,
+	targetIds: [],
+	startExporting: false,
+};
 
 const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?: boolean; listId?: string }) => {
 	// -------------------------------------------------------------------------
@@ -81,6 +101,18 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 	// -------------------------------------------------------------------------
 	const [keywords, setKeywords] = useState<SelectOption[]>([]);
 
+	// -------------------------------------------------------------------------
+	// Keywords - used in search form
+	// -------------------------------------------------------------------------
+	const [pidsBeingUnlocked, setPidsBeingUnlocked] = useState<string[]>([]);
+	const [exportContactsNow, setExportContactsNow] = useState<IExportContactState>(exportContactInitState);
+
+	// -------------------------------------------------------------------------
+	// Unlock contacts modal
+	// -------------------------------------------------------------------------
+
+	const [isUnlockModalActive, setIsUnlockModalActive] = useState(false);
+	const [contactsToUnlock, setContactsToUnlock] = useState<IBytemineContact[]>([]);
 
 	// -------------------------------------------------------------------------
 	// Router - query params
@@ -435,6 +467,134 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 		return newContacts;
 	};
 
+	const onUnlock = (type: ActionUnlock, targetIds: string[] = []) => {
+		// Final list of contacts to be unlocked
+		let items: IBytemineContact[] = [];
+
+		// Start with all contacts from state or props
+		let sourceContacts: IBytemineContact[] = [...(contactItems || [])];
+
+		// If only showing contacts from a filtered view (e.g., from a collection), override sourceContacts
+		if (isContactsOnly) {
+			sourceContacts = filteredContacts;
+		}
+
+		// Ensure sourceContacts is always defined
+		sourceContacts = sourceContacts || [];
+
+		// Unlock all contacts in the current source list
+		if (type === ActionUnlock.All) {
+			items = sourceContacts;
+		}
+
+		// Unlock only the contacts whose IDs are in the current page's targetIds
+		if (type === ActionUnlock.CurrentPage) {
+			items = sourceContacts.filter((item) => targetIds.includes(item.id));
+		}
+
+		// Unlock only the contacts that are currently marked as selected
+		if (type === ActionUnlock.Selected) {
+			items = sourceContacts.filter((item) => item.isSelected);
+		}
+
+		// Update state to pass the contacts to the unlock modal
+		setContactsToUnlock(items);
+		setIsUnlockModalActive(true);
+	};
+
+	const onUnlockOne = (contact: IBytemineContact) => {
+		setContactsToUnlock((prevContacts) => [contact]);
+		//setContactsToUnlock(prevContacts => prevContacts.concat(contact));
+		setIsUnlockModalActive(true);
+	};
+
+	const onUnlockCancel = () => setIsUnlockModalActive(false);
+
+	const onSelect = (pid: string, isChecked: boolean) => {
+		let items = [...(contactItems || [])];
+		const index = items.findIndex((item) => item.pid === pid);
+		if (index === -1) {
+			return;
+		}
+		items[index].isSelected = isChecked;
+		setContactItems(items);
+	};
+
+	const onDownload = (contact: IBytemineContact) => downloadContacts([getExportLabels(), getExportData(contact)]);
+
+	/**
+	 * @summary
+	 * This is called when active page is changed or number of items is changed
+	 *
+	 * @description
+	 * Reset search only when items per page is changed
+	 *
+	 * @note
+	 * Make sure to do this in home screen as well
+	 *
+	 * @param activePage {number} The active page
+	 * @param itemsPerPage {number} The number of items per page
+	 */
+	const onContactPageChange = async (activePage: number, itemsPerPage: number) => {
+		setActiveContactsPage(activePage);
+		if (itemsPerPage && itemsPerPage !== contactsPerPage) {
+			setContactsPerPage(itemsPerPage);
+			if (activeFilter) {
+				setIsBusy(true);
+				try {
+					await searchContacts(activeFilter, activeFilterModel, itemsPerPage);
+				} catch (err) {
+					//
+				}
+				setIsBusy(false);
+			}
+		}
+	};
+
+	const onUnlockSuccess = (fullContacts: IBytemineContact[], exportContacts?: boolean, selectedAction: ActionExport = ActionExport.Selected) => {
+		setContactItems((prevContacts) => {
+			let copiedContacts = [...(prevContacts || [])];
+			for (let i = 0; i < fullContacts.length; i++) {
+				const index = copiedContacts.findIndex((item) => item.pid && item.pid === fullContacts[i].pid);
+				if (index === -1) {
+					continue;
+				}
+				copiedContacts[index] = {
+					...fullContacts[i],
+					isSelected: copiedContacts[index].isSelected,
+				};
+			}
+			return copiedContacts;
+		});
+
+		setFilteredContacts((prevFilteredContacts) => {
+			const newFilteredContacts = [...(prevFilteredContacts || [])];
+			for (let i = 0; i < fullContacts.length; i++) {
+				const index = newFilteredContacts.findIndex((item) => item.pid && item.pid === fullContacts[i].pid);
+				if (index === -1) {
+					continue;
+				}
+				newFilteredContacts[index] = {
+					...fullContacts[i],
+					isSelected: newFilteredContacts[index].isSelected,
+				};
+			}
+			return newFilteredContacts;
+		});
+
+		setPidsBeingUnlocked([]);
+
+		if (exportContacts) {
+			setExportContactsNow({
+				startExporting: true,
+				targetIds: fullContacts.map((contact) => contact.id),
+				type: selectedAction,
+			});
+		}
+	};
+
+	const isTrailAccount = true;
+
 	return (
 		<div className="is-flex is-fullwidth">
 			<Filter
@@ -446,10 +606,44 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 				onClear={onClear}
 				// saveLabel={isContactsOnly ? 'Save Search' : 'Save'}
 				contacts={contactItems}
+				kwds={keywords}
 				onFilterUpdate={isContactsOnly ? onFilterUpdate : undefined}
 			/>
 
 			<div className="" style={{ flex: 1 }}>
+				{/* error message */}
+				<ErrorNotificaition error={error} className="pb-6 has-text-centered" />
+
+				{isContactsOnly ? <></> : null}
+
+				{isContactsOnly ? (
+					<>
+						<div className={isTrailAccount ? 'is-relative is-contacts-area trialsize' : 'is-relative is-contacts-area'}>
+							<ProspectContactItems
+								items={filteredContacts || []}
+								emailAccounts={[]}
+								pidsBeingUnlocked={pidsBeingUnlocked}
+								itemsPerPage={contactsPerPage}
+								isLocked={true}
+								isBusy={isContactsLoading}
+								onUnlock={onUnlock}
+								onUnlockOne={onUnlockOne}
+								onAdd={onAdd}
+								onSelect={onSelect}
+								onSelectMany={onSelectMany}
+								onDownload={onDownload}
+								onExport={onExport}
+								onAddToList={onAddToList}
+								onPageChange={onContactPageChange}
+								isTrialAccount={isTrailAccount}
+								setIsUpgradeModalActive={setIsUpgradeModalActive}
+								onSuccess={onUnlockSuccess}
+								isContactsOnly
+							/>
+						</div>
+					</>
+				) : null}
+
 				{/* export contacts */}
 				<ProspectExportContacts contacts={activeContacts} isActive={isExportModalActive} onSubmit={onExportSubmit} onCancel={onExportCancel} />
 
@@ -474,7 +668,16 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 					onCancel={onAddToCollectionCancel}
 				/>
 
-				<ProspectSearches searches={historyItems} savedSearches={savedHistoryItems} onClick={onSearchHistorySelect} isBusy={isHistoryBusy} limit={10} />
+				{contactItems === undefined && !isBusy ? (
+					<ProspectSearches
+						searches={historyItems}
+						savedSearches={savedHistoryItems}
+						onClick={onSearchHistorySelect}
+						onSearchByKeyword={onSearchByKeyword}
+						isBusy={isHistoryBusy}
+						limit={10}
+					/>
+				) : null}
 			</div>
 		</div>
 	);
