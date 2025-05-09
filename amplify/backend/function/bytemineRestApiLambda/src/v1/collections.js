@@ -1,13 +1,15 @@
 const { Router } = require('express');
 const slugify = require('slugify');
 
-const { deleteBytemineCollection, updateBytemineCollection, createBytemineCollection } = require('../graphql/mutations');
+const { deleteBytemineCollection, updateBytemineCollection, createBytemineCollection, createBytemineCollectionContact, deleteBytemineCollectionContact } = require('../graphql/mutations');
 const { getBytemineCollection, listCollectionByTeamId, listCollectionBySlug } = require('../graphql/queries');
 const { verifyTeam, verifyToken } = require('../middlewares/auth');
-const { ICollection, schemaValidate } = require('../schemas');
+const { ICollection, schemaValidate, IIds, IPids } = require('../schemas');
 const { apsGql } = require('../utils/aps-utils');
 
 const router = Router();
+
+const BATCH_SIZE = 50;
 
 router.get('/', verifyToken, async (req, res) => {
 	const sub = res.locals.sub;
@@ -90,6 +92,69 @@ router.put('/:id', schemaValidate(ICollection), verifyToken, verifyTeam, async (
 	const collectionUpdated = await apsGql(updateBytemineCollection, { input }, 'data.updateBytemineCollection');
 
 	return res.json(collectionUpdated);
+});
+
+router.post('/:id/contacts', schemaValidate(IPids), verifyToken, verifyTeam, async (req, res) => {
+	const { id } = req.params;
+	const { sub } = res.locals;
+	const { id: teamId } = res.locals.team;
+	const { pids } = req.body;
+
+	// Check collection
+	const collection = await apsGql(getBytemineCollection, { id }, 'data.getBytemineCollection');
+	if (!collection?.id) {
+		return res.status(404).json({ message: 'Not found' });
+	}
+
+	let promises = [];
+	let results = [];
+
+	// Remove matching collection contacts in batches
+	// we will simply go ahead and create everything once again
+	// this keeps everything simple and we create a new contact everytime this api is invoked
+	for (let i = 0; i < pids.length; i++) {
+		const pid = pids[i];
+		const _id = `${id}-${pid}`;
+
+		promises.push(await apsGql(deleteBytemineCollectionContact, { input: { id: _id } }, 'data.deleteBytemineCollectionContact'));
+
+		// Clean queue
+		if (promises.length > BATCH_SIZE) {
+			await Promise.all(promises);
+			promises = [];
+		}
+	}
+
+	await Promise.all(promises);
+	promises = [];
+
+	// Create collection contacts in batches
+	for (let i = 0; i < pids.length; i++) {
+		const pid = pids[i];
+		const _id = `${id}-${pid}`;
+		const input = {
+			id: _id,
+			owner: sub,
+			userId: sub,
+			teamId: teamId,
+			collectionId: id,
+			contactId: `${pid}-${teamId}`,
+		};
+
+		promises.push(await apsGql(createBytemineCollectionContact, { input }, 'data.createBytemineCollectionContact'));
+
+		// Clean queue
+		if (promises.length > BATCH_SIZE) {
+			results = results.concat(await Promise.all(promises));
+			promises = [];
+		}
+	}
+
+	// Clean remaining queue
+	results = results.concat(await Promise.all(promises));
+	console.log('All done', JSON.stringify(results));
+
+	return res.json(results);
 });
 
 router.delete('/:id', verifyToken, verifyTeam, async (req, res) => {
