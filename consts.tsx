@@ -8,6 +8,8 @@ export const TRIAL_CREDITS = 5;
 
 export const MAXIMUM_CONTACTS_TO_UNLOCK = 50;
 
+export const BATCH_SIZE = 50;
+
 export const GOOGLE_MAP_API_KEY = 'AIzaSyAdsjcqYLRt0mHkG7_K5132233x2YhxEvw';
 
 export const keysToExport = [
