@@ -116,6 +116,8 @@ type BytemineUser @model @auth(rules: [{ allow: private, operations: [] }]) {
 
 type BytemineContact @model @auth(rules: [{ allow: private, operations: [] }]) {
 	id: ID!
+	pid: ID
+	uuid: ID
 	owner: ID!
 	teamId: ID @index(name: "listContactByTeamId", queryField: "listContactByTeamId", sortKeyFields: ["createdAt"])
 	userId: ID @index(name: "listContactByUserId", queryField: "listContactByUserId", sortKeyFields: ["createdAt"])
@@ -124,13 +126,13 @@ type BytemineContact @model @auth(rules: [{ allow: private, operations: [] }]) {
 	updatedAt: AWSDateTime!
 
 	# email validation
-	isEmailVerified: Boolean
-	contactEmailStatusCode: String
-	contactEmailDomainType: String
-	personalEmailStatusCode: String
-	personalEmailDomainType: String
-	contactPersonalEmailStatusCode: String
-	contactPersonalEmailDomainType: String
+	is_email_verified: Boolean
+	contact_email_status_code: String
+	contact_email_domain_type: String
+	personal_email_status_code: String
+	personal_email_domain_type: String
+	contact_personal_email_status_code: String
+	contact_personal_email_domain_type: String
 
 	first_name: String # "Mandy",
 	last_name: String # "Dancho",
