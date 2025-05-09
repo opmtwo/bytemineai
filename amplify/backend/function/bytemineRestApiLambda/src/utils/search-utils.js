@@ -12,7 +12,9 @@ const searchContactsV2 = async (body, shouldReturnError = false, mask = true, ap
 
 	let response = {};
 
+	// -------------------------------------------------------------------------
 	// Unlock all?
+	// -------------------------------------------------------------------------
 	if (body.unlockAll) {
 		mask = false;
 		try {
@@ -33,6 +35,9 @@ const searchContactsV2 = async (body, shouldReturnError = false, mask = true, ap
 		}
 	}
 
+	// -------------------------------------------------------------------------
+	// Search mode only - need to return masked data
+	// -------------------------------------------------------------------------
 	try {
 		let savedFindCount = 0;
 		let iter = 0;
@@ -75,7 +80,9 @@ const searchContactsV2 = async (body, shouldReturnError = false, mask = true, ap
 						const saved = savedContacts[i];
 
 						// Only exclude if the contact is unlocked
-						if (saved?.isUnlocked !== true) continue;
+						if (saved?.isUnlocked !== true) {
+							continue;
+						}
 
 						const index = response.contacts.findIndex((item) => item.pid === saved.pid);
 						if (index !== -1) {
@@ -90,7 +97,9 @@ const searchContactsV2 = async (body, shouldReturnError = false, mask = true, ap
 				body.page = body.page + 1;
 
 				// If esSearch2 returns no more contacts, break to avoid infinite loop
-				if (!newResponse?.contacts?.length) break;
+				if (!newResponse?.contacts?.length) {
+					break;
+				}
 			}
 
 			// Trim excess contacts to meet the exact page size
