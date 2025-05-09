@@ -21,11 +21,13 @@ import { applyContactFilters, downloadContacts, getExportData, getExportLabels }
 import { callApi, getFilterLabel, getSortedData } from '../../../utils/helper-utils';
 import Filter from '../../filter/Filter';
 import ErrorNotificaition from '../../notifications/ErrorNotification';
+import TableSkeleton from '../../table-skeleton';
 import ProspectAddToCollection from './ProspectAddToCollection';
+import ProspectContactItems from './ProspectContactItems';
 import ProspectExportContacts from './ProspectExportContacts';
 import ProspectSearches from './ProspectSearches';
 import ProspectSearchHistory from './ProspectSearchHistory';
-import ProspectContactItems from './ProspectContactItems';
+import Breadcrumb from '../../Breadcrumb';
 
 const exportContactInitState = {
 	type: ActionExport.Selected,
@@ -182,7 +184,7 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 
 	const searchContacts = async (filter: IBytemineFilter, model?: FilterModel, itemsPerPage?: number) => {
 		console.log('searchContacts', { filter, model, itemsPerPage });
-		return;
+		// return;
 
 		let response;
 		const randomId = 'random-' + v4();
@@ -433,10 +435,11 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 			isSaved: false,
 		};
 
-		const newFilter = await saveFilter(payload);
-		if (newFilter) {
-			historyItems.push(newFilter);
-		}
+		saveFilter(payload).then((newFilter) => {
+			if (newFilter) {
+				historyItems.push(newFilter);
+			}
+		});
 
 		setIsHistoryModalActive(false);
 
@@ -593,93 +596,188 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 		}
 	};
 
+	const onLoadMore = async (activePage: number) => {
+		// next page is not available or filter is not set
+		if (!hasNext || !activeFilter) {
+			return [];
+		}
+
+		setError(undefined);
+		console.log('onLoadMore - page exppage', page, page + 1);
+
+		// fetch contacts from server
+		setIsBusy(true);
+		const newContacts = await searchContacts({ ...activeFilter, page: page + 1 }, activeFilterModel);
+		setIsBusy(false);
+
+		return newContacts || [];
+	};
+
+	const onLoadPrev = async () => {
+		if (!hasPrev || !activeFilter) {
+			return [];
+		}
+
+		// fetch contacts from server
+		setError(undefined);
+		console.log('onLoadPrev - page exppage', page, page - 1);
+
+		setIsBusy(true);
+		/*
+		let newContacts = await searchContacts(
+		  { ...activeFilter, page: page - 1 },
+		  activeFilterModel
+		);
+	
+		newContacts = newContacts?.splice(
+		  page * pageSize - pageSize,
+		  newContacts?.length
+		);*/
+		setIsBusy(false);
+		//return newContacts || [];
+
+		return contactItems || [];
+	};
+
 	const isTrailAccount = true;
 
 	return (
-		<div className="is-flex is-fullwidth">
-			<Filter
-				isContactsOnly={isContactsOnly}
-				hasHistory={!isContactsOnly}
-				onSubmit={isContactsOnly ? onFilterSave : onFilterSubmit}
-				onViewHistory={onViewHistory}
-				activeFilter={activeFilterModel}
-				onClear={onClear}
-				// saveLabel={isContactsOnly ? 'Save Search' : 'Save'}
-				contacts={contactItems}
-				kwds={keywords}
-				onFilterUpdate={isContactsOnly ? onFilterUpdate : undefined}
-			/>
+		<>
+			<Breadcrumb title={`Result-`} items={[{ label: 'Prospect Finder', href: '/prospect-finder', isCurrent: true }]} />
 
-			<div className="" style={{ flex: 1 }}>
-				{/* error message */}
-				<ErrorNotificaition error={error} className="pb-6 has-text-centered" />
-
-				{isContactsOnly ? <></> : null}
-
-				{isContactsOnly ? (
-					<>
-						<div className={isTrailAccount ? 'is-relative is-contacts-area trialsize' : 'is-relative is-contacts-area'}>
-							<ProspectContactItems
-								items={filteredContacts || []}
-								emailAccounts={[]}
-								pidsBeingUnlocked={pidsBeingUnlocked}
-								itemsPerPage={contactsPerPage}
-								isLocked={true}
-								isBusy={isContactsLoading}
-								onUnlock={onUnlock}
-								onUnlockOne={onUnlockOne}
-								onAdd={onAdd}
-								onSelect={onSelect}
-								onSelectMany={onSelectMany}
-								onDownload={onDownload}
-								onExport={onExport}
-								onAddToList={onAddToList}
-								onPageChange={onContactPageChange}
-								isTrialAccount={isTrailAccount}
-								setIsUpgradeModalActive={setIsUpgradeModalActive}
-								onSuccess={onUnlockSuccess}
-								isContactsOnly
-							/>
-						</div>
-					</>
-				) : null}
-
-				{/* export contacts */}
-				<ProspectExportContacts contacts={activeContacts} isActive={isExportModalActive} onSubmit={onExportSubmit} onCancel={onExportCancel} />
-
-				{/* filter / search history modal */}
-				<ProspectSearchHistory
-					isBusy={isHistoryBusy}
-					searchItems={savedHistoryItems}
-					isActive={isHistoryModalActive}
-					onCancel={onSearchHistoryCancel}
-					onClick={onSearchHistorySelect}
-					nextToken={historyNextToken}
-					onFetchMore={onHistoryFetchMore}
+			<div className="is-flex is-fullwidth">
+				<Filter
+					isContactsOnly={isContactsOnly}
+					hasHistory={!isContactsOnly}
+					onSubmit={isContactsOnly ? onFilterSave : onFilterSubmit}
+					onViewHistory={onViewHistory}
+					activeFilter={activeFilterModel}
+					onClear={onClear}
+					// saveLabel={isContactsOnly ? 'Save Search' : 'Save'}
+					contacts={contactItems}
+					kwds={keywords}
+					onFilterUpdate={isContactsOnly ? onFilterUpdate : undefined}
 				/>
 
-				{/* The add to list modal */}
-				<ProspectAddToCollection
-					isBusy={isCollectionBusy}
-					listItems={collectionItems}
-					contactItems={activeContacts}
-					isActive={isAddToCollectionModalActive}
-					onSubmit={onAddToCollectionSubmit}
-					onCancel={onAddToCollectionCancel}
-				/>
+				<div className="ml-5" style={{ flex: 1 }}>
+					{/* error message */}
+					<ErrorNotificaition error={error} className="pb-6 has-text-centered" />
 
-				{contactItems === undefined && !isBusy ? (
-					<ProspectSearches
-						searches={historyItems}
-						savedSearches={savedHistoryItems}
-						onClick={onSearchHistorySelect}
-						onSearchByKeyword={onSearchByKeyword}
+					{isContactsOnly ? <></> : null}
+
+					{isContactsOnly ? (
+						<>
+							<div className={isTrailAccount ? 'is-relative is-contacts-area trialsize' : 'is-relative is-contacts-area'}>
+								<ProspectContactItems
+									items={filteredContacts || []}
+									emailAccounts={[]}
+									pidsBeingUnlocked={pidsBeingUnlocked}
+									itemsPerPage={contactsPerPage}
+									isLocked={true}
+									isBusy={isContactsLoading}
+									onUnlock={onUnlock}
+									onUnlockOne={onUnlockOne}
+									onAdd={onAdd}
+									onSelect={onSelect}
+									onSelectMany={onSelectMany}
+									onDownload={onDownload}
+									onExport={onExport}
+									onAddToList={onAddToList}
+									onPageChange={onContactPageChange}
+									isTrialAccount={isTrailAccount}
+									setIsUpgradeModalActive={setIsUpgradeModalActive}
+									onSuccess={onUnlockSuccess}
+									isContactsOnly
+								/>
+							</div>
+						</>
+					) : (
+						<>
+							{isBusy && contactItems === undefined && <TableSkeleton rows={22} />}
+
+							{/* {contactItems === undefined && !isBusy ? (
+								<ProspectSearch
+									searches={historyItems}
+									savedSearches={savedHistoryItems}
+									onClick={onSearchHistorySelect}
+									isBusy={isHistoryBusy}
+									limit={10}
+								/>
+							) : null} */}
+
+							{contactItems !== undefined ? (
+								<div className={isTrailAccount ? 'is-relative is-contacts-area trialsize' : 'is-relative is-contacts-area'}>
+									<ProspectContactItems
+										items={contactItems || []}
+										emailAccounts={[]}
+										pidsBeingUnlocked={pidsBeingUnlocked}
+										itemsPerPage={contactsPerPage}
+										isLocked={true}
+										isBusy={isBusy}
+										onUnlock={onUnlock}
+										onUnlockOne={onUnlockOne}
+										onAdd={onAdd}
+										onSelect={onSelect}
+										onSelectMany={onSelectMany}
+										onDownload={onDownload}
+										onExport={onExport}
+										onLoadPrev={onLoadPrev}
+										onAddToList={onAddToList}
+										onPageChange={onContactPageChange}
+										isTrialAccount={isTrailAccount}
+										setIsUpgradeModalActive={setIsUpgradeModalActive}
+										hasNext={hasNext}
+										onLoadMore={onLoadMore}
+										totalResults={totalResults}
+										onSuccess={onUnlockSuccess}
+										isContactsOnly={false}
+									/>
+									{/* {isBusy && <TableSkeleton />} */}
+									{/* <CardAnimatePresence isActive={isBusy}>
+											<LoaderFullscreen opacity={0} />
+										</CardAnimatePresence> */}
+								</div>
+							) : null}
+						</>
+					)}
+
+					{/* export contacts */}
+					<ProspectExportContacts contacts={activeContacts} isActive={isExportModalActive} onSubmit={onExportSubmit} onCancel={onExportCancel} />
+
+					{/* filter / search history modal */}
+					<ProspectSearchHistory
 						isBusy={isHistoryBusy}
-						limit={10}
+						searchItems={savedHistoryItems}
+						isActive={isHistoryModalActive}
+						onCancel={onSearchHistoryCancel}
+						onClick={onSearchHistorySelect}
+						nextToken={historyNextToken}
+						onFetchMore={onHistoryFetchMore}
 					/>
-				) : null}
+
+					{/* The add to list modal */}
+					<ProspectAddToCollection
+						isBusy={isCollectionBusy}
+						listItems={collectionItems}
+						contactItems={activeContacts}
+						isActive={isAddToCollectionModalActive}
+						onSubmit={onAddToCollectionSubmit}
+						onCancel={onAddToCollectionCancel}
+					/>
+
+					{contactItems === undefined && !isBusy ? (
+						<ProspectSearches
+							searches={historyItems}
+							savedSearches={savedHistoryItems}
+							onClick={onSearchHistorySelect}
+							onSearchByKeyword={onSearchByKeyword}
+							isBusy={isHistoryBusy}
+							limit={10}
+						/>
+					) : null}
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 
