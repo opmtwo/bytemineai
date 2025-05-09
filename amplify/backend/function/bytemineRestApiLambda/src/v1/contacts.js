@@ -5,6 +5,10 @@ const { searchContactsV2 } = require('../utils/search-utils');
 const { getErrorMsg, getErrorCode } = require('../utils/helper-utils');
 const { usageAddUsage } = require('../utils/usage-utils');
 const { esGetOptionsV2 } = require('../utils/es-utils-v2');
+const { createBytemineContact, deleteBytemineContact, updateBytemineContact } = require('../graphql/mutations');
+const { getBytemineContact } = require('../graphql/queries');
+const { schemaValidate, IContact } = require('../schemas');
+const { v4 } = require('uuid');
 
 const router = Router();
 
@@ -28,30 +32,115 @@ router.post('/search', verifyToken, verifyTeam, async (req, res) => {
 	//let options = body
 	// let options = esGetOptionsV2(body);
 
+	// -------------------------------------------------------------------------
+	// Lookup contacts in OpenSearch - this is the core
+	// -------------------------------------------------------------------------
 	const response = await searchContactsV2(body, true, true, false, false);
 	if (response instanceof Error === true) {
 		return res.status(getErrorCode(response) || 422).json({ message: getErrorMsg(response) });
 	}
 
+	// -------------------------------------------------------------------------
+	// Perform any modifications to the final output data here
+	// -------------------------------------------------------------------------
 	for (let i = 0; i < response.contacts.length; i++) {
-		response.contacts[i].id = response.contacts[i].pid;
-		delete response.contacts[i].pid;
+		delete response.contacts[i].id;
+		// response.contacts[i].id = response.contacts[i].pid;
+		// response.contacts[i].uuid = response.contacts[i].uuid;
+		// delete response.contacts[i].pid;
 	}
 
+	// response.version = 2;
+	// response.options = options;
+	// response.body = body;
+
+	// -------------------------------------------------------------------------
+	// Add usage info - credits consumed to unlock the contacts
+	// -------------------------------------------------------------------------
 	if (body.unlockAll) {
 		await usageAddUsage(teamId, sub, response.contacts.length * 1, body.filterId);
 	}
 
-	response.version = 2;
-	//response.options = options;
-	//response.body = body;
-
+	// -------------------------------------------------------------------------
+	// Final cleanup and logs. Also log execution time info
+	// -------------------------------------------------------------------------
 	const endtime = new Date();
 	const diffTime = Math.abs(endtime - starttime);
 	const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 	console.log('overall search took ' + diffTime + ' milliseconds');
 
 	return res.json(response);
+});
+
+router.get('/:id', verifyToken, async (req, res) => {
+	const { id } = req.params;
+
+	const contact = await apsGql(getBytemineContact, { id }, 'data.getBytemineContact');
+	if (!contact?.id) {
+		return res.status(404).json({ message: 'Not found' });
+	}
+
+	return res.json(contact);
+});
+
+router.post('/', schemaValidate(IContact), verifyToken, verifyTeam, async (req, res) => {
+	const { sub } = res.locals;
+	const { id: teamId } = res.locals.team;
+
+	const data = req.body;
+	const id = `${data.pid}-${teamId}`;
+
+	await apsGql(deleteBytemineContact, { input: { id } }, 'data.deleteBytemineContact');
+
+	const input = { ...data, id, owner: sub, userId: sub, teamId };
+	const contact = await apsGql(createBytemineContact, { input }, 'data.createBytemineContact');
+
+	return res.json(contact);
+});
+
+router.put('/:id', schemaValidate(IContact), verifyToken, verifyTeam, async (req, res) => {
+	const { id } = req.params;
+	const { sub } = res.locals;
+	const { id: teamId } = res.locals.team;
+	const data = req.body;
+
+	const contact = await apsGql(getBytemineContact, { id }, 'data.getBytemineContact');
+	if (!contact?.id) {
+		return res.status(404).json({ message: 'Not found' });
+	}
+
+	const input = { id, _version: contact._version, ...data, userId: sub, teamId };
+	const contactUpdated = await apsGql(updateBytemineContact, { input }, 'data.updateBytemineContact');
+
+	return res.json(contactUpdated);
+});
+
+router.post('/:id/unlock', schemaValidate(IContact), verifyToken, verifyTeam, async (req, res) => {
+	const { id } = req.params;
+	const { sub } = res.locals;
+	const { id: teamId } = res.locals.team;
+	const data = req.body;
+
+	const contact = await apsGql(getBytemineContact, { id }, 'data.getBytemineContact');
+	if (!contact?.id) {
+		// return res.status(404).json({ message: 'Not found' });
+	}
+
+	return res.json(contact);
+});
+
+router.delete('/:id', verifyToken, verifyTeam, async (req, res) => {
+	const { id } = req.params;
+
+	const contact = await apsGql(getBytemineContact, { id }, 'data.getBytemineContact');
+	if (!contact?.id) {
+		return res.status(404).json({ message: 'Not found' });
+	}
+
+	const input = { id, _version: contact._version };
+	await apsGql(deleteBytemineContact, { input });
+
+	return res.json(contact);
 });
 
 module.exports = router;
