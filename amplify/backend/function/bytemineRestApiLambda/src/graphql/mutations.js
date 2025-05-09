@@ -287,18 +287,20 @@ exports.createBytemineContact = /* GraphQL */ `
   ) {
     createBytemineContact(input: $input, condition: $condition) {
       id
+      pid
+      uuid
       owner
       teamId
       userId
       createdAt
       updatedAt
-      isEmailVerified
-      contactEmailStatusCode
-      contactEmailDomainType
-      personalEmailStatusCode
-      personalEmailDomainType
-      contactPersonalEmailStatusCode
-      contactPersonalEmailDomainType
+      is_email_verified
+      contact_email_status_code
+      contact_email_domain_type
+      personal_email_status_code
+      personal_email_domain_type
+      contact_personal_email_status_code
+      contact_personal_email_domain_type
       first_name
       last_name
       middle_name
@@ -367,18 +369,20 @@ exports.updateBytemineContact = /* GraphQL */ `
   ) {
     updateBytemineContact(input: $input, condition: $condition) {
       id
+      pid
+      uuid
       owner
       teamId
       userId
       createdAt
       updatedAt
-      isEmailVerified
-      contactEmailStatusCode
-      contactEmailDomainType
-      personalEmailStatusCode
-      personalEmailDomainType
-      contactPersonalEmailStatusCode
-      contactPersonalEmailDomainType
+      is_email_verified
+      contact_email_status_code
+      contact_email_domain_type
+      personal_email_status_code
+      personal_email_domain_type
+      contact_personal_email_status_code
+      contact_personal_email_domain_type
       first_name
       last_name
       middle_name
@@ -447,18 +451,20 @@ exports.deleteBytemineContact = /* GraphQL */ `
   ) {
     deleteBytemineContact(input: $input, condition: $condition) {
       id
+      pid
+      uuid
       owner
       teamId
       userId
       createdAt
       updatedAt
-      isEmailVerified
-      contactEmailStatusCode
-      contactEmailDomainType
-      personalEmailStatusCode
-      personalEmailDomainType
-      contactPersonalEmailStatusCode
-      contactPersonalEmailDomainType
+      is_email_verified
+      contact_email_status_code
+      contact_email_domain_type
+      personal_email_status_code
+      personal_email_domain_type
+      contact_personal_email_status_code
+      contact_personal_email_domain_type
       first_name
       last_name
       middle_name
@@ -581,18 +587,20 @@ exports.createBytemineCollectionContact = /* GraphQL */ `
       contactId
       contact {
         id
+        pid
+        uuid
         owner
         teamId
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
+        is_email_verified
+        contact_email_status_code
+        contact_email_domain_type
+        personal_email_status_code
+        personal_email_domain_type
+        contact_personal_email_status_code
+        contact_personal_email_domain_type
         first_name
         last_name
         middle_name
@@ -718,18 +726,20 @@ exports.updateBytemineCollectionContact = /* GraphQL */ `
       contactId
       contact {
         id
+        pid
+        uuid
         owner
         teamId
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
+        is_email_verified
+        contact_email_status_code
+        contact_email_domain_type
+        personal_email_status_code
+        personal_email_domain_type
+        contact_personal_email_status_code
+        contact_personal_email_domain_type
         first_name
         last_name
         middle_name
@@ -855,18 +865,20 @@ exports.deleteBytemineCollectionContact = /* GraphQL */ `
       contactId
       contact {
         id
+        pid
+        uuid
         owner
         teamId
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
+        is_email_verified
+        contact_email_status_code
+        contact_email_domain_type
+        personal_email_status_code
+        personal_email_domain_type
+        contact_personal_email_status_code
+        contact_personal_email_domain_type
         first_name
         last_name
         middle_name
@@ -946,18 +958,20 @@ exports.createBytemineContactForm = /* GraphQL */ `
       contactId
       contact {
         id
+        pid
+        uuid
         owner
         teamId
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
+        is_email_verified
+        contact_email_status_code
+        contact_email_domain_type
+        personal_email_status_code
+        personal_email_domain_type
+        contact_personal_email_status_code
+        contact_personal_email_domain_type
         first_name
         last_name
         middle_name
@@ -1039,18 +1053,20 @@ exports.updateBytemineContactForm = /* GraphQL */ `
       contactId
       contact {
         id
+        pid
+        uuid
         owner
         teamId
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
+        is_email_verified
+        contact_email_status_code
+        contact_email_domain_type
+        personal_email_status_code
+        personal_email_domain_type
+        contact_personal_email_status_code
+        contact_personal_email_domain_type
         first_name
         last_name
         middle_name
@@ -1132,18 +1148,20 @@ exports.deleteBytemineContactForm = /* GraphQL */ `
       contactId
       contact {
         id
+        pid
+        uuid
         owner
         teamId
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
+        is_email_verified
+        contact_email_status_code
+        contact_email_domain_type
+        personal_email_status_code
+        personal_email_domain_type
+        contact_personal_email_status_code
+        contact_personal_email_domain_type
         first_name
         last_name
         middle_name

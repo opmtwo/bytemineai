@@ -199,18 +199,20 @@ exports.getBytemineContact = /* GraphQL */ `
   query GetBytemineContact($id: ID!) {
     getBytemineContact(id: $id) {
       id
+      pid
+      uuid
       owner
       teamId
       userId
       createdAt
       updatedAt
-      isEmailVerified
-      contactEmailStatusCode
-      contactEmailDomainType
-      personalEmailStatusCode
-      personalEmailDomainType
-      contactPersonalEmailStatusCode
-      contactPersonalEmailDomainType
+      is_email_verified
+      contact_email_status_code
+      contact_email_domain_type
+      personal_email_status_code
+      personal_email_domain_type
+      contact_personal_email_status_code
+      contact_personal_email_domain_type
       first_name
       last_name
       middle_name
@@ -285,18 +287,20 @@ exports.listBytemineContacts = /* GraphQL */ `
     ) {
       items {
         id
+        pid
+        uuid
         owner
         teamId
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
+        is_email_verified
+        contact_email_status_code
+        contact_email_domain_type
+        personal_email_status_code
+        personal_email_domain_type
+        contact_personal_email_status_code
+        contact_personal_email_domain_type
         first_name
         last_name
         middle_name
@@ -419,18 +423,20 @@ exports.getBytemineCollectionContact = /* GraphQL */ `
       contactId
       contact {
         id
+        pid
+        uuid
         owner
         teamId
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
+        is_email_verified
+        contact_email_status_code
+        contact_email_domain_type
+        personal_email_status_code
+        personal_email_domain_type
+        contact_personal_email_status_code
+        contact_personal_email_domain_type
         first_name
         last_name
         middle_name
@@ -528,18 +534,20 @@ exports.listBytemineCollectionContacts = /* GraphQL */ `
         contactId
         contact {
           id
+          pid
+          uuid
           owner
           teamId
           userId
           createdAt
           updatedAt
-          isEmailVerified
-          contactEmailStatusCode
-          contactEmailDomainType
-          personalEmailStatusCode
-          personalEmailDomainType
-          contactPersonalEmailStatusCode
-          contactPersonalEmailDomainType
+          is_email_verified
+          contact_email_status_code
+          contact_email_domain_type
+          personal_email_status_code
+          personal_email_domain_type
+          contact_personal_email_status_code
+          contact_personal_email_domain_type
           first_name
           last_name
           middle_name
@@ -619,18 +627,20 @@ exports.getBytemineContactForm = /* GraphQL */ `
       contactId
       contact {
         id
+        pid
+        uuid
         owner
         teamId
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
+        is_email_verified
+        contact_email_status_code
+        contact_email_domain_type
+        personal_email_status_code
+        personal_email_domain_type
+        contact_personal_email_status_code
+        contact_personal_email_domain_type
         first_name
         last_name
         middle_name
@@ -718,18 +728,20 @@ exports.listBytemineContactForms = /* GraphQL */ `
         contactId
         contact {
           id
+          pid
+          uuid
           owner
           teamId
           userId
           createdAt
           updatedAt
-          isEmailVerified
-          contactEmailStatusCode
-          contactEmailDomainType
-          personalEmailStatusCode
-          personalEmailDomainType
-          contactPersonalEmailStatusCode
-          contactPersonalEmailDomainType
+          is_email_verified
+          contact_email_status_code
+          contact_email_domain_type
+          personal_email_status_code
+          personal_email_domain_type
+          contact_personal_email_status_code
+          contact_personal_email_domain_type
           first_name
           last_name
           middle_name
@@ -1683,18 +1695,20 @@ exports.listContactByTeamId = /* GraphQL */ `
     ) {
       items {
         id
+        pid
+        uuid
         owner
         teamId
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
+        is_email_verified
+        contact_email_status_code
+        contact_email_domain_type
+        personal_email_status_code
+        personal_email_domain_type
+        contact_personal_email_status_code
+        contact_personal_email_domain_type
         first_name
         last_name
         middle_name
@@ -1778,18 +1792,20 @@ exports.listContactByUserId = /* GraphQL */ `
     ) {
       items {
         id
+        pid
+        uuid
         owner
         teamId
         userId
         createdAt
         updatedAt
-        isEmailVerified
-        contactEmailStatusCode
-        contactEmailDomainType
-        personalEmailStatusCode
-        personalEmailDomainType
-        contactPersonalEmailStatusCode
-        contactPersonalEmailDomainType
+        is_email_verified
+        contact_email_status_code
+        contact_email_domain_type
+        personal_email_status_code
+        personal_email_domain_type
+        contact_personal_email_status_code
+        contact_personal_email_domain_type
         first_name
         last_name
         middle_name
@@ -1893,18 +1909,20 @@ exports.listCollectionContactByTeamId = /* GraphQL */ `
         contactId
         contact {
           id
+          pid
+          uuid
           owner
           teamId
           userId
           createdAt
           updatedAt
-          isEmailVerified
-          contactEmailStatusCode
-          contactEmailDomainType
-          personalEmailStatusCode
-          personalEmailDomainType
-          contactPersonalEmailStatusCode
-          contactPersonalEmailDomainType
+          is_email_verified
+          contact_email_status_code
+          contact_email_domain_type
+          personal_email_status_code
+          personal_email_domain_type
+          contact_personal_email_status_code
+          contact_personal_email_domain_type
           first_name
           last_name
           middle_name
@@ -2011,18 +2029,20 @@ exports.listCollectionContactByUserId = /* GraphQL */ `
         contactId
         contact {
           id
+          pid
+          uuid
           owner
           teamId
           userId
           createdAt
           updatedAt
-          isEmailVerified
-          contactEmailStatusCode
-          contactEmailDomainType
-          personalEmailStatusCode
-          personalEmailDomainType
-          contactPersonalEmailStatusCode
-          contactPersonalEmailDomainType
+          is_email_verified
+          contact_email_status_code
+          contact_email_domain_type
+          personal_email_status_code
+          personal_email_domain_type
+          contact_personal_email_status_code
+          contact_personal_email_domain_type
           first_name
           last_name
           middle_name
@@ -2129,18 +2149,20 @@ exports.listCollectionContactByCollectionId = /* GraphQL */ `
         contactId
         contact {
           id
+          pid
+          uuid
           owner
           teamId
           userId
           createdAt
           updatedAt
-          isEmailVerified
-          contactEmailStatusCode
-          contactEmailDomainType
-          personalEmailStatusCode
-          personalEmailDomainType
-          contactPersonalEmailStatusCode
-          contactPersonalEmailDomainType
+          is_email_verified
+          contact_email_status_code
+          contact_email_domain_type
+          personal_email_status_code
+          personal_email_domain_type
+          contact_personal_email_status_code
+          contact_personal_email_domain_type
           first_name
           last_name
           middle_name
@@ -2235,18 +2257,20 @@ exports.listContactFormByTeamId = /* GraphQL */ `
         contactId
         contact {
           id
+          pid
+          uuid
           owner
           teamId
           userId
           createdAt
           updatedAt
-          isEmailVerified
-          contactEmailStatusCode
-          contactEmailDomainType
-          personalEmailStatusCode
-          personalEmailDomainType
-          contactPersonalEmailStatusCode
-          contactPersonalEmailDomainType
+          is_email_verified
+          contact_email_status_code
+          contact_email_domain_type
+          personal_email_status_code
+          personal_email_domain_type
+          contact_personal_email_status_code
+          contact_personal_email_domain_type
           first_name
           last_name
           middle_name
@@ -2343,18 +2367,20 @@ exports.listContactFormByUserId = /* GraphQL */ `
         contactId
         contact {
           id
+          pid
+          uuid
           owner
           teamId
           userId
           createdAt
           updatedAt
-          isEmailVerified
-          contactEmailStatusCode
-          contactEmailDomainType
-          personalEmailStatusCode
-          personalEmailDomainType
-          contactPersonalEmailStatusCode
-          contactPersonalEmailDomainType
+          is_email_verified
+          contact_email_status_code
+          contact_email_domain_type
+          personal_email_status_code
+          personal_email_domain_type
+          contact_personal_email_status_code
+          contact_personal_email_domain_type
           first_name
           last_name
           middle_name
