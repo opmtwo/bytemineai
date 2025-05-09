@@ -61,6 +61,14 @@ router.post('/', schemaValidate(ICollection), verifyToken, verifyTeam, async (re
 	const data = req.body;
 	const slug = slugify(`${data.name}-${teamId}`, { lower: true, strict: true });
 
+	const collections = await apsGql(listCollectionBySlug, { slug }, 'data.listCollectionBySlug.items');
+	console.log('collections', { length: collections.length });
+
+	if (collections.length) {
+		console.log('Found existing collection with same name', JSON.stringify({ collections }));
+		return res.json(collections[0]);
+	}
+
 	const input = { ...data, slug, owner: sub, userId: sub, teamId };
 	const collection = await apsGql(createBytemineCollection, { input }, 'data.createBytemineCollection');
 
