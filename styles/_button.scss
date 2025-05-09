@@ -58,7 +58,14 @@ fieldset[disabled] .button.is-primary.is-outlined {
 	background-color: $primary;
 }
 
+.btn {
+	background-color: transparent;
+	border: 1px solid $border;
+	transition: all $animation-time $animation-method;
+}
+
 .btn:hover {
+	border-color: $dark !important;
 	text-decoration: underline;
 }
 
