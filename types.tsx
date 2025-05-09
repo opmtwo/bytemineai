@@ -1183,3 +1183,21 @@ export interface IExportContactState {
 	targetIds?: string[];
 	startExporting: boolean;
 }
+
+export interface IBytemineCollectionContact {
+	id: string;
+	owner: string;
+	teamId?: string;
+	userId?: string;
+
+	createdAt: string;
+	updatedAt: string;
+
+	isSelected?: boolean;
+
+	collectionId: string;
+	collection?: IBytemineCollection;
+
+	contactId: string;
+	contact?: IBytemineContact;
+}
