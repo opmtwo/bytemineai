@@ -3,18 +3,18 @@ import { FormEvent, useEffect, useState } from 'react';
 import { ITEMS_PER_PAGE, keysToExportMap } from '../../../consts';
 import { useAuthContext } from '../../../providers/auth-data-provider';
 import {
-    ActionAddToList,
-    ActionExport,
-    ActionList,
-    ActionSelect,
-    ActionUnlock,
-    EmailAccountModel,
-    IBytemineContact,
-    SortData,
-    SortOrder
+	ActionAddToList,
+	ActionExport,
+	ActionList,
+	ActionSelect,
+	ActionUnlock,
+	EmailAccountModel,
+	IBytemineContact,
+	SortData,
+	SortOrder,
 } from '../../../types';
 import { searchContactItems } from '../../../utils/contact-utilsx';
-import { decodeJson, getSortedData, paginate } from '../../../utils/helper-utils';
+import { getSortedData, paginate } from '../../../utils/helper-utils';
 import Card from '../../Card';
 import CardAnimatePresence from '../../cards/CardAnimatePresence';
 import EmptyMsg from '../../EmptyMsg';
@@ -267,6 +267,8 @@ const ProspectContactItems = ({
 		return <TableSkeleton />;
 	}
 
+	return <div className="is-scroll-view">{itemsList}</div>;
+
 	return (
 		<div className="is-scroll-view">
 			<Card>
@@ -325,12 +327,9 @@ const ProspectContactItems = ({
 						)}
 
 						{isAudienceBuilder ? (
-							<FormButtonNew  onClick={showExportModal}>
+							<FormButtonNew onClick={showExportModal}>
 								<IconRocket className="" />
-								<span>
-
-								Export
-								</span>
+								<span>Export</span>
 							</FormButtonNew>
 						) : (
 							<div></div>
