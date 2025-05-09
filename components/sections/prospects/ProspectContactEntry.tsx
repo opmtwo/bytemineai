@@ -1,17 +1,23 @@
-import { MouseEvent, useEffect, useState } from 'react';
+import classNames from 'classnames';
+import { useState } from 'react';
 
 import { atDataValidEmailCodes } from '../../../consts';
-import { useAuthContext } from '../../../providers/auth-data-provider';
 import { EmailAccountModel, IBytemineContact, SortData } from '../../../types';
 import Anchor from '../../Anchor';
 import CardAnimatePresence from '../../cards/CardAnimatePresence';
 import ContactEmailStatus from '../../ContactEmailStatus';
 import ContactIcon from '../../ContactIcon';
 import ContactIcon2 from '../../ContactIcon2';
-import FormCheckbox from '../../form/FormCheckbox';
-import IconEmail from '../../icons/IconEmail';
-import IconFacebook from '../../icons/IconFacebook';
-import IconLinkedin from '../../icons/IconLinkedin';
+import FormButtonNew from '../../form/FormButtonNew';
+import FormDoubleCheckbox from '../../form/FormDoubleCheckbox';
+import IconNewCompany from '../../icons/IconNewCompany';
+import IconNewDownload from '../../icons/IconNewDownload';
+import IconNewEmail from '../../icons/IconNewEmail';
+import IconNewFacebook from '../../icons/IconNewFacebook';
+import IconNewJobTitle from '../../icons/IconNewJobTitle';
+import IconNewLinkedin from '../../icons/IconNewLinkedin';
+import IconNewPlusCircle from '../../icons/IconNewPlusCircle';
+import IconNewUnlock from '../../icons/IconNewUnlock';
 import Loader from '../../Loader';
 
 const ProspectContactEntry = ({
@@ -37,20 +43,11 @@ const ProspectContactEntry = ({
 	onUnlock: (contact: IBytemineContact) => void;
 	isAudienceMember?: boolean;
 }) => {
-	const [isComposerActive, setIsComposerActive] = useState(false);
-
-	const { user, updateAttributes } = useAuthContext();
-	// const { settings } = useSettingsContext();
-	const emailToken = user?.attributes['custom:connect_email_token'];
-
 	const handleDownload = () => onDownload(item);
 
 	const handleAdd = () => onAdd(item);
 
-	const handleUnlock = (e: MouseEvent<HTMLAnchorElement>): void => {
-		e.preventDefault();
-		onUnlock(item);
-	};
+	const handleUnlock = () => onUnlock(item);
 
 	const hasValidEmail = item.work_email ? true : false;
 	const hasPersonalEmail = item.personal_email || item.personal_email2 ? true : false;
@@ -63,8 +60,9 @@ const ProspectContactEntry = ({
 	const contactName = `${item.first_name} ${item.last_name}`;
 
 	const itemCheckbox = (
-		<FormCheckbox
+		<FormDoubleCheckbox
 			value={item.id}
+			className="is-filter-checkbox"
 			isChecked={item.isSelected}
 			onChange={(isChecked: boolean) => {
 				onSelect(item.id, isChecked);
@@ -73,31 +71,60 @@ const ProspectContactEntry = ({
 	);
 
 	const info = (
-		<div className="is-flex">
-			{!isAudienceMember ? <span className="mr-2 mt-2">{itemCheckbox}</span> : null}
-			<span>
-				{item.first_name} {item.last_name}
-				{item.job_title ? (
-					<>
-						<br />
-						<span className="has-text-weight-normal">{item.job_title}</span>
-					</>
-				) : null}
-				{item.linkedin_profile ? (
-					<>
-						<Anchor className="contact-social" target="_blank" href={item.linkedin_profile}>
-							<IconLinkedin />
+		<div className="is-flex mr-auto">
+			{!isAudienceMember ? <div className="field mr-2 mt-2">{itemCheckbox}</div> : null}
+			<div>
+				<h2 className="is-flex is-align-items-center title is-5 mb-3">
+					<span className="is-flex is-align-items-center mr-2">
+						{item.first_name} {item.last_name}
+					</span>
+
+					{item.linkedin_profile ? (
+						<>
+							<Anchor className="is-flex is-align-items-center mr-2" target="_blank" href={item.linkedin_profile}>
+								<IconNewLinkedin width={16} />
+							</Anchor>
+						</>
+					) : null}
+					{item.facebook_profile ? (
+						<>
+							<Anchor className="is-flex is-align-items-center mr-2" target="_blank" href={item.facebook_profile}>
+								<IconNewFacebook width={16} />
+							</Anchor>
+						</>
+					) : null}
+				</h2>
+				<p className="is-flex is-align-items-center">
+					{item.job_title ? (
+						<span className="is-flex is-align-items-center mr-2">
+							<IconNewJobTitle width={16} />
+							<span className="has-text-weight-normal ml-1">{item.job_title}</span>
+						</span>
+					) : null}
+					{item.company_name && item.company_domain ? (
+						<Anchor href={item.isUnlocked ? item.company_domain : '#'} target="_blank" className="is-flex is-align-items-center mr-2">
+							<IconNewCompany width={16} />
+							<span className="has-text-weight-normal ml-1">{item.company_name}</span>
 						</Anchor>
-					</>
-				) : null}
-				{item.facebook_profile ? (
-					<>
-						<Anchor className="contact-social" target="_blank" href={item.facebook_profile}>
-							<IconFacebook />
-						</Anchor>
-					</>
-				) : null}
-			</span>
+					) : null}
+					{item.isUnlocked ? (
+						<>
+							{item.work_email ? (
+								<span className="is-flex is-align-items-center mr-2">
+									<IconNewEmail width={16} />
+									<span className="has-text-weight-normal ml-1">{item.job_title}</span>
+								</span>
+							) : null}
+							{item.personal_email ? (
+								<span className="is-flex is-align-items-center mr-2">
+									<IconNewEmail width={16} />
+									<span className="has-text-weight-normal ml-1">{item.personal_email}</span>
+								</span>
+							) : null}
+						</>
+					) : null}
+				</p>
+			</div>
 		</div>
 	);
 
@@ -244,18 +271,16 @@ const ProspectContactEntry = ({
 
 	const controls = (
 		<>
-			{hasValidEmail || hasPersonalEmail ? (
-				<Anchor
-					href={`mailto:${item.work_email || item.personal_email || item.personal_email2}`}
-					className="button is-primary is-icon is-outlined is-rounded ml-3"
-				>
-					<span className="icon">
-						<IconEmail />
-					</span>
-				</Anchor>
-			) : null}
-			{/* <FormButton className="ml-3" onClick={handleAdd} variant={['is-icon', 'is-outlined', 'is-rounded']} icon={<IconAdd />} /> */}
-			{/* <FormButton className="ml-3" onClick={handleDownload} variant={['is-icon', 'is-outlined', 'is-rounded']} icon={<IconDownload />} /> */}
+			<FormButtonNew size="sm" variant="icon" className="ml-3" onClick={handleAdd}>
+				<IconNewPlusCircle width={16} />
+			</FormButtonNew>
+			<FormButtonNew size="sm" variant="icon" className="ml-3" onClick={handleDownload}>
+				<IconNewDownload width={16} />
+			</FormButtonNew>
+			<FormButtonNew size="sm" className="ml-3" onClick={handleUnlock}>
+				<IconNewUnlock width={16} />
+				<span>Unlock</span>
+			</FormButtonNew>
 		</>
 	);
 
@@ -293,25 +318,12 @@ const ProspectContactEntry = ({
 	}
 
 	return (
-		<>
-			<div className="panel-block is-block">
-				<div className="columns is-mobile is-multiline is-align-items-centerr">
-					<div className="column is-12-mobile is-5-tablet">
-						<div className="columns is-mobile is-align-items-centerr">
-							<div className="column is-7 is-flex is-align-items-centerr">{info}</div>
-							<div className="column is-5">{domain}</div>
-						</div>
-					</div>
-					<div className="column is-12-mobile is-7-tablet">
-						<div className="columns is-mobile is-align-items-centerr">
-							<div className="column is-6">{email}</div>
-							<div className="column is-3">{phone}</div>
-							{!isAudienceMember ? <div className="column is-3 is-flex is-justify-content-flex-end action-buttons">{controls}</div> : null}
-						</div>
-					</div>
-				</div>
+		<div className={classNames('has-border has-radius p-5 mb-5')}>
+			<div className="is-flex is-align-items-center is-justify-content-center">
+				{info}
+				{controls}
 			</div>
-		</>
+		</div>
 	);
 };
 
