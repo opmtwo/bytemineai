@@ -20,6 +20,10 @@ const IIds = Joi.object({
 	ids: Joi.array().max(100).required().items(Joi.string().trim().max(100)),
 });
 
+const IPids = Joi.object({
+	pids: Joi.array().max(100).required().items(Joi.string().trim().max(100)),
+});
+
 const IUser = Joi.object({
 	email: Joi.string().max(200).required(),
 	phone: Joi.string().max(20).required(),
@@ -86,4 +90,5 @@ module.exports = {
 	IEnrichmentPreview,
 	IEnrichment,
 	IFilter,
+	IContact,
 };
