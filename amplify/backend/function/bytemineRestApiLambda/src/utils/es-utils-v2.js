@@ -1495,14 +1495,11 @@ const esGetPaginationQuery2 = (body) => {
 };
 
 const esNormalizeDocument2 = (document) => {
-	console.log('esNormalizeDocument2 - input', JSON.stringify({ document }));
-	const data = document._source;
-
-	// Add back pid - this is also available as uuid
-	data.pid = data._id;
-	data.uuid = data._id;
+	// console.log('esNormalizeDocument2 - input', JSON.stringify(document));
+	const data = { ...document._source, pid: document._id, uuid: document._id };
 
 	// Data is already normalized in our OpenSearch instance - no need to process any further
+	// console.log('esNormalizeDocument2 - output', JSON.stringify(data));
 	return data;
 
 	// Normalize personal email
@@ -1592,6 +1589,7 @@ const esNormalizeDocument2 = (document) => {
 
 //'contactTitle',
 const esMaskDocument2 = (document) => {
+	// console.log('esMaskDocument2 - input', JSON.stringify(document));
 	const keysToMask = [
 		// 'pid',
 		// 'first_name',
@@ -1656,6 +1654,7 @@ const esMaskDocument2 = (document) => {
 	for (let i = 0; i < keysToMask.length; i++) {
 		doc[keysToMask[i]] = '***';
 	}
+	// console.log('esMaskDocument2 - output', JSON.stringify(document));
 	return doc;
 };
 
