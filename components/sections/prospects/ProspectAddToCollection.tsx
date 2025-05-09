@@ -1,8 +1,9 @@
-import { FormEvent, MouseEvent, useState } from 'react';
+import { FormEvent, useState } from 'react';
 
-import { useAuthContext } from '../../../providers/auth-data-provider';
-import { IBytemineCollection, IBytemineContact } from '../../../types';
-import Card from '../../Card';
+import { BATCH_SIZE, genericErrorMessage } from '../../../consts';
+import { IBytemineCollection, IBytemineCollectionContact, IBytemineContact } from '../../../types';
+import { callApi } from '../../../utils/helper-utils';
+import Card from '../../cards/Card';
 import CardTitle from '../../CardTitle';
 import EmptyMsg from '../../EmptyMsg';
 import FormButtonNew from '../../form/FormButtonNew';
@@ -34,10 +35,6 @@ const ProspectAddToCollection = ({
 	const [nameError, setNameError] = useState<Error>();
 	const [isFormBusy, setIsFormBusy] = useState(false);
 
-	// const { attributes } = useAuthContext();
-	// const groupname = user?.attributes['custom:group_name'];
-	// console.log({ groupname });
-
 	const isFormValid = async () => {
 		let err;
 		let isValid = true;
@@ -49,111 +46,116 @@ const ProspectAddToCollection = ({
 		return isValid;
 	};
 
-	const createNewList = async () => {
-		// try {
-		// 	const response: any = await API.graphql(
-		// 		graphqlOperation(createList, {
-		// 			input: {
-		// 				name,
-		// 				groupId: groupname,
-		// 				tenants: [groupname],
-		// 			},
-		// 		})
-		// 	);
-		// 	return response?.data.createList?.id;
-		// } catch (err) {
-		// 	console.log('Error while creating new list', err);
-		// 	setError(err);
-		// }
+	const createNewCollection = async () => {
+		try {
+			const collection = (await callApi(null, '/api/v1/collections', {
+				method: 'POST',
+				body: JSON.stringify({ name }),
+			})) as IBytemineCollection;
+			console.log('createNewCollection - success', { collection });
+			return collection;
+		} catch (err) {
+			console.log('createNewCollection - error', err);
+			setError(err);
+		}
 	};
 
-	/**
-	 * @summary
-	 * Try and save contact model
-	 *
-	 * @description
-	 * This will fail when an existing contact already exists
-	 * This is much fater than looking up models and then creting new ones
-	 *
-	 * @param contact Contact data - from RampedUp API
-	 * @returns ContactModel
-	 */
-	const saveContact = async (contact: IBytemineCollection) => {
-		// const operation = graphqlOperation(createContact, {
-		// 	input: {
-		// 		...contact,
-		// 		...{
-		// 			id: contact.ruid + '-' + groupname,
-		// 			groupId: groupname,
-		// 			tenants: [groupname],
-		// 			// remove following fields
-		// 			isSelected: undefined,
-		// 		},
-		// 	},
-		// });
-		// try {
-		// 	const response: any = await API.graphql(operation);
-		// 	return response?.data?.createContact;
-		// } catch (err) {
-		// 	console.log('Error saving contact', err);
-		// }
+	const saveContact = async (contact: IBytemineContact) => {
+		try {
+			const response = (await callApi(null, '/api/v1/contacts', {
+				method: 'POST',
+				body: JSON.stringify(contact),
+			})) as IBytemineContact;
+			console.log('createNewCollection - success', { response });
+			return response;
+		} catch (err) {
+			console.log('createNewCollection - error', err);
+			setError(err);
+		}
 	};
 
-	const addContactsToList = async (listId: string) => {
-		// let promises: any = [];
-		// for (let i = 0; i < contactItems.length; i++) {
-		// 	let contact = contactItems[i];
-		// 	if (!contact.id) {
-		// 		await saveContact(contact);
-		// 	}
-		// 	const operation = graphqlOperation(createListContact, {
-		// 		input: {
-		// 			id: listId + '-' + contact.ruid,
-		// 			listId,
-		// 			contactId: contact.ruid + '-' + groupname,
-		// 			groupId: groupname,
-		// 			tenants: [groupname],
-		// 		},
-		// 	});
-		// 	promises.push(API.graphql(operation));
-		// }
-		// return Promise.allSettled(promises);
+	const saveCollectionContact = async (collectionId: string, pid: string) => {
+		try {
+			const response = (await callApi(null, `/api/v1/collections/${collectionId}/contacts`, {
+				method: 'POST',
+				body: JSON.stringify({ pids: [pid] }),
+			})) as IBytemineCollectionContact;
+			console.log('saveCollectionContact - success', { response });
+			return response;
+		} catch (err) {
+			console.log('saveCollectionContact - error', err);
+			setError(err);
+		}
+	};
+
+	const addContactsToCollection = async (collectionId: string) => {
+		let promises: any = [];
+		let results: any[] = [];
+
+		for (let i = 0; i < contactItems.length; i++) {
+			const callback = async () => {
+				let contact = contactItems[i];
+				if (!contact.id) {
+					await saveContact(contact);
+				}
+				await saveCollectionContact(collectionId, contact.pid);
+			};
+			promises.push(callback());
+
+			// Clean queue
+			if (promises.length > BATCH_SIZE) {
+				results = results.concat(await Promise.allSettled(promises));
+				promises = [];
+			}
+		}
+
+		// Clean remaining queue
+		results = results.concat(await Promise.allSettled(promises));
+
+		return results;
 	};
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		// e.preventDefault();
-		// setIsFormBusy(true);
-		// if (!(await isFormValid())) {
-		// 	setIsFormBusy(false);
-		// 	return;
-		// }
-		// setError(undefined);
-		// const id = await createNewList();
-		// if (!id) {
-		// 	setIsFormBusy(false);
-		// 	return;
-		// }
-		// try {
-		// 	await addContactsToList(id);
-		// } catch (err) {
-		// 	setError(new Error(genericErrorMessage));
-		// 	setIsFormBusy(false);
-		// 	return;
-		// }
-		// onSubmit && onSubmit();
+		e.preventDefault();
+		setIsFormBusy(true);
+		
+		const isValid = await isFormValid();
+		if (!isValid) {
+			setIsFormBusy(false);
+			return;
+		}
+
+		setError(undefined);
+		const newCollection = await createNewCollection();
+		if (!newCollection?.id) {
+			setIsFormBusy(false);
+			return;
+		}
+
+		try {
+			await addContactsToCollection(newCollection.id);
+			setName('');
+		} catch (err) {
+			setError(new Error(genericErrorMessage));
+			setIsFormBusy(false);
+			return;
+		}
+
+		onSubmit && onSubmit();
+		setIsFormBusy(false);
 	};
 
 	const onAddToExistingList = async (list: IBytemineCollection) => {
-		// setIsFormBusy(true);
-		// try {
-		// 	await addContactsToList(list.id);
-		// } catch (err) {
-		// 	setError(new Error(genericErrorMessage));
-		// 	setIsFormBusy(false);
-		// 	return;
-		// }
-		// setIsFormBusy(false);
-		// onSubmit && onSubmit();
+		setIsFormBusy(true);
+		try {
+			await addContactsToCollection(list.id);
+		} catch (err) {
+			setError(new Error(genericErrorMessage));
+			setIsFormBusy(false);
+			return;
+		}
+		setIsFormBusy(false);
+		onSubmit && onSubmit();
 	};
 
 	return (
@@ -182,10 +184,7 @@ const ProspectAddToCollection = ({
 								<ErrorNotificaition error={error} />
 							</div>
 							<div className="is-flex-shrink-1">
-								<FormButtonNew
-									disabled={isFormBusy}
-									type="submit"
-								>
+								<FormButtonNew disabled={isFormBusy} loading={isFormBusy} type="submit">
 									Add
 								</FormButtonNew>
 							</div>
