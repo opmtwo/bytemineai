@@ -29,7 +29,7 @@ section.section {
 
 .contact-social {
 	display: inline-flex;
-	margin-top: 5px;
+	// margin-top: 5px;
 }
 
 .contact-social svg {
@@ -249,4 +249,16 @@ div.planslist div.column div.panel {
 	to {
 		transform: rotate(360deg);
 	}
+}
+
+// -----------------------------------------------------------------------------
+// Checkbox
+// -----------------------------------------------------------------------------
+
+.field .is-filter-checkbox {
+	width: 16px !important;
+	height: 16px !important;
+	margin: 0.4rem 0;
+	padding: 0 !important;
+	border-radius: 4px !important;
 }
