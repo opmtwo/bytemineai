@@ -464,3 +464,22 @@ export const forceDownloadS3File = async (path: string, fileName = 'downloaded-f
 		console.error('Download failed:', err);
 	}
 };
+
+export const encodeContact = (contact: any) => {
+	const keys = ['work_email_history', 'personal_email_history', 'mobile_number_history', 'education', 'skills', 'work_experience'];
+	for (let i = 0; i < keys.length; i++) {
+		const key = keys[i];
+		if (!contact[key]) {
+			continue;
+		}
+		contact[key] = JSON.stringify(contact[key]);
+	}
+
+	const keysToDelete = ['isSelected', 'isUnlocking'];
+	for (let i = 0; i < keysToDelete.length; i++) {
+		const key = keysToDelete[i];
+		delete contact[key];
+	}
+
+	return contact;
+};
