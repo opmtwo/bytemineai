@@ -1,4 +1,4 @@
-const { updateBytemineContact, createBytemineContact } = require('../graphql/mutations');
+const { updateBytemineContact, createBytemineContact, deleteBytemineContact } = require('../graphql/mutations');
 const { getBytemineContact } = require('../graphql/queries');
 const { apsGql } = require('./aps-utils');
 const { atDataVerifyEmailAccounts } = require('./atdata-utils');
@@ -389,6 +389,36 @@ const getAllSavedContacts = async (pids, teamId) => {
 	return validResults;
 };
 
+const deleteSavedContact = async (pid, teamId) => {
+	const input = { id: `${pid}-${teamId}` };
+	console.log('deleteSavedContact', JSON.stringify({ input, pid, teamId }));
+	try {
+		const response = await apsGql(deleteBytemineContact, { input }, 'data.deleteBytemineContact');
+		console.log('deleteSavedContact - success', JSON.stringify({ response }));
+		return response;
+	} catch (err) {
+		console.log('deleteSavedContact - error', err);
+	}
+};
+
+const deleteAllSavedContacts = async (pids, teamId) => {
+	let promises = [];
+	let results = [];
+
+	for (let i = 0; i < pids.length; i++) {
+		promises.push(deleteSavedContact(pids[i], teamId));
+		if (promises.length > BATCH_SIZE) {
+			results = results.concat(await Promise.all(promises));
+			promises = [];
+		}
+	}
+
+	results = results.concat(await Promise.all(promises));
+	console.log('All done', JSON.stringify(results));
+
+	return results;
+};
+
 module.exports = {
 	searchContactsV2,
 	getContact,
@@ -399,4 +429,6 @@ module.exports = {
 	getAndSaveAllContacts,
 	getSavedContact,
 	getAllSavedContacts,
+	deleteSavedContact,
+	deleteAllSavedContacts,
 };
