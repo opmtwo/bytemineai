@@ -246,7 +246,8 @@ const saveContact = async (contact, owner, teamId, userId, verbose = false) => {
 			owner,
 			userId,
 			teamId,
-			isUnlocked: true,
+			is_unlocked: true,
+			is_email_verified: true,
 			createdAt: now,
 			updatedAt: now,
 		};
