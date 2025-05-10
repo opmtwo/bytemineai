@@ -96,7 +96,7 @@ const Pagination = ({
 	};
 
 	return (
-		<div className="pagination is-flex is-align-items-center is-fullwidth is-justify-content-start">
+		<div className="pagination is-flex is-align-items-center is-fullwidth is-justify-content-start mb-0">
 			<div className="mr-3">
 				<FormSelect options={perPageOptions} onChange={onPerPageChange} value={itemsPerPage} size="is-small" />
 			</div>
