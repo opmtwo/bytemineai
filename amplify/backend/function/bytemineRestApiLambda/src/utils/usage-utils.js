@@ -5,8 +5,9 @@ const { apsGql } = require('./aps-utils');
 const usageAddSub = async (teamId, userId) => {
 	console.log('usageAddSub', { teamId, userId });
 	const input = {
-		teamId: teamId,
+		onwer: userId,
 		userId: userId,
+		teamId: teamId,
 		subscriptionStatus: 'Trial',
 		subscriptionPeriod: 'Monthly',
 		monthlyCredits: '10',
@@ -26,11 +27,11 @@ const usageGetSub = async (teamId) => {
 	console.log('usageGetSub', JSON.stringify({ subs }));
 
 	if (subs.length) {
-		console.log('usageGetSub - found sub', JSON.stringify(sub[0]));
+		console.log('usageGetSub - found sub', JSON.stringify(subs[0]));
 		return subs[0];
 	}
 
-	const newSub = await usageAddSub(teamId, userId);
+	const newSub = await usageAddSub(teamId, teamId);
 	console.log('usageGetSub- created new sub', JSON.stringify(newSub));
 
 	return newSub;
@@ -52,7 +53,8 @@ const usageAddUsage = async (teamId, userId, credits, filterId) => {
 	console.log('usageAddUsage', { teamId, userId, credits, filterId });
 
 	// Add usage log
-	const usage = await apsGql(createBytemineUsage, { teamId, userId, credits, filterId }, 'data.createBytemineUsage');
+	const usageInput = { owner: userId, teamId, userId, credits, filterId };
+	const usage = await apsGql(createBytemineUsage, { input: usageInput }, 'data.createBytemineUsage');
 
 	// Get subscription
 	const sub = await usageGetSub(teamId);
@@ -61,7 +63,8 @@ const usageAddUsage = async (teamId, userId, credits, filterId) => {
 	const creditsNow = await usageGetTotalCredits(teamId, userId);
 
 	// Update total credits
-	const subUpdated = await apsGql(updateBytemineSub, { id: sub.id, currentCredits: creditsNow - credits }, 'data.updateBytemineSub');
+	const input = { id: sub.id, currentCredits: creditsNow - credits };
+	const subUpdated = await apsGql(updateBytemineSub, { input }, 'data.updateBytemineSub');
 
 	// All done
 	console.log('usageAddUsage', JSON.stringify({ subUpdated }));
