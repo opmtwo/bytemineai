@@ -1799,8 +1799,8 @@ const esGetById2 = async (id) => {
 	try {
 		// const response = await elasticClient.get({ index, id, type: '_doc' });
 		const url = `/${ES_INDEX}/_doc/${id}`;
-		const response = await esRequest('GET', url);
-		//console.log('esGetById - success - ', response);
+		const response = await esRequest2('GET', url);
+		console.log('esGetById - success', response);
 		return esNormalizeDocument2(response);
 	} catch (err) {
 		console.log('esGetById - error - ', err);

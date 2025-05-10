@@ -1799,8 +1799,8 @@ const esGetById2 = async (id) => {
 	try {
 		// const response = await elasticClient.get({ index, id, type: '_doc' });
 		const url = `/${ES_INDEX}/_doc/${id}`;
-		const response = await esRequest('GET', url);
-		//console.log('esGetById - success - ', response);
+		const response = await esRequest2('GET', url);
+		console.log('esGetById - success', response);
 		return esNormalizeDocument2(response);
 	} catch (err) {
 		console.log('esGetById - error - ', err);
@@ -1808,16 +1808,16 @@ const esGetById2 = async (id) => {
 	}
 };
 
-// module.exports = {
-// 	esGetOptionValuesV2,
-// 	esGetOptionsV2,
-// 	esGetFilters2,
-// 	esGetPaginationQuery2,
-// 	esNormalizeDocument2,
-// 	esSearch2,
-// 	esGetById2,
-// 	esRequest2,
-// };
+module.exports = {
+	esGetOptionValuesV2,
+	esGetOptionsV2,
+	esGetFilters2,
+	esGetPaginationQuery2,
+	esNormalizeDocument2,
+	esSearch2,
+	esGetById2,
+	esRequest2,
+};
 
 // const rawBody = {
 // 	"website": "",
