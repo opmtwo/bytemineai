@@ -3,20 +3,15 @@ import Router from 'next/router';
 import { useEffect, useState } from 'react';
 import throttledQueue from 'throttled-queue';
 
-
 import Auth from '@aws-amplify/auth';
 
 import { MAXIMUM_CONTACTS_TO_UNLOCK } from '../../../consts';
 import useRoutePrompt from '../../../hooks/useRouterPrompt';
 import { useAuthContext } from '../../../providers/auth-data-provider';
-
 import { ActionExport, ActionList, ActionSelect, Contact, IBytemineContact, List, SortData } from '../../../types';
-import {
-		notifyError,
-		notifySuccess,
-		notifySuccessListAndExport
-} from '../../../utils/helper-utils';
+import { notifyError, notifySuccess, notifySuccessListAndExport } from '../../../utils/helper-utils';
 import FormButton from '../../form/FormButton';
+import FormButtonNew from '../../form/FormButtonNew';
 import FormInput from '../../form/FormInput';
 import IconDownloadComponent from '../../icons/components/IconDownloadComponent';
 import Modal from '../../modals/Modal';
@@ -24,7 +19,6 @@ import QueryLoader from '../../QueryLoader';
 import { Header, THROTTLE_LIMIT, THROTTLE_TIME, Wrapper } from './ProspectCommon';
 import CreatableMultiContacts, { createOption, MultiSelectOption } from './ProspectCreatableMultiContacts';
 import ProspectWarningModel from './ProspectWarningModel';
-import FormButtonNew from '../../form/FormButtonNew';
 
 const throttleQ = throttledQueue(THROTTLE_LIMIT, THROTTLE_TIME);
 
@@ -33,11 +27,7 @@ const ProspectExportActionButton = ({
 	contacts = [],
 	displayItems = [],
 	sortMap = [],
-	onSuccess = (
-		items: IBytemineContact[],
-		exportContacts: boolean,
-		selectedAction: ActionExport
-	) => {},
+	onSuccess = (items: IBytemineContact[], exportContacts: boolean, selectedAction: ActionExport) => {},
 	onExport = () => {},
 	isContactsOnly = false,
 }: {
@@ -45,28 +35,29 @@ const ProspectExportActionButton = ({
 	contacts: IBytemineContact[];
 	displayItems: IBytemineContact[];
 	sortMap?: SortData[];
-	onSuccess: (
-		items: IBytemineContact[],
-		exportContacts: boolean,
-		selectedAction: ActionExport
-	) => void;
-	onExport: (
-		type: ActionExport,
-		targetIds: string[],
-		sortMap?: SortData[]
-	) => void;
+	onSuccess: (items: IBytemineContact[], exportContacts: boolean, selectedAction: ActionExport) => void;
+	onExport: (type: ActionExport, targetIds: string[], sortMap?: SortData[]) => void;
 	isContactsOnly?: boolean;
 }) => {
-	const { user } = useAuthContext();
-	const groupname = user?.attributes['custom:group_name'];
+	// const { user } = useAuthContext();
+	// const groupname = user?.attributes['custom:group_name'];
+
 	const [isActive, setIsActive] = useState(false);
+
 	const [isListLoading, setIsListLoading] = useState(false);
+
 	const [listItems, setListItems] = useState<List[]>([]);
+
 	const [selectedLists, setSelectedLists] = useState<MultiSelectOption[]>([]);
+
 	const [dropdownError, setDropdownError] = useState<string>('');
+
 	const [loading, setLoading] = useState<boolean>(false);
+
 	const onToggle = () => setIsActive(!isActive);
+
 	const { isOpen, onAllow, onReject } = useRoutePrompt(loading);
+
 	// const [fromRecord, setFromRecord] = useState("");
 	// const [toRecord, setToRecord] = useState("");
 	// const [maximumPeoplePerCompany, setMaximumPeoplePerCompany] = useState("");
@@ -108,9 +99,7 @@ const ProspectExportActionButton = ({
 	};
 
 	const onExportSelection = async () => {
-		const totalSelected = contacts.filter(
-			(contact) => contact.isSelected
-		).length;
+		const totalSelected = contacts.filter((contact) => contact.isSelected).length;
 		if (totalSelected === 0) {
 			notifyError(new Error('No records selected to export!'));
 			return;
@@ -120,12 +109,7 @@ const ProspectExportActionButton = ({
 			return;
 		}
 
-		notifySuccessListAndExport(
-			`Exporting  contacts to list`,
-			0,
-			selectedLists.length,
-			'Prcocessing'
-		);
+		notifySuccessListAndExport(`Exporting  contacts to list`, 0, selectedLists.length, 'Prcocessing');
 		let sourceContacts: IBytemineContact[] = [...(contacts || [])];
 
 		if (selectedAction === ActionList.All) {
@@ -364,16 +348,16 @@ const ProspectExportActionButton = ({
 
 	return (
 		<>
-			{isActive ? <div className='is-overlay' onClick={onToggle}></div> : null}
+			{isActive ? <div className="is-overlay" onClick={onToggle}></div> : null}
 			<div className={classNames('dropdown', { 'is-active': isActive })}>
-				<div className='dropdown-trigger is-flex is-justify-content-center is-align-items-center'>
+				<div className="dropdown-trigger is-flex is-justify-content-center is-align-items-center">
 					<FormButton
 						onClick={onToggle}
 						variant={['is-outlined']}
-						color='is-primary'
-						className='is-flex-direction-row-reverse mr-5 pl-5-1'
+						color="is-primary"
+						className="is-flex-direction-row-reverse mr-5 pl-5-1"
 						icon={
-							<span className='pr-6 is-flex is-justify-content-center is-align-items-center'>
+							<span className="pr-6 is-flex is-justify-content-center is-align-items-center">
 								<IconDownloadComponent height={16} width={16} />
 							</span>
 						}
@@ -381,16 +365,16 @@ const ProspectExportActionButton = ({
 						Export
 					</FormButton>
 				</div>
-				<div className='dropdown-menu list-action-button-container'>
-					<div className='dropdown-content is-borderless'>
-						<div className='dropdown-item'>
-							<span className='py-1 has-text-dark'>Export Selected</span>
+				<div className="dropdown-menu list-action-button-container">
+					<div className="dropdown-content is-borderless">
+						<div className="dropdown-item">
+							<span className="py-1 has-text-dark">Export Selected</span>
 						</div>
-						<hr className='dropdown-divider' />
+						<hr className="dropdown-divider" />
 
 						<Wrapper>
-							<Header className='mb-2'>List</Header>
-							<div className='mb-3'>
+							<Header className="mb-2">List</Header>
+							<div className="mb-3">
 								{!isListLoading && (
 									<CreatableMultiContacts
 										selected={selectedLists}
@@ -411,12 +395,12 @@ const ProspectExportActionButton = ({
 									/>
 								) : null} */}
 							</div>
-							
+
 							<FormButtonNew
 								onClick={onExportSelection}
 								// variant={['is-outlined']}
-								color='is-primary'
-								className='is-fullwidth'
+								color="is-primary"
+								className="is-fullwidth"
 								disabled={loading}
 								// loading={loading}
 							>
@@ -479,10 +463,10 @@ const ProspectExportActionButton = ({
 				</div>
 			</div>
 			<ProspectWarningModel
-				title='Warning'
-				msg='Are you sure you want to leave page'
-				submitLabel='Yes'
-				cancelLabel='No'
+				title="Warning"
+				msg="Are you sure you want to leave page"
+				submitLabel="Yes"
+				cancelLabel="No"
 				isActive={isOpen}
 				onAllow={onAllow}
 				onReject={onReject}
