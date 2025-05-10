@@ -43,17 +43,17 @@ const ExportContacts = ({ contacts, isActive, onSubmit, onCancel }: { contacts: 
 			// catch all
 			if (exportType === 'catchAll') {
 				return (
-					atDataCatchAllEmailCodes.includes(parseInt(item.contactEmailStatusCode)) ||
-					atDataCatchAllEmailCodes.includes(parseInt(item.personalEmailStatusCode)) ||
-					atDataCatchAllEmailCodes.includes(parseInt(item.contactPersonalEmailStatusCode))
+					atDataCatchAllEmailCodes.includes(parseInt(item.contact_email_status_code)) ||
+					atDataCatchAllEmailCodes.includes(parseInt(item.personal_email_status_code)) ||
+					atDataCatchAllEmailCodes.includes(parseInt(item.contact_personal_email_status_code))
 				);
 			}
 
 			// export valid only
 			return (
-				atDataValidEmailCodes.includes(parseInt(item.contactEmailStatusCode)) ||
-				atDataValidEmailCodes.includes(parseInt(item.personalEmailStatusCode)) ||
-				atDataValidEmailCodes.includes(parseInt(item.contactPersonalEmailStatusCode))
+				atDataValidEmailCodes.includes(parseInt(item.contact_email_status_code)) ||
+				atDataValidEmailCodes.includes(parseInt(item.personal_email_status_code)) ||
+				atDataValidEmailCodes.includes(parseInt(item.contact_personal_email_status_code))
 			);
 		});
 
