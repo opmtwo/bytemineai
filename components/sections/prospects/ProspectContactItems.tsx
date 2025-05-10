@@ -270,66 +270,46 @@ const ProspectContactItems = ({
 	return (
 		<>
 			<form className="is-flex is-align-items-center is-fullwidth" onSubmit={handleQueryFormSubmit}>
-				{!isAudienceBuilder ? (
-					<FormCheckbox
-						value={isAllSelected}
-						isChecked={isAllSelected}
-						onChange={(isChecked: boolean) => {
-							if (isChecked) {
-								setDropdownSelectedAction(ActionList.CurrentPage);
-							} else {
-								setDropdownSelectedAction('');
-							}
-							onSelectAll && onSelectAll();
-						}}
-					/>
-				) : (
-					<div></div>
-				)}
+				<FormCheckbox
+					value={isAllSelected}
+					isChecked={isAllSelected}
+					onChange={(isChecked: boolean) => {
+						if (isChecked) {
+							setDropdownSelectedAction(ActionList.CurrentPage);
+						} else {
+							setDropdownSelectedAction('');
+						}
+						onSelectAll && onSelectAll();
+					}}
+				/>
 
-				{!isAudienceBuilder ? (
-					<ProspectListActionButton
-						contacts={items}
-						displayItems={displayItems}
-						selectedAction={dropdownSelectedAction}
-						onSuccess={onSuccess}
-						isContactsOnly={isContactsOnly}
-					/>
-				) : (
-					<div></div>
-				)}
+				<ProspectListActionButton
+					contacts={items}
+					displayItems={displayItems}
+					selectedAction={dropdownSelectedAction}
+					onSuccess={onSuccess}
+					isContactsOnly={isContactsOnly}
+				/>
 
-				{!isAudienceBuilder ? (
-					<ProspectExportActionButton
-						contacts={items}
-						displayItems={displayItems}
-						selectedAction={dropdownSelectedAction}
-						onSuccess={onSuccess}
-						onExport={onExport}
-						sortMap={sortMap}
-						isContactsOnly={isContactsOnly}
-					/>
-				) : (
-					<div></div>
-				)}
+				<ProspectExportActionButton
+					contacts={items}
+					displayItems={displayItems}
+					selectedAction={dropdownSelectedAction}
+					onSuccess={onSuccess}
+					onExport={onExport}
+					sortMap={sortMap}
+					isContactsOnly={isContactsOnly}
+				/>
 
-				{isAudienceBuilder ? (
-					<FormButtonNew className="is-outlined mr-5" onClick={showSampleExportModal}>
-						<IconDownload />
-						&nbsp;&nbsp;Get Sample
-					</FormButtonNew>
-				) : (
-					<div></div>
-				)}
+				{/* <FormButtonNew className="is-outlined mr-5" onClick={showSampleExportModal}>
+					<IconDownload />
+					&nbsp;&nbsp;Get Sample
+				</FormButtonNew> */}
 
-				{isAudienceBuilder ? (
-					<FormButtonNew onClick={showExportModal}>
-						<IconRocket className="" />
-						<span>Export</span>
-					</FormButtonNew>
-				) : (
-					<div></div>
-				)}
+				{/* <FormButtonNew onClick={showExportModal}>
+					<IconRocket className="" />
+					<span>Export</span>
+				</FormButtonNew> */}
 
 				{/* {isLocked && <ContactUnlock onUnlock={onUnlock} contacts={items} displayItems={displayItems} />}
 						<ContactActions
