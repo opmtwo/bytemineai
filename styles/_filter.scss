@@ -104,7 +104,7 @@
 		// position: fixed;
 		overflow-y: auto;
 		width: calc(25% - #{$gutter});
-		max-height: 85vh;
+		max-height: 70vh;
 		border-radius: $panel-radius;
   		box-shadow: $panel-shadow;
 	}
@@ -122,7 +122,7 @@
 }
 
 .trialsize .is-scroll-view  {
-	max-height: 75vh;
+	max-height: 70vh;
 }
 
 .audiencebuilderheader .filter-form {
