@@ -2,7 +2,7 @@ export enum BytemineRevenueRanges {
 	'<$1M' = '<$1M',
 	'$1M to <$10M' = '$1M to <$10M',
 	'$10M to <$50M' = '$10M to <$50M',
-	'$50M to <$100M' = '$50M to <$100M',
+	'$50M to <$100M' = '$50M to <$100M', // missing?
 	'$100M to <$1B' = '$100M to <$1B',
 	'$1B+' = '$1B+',
 }
