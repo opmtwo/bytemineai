@@ -176,6 +176,18 @@ const getErrorMsg = (err) =>
 
 const getErrorCode = (err) => err?.statusCode || err?.reason?.statusCode || err?.reason?.raw?.statusCode || err?.response?.data?.statusCode || err?.code;
 
+const encodeContact = (contact) => {
+	const keys = ['work_email_history', 'personal_email_history', 'mobile_number_history', 'education', 'skills', 'work_experience'];
+	for (let i = 0; i < keys.length; i++) {
+		const key = keys[i];
+		if (!contact[key]) {
+			continue;
+		}
+		contact[key] = JSON.stringify(contact[key]);
+	}
+	return contact;
+};
+
 module.exports = {
 	safeJsonDecode,
 	safelyParseJSON,
@@ -185,4 +197,5 @@ module.exports = {
 	createEnrichment,
 	getErrorMsg,
 	getErrorCode,
+	encodeContact,
 };
