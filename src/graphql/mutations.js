@@ -294,6 +294,7 @@ export const createBytemineContact = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      is_unlocked
       is_email_verified
       contact_email_status_code
       contact_email_domain_type
@@ -376,6 +377,7 @@ export const updateBytemineContact = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      is_unlocked
       is_email_verified
       contact_email_status_code
       contact_email_domain_type
@@ -458,6 +460,7 @@ export const deleteBytemineContact = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      is_unlocked
       is_email_verified
       contact_email_status_code
       contact_email_domain_type
@@ -594,6 +597,7 @@ export const createBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -733,6 +737,7 @@ export const updateBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -872,6 +877,7 @@ export const deleteBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -965,6 +971,7 @@ export const createBytemineContactForm = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -1060,6 +1067,7 @@ export const updateBytemineContactForm = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -1155,6 +1163,7 @@ export const deleteBytemineContactForm = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type

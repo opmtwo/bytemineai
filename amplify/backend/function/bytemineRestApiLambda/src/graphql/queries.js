@@ -206,6 +206,7 @@ exports.getBytemineContact = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      is_unlocked
       is_email_verified
       contact_email_status_code
       contact_email_domain_type
@@ -294,6 +295,7 @@ exports.listBytemineContacts = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -430,6 +432,7 @@ exports.getBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -541,6 +544,7 @@ exports.listBytemineCollectionContacts = /* GraphQL */ `
           userId
           createdAt
           updatedAt
+          is_unlocked
           is_email_verified
           contact_email_status_code
           contact_email_domain_type
@@ -634,6 +638,7 @@ exports.getBytemineContactForm = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -735,6 +740,7 @@ exports.listBytemineContactForms = /* GraphQL */ `
           userId
           createdAt
           updatedAt
+          is_unlocked
           is_email_verified
           contact_email_status_code
           contact_email_domain_type
@@ -1702,6 +1708,7 @@ exports.listContactByTeamId = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -1799,6 +1806,7 @@ exports.listContactByUserId = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -1916,6 +1924,7 @@ exports.listCollectionContactByTeamId = /* GraphQL */ `
           userId
           createdAt
           updatedAt
+          is_unlocked
           is_email_verified
           contact_email_status_code
           contact_email_domain_type
@@ -2036,6 +2045,7 @@ exports.listCollectionContactByUserId = /* GraphQL */ `
           userId
           createdAt
           updatedAt
+          is_unlocked
           is_email_verified
           contact_email_status_code
           contact_email_domain_type
@@ -2156,6 +2166,7 @@ exports.listCollectionContactByCollectionId = /* GraphQL */ `
           userId
           createdAt
           updatedAt
+          is_unlocked
           is_email_verified
           contact_email_status_code
           contact_email_domain_type
@@ -2264,6 +2275,7 @@ exports.listContactFormByTeamId = /* GraphQL */ `
           userId
           createdAt
           updatedAt
+          is_unlocked
           is_email_verified
           contact_email_status_code
           contact_email_domain_type
@@ -2374,6 +2386,7 @@ exports.listContactFormByUserId = /* GraphQL */ `
           userId
           createdAt
           updatedAt
+          is_unlocked
           is_email_verified
           contact_email_status_code
           contact_email_domain_type

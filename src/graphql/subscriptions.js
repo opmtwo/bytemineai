@@ -287,6 +287,7 @@ export const onCreateBytemineContact = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      is_unlocked
       is_email_verified
       contact_email_status_code
       contact_email_domain_type
@@ -368,6 +369,7 @@ export const onUpdateBytemineContact = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      is_unlocked
       is_email_verified
       contact_email_status_code
       contact_email_domain_type
@@ -449,6 +451,7 @@ export const onDeleteBytemineContact = /* GraphQL */ `
       userId
       createdAt
       updatedAt
+      is_unlocked
       is_email_verified
       contact_email_status_code
       contact_email_domain_type
@@ -584,6 +587,7 @@ export const onCreateBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -722,6 +726,7 @@ export const onUpdateBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -860,6 +865,7 @@ export const onDeleteBytemineCollectionContact = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -952,6 +958,7 @@ export const onCreateBytemineContactForm = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -1046,6 +1053,7 @@ export const onUpdateBytemineContactForm = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
@@ -1140,6 +1148,7 @@ export const onDeleteBytemineContactForm = /* GraphQL */ `
         userId
         createdAt
         updatedAt
+        is_unlocked
         is_email_verified
         contact_email_status_code
         contact_email_domain_type
