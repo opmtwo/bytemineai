@@ -252,25 +252,25 @@ export const getEmailStatus = (contact: Contact) => {
 
 export const getEmailValidityStatus = (contact: IBytemineContact) => {
 	let value;
-	if (contact.contactEmailStatusCode) {
-		value = (atDataResponseCodes as any)[contact.contactEmailStatusCode];
+	if (contact.contact_email_status_code) {
+		value = (atDataResponseCodes as any)[contact.contact_email_status_code];
 		if (value) {
 			return `Contact email status is ${value?.description}-${value?.code}`;
 		}
 	}
-	if (contact.personalEmailStatusCode) {
-		value = (atDataResponseCodes as any)[contact.personalEmailStatusCode];
+	if (contact.personal_email_status_code) {
+		value = (atDataResponseCodes as any)[contact.personal_email_status_code];
 		if (value) {
 			return `Personal email status is ${value?.description}-${value?.code}`;
 		}
 	}
-	if (contact.contactPersonalEmailStatusCode) {
-		value = (atDataResponseCodes as any)[contact.contactPersonalEmailStatusCode];
+	if (contact.contact_personal_email_status_code) {
+		value = (atDataResponseCodes as any)[contact.contact_personal_email_status_code];
 		if (value) {
 			return `Contact personal email status is ${value?.description}-${value?.code}`;
 		}
 	}
-	return contact.emailStatus || '';
+	return contact.email_status || '';
 };
 
 export const getContactPersonExportList = (contacts: ContactPerson[]) => {
