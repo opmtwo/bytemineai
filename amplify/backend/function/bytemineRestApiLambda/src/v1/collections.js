@@ -1,7 +1,13 @@
 const { Router } = require('express');
 const slugify = require('slugify');
 
-const { deleteBytemineCollection, updateBytemineCollection, createBytemineCollection, createBytemineCollectionContact, deleteBytemineCollectionContact } = require('../graphql/mutations');
+const {
+	deleteBytemineCollection,
+	updateBytemineCollection,
+	createBytemineCollection,
+	createBytemineCollectionContact,
+	deleteBytemineCollectionContact,
+} = require('../graphql/mutations');
 const { getBytemineCollection, listCollectionByTeamId, listCollectionBySlug } = require('../graphql/queries');
 const { verifyTeam, verifyToken } = require('../middlewares/auth');
 const { ICollection, schemaValidate, IIds, IPids } = require('../schemas');
