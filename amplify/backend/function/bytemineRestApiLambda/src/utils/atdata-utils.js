@@ -133,71 +133,70 @@ const atDataVerifyEmailAddress = async (email, shouldReturnError = false) => {
  *
  * @param {Object} contactData The contact object containing email information to verify
  * @param {string} contactData.contactEmail The email address of the contact to verify
- * @returns {Object} Updated contact data with verification details and `isEmailVerified` flag set to true
+ * @returns {Object} Updated contact data with verification details and `is_email_verified` flag set to true
  */
 const atDataVerifyEmailAccounts = async (contactData) => {
 	let response;
 	let contact = { ...contactData };
 
 	// Check if contactEmail exists and needs to be verified
-	if (contactData?.contactEmail) {
+	if (contact?.work_email) {
 		// Verify the email address using the AtData API
-		response = await atDataVerifyEmailAddress(contact.contactEmail);
+		response = await atDataVerifyEmailAddress(contact.work_email);
 
 		// If the response contains valid email validation data, update the contactData object
 		if (response?.safe_to_send?.status_code) {
-			contact.contactEmailStatusCode = response.safe_to_send.status_code;
-			contact.contactEmailDomainType = response.safe_to_send.domain_type;
+			contact.contact_email_status_code = response.safe_to_send.status_code;
+			contact.contact_email_domain_type = response.safe_to_send.domain_type;
 		}
 
 		/*if (response?.debounce?.code) {
-			contact.contactEmailStatusCode = response.debounce.code;
-			contact.contactEmailDomainType = response.debounce.reason;
+			contact.contact_email_status_code = response.debounce.code;
+			contact.contact_email_domain_type = response.debounce.reason;
 		}*/
 		/*
 		if (response?.code) {
-			contact.contactEmailStatusCode = response.code;
-			contact.contactEmailDomainType = response.result;
+			contact.contact_email_status_code = response.code;
+			contact.contact_email_domain_type = response.result;
 		}*/
 	}
 
-	// verify personal email
-	//if (contact?.personalEmail) {
-	//	response = await verifyEmailAddress(contact.personalEmail);
-	//	if (response?.email_validation?.status_code) {
-	//		contact.personalEmailStatusCode = response.email_validation.status_code;
-	//		contact.personalEmailDomainType = response.email_validation.domain_type;
-	//	}
-	/*if (response?.debounce?.code) {
-        contact.personalEmailStatusCode = response.debounce.code;
-        contact.personalEmailDomainType = response.debounce.reason;
-    }
-    if (response?.code) {
-        contact.personalEmailStatusCode = response.code;
-        contact.personalEmailDomainType = response.result;
-    }*/
-	//}
+	// // verify personal email
+	// if (contact?.personal_email) {
+	// 	response = await verifyEmailAddress(contact.personal_email);
+	// 	if (response?.email_validation?.status_code) {
+	// 		contact.personal_email_status_code = response.email_validation.status_code;
+	// 		contact.personal_email_domain_type = response.email_validation.domain_type;
+	// 	}
+	// 	/*if (response?.debounce?.code) {
+	// 		contact.personal_email_status_code = response.debounce.code;
+	// 		contact.personal_email_domain_type = response.debounce.reason;
+	// 	}
+	// 	if (response?.code) {
+	// 		contact.personal_email_status_code = response.code;
+	// 		contact.personal_email_domain_type = response.result;
+	// 	}*/
+	// }
 
-	// verify contact personal email
-	/*
-	if (contact?.contactPersonalEmail) {
-		response = await verifyEmailAddress(contact.contactPersonalEmail);
-		/*if (response?.email_validation?.status_code) {
-			contact.contactPersonalEmailStatusCode = response.email_validation.status_code;
-			contact.contactPersonalEmailDomainType = response.email_validation.domain_type;
-		}*/
-	/*if (response?.debounce?.code) {
-        contact.contactPersonalEmailStatusCode = response.debounce.code;
-        contact.contactPersonalEmailDomainType = response.debounce.reason;
-    }*/ /*
-		if (response?.code) {
-			contact.contactPersonalEmailStatusCode = response.code;
-			contact.contactPersonalEmailDomainType = response.result;
-		}
-	}*/
+	// // verify contact personal email
+	// if (contact?.personal_email2) {
+	// 	response = await verifyEmailAddress(contact.personal_email2);
+	// 	if (response?.email_validation?.status_code) {
+	// 		contact.contactpersonal_email_status_code = response.email_validation.status_code;
+	// 		contact.contactpersonal_email_domain_type = response.email_validation.domain_type;
+	// 	}
+	// 	/*if (response?.debounce?.code) {
+	// 		contact.contactpersonal_email_status_code = response.debounce.code;
+	// 		contact.contactpersonal_email_domain_type = response.debounce.reason;
+	// 	}
+	// 	if (response?.code) {
+	// 		contact.contactpersonal_email_status_code = response.code;
+	// 		contact.contactpersonal_email_domain_type = response.result;
+	// 	}*/
+	// }
 
 	// Mark the email as verified in the contact data
-	contact.isEmailVerified = true;
+	contact.is_email_verified = true;
 
 	// Return the updated contact data
 	return contact;
