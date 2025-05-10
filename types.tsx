@@ -184,20 +184,22 @@ export type Contact = {
 	id: string;
 	userId?: string;
 	groupId: string;
-	tenants: string[];
-	isUnlocked?: boolean;
-	isUnlocking?: boolean;
+
 	createdAt?: string;
 	updatedAt?: string;
-	isSelected?: boolean;
 
-	isEmailVerified: boolean;
-	contactEmailStatusCode: string;
-	contactEmailDomainType: string;
-	personalEmailStatusCode: string;
-	personalEmailDomainType: string;
-	contactPersonalEmailStatusCode: string;
-	contactPersonalEmailDomainType: string;
+	isSelected?: boolean;
+	isUnlocking?: boolean;
+
+	is_unlocked?: boolean;
+
+	is_email_verified: boolean;
+	contact_email_status_code: string;
+	contact_email_domain_type: string;
+	personal_email_status_code: string;
+	personal_email_domain_type: string;
+	contact_personal_email_status_code: string;
+	contact_personal_email_domain_type: string;
 
 	ruid: string;
 	emailStatus?: string | null;
@@ -777,6 +779,7 @@ export interface FilterItem {
 export interface IBytemineContact {
 	id: string;
 	pid: string;
+	uuid: string;
 	owner: string;
 	teamId?: string;
 	userId?: string;
@@ -786,18 +789,21 @@ export interface IBytemineContact {
 
 	isSelected?: boolean;
 	isUnlocking?: boolean;
-	isUnlocked?: boolean;
 
-	isEmailVerified: boolean;
-	emailStatus?: string | null;
-	contactEmailStatusCode: string;
-	contactEmailDomainType: string;
-	personalEmailStatusCode: string;
-	personalEmailDomainType: string;
-	contactPersonalEmailStatusCode: string;
-	contactPersonalEmailDomainType: string;
+	// unlocked - full contact?
+	is_unlocked?: boolean;
 
-	linkedin_url: string;
+	// email validation
+	is_email_verified: boolean;
+	email_status?: string | null;
+	contact_email_status_code: string;
+	contact_email_domain_type: string;
+	personal_email_status_code: string;
+	personal_email_domain_type: string;
+	contact_personal_email_status_code: string;
+	contact_personal_email_domain_type: string;
+
+	// contact info
 	first_name: string;
 	last_name: string;
 	middle_name: string;
