@@ -1,16 +1,16 @@
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import throttledQueue from 'throttled-queue';
 
 import { MAXIMUM_CONTACTS_TO_UNLOCK } from '../../../consts';
 import useRoutePrompt from '../../../hooks/useRouterPrompt';
 import { useAuthContext } from '../../../providers/auth-data-provider';
-import { ActionList, IBytemineCollection, IBytemineContact } from '../../../types';
-import { notifyError, notifySuccess, notifySuccessListAndExport } from '../../../utils/helper-utils';
+import { ActionList, IBytemineCollection, IBytemineCollectionContact, IBytemineContact } from '../../../types';
+import { callApi, encodeContact, notifyError, notifySuccess, notifySuccessListAndExport } from '../../../utils/helper-utils';
 import FormButtonNew from '../../form/FormButtonNew';
 import IconPlusComponent from '../../icons/components/IconPlusComponent';
 import { Header, THROTTLE_LIMIT, THROTTLE_TIME, Wrapper } from './ProspectCommon';
-import ProspectCreatableMultiContacts, { MultiSelectOption } from './ProspectCreatableMultiContacts';
+import ProspectCreatableMultiContacts, { createOption, MultiSelectOption } from './ProspectCreatableMultiContacts';
 import ProspectWarningModel from './ProspectWarningModel';
 
 const throttleQ = throttledQueue(THROTTLE_LIMIT, THROTTLE_TIME);
@@ -28,64 +28,108 @@ const ProspectListActionButton = ({
 	onSuccess: (items: IBytemineContact[]) => void;
 	isContactsOnly?: boolean;
 }) => {
-	const { attributes } = useAuthContext();
-
 	const [isActive, setIsActive] = useState(false);
+
 	const [isListLoading, setIsListLoading] = useState(false);
-	const [listItems, setListItems] = useState<IBytemineCollection[]>([]);
-	const [selectedLists, setSelectedLists] = useState<MultiSelectOption[]>([]);
+	const [Collections, setCollections] = useState<IBytemineCollection[]>([]);
+	const [selectedCollections, setSelectedCollections] = useState<MultiSelectOption[]>([]);
+
 	const [dropdownError, setDropdownError] = useState<string>('');
+
 	const [loading, setLoading] = useState<boolean>(false);
+
 	const { isOpen, onAllow, onReject } = useRoutePrompt(loading);
+
 	const onToggle = () => setIsActive(!isActive);
 
 	// const [fromRecord, setFromRecord] = useState<string>("");
 	// const [toRecord, setToRecord] = useState<string>("");
 	// const [maximumPeoplePerCompany, setMaximumPeoplePerCompany] = useState<string>("");
 
-	const onCreateList = async (listName: string) => {
-		// const response: any = await API.graphql(
-		//   graphqlOperation(createList, {
-		//     input: {
-		//       name: listName,
-		//       groupId: groupname,
-		//       tenants: [groupname],
-		//     },
-		//   })
-		// );
-		// const newOption = createOption({
-		//   label: listName,
-		//   value: response?.data.createList?.id,
-		// });
-		// setSelectedLists((prevList) => [...prevList, newOption]);
-		// return response?.data.createList?.id;
+	useEffect(() => {
+		getCollections();
+	}, []);
+
+	// Load collections / lists
+	const getCollections = async () => {
+		setIsListLoading(true);
+		try {
+			const res = (await callApi(null, '/api/v1/collections', {})) as IBytemineCollection[];
+			setCollections(res);
+			console.log('getCollections - success', res);
+		} catch (err) {
+			console.log('getCollections - error', err);
+		}
+		setIsListLoading(false);
+	};
+
+	const onCreateCollection = async (name: string) => {
+		try {
+			const res = (await callApi(null, '/api/v1/collections', {
+				method: 'POST',
+				body: JSON.stringify({ name }),
+			})) as IBytemineCollection;
+			const newOption = createOption({
+				label: name,
+				value: res.id,
+			});
+			setSelectedCollections((prevList) => [...prevList, newOption]);
+			return res.id;
+		} catch (err) {
+			console.log('onCreateCollection - error', err);
+		}
+	};
+
+	const createContact = async (contact: IBytemineContact) => {
+		try {
+			const res = (await callApi(null, '/api/v1/contacts', {
+				method: 'POST',
+				body: JSON.stringify(encodeContact(contact)),
+			})) as IBytemineContact;
+			return res;
+		} catch (err) {
+			console.log('createContact - error', err);
+		}
+	};
+
+	const addCollectionContact = async (collectionId: string, contactPid: string) => {
+		try {
+			const res = (await callApi(null, `/api/v1/collections/${collectionId}/contacts`, {
+				method: 'POST',
+				body: JSON.stringify({ pids: [contactPid] }),
+			})) as IBytemineCollectionContact;
+			return res;
+		} catch (err) {
+			console.log('addCollectionContact - error', err);
+		}
 	};
 
 	const onSelectList = (options: MultiSelectOption[]) => {
-		setSelectedLists(options);
+		setSelectedCollections(options);
 	};
 
 	const unlockSelectedContacts = async () => {
 		setDropdownError('');
 
 		const totalSelected = contacts.filter((contact) => contact.isSelected).length;
+		// console.log({ totalSelected });
 
 		if (totalSelected === 0) {
 			notifyError(new Error('No records selected to add to list!'));
 			return;
 		}
 
-		if (selectedLists.length === 0) {
+		if (selectedCollections.length === 0) {
 			setDropdownError('No list selected to add contacts!');
 			return;
 		}
 
-		if (selectedLists.length >= 10) {
+		if (selectedCollections.length >= 10) {
 			setDropdownError('Maximum of 10 list can be selected!');
 			return;
 		}
 
-		notifySuccessListAndExport(`Adding contacts to list`, 0, selectedLists.length, 'Prcocessing');
+		notifySuccessListAndExport(`Adding contacts to list`, 0, selectedCollections.length, 'Prcocessing');
 
 		let sourceContacts: IBytemineContact[] = [...(contacts || [])];
 
@@ -101,6 +145,8 @@ const ProspectListActionButton = ({
 			sourceContacts = (sourceContacts || []).filter((item) => item.isSelected);
 		}
 
+		// console.log({ isContactsOnly, sourceContacts: sourceContacts.length });
+
 		// logic for my-contacts page only
 		if (isContactsOnly) {
 			// as we already have loaded all the contacts!
@@ -110,55 +156,40 @@ const ProspectListActionButton = ({
 			try {
 				const operations: any[] = [];
 
-				for (let sl = 0; sl < selectedLists.length; sl++) {
+				for (let sl = 0; sl < selectedCollections.length; sl++) {
 					for (let i = 0; i < sourceContacts.length; i++) {
 						let contact = sourceContacts[i];
 
 						// Create contact item specific to the team
 						// ID should be {{contact pid}}-{{team id}}
 						if (!contact.id) {
-							// const operation = graphqlOperation(createContact, {
-							// 	input: {
-							// 		...contact,
-							// 		...{
-							// 			id: contact.ruid + '-' + groupname,
-							// 			groupId: groupname,
-							// 			tenants: [groupname],
-							// 			// remove following fields
-							// 			isSelected: undefined,
-							// 		},
-							// 	},
-							// });
-							// await API.graphql(operation);
+							const newContact = await createContact(contact);
+							if (!newContact) {
+								console.log('Failed to save contact - skipping');
+								continue;
+							}
+							contact.id = newContact.id;
 						}
 
-						const listId = selectedLists[sl].value;
-						// const operation = graphqlOperation(createListContact, {
-						// 	input: {
-						// 		id: listId + '-' + contact.ruid,
-						// 		listId,
-						// 		contactId: contact.ruid + '-' + groupname,
-						// 		groupId: groupname,
-						// 		tenants: [groupname],
-						// 	},
-						// });
-						// operations.push(operation);
+						// Add to collection
+						const collectionId = selectedCollections[sl].value;
+						operations.push(addCollectionContact(collectionId!, contact.pid));
 					}
 				}
 
-				// await Promise.allSettled(
-				// 	operations.map((opr, index) =>
-				// 		throttleQ<any>(() => {
-				// 			if (index === operations.length - 1) {
-				// 				onToggle();
-				// 				setSelectedLists([]);
-				// 				setLoading(false);
-				// 			}
-				// 			notifySuccessListAndExport(`Added ${index + 1} contact to list`, index + 1, sourceContacts.length, 'Processing');
-				// 			return API.graphql(opr);
-				// 		})
-				// 	)
-				// );
+				await Promise.allSettled(
+					operations.map((opr, index) =>
+						throttleQ<any>(() => {
+							if (index === operations.length - 1) {
+								onToggle();
+								setSelectedCollections([]);
+								setLoading(false);
+							}
+							notifySuccessListAndExport(`Added ${index + 1} contact to list`, index + 1, sourceContacts.length, 'Processing');
+							return opr();
+						})
+					)
+				);
 			} catch (error) {
 				notifyError(error);
 				setLoading(false);
@@ -177,117 +208,109 @@ const ProspectListActionButton = ({
 				// -------------------------------------------------------------
 				// Unlock contacts
 				// -------------------------------------------------------------
-				// const pids = sourceContacts.map((item) => item.id).filter((id) => id?.trim()?.length);
-				// const idToken = (await Auth.currentSession()).getIdToken().getJwtToken();
-				// const options = {
-				// 	body: {
-				// 		ruids: Array.from(new Set(ruids)),
-				// 		groupId: user?.attributes['custom:group_name'],
-				// 		userId: user?.attributes.sub,
-				// 	},
-				// 	headers: {
-				// 		'Content-Type': 'application/json',
-				// 		Authorization: `Bearer ${idToken}`,
-				// 	},
-				// };
-				// const fullContacts = await API.post('nymblrRestApi', '/api/contact-details', options);
-				// notifySuccess(`${options.body.ruids.length} contacts unlocked`);
+				const pids = sourceContacts.map((item) => item.pid).filter((pid) => pid?.trim()?.length);
+				console.log({ sourceContacts, pids });
+
+				const fullContacts = (await callApi(null, '/api/v1/contacts/unlock', {
+					method: 'POST',
+					body: JSON.stringify({ pids }),
+				})) as IBytemineContact[];
+
+				notifySuccess(`${pids.length} contacts unlocked`);
+
 				// -------------------------------------------------------------
 				// Update contacts with unlocked info
 				// -------------------------------------------------------------
-				// let existingContacts = [...(sourceContacts || [])];
-				// for (let i = 0; i < fullContacts.length; i++) {
-				// 	const index = existingContacts.findIndex((item) => item.pid && item.pid === fullContacts[i].pid);
-				// 	if (index === -1) {
-				// 		continue;
-				// 	}
-				// 	existingContacts[index] = {
-				// 		...fullContacts[i],
-				// 		isSelected: existingContacts[index].isSelected,
-				// 	};
-				// }
+				let existingContacts = [...(sourceContacts || [])];
+				for (let i = 0; i < fullContacts.length; i++) {
+					const index = existingContacts.findIndex((item) => item.pid && item.pid === fullContacts[i].pid);
+					if (index === -1) {
+						continue;
+					}
+					existingContacts[index] = {
+						...fullContacts[i],
+						isSelected: existingContacts[index].isSelected,
+					};
+				}
+
 				// -------------------------------------------------------------
 				// Update current selection with unlocked info
 				// -------------------------------------------------------------
-				// // All
-				// if (selectedAction === ActionList.All) {
-				// 	existingContacts = [...(existingContacts || [])];
-				// }
-				// // Current page
-				// if (selectedAction === ActionList.CurrentPage) {
-				// 	const displayItemsIds = fullContacts.map((cont: any) => cont.id);
-				// 	existingContacts = (existingContacts || []).filter((item) => displayItemsIds.includes(item.id));
-				// }
-				// // No selection
-				// if (selectedAction === '') {
-				// 	existingContacts = (existingContacts || []).filter((item) => item.isSelected);
-				// }
+
+				// All
+				if (selectedAction === ActionList.All) {
+					existingContacts = [...(existingContacts || [])];
+				}
+
+				// Current page
+				if (selectedAction === ActionList.CurrentPage) {
+					const displayItemsIds = fullContacts.map((cont: any) => cont.id);
+					existingContacts = (existingContacts || []).filter((item) => displayItemsIds.includes(item.id));
+				}
+
+				// No selection
+				if (selectedAction === '') {
+					existingContacts = (existingContacts || []).filter((item) => item.isSelected);
+				}
+
 				// -------------------------------------------------------------
 				// Create contacts specific to the team members
 				// Add the contacts to the specified lists
 				// -------------------------------------------------------------
-				// const operations: any[] = [];
-				// for (let sl = 0; sl < selectedLists.length; sl++) {
-				// 	for (let i = 0; i < existingContacts.length; i++) {
-				// 		let contact = existingContacts[i];
-				// 		if (!contact.id) {
-				// 			const operation = graphqlOperation(createContact, {
-				// 				input: {
-				// 					...contact,
-				// 					...{
-				// 						id: contact.ruid + '-' + groupname,
-				// 						groupId: groupname,
-				// 						tenants: [groupname],
-				// 						// remove following fields
-				// 						isSelected: undefined,
-				// 					},
-				// 				},
-				// 			});
-				// 			await API.graphql(operation);
-				// 		}
-				// 		const listId = selectedLists[sl].value;
-				// 		const operation = graphqlOperation(createListContact, {
-				// 			input: {
-				// 				id: listId + '-' + contact.ruid,
-				// 				listId,
-				// 				contactId: contact.ruid + '-' + groupname,
-				// 				groupId: groupname,
-				// 				tenants: [groupname],
-				// 			},
-				// 		});
-				// 		operations.push(operation);
-				// 	}
-				// }
+				const operations: any[] = [];
+				for (let sl = 0; sl < selectedCollections.length; sl++) {
+					for (let i = 0; i < existingContacts.length; i++) {
+						let contact = sourceContacts[i];
+
+						// Create contact item specific to the team
+						// ID should be {{contact pid}}-{{team id}}
+						if (!contact.id) {
+							const newContact = await createContact(contact);
+							if (!newContact) {
+								console.log('Failed to save contact - skipping');
+								continue;
+							}
+							contact.id = newContact.id;
+						}
+
+						// Add to collection
+						const collectionId = selectedCollections[sl].value;
+						operations.push(addCollectionContact(collectionId!, contact.pid));
+					}
+				}
+
 				// -------------------------------------------------------------
 				// Use batches to perform the above operations
 				// Create team specific contacts
 				// Add the contacts to the specified lists
 				// -------------------------------------------------------------
-				// await Promise.allSettled(
-				// 	operations.map((opr, index) =>
-				// 		throttleQ<any>(() => {
-				// 			if (index === operations.length - 1) {
-				// 				onSuccess(fullContacts);
-				// 				onToggle();
-				// 				setSelectedLists([]);
-				// 				setLoading(false);
-				// 			}
-				// 			notifySuccessListAndExport(`Added ${index + 1} contacts to list`, index + 1, sourceContacts.length, 'Processing');
-				// 			return API.graphql(opr);
-				// 		})
-				// 	)
-				// );
+				await Promise.allSettled(
+					operations.map((opr, index) =>
+						throttleQ<any>(() => {
+							if (index === operations.length - 1) {
+								onSuccess(fullContacts);
+								onToggle();
+								setSelectedCollections([]);
+								setLoading(false);
+							}
+							notifySuccessListAndExport(`Added ${index + 1} contacts to list`, index + 1, sourceContacts.length, 'Processing');
+							return opr;
+						})
+					)
+				);
 			} catch (err) {
 				notifyError(err);
 				setLoading(false);
 			}
+
+			setLoading(false);
 		}
 
 		// All done
 		notifySuccessListAndExport(`Added ${sourceContacts.length} contacts to list`, sourceContacts.length, sourceContacts.length, 'Completed');
 	};
 
-	const listItemOptions: MultiSelectOption[] = listItems.map((item) => ({
+	const listItemOptions: MultiSelectOption[] = Collections.map((item) => ({
 		label: item.name,
 		value: item.id,
 	}));
@@ -324,9 +347,9 @@ const ProspectListActionButton = ({
 							<div className="mb-3">
 								{!isListLoading && (
 									<ProspectCreatableMultiContacts
-										selected={selectedLists}
+										selected={selectedCollections}
 										options={listItemOptions}
-										onCreateNew={onCreateList}
+										onCreateNew={onCreateCollection}
 										onSelect={onSelectList}
 										error={dropdownError}
 									/>
