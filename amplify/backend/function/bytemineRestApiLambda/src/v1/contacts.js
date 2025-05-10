@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { verifyToken, verifyTeam } = require('../middlewares/auth');
 const { apsGql } = require('../utils/aps-utils');
 const { searchContactsV2, getAllSavedContacts, deleteAllSavedContacts, getAllContacts, saveAllContacts } = require('../utils/search-utils');
-const { getErrorMsg, getErrorCode } = require('../utils/helper-utils');
+const { getErrorMsg, getErrorCode, encodeContact } = require('../utils/helper-utils');
 const { usageAddUsage } = require('../utils/usage-utils');
 const { esGetOptionsV2 } = require('../utils/es-utils-v2');
 const { createBytemineContact, deleteBytemineContact, updateBytemineContact } = require('../graphql/mutations');
@@ -136,9 +136,20 @@ router.post('/', schemaValidate(IContact), verifyToken, verifyTeam, async (req, 
 	const data = req.body;
 	const id = `${data.pid}-${teamId}`;
 
-	await apsGql(deleteBytemineContact, { input: { id } }, 'data.deleteBytemineContact');
+	// unlocked contact exists?
+	const oldContact = await apsGql(getBytemineContact, { id }, 'data.getBytemineContact');
+	if (oldContact?.is_unlocked) {
+		console.log('Old unlocked contact found - skipping overwrite');
+		return res.json(oldContact);
+	}
 
-	const input = { ...data, id, owner: sub, userId: sub, teamId };
+	// delete old contact
+	if (oldContact?.id) {
+		await apsGql(deleteBytemineContact, { input: { id } }, 'data.deleteBytemineContact');
+	}
+
+	const contactEncoded = encodeContact(data);
+	const input = { ...contactEncoded, id, owner: sub, userId: sub, teamId };
 	const contact = await apsGql(createBytemineContact, { input }, 'data.createBytemineContact');
 
 	return res.json(contact);
