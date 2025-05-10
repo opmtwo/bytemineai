@@ -1,13 +1,13 @@
 const { Router } = require('express');
 const { verifyToken, verifyTeam } = require('../middlewares/auth');
 const { apsGql } = require('../utils/aps-utils');
-const { searchContactsV2 } = require('../utils/search-utils');
+const { searchContactsV2, getAllSavedContacts, deleteAllSavedContacts, getAllContacts, saveAllContacts } = require('../utils/search-utils');
 const { getErrorMsg, getErrorCode } = require('../utils/helper-utils');
 const { usageAddUsage } = require('../utils/usage-utils');
 const { esGetOptionsV2 } = require('../utils/es-utils-v2');
 const { createBytemineContact, deleteBytemineContact, updateBytemineContact } = require('../graphql/mutations');
 const { getBytemineContact } = require('../graphql/queries');
-const { schemaValidate, IContact } = require('../schemas');
+const { schemaValidate, IContact, IPids } = require('../schemas');
 const { v4 } = require('uuid');
 
 const router = Router();
@@ -70,6 +70,52 @@ router.post('/search', verifyToken, verifyTeam, async (req, res) => {
 	console.log('overall search took ' + diffTime + ' milliseconds');
 
 	return res.json(response);
+});
+
+router.post('/unlock', schemaValidate(IPids), verifyToken, verifyTeam, async (req, res) => {
+	const { sub: userId } = res.locals;
+	const { id: teamId } = res.locals.team;
+	const { pids } = req.body;
+
+	// const usage = await usageAddUsage(teamId, userId, 0);
+
+	const savedContacts = await getAllSavedContacts(pids, teamId);
+	console.log({ savedContacts: savedContacts.length });
+
+	const fullContacts = savedContacts.filter((item) => item.is_unlocked);
+	console.log({ fullContacts: fullContacts.length });
+
+	const partialContacts = savedContacts.filter((item) => !item.is_unlocked);
+	console.log({ partialContacts: partialContacts.length });
+
+	const unlockedpids = fullContacts.map((item) => item.pid);
+	console.log({ unlockedpids: unlockedpids.length });
+
+	const pidsToUnlock = pids.filter((id) => !unlockedpids.includes(id));
+	console.log({ pidsToUnlock: pidsToUnlock.length });
+
+	const pidsToDelete = partialContacts.map((item) => item.pid);
+	console.log({ pidsToDelete: pidsToDelete.length });
+
+	await deleteAllSavedContacts(pidsToDelete, teamId);
+
+	const newFullContacts = await getAllContacts(pidsToUnlock);
+	console.log({ newFullContacts: newFullContacts.length });
+
+	const newSavedContacts = await saveAllContacts(newFullContacts, teamId, userId, false, true);
+
+	//credits used calc
+	const creditsUsed = newFullContacts.filter(
+		(item) => parseInt(item?.contact_email_status_code || '0') === 50 || parseInt(item?.personal_email_status_code || '0') === 50
+	).length;
+	console.log({ creditsUsed });
+
+	//const creditsUsed = newFullContacts.filter((item) => item.contactEmail || item.personalEmail || item.historicalEmails?.length).length;
+
+	// await updateUsage(usage.data.createUsage.id, creditsUsed, teamId, userId);
+	await usageAddUsage(teamId, userId, creditsUsed);
+
+	return res.json([...fullContacts, ...newSavedContacts]);
 });
 
 router.get('/:id', verifyToken, async (req, res) => {
