@@ -125,6 +125,9 @@ type BytemineContact @model @auth(rules: [{ allow: private, operations: [] }]) {
 	createdAt: AWSDateTime!
 	updatedAt: AWSDateTime!
 
+	# unlocked?
+	is_unlocked: Boolean
+
 	# email validation
 	is_email_verified: Boolean
 	contact_email_status_code: String
