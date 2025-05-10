@@ -4,14 +4,14 @@ const collectionCleanItem = (collectionItem) => {
 	delete collectionItem.groupId;
 	delete collectionItem.tenants;
 	delete collectionItem.__typename;
-	delete collectionItem.isUnlocked;
-	delete collectionItem.isEmailVerified;
-	delete collectionItem.contactEmailStatusCode;
-	delete collectionItem.contactEmailDomainType;
-	delete collectionItem.personalEmailStatusCode;
-	delete collectionItem.personalEmailDomainType;
-	delete collectionItem.contactPersonalEmailStatusCode;
-	delete collectionItem.contactPersonalEmailDomainType;
+	delete collectionItem.is_unlocked;
+	delete collectionItem.is_email_verified;
+	delete collectionItem.contact_email_status_code;
+	delete collectionItem.contact_email_domain_type;
+	delete collectionItem.personal_email_status_code;
+	delete collectionItem.personal_email_domain_type;
+	delete collectionItem.contact_personal_email_status_code;
+	delete collectionItem.contact_personal_email_domain_type;
 };
 
 module.exports = {
