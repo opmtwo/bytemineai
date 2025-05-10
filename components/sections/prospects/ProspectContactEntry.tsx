@@ -65,7 +65,7 @@ const ProspectContactEntry = ({
 			className="is-filter-checkbox"
 			isChecked={item.isSelected}
 			onChange={(isChecked: boolean) => {
-				onSelect(item.id, isChecked);
+				onSelect(item.pid, isChecked);
 			}}
 		/>
 	);
@@ -102,12 +102,12 @@ const ProspectContactEntry = ({
 						</span>
 					) : null}
 					{item.company_name && item.company_domain ? (
-						<Anchor href={item.isUnlocked ? item.company_domain : '#'} target="_blank" className="is-flex is-align-items-center mr-2">
+						<Anchor href={item.is_unlocked ? item.company_domain : '#'} target="_blank" className="is-flex is-align-items-center mr-2">
 							<IconNewCompany width={16} />
 							<span className="has-text-weight-normal ml-1">{item.company_name}</span>
 						</Anchor>
 					) : null}
-					{item.isUnlocked ? (
+					{item.is_unlocked ? (
 						<>
 							{item.work_email ? (
 								<span className="is-flex is-align-items-center mr-2">
@@ -161,7 +161,7 @@ const ProspectContactEntry = ({
 	);
 	const phone = (
 		<>
-			{item.isUnlocked || isAudienceMember ? (
+			{item.is_unlocked || isAudienceMember ? (
 				<>
 					{hasDirectDial ? (
 						<div className="mb-2">
@@ -195,36 +195,36 @@ const ProspectContactEntry = ({
 	);
 
 	// the following lines of code have to duplicated in export contacts
-	const isContactEmailValid = atDataValidEmailCodes.includes(parseInt(item.contactEmailStatusCode));
+	const isContactEmailValid = atDataValidEmailCodes.includes(parseInt(item.contact_email_status_code));
 
-	const isPersonalEmailValid = atDataValidEmailCodes.includes(parseInt(item.personalEmailStatusCode));
-	const isContactPersonalEmailValid = atDataValidEmailCodes.includes(parseInt(item.contactPersonalEmailStatusCode));
+	const isPersonalEmailValid = atDataValidEmailCodes.includes(parseInt(item.personal_email_status_code));
+	const isContactPersonalEmailValid = atDataValidEmailCodes.includes(parseInt(item.contact_personal_email_status_code));
 	const isEmailValid = isContactEmailValid || isPersonalEmailValid || isContactPersonalEmailValid;
 
 	const email = (
 		<>
-			{item.isUnlocked || isAudienceMember ? (
+			{item.is_unlocked || isAudienceMember ? (
 				<>
 					{/* email is verified */}
-					{item.isEmailVerified === true ? (
+					{item.is_email_verified === true ? (
 						<>
 							{hasValidEmail ? (
 								<div className="mb-2">
-									<ContactIcon2 initial="W" statusCode={parseInt(item.contactEmailStatusCode)}>
+									<ContactIcon2 initial="W" statusCode={parseInt(item.contact_email_status_code)}>
 										<span className="has-text-weight-normal">{item.work_email}</span>
 									</ContactIcon2>
 								</div>
 							) : null}
 							{hasPersonalEmail ? (
 								<div className="mb-2">
-									<ContactIcon2 initial="P" statusCode={parseInt(item.personalEmailStatusCode)}>
+									<ContactIcon2 initial="P" statusCode={parseInt(item.personal_email_status_code)}>
 										<span className="has-text-weight-normal">{item.personal_email}</span>
 									</ContactIcon2>
 								</div>
 							) : null}
 							{item.personal_email2 ? (
 								<div className="mb-2">
-									<ContactIcon2 initial="P" statusCode={parseInt(item.contactPersonalEmailStatusCode)}>
+									<ContactIcon2 initial="P" statusCode={parseInt(item.contact_personal_email_status_code)}>
 										<span className="has-text-weight-normal">{item.personal_email2}</span>
 									</ContactIcon2>
 								</div>
@@ -232,7 +232,7 @@ const ProspectContactEntry = ({
 						</>
 					) : null}
 					{/* email is not yet verified */}
-					{item.isEmailVerified !== true ? (
+					{item.is_email_verified !== true ? (
 						<>
 							{hasValidEmail ? (
 								<div className="mb-2">
@@ -297,13 +297,13 @@ const ProspectContactEntry = ({
 				<td className="action-buttons">{controls}</td> */}
 				<td className="action-select is-sticky">{itemCheckbox}</td>
 				{sortMap.map((value, index) => {
-					if (!item.isUnlocked && !isAudienceMember) {
+					if (!item.is_unlocked && !isAudienceMember) {
 						// item is locked - show the unlocker button for the specified keys
 						if (['contactEmail', 'personalEmail', 'historicalEmails', 'contactPhone', 'companyPhone'].includes(value.id)) {
 							return <td key={value.id}>{unlocker}</td>;
 						}
 					}
-					if (item.isEmailVerified && value.id === 'emailStatus') {
+					if (item.is_email_verified && value.id === 'emailStatus') {
 						return (
 							<td key={value.id}>
 								<ContactEmailStatus contact={item} />
