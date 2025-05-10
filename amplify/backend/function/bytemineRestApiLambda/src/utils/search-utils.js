@@ -80,7 +80,7 @@ const searchContactsV2 = async (body, shouldReturnError = false, mask = true, ap
 						const saved = savedContacts[i];
 
 						// Only exclude if the contact is unlocked
-						if (saved?.isUnlocked !== true) {
+						if (saved?.is_unlocked !== true) {
 							continue;
 						}
 
@@ -127,6 +127,7 @@ const getContact = async (pid) => {
 	try {
 		const contact = await esGetById2(pid);
 		const contactVerified = await atDataVerifyEmailAccounts(contact);
+		console.log('getContact - success', JSON.stringify(contactVerified));
 		return { data: contactVerified };
 	} catch (err) {
 		console.log('getContact - error', err);
@@ -136,12 +137,12 @@ const getContact = async (pid) => {
 const getAllContacts = async (pids) => {
 	console.log('getAllContacts', { pids });
 
-	const promises = [];
+	let promises = [];
 	let results = [];
 
 	// Save all contacts using batches
 	for (let i = 0; i < pids.length; i++) {
-		console.log('getAllContacts- etching contact', i + 1);
+		console.log('getAllContacts- fetching contact', i + 1);
 		promises.push(getContact(pids[i]));
 
 		// Execute batch if size exceeds limit
@@ -153,11 +154,11 @@ const getAllContacts = async (pids) => {
 
 	// Complete final batch
 	results = results.concat(await Promise.all(promises));
-	console.log('getAllContacts', { results: results.length });
+	console.log('getAllContacts', { results: results.length, sample: JSON.stringify(results?.[0]) });
 
 	// Filter and extract valid contacts
-	const contacts = allResults.filter((item) => item?.value?.data?.pid).map((item) => item.value.data);
-	//const validResults = allResults.filter((item) => item.status === 'fulfilled' && item.value?.status === 200 && item.value?.data?.pid);
+	const contacts = results.filter((item) => item?.data?.pid).map((item) => item.data);
+	//const validResults = results.filter((item) => item.status === 'fulfilled' && item.value?.status === 200 && item.value?.data?.pid);
 
 	// All done
 	console.log('getAllContacts', { contacts: contacts.length });
@@ -165,83 +166,21 @@ const getAllContacts = async (pids) => {
 };
 
 const saveOrUpdateContact = async (contact, teamId, userId, isUpdate = false, isUnlocked = false) => {
+	console.log('saveOrUpdateContact', JSON.stringify({ contact }));
 	const operation = isUpdate ? updateBytemineContact : createBytemineContact;
 	const input = {
-		id: contact?.pid + '-' + teamId,
+		...contact,
+		id: `${contact?.pid}-${teamId}`,
+		owner: userId,
 		userId,
 		teamId,
-		isUnlocked: isUnlocked,
-		isEmailVerified: contact?.isEmailVerified ? true : false,
-		contactEmailStatusCode: contact?.contactEmailStatusCode,
-		contactEmailDomainType: contact?.contactEmailDomainType,
-		personalEmailStatusCode: contact?.personalEmailStatusCode,
-		personalEmailDomainType: contact?.personalEmailDomainType,
-		contactPersonalEmailStatusCode: contact?.contactPersonalEmailStatusCode,
-		contactPersonalEmailDomainType: contact?.contactPersonalEmailDomainType,
-		contactFirstName: contact?.contactFirstName,
-		pid: contact?.pid,
-		contactMiddleName: contact?.contactMiddleName,
-		contactLastName: contact?.contactLastName,
-		companyName: contact?.companyName,
-		companyStartDate: contact?.companyStartDate,
-		companyEndDate: contact?.companyEndDate,
-		contactTitle: contact?.contactTitle,
-		contactTitleLevel: contact?.contactTitleLevel,
-		contactJobFunctions: contact?.contactJobFunctions,
-		contactEmail: contact?.contactEmail,
-		personalEmail: contact?.personalEmail,
-		historicalEmails: contact?.historicalEmails,
-		directDialPhone: contact?.directDialPhone,
-		directDialType: contact?.directDialType,
-		contactCity: contact?.contactCity,
-		contactState: contact?.contactState,
-		contactCountry: contact?.contactCountry,
-		contactContinent: contact?.contactContinent,
-		contactSkills: contact?.contactSkills,
-		contactLinkedinURL: contact?.contactLinkedinURL,
-		contactFacebook: contact?.contactFacebook,
-		contactTwitterURL: contact?.contactTwitterURL,
-		contactEducation: contact?.contactEducation,
-		contactBirthDate: contact?.contactBirthDate,
-		contactGender: contact?.contactGender,
-		contactPhone: contact?.contactPhone,
-		contactOfficeCity: contact?.contactOfficeCity,
-		contactOfficeAddress: contact?.contactOfficeAddress,
-		contactOfficeState: contact?.contactOfficeState,
-		contactOfficeCountry: contact?.contactOfficeCountry,
-		contactOfficeZipCode: contact?.contactOfficeZipCode,
-		lastUpdatedDate: contact?.lastUpdatedDate,
-		contactLinkedinConnectionCount: contact?.contactLinkedinConnectionCount,
-		hasChangedJobRecently: contact?.hasChangedJobRecently,
-		companyId: contact?.companyId,
-		companyLinkedinURL: contact?.companyLinkedinURL,
-		companyDomain: contact?.companyDomain,
-		companyAddressLine1: contact?.companyAddressLine1,
-		companyAddressLine2: contact?.companyAddressLine2,
-		companyCity: contact?.companyCity,
-		companyRegion: contact?.companyRegion,
-		companyCountry: contact?.companyCountry,
-		companyZipCode: contact?.companyZipCode,
-		companyPhone: contact?.companyPhone,
-		companyEmployees: contact?.companyEmployees,
-		companyRevenueRange: contact?.companyRevenueRange,
-		companySpecialties: contact?.companySpecialties,
-		companyPrimaryIndustry: contact?.companyPrimaryIndustry,
-		companySIC: contact?.companySIC,
-		companyType: contact?.companyType,
-		companyStatus: contact?.companyStatus,
-		companyFoundedYear: contact?.companyFoundedYear,
-		companyLinkedinFollowers: contact?.companyLinkedinFollowers,
-		companyNAICSCode: contact?.companyNAICSCode,
-		companySICCode6: contact?.companySICCode6,
-		formerTitles: contact?.formerTitles,
-		formerCompanies: contact?.formerCompanies,
+		is_unlocked: isUnlocked,
 	};
 	return await apsGql(operation, { input });
 };
 
 const saveAllContacts = async (contacts, teamId, userId, isUpdate = false, isUnlocked = false) => {
-	console.log('saveAllContacts', { contacts: contacts, length, teamId, userId, isUpdate, isUnlocked });
+	console.log('saveAllContacts', { contacts: contacts.length, teamId, userId, isUpdate, isUnlocked });
 
 	let promises = [];
 	let results = [];
