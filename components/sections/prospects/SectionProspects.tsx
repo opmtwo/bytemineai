@@ -19,6 +19,7 @@ import {
 } from '../../../types';
 import { applyContactFilters, downloadContacts, getExportData, getExportLabels } from '../../../utils/contact-utilsx';
 import { callApi, getFilterLabel, getSortedData } from '../../../utils/helper-utils';
+import Breadcrumb from '../../Breadcrumb';
 import Filter from '../../filter/Filter';
 import ErrorNotificaition from '../../notifications/ErrorNotification';
 import TableSkeleton from '../../table-skeleton';
@@ -27,7 +28,7 @@ import ProspectContactItems from './ProspectContactItems';
 import ProspectExportContacts from './ProspectExportContacts';
 import ProspectSearches from './ProspectSearches';
 import ProspectSearchHistory from './ProspectSearchHistory';
-import Breadcrumb from '../../Breadcrumb';
+import ProspectUnlockContacts from './ProspectUnlockContacts';
 
 const exportContactInitState = {
 	type: ActionExport.Selected,
@@ -639,6 +640,16 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 		return contactItems || [];
 	};
 
+	const onUnlockStart = (pids: string[]) => {
+		setPidsBeingUnlocked(pids);
+		setIsUnlockModalActive(false);
+	};
+
+	const onUnlockError = (pids: string[]) => {
+		setPidsBeingUnlocked([]);
+		setIsUnlockModalActive(false);
+	};
+
 	const isTrailAccount = true;
 
 	return (
@@ -777,6 +788,15 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 					) : null}
 				</div>
 			</div>
+
+			<ProspectUnlockContacts
+				contacts={contactsToUnlock}
+				isActive={isUnlockModalActive}
+				onCancel={onUnlockCancel}
+				onSuccess={onUnlockSuccess}
+				onStart={onUnlockStart}
+				onError={onUnlockError}
+			/>
 		</>
 	);
 };
