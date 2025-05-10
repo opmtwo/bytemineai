@@ -27,14 +27,14 @@ const contactClean = (contact) => {
 	delete contact.groupId;
 	delete contact.tenants;
 	delete contact.__typename;
-	delete contact.isUnlocked;
-	delete contact.isEmailVerified;
-	delete contact.contactEmailStatusCode;
-	delete contact.contactEmailDomainType;
-	delete contact.personalEmailStatusCode;
-	delete contact.personalEmailDomainType;
-	delete contact.contactPersonalEmailStatusCode;
-	delete contact.contactPersonalEmailDomainType;
+	delete contact.is_unlocked;
+	delete contact.is_email_verified;
+	delete contact.contact_email_status_code;
+	delete contact.contact_email_domain_type;
+	delete contact.personal_email_status_code;
+	delete contact.personal_email_domain_type;
+	delete contact.contact_personal_email_status_code;
+	delete contact.contact_personal_email_domain_type;
 };
 
 module.exports = {
