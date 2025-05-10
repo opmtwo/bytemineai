@@ -8,8 +8,18 @@ import Auth from '@aws-amplify/auth';
 import { MAXIMUM_CONTACTS_TO_UNLOCK } from '../../../consts';
 import useRoutePrompt from '../../../hooks/useRouterPrompt';
 import { useAuthContext } from '../../../providers/auth-data-provider';
-import { ActionExport, ActionList, ActionSelect, Contact, IBytemineContact, List, SortData } from '../../../types';
-import { notifyError, notifySuccess, notifySuccessListAndExport } from '../../../utils/helper-utils';
+import {
+	ActionExport,
+	ActionList,
+	ActionSelect,
+	Contact,
+	IBytemineCollection,
+	IBytemineCollectionContact,
+	IBytemineContact,
+	List,
+	SortData,
+} from '../../../types';
+import { callApi, encodeContact, notifyError, notifySuccess, notifySuccessListAndExport } from '../../../utils/helper-utils';
 import FormButton from '../../form/FormButton';
 import FormButtonNew from '../../form/FormButtonNew';
 import FormInput from '../../form/FormInput';
@@ -46,9 +56,9 @@ const ProspectExportActionButton = ({
 
 	const [isListLoading, setIsListLoading] = useState(false);
 
-	const [listItems, setListItems] = useState<List[]>([]);
+	const [collections, setCollections] = useState<IBytemineCollection[]>([]);
 
-	const [selectedLists, setSelectedLists] = useState<MultiSelectOption[]>([]);
+	const [selectedCollections, setSelectedCollections] = useState<MultiSelectOption[]>([]);
 
 	const [dropdownError, setDropdownError] = useState<string>('');
 
@@ -62,30 +72,70 @@ const ProspectExportActionButton = ({
 	// const [toRecord, setToRecord] = useState("");
 	// const [maximumPeoplePerCompany, setMaximumPeoplePerCompany] = useState("");
 
-	const onCreateList = async (listName: string) => {
-		// const response: any = await API.graphql(
-		//   graphqlOperation(createList, {
-		//     input: {
-		//       name: listName,
-		//       groupId: groupname,
-		//       tenants: [groupname],
-		//     },
-		//   })
-		// );
-		// const newOption = createOption({
-		//   label: listName,
-		//   value: response?.data.createList?.id,
-		// });
-		// setSelectedLists((prevList) => [...prevList, newOption]);
-		// return response?.data.createList?.id;
+	useEffect(() => {
+		getCollections();
+	}, []);
+
+	// Load collections / lists
+	const getCollections = async () => {
+		setIsListLoading(true);
+		try {
+			const res = (await callApi(null, '/api/v1/collections', {})) as IBytemineCollection[];
+			setCollections(res);
+			console.log('getCollections - success', res);
+		} catch (err) {
+			console.log('getCollections - error', err);
+		}
+		setIsListLoading(false);
+	};
+
+	const onCreateCollection = async (name: string) => {
+		try {
+			const res = (await callApi(null, '/api/v1/collections', {
+				method: 'POST',
+				body: JSON.stringify({ name }),
+			})) as IBytemineCollection;
+			const newOption = createOption({
+				label: name,
+				value: res.id,
+			});
+			setSelectedCollections((prevList) => [...prevList, newOption]);
+			return res.id;
+		} catch (err) {
+			console.log('onCreateCollection - error', err);
+		}
+	};
+
+	const createContact = async (contact: IBytemineContact) => {
+		try {
+			const res = (await callApi(null, '/api/v1/contacts', {
+				method: 'POST',
+				body: JSON.stringify(encodeContact(contact)),
+			})) as IBytemineContact;
+			return res;
+		} catch (err) {
+			console.log('createContact - error', err);
+		}
+	};
+
+	const addCollectionContact = async (collectionId: string, contactPid: string) => {
+		try {
+			const res = (await callApi(null, `/api/v1/collections/${collectionId}/contacts`, {
+				method: 'POST',
+				body: JSON.stringify({ pids: [contactPid] }),
+			})) as IBytemineCollectionContact;
+			return res;
+		} catch (err) {
+			console.log('addCollectionContact - error', err);
+		}
 	};
 
 	const onSelectList = (options: MultiSelectOption[]) => {
-		setSelectedLists(options);
+		setSelectedCollections(options);
 	};
 
 	// export records
-	const exportRecords = (allContactList: Contact[]) => {
+	const exportRecords = (allContactList: IBytemineContact[]) => {
 		let totalContactsForExport: string[] = [];
 		if (selectedAction === ActionList.All) {
 			onExport(ActionExport.All, [], sortMap);
@@ -100,16 +150,18 @@ const ProspectExportActionButton = ({
 
 	const onExportSelection = async () => {
 		const totalSelected = contacts.filter((contact) => contact.isSelected).length;
+
 		if (totalSelected === 0) {
 			notifyError(new Error('No records selected to export!'));
 			return;
 		}
-		if (selectedLists.length >= 10) {
+
+		if (selectedCollections.length >= 10) {
 			setDropdownError('Maximum of 10 list can be selected!');
 			return;
 		}
 
-		notifySuccessListAndExport(`Exporting  contacts to list`, 0, selectedLists.length, 'Prcocessing');
+		notifySuccessListAndExport(`Exporting  contacts to list`, 0, selectedCollections.length, 'Prcocessing');
 		let sourceContacts: IBytemineContact[] = [...(contacts || [])];
 
 		if (selectedAction === ActionList.All) {
@@ -122,226 +174,184 @@ const ProspectExportActionButton = ({
 			sourceContacts = (sourceContacts || []).filter((item) => item.isSelected);
 		}
 
-		// // logic for my-contacts page only
-		// if (isContactsOnly) {
-		// 	// as we already have loaded all the contacts!
-		// 	// they are unlocked too
-		// 	if (selectedLists.length > 0) {
-		// 		// add contact to list
-		// 		// list are selected, you need to call that api to add contacts to lists
-		// 		setLoading(true);
-		// 		try {
-		// 			const operations: any[] = [];
-		// 			for (let sl = 0; sl < selectedLists.length; sl++) {
-		// 				for (let i = 0; i < sourceContacts.length; i++) {
-		// 					let contact = sourceContacts[i];
-		// 					if (!contact.id) {
-		// 						const operation = graphqlOperation(createContact, {
-		// 							input: {
-		// 								...contact,
-		// 								...{
-		// 									id: contact.ruid + '-' + groupname,
-		// 									groupId: groupname,
-		// 									tenants: [groupname],
-		// 									// remove following fields
-		// 									isSelected: undefined,
-		// 								},
-		// 							},
-		// 						});
-		// 						await API.graphql(operation);
-		// 					}
-		// 					const listId = selectedLists[sl].value;
-		// 					const operation = graphqlOperation(createListContact, {
-		// 						input: {
-		// 							id: listId + '-' + contact.ruid,
-		// 							listId,
-		// 							contactId: contact.ruid + '-' + groupname,
-		// 							groupId: groupname,
-		// 							tenants: [groupname],
-		// 						},
-		// 					});
-		// 					operations.push(operation);
-		// 				}
-		// 			}
-		// 			await Promise.allSettled(
-		// 				operations.map((opr, index) =>
-		// 					throttleQ<any>(() => {
-		// 						if (index === operations.length - 1) {
-		// 							setSelectedLists([]);
-		// 							setLoading(false);
-		// 						}
-		// 						notifySuccessListAndExport(
-		// 							`Added ${index + 1} contacts to list`,
-		// 							index,
-		// 							sourceContacts.length,
-		// 							'completed'
-		// 						);
-		// 						return API.graphql(opr);
-		// 					})
-		// 				)
-		// 			);
-		// 		} catch (error) {
-		// 			notifyError(error);
-		// 			setLoading(false);
-		// 		}
-		// 	}
-		// 	// unlock contacts,
-		// 	const totalRecords = exportRecords(sourceContacts);
-		// 	notifySuccessListAndExport(
-		// 		`Exported ${
-		// 			totalRecords === 0 ? 'All' : totalRecords
-		// 		} contacts  successfully`,
-		// 		totalRecords,
-		// 		totalRecords,
-		// 		`Exported and Added to My files`
-		// 	);
-		// 	onToggle();
-		// } else {
-		// 	setLoading(true);
-		// 	try {
-		// 		const ruids = sourceContacts
-		// 			.map((item) => item.ruid)
-		// 			.filter((id) => id?.trim()?.length);
-		// 		const idToken = (await Auth.currentSession())
-		// 			.getIdToken()
-		// 			.getJwtToken();
-		// 		const options = {
-		// 			body: {
-		// 				ruids: Array.from(new Set(ruids)),
-		// 				groupId: user?.attributes['custom:group_name'],
-		// 				userId: user?.attributes.sub,
-		// 			},
-		// 			headers: {
-		// 				'Content-Type': 'application/json',
-		// 				Authorization: `Bearer ${idToken}`,
-		// 			},
-		// 		};
-		// 		const fullContacts = await API.post(
-		// 			'nymblrRestApi',
-		// 			'/api/contact-details',
-		// 			options
-		// 		);
-		// 		notifySuccessListAndExport(
-		// 			`${options.body.ruids.length} contacts unlocked`,
-		// 			options.body.ruids.length,
-		// 			options.body.ruids.length,
-		// 			`unlocked contact`
-		// 		);
+		// logic for my-contacts page only
+		if (isContactsOnly) {
+			// as we already have loaded all the contacts!
+			// they are unlocked too
+			if (selectedCollections.length > 0) {
+				// add contact to list
+				// list are selected, you need to call that api to add contacts to lists
+				setLoading(true);
+				try {
+					const operations: any[] = [];
+					for (let sl = 0; sl < selectedCollections.length; sl++) {
+						for (let i = 0; i < sourceContacts.length; i++) {
+							let contact = sourceContacts[i];
 
-		// 		// for the unlocked contacts update in table
-		// 		let existingContacts = [...(sourceContacts || [])];
-		// 		for (let i = 0; i < fullContacts.length; i++) {
-		// 			const index = existingContacts.findIndex(
-		// 				(item) => item.ruid && item.ruid === fullContacts[i].ruid
-		// 			);
-		// 			if (index === -1) {
-		// 				continue;
-		// 			}
-		// 			existingContacts[index] = {
-		// 				...fullContacts[i],
-		// 				isSelected: existingContacts[index].isSelected,
-		// 			};
-		// 		}
+							// Create contact item specific to the team
+							// ID should be {{contact pid}}-{{team id}}
+							if (!contact.id) {
+								const newContact = await createContact(contact);
+								if (!newContact) {
+									console.log('Failed to save contact - skipping');
+									continue;
+								}
+								contact.id = newContact.id;
+							}
 
-		// 		// only if the there is selected list, add the contacts in the list
-		// 		if (selectedLists.length > 0) {
-		// 			const operations: any[] = [];
-		// 			// try {
-		// 			for (let sl = 0; sl < selectedLists.length; sl++) {
-		// 				for (let i = 0; i < existingContacts.length; i++) {
-		// 					let contact = existingContacts[i];
-		// 					if (!contact.id) {
-		// 						const operation = graphqlOperation(createContact, {
-		// 							input: {
-		// 								...contact,
-		// 								...{
-		// 									id: contact.ruid + '-' + groupname,
-		// 									groupId: groupname,
-		// 									tenants: [groupname],
-		// 									// remove following fields
-		// 									isSelected: undefined,
-		// 								},
-		// 							},
-		// 						});
-		// 						await API.graphql(operation);
-		// 					}
-		// 					const listId = selectedLists[sl].value;
-		// 					const operation = graphqlOperation(createListContact, {
-		// 						input: {
-		// 							id: listId + '-' + contact.ruid,
-		// 							listId,
-		// 							contactId: contact.ruid + '-' + groupname,
-		// 							groupId: groupname,
-		// 							tenants: [groupname],
-		// 						},
-		// 					});
-		// 					operations.push(operation);
-		// 				}
-		// 			}
-		// 			await Promise.allSettled(
-		// 				operations.map((opr, index) =>
-		// 					throttleQ<any>(() => {
-		// 						if (index === operations.length - 1) {
-		// 							let action: ActionExport = ActionExport.Selected;
-		// 							if (selectedAction === ActionList.All) {
-		// 								action = ActionExport.All;
-		// 							} else if (selectedAction === ActionList.CurrentPage) {
-		// 								action = ActionExport.CurrentPage;
-		// 							} else if (selectedAction === '') {
-		// 								action = ActionExport.Selected;
-		// 							}
-		// 							// onSuccess(fullContacts);
-		// 							onSuccess(fullContacts, true, action);
-		// 							onToggle();
-		// 							setSelectedLists([]);
-		// 							setLoading(false);
-		// 						}
-		// 						notifySuccessListAndExport(
-		// 							`Exported ${index + 1} contacts`,
-		// 							index,
-		// 							options.body.ruids.length,
-		// 							'Processing'
-		// 						);
-		// 						return API.graphql(opr);
-		// 					})
-		// 				)
-		// 			);
-		// 		} else {
-		// 			let action: ActionExport = ActionExport.Selected;
-		// 			if (selectedAction === ActionList.All) {
-		// 				action = ActionExport.All;
-		// 			} else if (selectedAction === ActionList.CurrentPage) {
-		// 				action = ActionExport.CurrentPage;
-		// 			} else if (selectedAction === '') {
-		// 				action = ActionExport.Selected;
-		// 			}
-		// 			onSuccess(fullContacts, true, action);
-		// 		}
-		// 		const totalRecords = existingContacts.length;
-		// 		onToggle();
-		// 		// notifySuccess(
-		// 		//   `Added ${totalRecords === 0 ? "All" : totalRecords} contacts `,
-		// 		//   totalRecords,
-		// 		//   totalRecords,
-		// 		//   "Completed"
-		// 		// );
-		// 		notifySuccessListAndExport(
-		// 			`Exported ${
-		// 				totalRecords === 0 ? 'All' : totalRecords
-		// 			} contacts  successfully!`,
-		// 			totalRecords,
-		// 			totalRecords,
-		// 			'Exported and added to My Files'
-		// 		);
-		// 		setLoading(false);
-		// 	} catch (err) {
-		// 		notifyError(err);
-		// 		setLoading(false);
-		// 	}
-		// }
+							// Add to collection
+							const collectionId = selectedCollections[sl].value;
+							operations.push(addCollectionContact(collectionId!, contact.pid));
+						}
+					}
+
+					await Promise.allSettled(
+						operations.map((opr, index) =>
+							throttleQ<any>(() => {
+								if (index === operations.length - 1) {
+									setSelectedCollections([]);
+									setLoading(false);
+								}
+								notifySuccessListAndExport(`Added ${index + 1} contacts to list`, index, sourceContacts.length, 'completed');
+								return opr;
+							})
+						)
+					);
+				} catch (error) {
+					notifyError(error);
+					setLoading(false);
+				}
+			}
+			// unlock contacts,
+			const totalRecords = exportRecords(sourceContacts);
+			notifySuccessListAndExport(
+				`Exported ${totalRecords === 0 ? 'All' : totalRecords} contacts  successfully`,
+				totalRecords,
+				totalRecords,
+				`Exported and Added to My files`
+			);
+			onToggle();
+		} else {
+			// Only X number of contacts can be unlocked at once
+			if (sourceContacts.length > MAXIMUM_CONTACTS_TO_UNLOCK) {
+				const err = new Error(`Maximum ${MAXIMUM_CONTACTS_TO_UNLOCK} contacts can be unlocked at once.`);
+				notifyError(err);
+				return;
+			}
+
+			setLoading(true);
+
+			try {
+				// -------------------------------------------------------------
+				// Unlock contacts
+				// -------------------------------------------------------------
+				const pids = sourceContacts.map((item) => item.pid).filter((pid) => pid?.trim()?.length);
+				console.log({ sourceContacts, pids });
+
+				const fullContacts = (await callApi(null, '/api/v1/contacts/unlock', {
+					method: 'POST',
+					body: JSON.stringify({ pids }),
+				})) as IBytemineContact[];
+
+				notifySuccessListAndExport(`${pids.length} contacts unlocked`, pids.length, pids.length, `unlocked contact`);
+
+				// for the unlocked contacts update in table
+				let existingContacts = [...(sourceContacts || [])];
+				for (let i = 0; i < fullContacts.length; i++) {
+					const index = existingContacts.findIndex((item) => item.pid && item.pid === fullContacts[i].pid);
+					if (index === -1) {
+						continue;
+					}
+					existingContacts[index] = {
+						...fullContacts[i],
+						isSelected: existingContacts[index].isSelected,
+					};
+				}
+
+				// only if the there is selected list, add the contacts in the list
+				if (selectedCollections.length > 0) {
+					const operations: any[] = [];
+					// try {
+					for (let sl = 0; sl < selectedCollections.length; sl++) {
+						for (let i = 0; i < existingContacts.length; i++) {
+							let contact = sourceContacts[i];
+
+							// Create contact item specific to the team
+							// ID should be {{contact pid}}-{{team id}}
+							if (!contact.id) {
+								const newContact = await createContact(contact);
+								if (!newContact) {
+									console.log('Failed to save contact - skipping');
+									continue;
+								}
+								contact.id = newContact.id;
+							}
+
+							// Add to collection
+							const collectionId = selectedCollections[sl].value;
+							operations.push(addCollectionContact(collectionId!, contact.pid));
+						}
+					}
+
+					await Promise.allSettled(
+						operations.map((opr, index) =>
+							throttleQ<any>(() => {
+								if (index === operations.length - 1) {
+									let action: ActionExport = ActionExport.Selected;
+									if (selectedAction === ActionList.All) {
+										action = ActionExport.All;
+									} else if (selectedAction === ActionList.CurrentPage) {
+										action = ActionExport.CurrentPage;
+									} else if (selectedAction === '') {
+										action = ActionExport.Selected;
+									}
+									// onSuccess(fullContacts);
+									onSuccess(fullContacts, true, action);
+									onToggle();
+									setSelectedCollections([]);
+									setLoading(false);
+								}
+								notifySuccessListAndExport(`Exported ${index + 1} contacts`, index, pids.length, 'Processing');
+								return opr;
+							})
+						)
+					);
+				} else {
+					let action: ActionExport = ActionExport.Selected;
+					if (selectedAction === ActionList.All) {
+						action = ActionExport.All;
+					} else if (selectedAction === ActionList.CurrentPage) {
+						action = ActionExport.CurrentPage;
+					} else if (selectedAction === '') {
+						action = ActionExport.Selected;
+					}
+					onSuccess(fullContacts, true, action);
+				}
+				const totalRecords = existingContacts.length;
+				onToggle();
+				// notifySuccess(
+				//   `Added ${totalRecords === 0 ? "All" : totalRecords} contacts `,
+				//   totalRecords,
+				//   totalRecords,
+				//   "Completed"
+				// );
+
+				notifySuccessListAndExport(
+					`Exported ${totalRecords === 0 ? 'All' : totalRecords} contacts  successfully!`,
+					totalRecords,
+					totalRecords,
+					'Exported and added to My Files'
+				);
+
+				setLoading(false);
+			} catch (err) {
+				notifyError(err);
+				setLoading(false);
+			}
+		}
 	};
 
-	const listItemOptions: MultiSelectOption[] = listItems.map((item) => ({
+	const listItemOptions: MultiSelectOption[] = collections.map((item) => ({
 		label: item.name,
 		value: item.id,
 	}));
@@ -377,16 +387,16 @@ const ProspectExportActionButton = ({
 							<div className="mb-3">
 								{!isListLoading && (
 									<CreatableMultiContacts
-										selected={selectedLists}
+										selected={selectedCollections}
 										options={listItemOptions}
-										onCreateNew={onCreateList}
+										onCreateNew={onCreateCollection}
 										onSelect={onSelectList}
 										error={dropdownError}
 									/>
 								)}
 								{/* {groupname ? (
 									<QueryLoader
-										onLoad={setListItems}
+										onLoad={setCollections}
 										query={listListsByGroupId}
 										rootKey='listListsByGroupId'
 										dataKey='items'
