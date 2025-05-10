@@ -1533,7 +1533,7 @@ const esGetPaginationQuery2 = (body) => {
 
 	// parse page
 	try {
-		page = Math.max(Math.abs(parseInt(body.page || '10')), 0);
+		page = Math.max(Math.abs(parseInt(body.page || '0')), 0);
 		from = size * page;
 		if (isNaN(from)) {
 			from = 0;
