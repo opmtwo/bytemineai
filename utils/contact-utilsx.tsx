@@ -240,11 +240,11 @@ export const applyContactFilters = (contacts: IBytemineContact[], filter: IBytem
 	return results;
 };
 
-export const getEmailStatus = (contact: Contact) => {
-	if (contact.contactEmail) {
+export const getEmailStatus = (contact: IBytemineContact) => {
+	if (contact.work_email) {
 		return 'Valid';
 	}
-	if (contact.personalEmail || contact.historicalEmails?.length) {
+	if (contact.personal_email || contact.personal_email2 || contact.work_email_history?.length) {
 		return 'Catch All/Accept All';
 	}
 	return 'Invalid';
