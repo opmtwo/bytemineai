@@ -36,7 +36,7 @@ const exportContactInitState = {
 	startExporting: false,
 };
 
-const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?: boolean; listId?: string }) => {
+const SectionProspects = ({ isContactsOnly = false, collectionId }: { isContactsOnly?: boolean; collectionId?: string }) => {
 	// -------------------------------------------------------------------------
 	// mounted status - used to prevent double api calls during mount
 	// -------------------------------------------------------------------------
@@ -124,6 +124,11 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 	const filterId = searchParams.get('filterId');
 
 	// -------------------------------------------------------------------------
+	// Force state update
+	// -------------------------------------------------------------------------
+	const [lastUpdatedAt, setLastUpdatedAt] = useState(new Date());
+
+	// -------------------------------------------------------------------------
 	// Load data
 	// -------------------------------------------------------------------------
 
@@ -143,13 +148,31 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 		getSelectedFilter(filterId);
 	}, [filterId]);
 
+	useEffect(() => {
+		if (!collectionId) {
+			return;
+		}
+		getCollectionContacts(collectionId);
+	}, [collectionId]);
+
 	// Load collections / lists
 	const getCollections = async () => {
 		try {
-			const res = (await callApi(null, '/api/v1/collections', {})) as IBytemineCollection[];
+			const res = (await callApi(null, 'api/v1/collections', {})) as IBytemineCollection[];
 			setCollectionItems(res);
 		} catch (err) {
 			console.log('getCollections - error', err);
+		}
+	};
+
+	// Load collection contacts
+	const getCollectionContacts = async (id: string) => {
+		try {
+			const res = (await callApi(null, `api/v1/collections/${id}/contacts`, {})) as IBytemineContact[];
+			setContactItems(res);
+			setFilteredContacts(res);
+		} catch (err) {
+			console.log('getCollectionContacts - error', err);
 		}
 	};
 
@@ -171,7 +194,7 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 	const getSelectedFilter = async (id: string) => {
 		setIsActiveFilterLoading(true);
 		try {
-			const res = (await callApi(null, `/api/v1/filters/${id}`, {})) as FilterModel;
+			const res = (await callApi(null, `api/v1/filters/${id}`, {})) as FilterModel;
 			setActiveFilterModel(res);
 		} catch (err) {
 			console.log('getCollections - error', err);
@@ -232,7 +255,7 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 		}
 
 		// has next
-		setHasNext(response?.page + 1 <= Math.ceil(response?.totalCount / contactsPerPage));
+		setHasNext(response?.page + 1 < Math.ceil(response?.totalCount / contactsPerPage));
 		setHasPrev(response?.page - 1 >= 0);
 
 		// update total number of available results
@@ -595,6 +618,8 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 				type: selectedAction,
 			});
 		}
+
+		onStateUpdate();
 	};
 
 	const onLoadMore = async (activePage: number) => {
@@ -649,6 +674,8 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 		setPidsBeingUnlocked([]);
 		setIsUnlockModalActive(false);
 	};
+
+	const onStateUpdate = () => setLastUpdatedAt(new Date());
 
 	const isTrailAccount = true;
 
@@ -752,31 +779,7 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 						</>
 					)}
 
-					{/* export contacts */}
-					<ProspectExportContacts contacts={activeContacts} isActive={isExportModalActive} onSubmit={onExportSubmit} onCancel={onExportCancel} />
-
-					{/* filter / search history modal */}
-					<ProspectSearchHistory
-						isBusy={isHistoryBusy}
-						searchItems={savedHistoryItems}
-						isActive={isHistoryModalActive}
-						onCancel={onSearchHistoryCancel}
-						onClick={onSearchHistorySelect}
-						nextToken={historyNextToken}
-						onFetchMore={onHistoryFetchMore}
-					/>
-
-					{/* The add to list modal */}
-					<ProspectAddToCollection
-						isBusy={isCollectionBusy}
-						listItems={collectionItems}
-						contactItems={activeContacts}
-						isActive={isAddToCollectionModalActive}
-						onSubmit={onAddToCollectionSubmit}
-						onCancel={onAddToCollectionCancel}
-					/>
-
-					{contactItems === undefined && !isBusy ? (
+					{contactItems === undefined && !isBusy && !collectionId ? (
 						<ProspectSearches
 							searches={historyItems}
 							savedSearches={savedHistoryItems}
@@ -796,6 +799,30 @@ const SectionProspects = ({ isContactsOnly = false, listId }: { isContactsOnly?:
 				onSuccess={onUnlockSuccess}
 				onStart={onUnlockStart}
 				onError={onUnlockError}
+			/>
+
+			{/* export contacts */}
+			<ProspectExportContacts contacts={activeContacts} isActive={isExportModalActive} onSubmit={onExportSubmit} onCancel={onExportCancel} />
+
+			{/* filter / search history modal */}
+			<ProspectSearchHistory
+				isBusy={isHistoryBusy}
+				searchItems={savedHistoryItems}
+				isActive={isHistoryModalActive}
+				onCancel={onSearchHistoryCancel}
+				onClick={onSearchHistorySelect}
+				nextToken={historyNextToken}
+				onFetchMore={onHistoryFetchMore}
+			/>
+
+			{/* The add to list modal */}
+			<ProspectAddToCollection
+				isBusy={isCollectionBusy}
+				listItems={collectionItems}
+				contactItems={activeContacts}
+				isActive={isAddToCollectionModalActive}
+				onSubmit={onAddToCollectionSubmit}
+				onCancel={onAddToCollectionCancel}
 			/>
 		</>
 	);
