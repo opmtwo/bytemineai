@@ -751,7 +751,7 @@ const SectionProspects = ({
 
 	return (
 		<>
-			<Breadcrumb title={`Result-`} items={[{ label: 'Prospect Finder', href: '/prospect-finder', isCurrent: true }]} />
+			<Breadcrumb title={`Result-${totalResults || 0}`} items={[{ label: 'Prospect Finder', href: '/prospect-finder', isCurrent: true }]} />
 
 			<div className="is-flex is-fullwidth">
 				<Filter
