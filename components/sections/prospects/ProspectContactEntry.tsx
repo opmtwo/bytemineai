@@ -278,7 +278,7 @@ const ProspectContactEntry = ({
 				<IconNewDownload width={16} />
 			</FormButtonNew>
 			{item.is_unlocked ? null : (
-				<FormButtonNew size="sm" className="ml-3" onClick={handleUnlock}>
+				<FormButtonNew size="sm" className="ml-3" onClick={handleUnlock} loading={item.isUnlocking}>
 					<IconNewUnlock width={16} />
 					<span>Unlock</span>
 				</FormButtonNew>
