@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { FormEvent, useEffect, useState } from 'react';
 
 import { ITEMS_PER_PAGE, keysToExportMap } from '../../../consts';
@@ -25,6 +26,7 @@ import IconNewCheck from '../../icons/IconNewCheck';
 import IconRocket from '../../icons/IconRocket';
 import ListView from '../../ListView';
 import Pagination from '../../Pagination';
+import PaginationNew from '../../PaginationNew';
 import Slot from '../../Slot';
 import TableSkeleton from '../../table-skeleton';
 import ProspectContactEntry from './ProspectContactEntry';
@@ -58,6 +60,7 @@ const ProspectContactItems = ({
 	onSuccess,
 	isAudienceBuilder = false,
 	isContactsOnly = false,
+	isCollectionMode = false,
 	showSampleExportModal,
 	showExportModal,
 }: {
@@ -87,6 +90,7 @@ const ProspectContactItems = ({
 	onLoadPrev?: () => any;
 	isAudienceBuilder?: boolean;
 	isContactsOnly?: boolean;
+	isCollectionMode?: boolean;
 	showSampleExportModal?: () => void;
 	showExportModal?: () => void;
 }) => {
@@ -273,13 +277,21 @@ const ProspectContactItems = ({
 		);
 	}
 
+	if (isContactsOnly) {
+		pagination = <PaginationNew totalCount={filteredItems.length} currentPage={activePage} itemsPerPage={itemsPerPage} onPageChange={handlePageChange} />;
+	}
+
 	if (isBusy) {
 		return <TableSkeleton />;
 	}
 
 	return (
 		<>
-			<form className="prospect-pagination is-flex is-align-items-center is-fullwidth" onSubmit={handleQueryFormSubmit}>
+			<form
+				className="prospect-pagination is-align-items-center is-fullwidth"
+				onSubmit={handleQueryFormSubmit}
+				style={{ display: isCollectionMode ? 'none' : 'flex' }}
+			>
 				<div className="is-flex is-align-items-center mr-auto">
 					{/* <FormCheckbox
 						value={isAllSelected}
@@ -360,7 +372,10 @@ const ProspectContactItems = ({
 					/>
 				</div>
 			</form>
-			<div className="is-scroll-view">{itemsList}</div>
+
+			<div className={classNames('is-scroll-view', { 'is-collection-mode': isCollectionMode })}>{itemsList}</div>
+
+			{isCollectionMode && filteredItems.length ? <div className="mt-5">{pagination}</div> : null}
 		</>
 	);
 
