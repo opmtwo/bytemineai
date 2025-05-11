@@ -1,19 +1,30 @@
-import { CSSProperties, useEffect, useState } from 'react';
 import { sentenceCase } from 'change-case';
+import { CSSProperties, useEffect, useState } from 'react';
+
+import { atDataCatchAllEmailCodes, atDataValidEmailCodes, exportLabels, keysToExport } from '../consts';
 import { Contact, IBytemineContact } from '../types';
+import { getEmailValidityStatus } from '../utils/contact-utilsx';
 import { arrayToCsv, download } from '../utils/helper-utils';
 import Card from './cards/Card';
 import CardTitle from './CardTitle';
+import EmailStatusIndicator from './EmailStatusIndicator';
 import ExportContactRadio from './ExportContactRadio';
 import FormButton from './form/FormButton';
 import IconClose from './icons/IconClose';
 import Modal from './modals/Modal';
 import Slot from './Slot';
-import EmailStatusIndicator from './EmailStatusIndicator';
-import { atDataCatchAllEmailCodes, atDataValidEmailCodes, exportLabels, keysToExport } from '../consts';
-import { getEmailValidityStatus } from '../utils/contact-utilsx';
 
-const ExportContacts = ({ contacts, isActive, onSubmit, onCancel }: { contacts: IBytemineContact[]; isActive: boolean; onSubmit: () => void; onCancel: () => void }) => {
+const ExportContacts = ({
+	contacts,
+	isActive,
+	onSubmit,
+	onCancel,
+}: {
+	contacts: IBytemineContact[];
+	isActive: boolean;
+	onSubmit: () => void;
+	onCancel: () => void;
+}) => {
 	const [exportType, setExportType] = useState<'valid' | 'catchAll' | 'all'>('all');
 	const [isBusy, setIsBusy] = useState(false);
 
