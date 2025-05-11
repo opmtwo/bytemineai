@@ -29,6 +29,10 @@ import ProspectExportContacts from './ProspectExportContacts';
 import ProspectSearches from './ProspectSearches';
 import ProspectSearchHistory from './ProspectSearchHistory';
 import ProspectUnlockContacts from './ProspectUnlockContacts';
+import ExportContacts from '../../ExportContacts';
+import FormButtonNew from '../../form/FormButtonNew';
+import IconNewExport from '../../icons/IconNewExport';
+import IconNewCheck from '../../icons/IconNewCheck';
 
 const exportContactInitState = {
 	type: ActionExport.Selected,
@@ -36,7 +40,15 @@ const exportContactInitState = {
 	startExporting: false,
 };
 
-const SectionProspects = ({ isContactsOnly = false, collectionId }: { isContactsOnly?: boolean; collectionId?: string }) => {
+const SectionProspects = ({
+	isContactsOnly = false,
+	isCollectionMode = false,
+	collectionId,
+}: {
+	isContactsOnly?: boolean;
+	isCollectionMode?: boolean;
+	collectionId?: string;
+}) => {
 	// -------------------------------------------------------------------------
 	// mounted status - used to prevent double api calls during mount
 	// -------------------------------------------------------------------------
@@ -678,6 +690,64 @@ const SectionProspects = ({ isContactsOnly = false, collectionId }: { isContacts
 	const onStateUpdate = () => setLastUpdatedAt(new Date());
 
 	const isTrailAccount = true;
+
+	if (isCollectionMode) {
+		return (
+			<>
+				<div className="is-absolute is-flex is-align-items-center" style={{ top: '2.5rem', right: 0 }}>
+					<FormButtonNew type="button" className="mr-5" onClick={() => onSelectMany(ActionSelect.SelectAll)}>
+						<IconNewCheck width={16} />
+						Select All
+					</FormButtonNew>
+					<FormButtonNew type="button" variant="active" onClick={() => setIsExportModalActive(true)}>
+						<IconNewExport width={16} />
+						<span>Export</span>
+					</FormButtonNew>
+				</div>
+
+				<ProspectContactItems
+					items={contactItems || []}
+					emailAccounts={[]}
+					pidsBeingUnlocked={pidsBeingUnlocked}
+					itemsPerPage={contactsPerPage}
+					isLocked={true}
+					isBusy={isContactsLoading}
+					onUnlock={onUnlock}
+					onUnlockOne={onUnlockOne}
+					onAdd={onAdd}
+					onSelect={onSelect}
+					onSelectMany={onSelectMany}
+					onDownload={onDownload}
+					onExport={onExport}
+					onAddToList={onAddToList}
+					onPageChange={onContactPageChange}
+					isTrialAccount={isTrailAccount}
+					setIsUpgradeModalActive={setIsUpgradeModalActive}
+					onSuccess={onUnlockSuccess}
+					isContactsOnly
+					isCollectionMode
+				/>
+
+				{/* The add to list modal */}
+				<ProspectAddToCollection
+					isBusy={isCollectionBusy}
+					listItems={collectionItems}
+					contactItems={activeContacts}
+					isActive={isAddToCollectionModalActive}
+					onSubmit={onAddToCollectionSubmit}
+					onCancel={onAddToCollectionCancel}
+				/>
+
+				{/* Export contacts */}
+				<ExportContacts
+					contacts={contactItems?.filter((c) => c.pid && c.isSelected) || []}
+					isActive={isExportModalActive}
+					onSubmit={onExportSubmit}
+					onCancel={onExportCancel}
+				/>
+			</>
+		);
+	}
 
 	return (
 		<>
