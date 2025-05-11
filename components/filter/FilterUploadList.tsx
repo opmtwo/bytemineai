@@ -148,11 +148,11 @@ const FilterUploadList = ({
 			</CardAnimatePresence>
 
 			{/* no list found - option to upload */}
-			<CardAnimatePresence isActive={!isBusy && items.length <= 0}>
+			{/* <CardAnimatePresence isActive={!isBusy && items.length <= 0}>
 				<Anchor href="#" onClick={handleOpen} className="has-text-primary is-size-7 ">
 					<strong>Upload List</strong>
 				</Anchor>
-			</CardAnimatePresence>
+			</CardAnimatePresence> */}
 
 			{/* filter upload form */}
 			<Modal isActive={isFormActive} onCancel={handleCancel}>
