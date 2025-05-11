@@ -4,19 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useAuthContext } from '../../../providers/auth-data-provider';
 import { useCrudContext } from '../../../providers/crud-provider';
 import { useSettingsContext } from '../../../providers/settings-provider';
-import { CognitoUserData, Contact, IBytemineCollection, List, ListContactModel, UserAttributes } from '../../../types';
-import { parseCognitoUser } from '../../../utils/user-utils';
+import { IBytemineCollection, IBytemineContact } from '../../../types';
 import Breadcrumb from '../../Breadcrumb';
-import Card from '../../cards/Card';
-import CardTitle from '../../CardTitle';
 import ExportContacts from '../../ExportContacts';
-import FormButton from '../../form/FormButton';
-import IconClose from '../../icons/IconClose';
+import LoaderFullscreen from '../../LoaderFullscreen';
 import Modal from '../../modals/Modal';
-import QueryLoader from '../../QueryLoader';
-import Slot from '../../Slot';
 import TrialNotice from '../../TrialNotice';
-import UsersLoaderNonAdmin from '../../UsersLoaderNonAdmin';
 import MyListForm from './MyListForm';
 import MyListItems from './MyListItems';
 
@@ -25,7 +18,7 @@ const SectionMyLists = () => {
 
 	const [isBusy, setIsBusy] = useState(false);
 
-	const [activeContacts, setActiveContacts] = useState<Contact[]>([]);
+	const [activeContacts, setActiveContacts] = useState<IBytemineContact[]>([]);
 	const [isExportModalActive, setIsExportModalActive] = useState(false);
 
 	useEffect(() => {
@@ -62,13 +55,13 @@ const SectionMyLists = () => {
 	const { attributes } = useAuthContext();
 	const groupname = attributes?.['custom:group_name'];
 
-	const onExport = (items: ListContactModel[]) => {
-		const contactItems: Contact[] = [];
+	const onExport = (items: IBytemineContact[]) => {
+		const contactItems: IBytemineContact[] = [];
 		for (let i = 0; i < items.length; i++) {
-			if (!items[i]?.contact?.ruid) {
+			if (!items[i]?.pid) {
 				continue;
 			}
-			contactItems.push(items[i].contact as Contact);
+			contactItems.push(items[i]);
 		}
 		setActiveContacts(contactItems);
 		setIsExportModalActive(true);
@@ -80,6 +73,8 @@ const SectionMyLists = () => {
 
 	return (
 		<>
+			{collectionIsBusy ? <LoaderFullscreen /> : null}
+
 			{isTrailAccount ? <TrialNotice onCustomize={onCustomize} /> : <div></div>}
 
 			<Breadcrumb title="My Lists" items={[{ label: 'My Lists', href: '/my-lists', isCurrent: true }]} />
@@ -91,39 +86,6 @@ const SectionMyLists = () => {
 			</Modal>
 
 			<ExportContacts contacts={activeContacts} isActive={isExportModalActive} onSubmit={onExportSubmit} onCancel={onExportCancel} />
-
-			{/* {groupname && <UsersLoaderNonAdmin onLoad={onLoad} isBusy={isBusy} onBusy={setIsBusy} groupname={groupname} nextToken={nextToken} />} */}
-
-			{/* <Modal isActive={isDeleteModalActive} onCancel={onCancelDeleteModal}>
-				<Card>
-					<Slot slot="header">
-						<CardTitle>Delete List</CardTitle>
-						<span className="is-clickable" onClick={onCancelDeleteModal}>
-							<IconClose />
-						</span>
-					</Slot>
-					<Slot slot="body">
-						<div className="panel-block is-align-items-flex-end">
-							<div className="is-flex-grow-1 mr-5">Are you sure you want to delete this list?</div>
-						</div>
-					</Slot>
-					<Slot slot="footer">
-						<div className="is-flex-shrink-1">
-							<FormButton
-								variant={['is-outlined', 'is-ui-button']}
-								onClick={(e: any) => {
-									onDeleteList();
-								}}
-								disabled={isDeleteFormBusy}
-								loading={isDeleteFormBusy}
-								type="submit"
-							>
-								Delete List
-							</FormButton>
-						</div>
-					</Slot>
-				</Card>
-			</Modal> */}
 		</>
 	);
 };
