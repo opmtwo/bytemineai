@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useAuthContext } from '../../../providers/auth-data-provider';
 import { useCrudContext } from '../../../providers/crud-provider';
-import { useSettingsContext } from '../../../providers/settings-provider';
 import { IBytemineCollection, IBytemineContact } from '../../../types';
 import Breadcrumb from '../../Breadcrumb';
 import ExportContacts from '../../ExportContacts';
@@ -44,13 +43,11 @@ const SectionMyLists = () => {
 
 	const router = useRouter();
 
-	const { settings, canUpgrade } = useSettingsContext();
-
 	const onCustomize = async () => {
 		await router.push({ pathname: '/account-settings/subscription-billing/plan' });
 	};
 
-	const isTrailAccount = canUpgrade;
+	const isTrailAccount = true;
 
 	const { attributes } = useAuthContext();
 	const groupname = attributes?.['custom:group_name'];

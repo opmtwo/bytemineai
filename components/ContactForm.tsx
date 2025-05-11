@@ -1,17 +1,17 @@
 import { FormEvent, useState } from 'react';
-import API, { graphqlOperation } from '@aws-amplify/api';
+
 import Auth from '@aws-amplify/auth';
+
+import { genericErrorMessage } from '../consts';
+import { useAuthContext } from '../providers/auth-data-provider';
 import Card from './cards/Card';
+import CardAnimatePresence from './cards/CardAnimatePresence';
+import CardTitle from './CardTitle';
 import FormButton from './form/FormButton';
 import FormInput from './form/FormInput';
+import AnimatedIconSuccess from './icons/animated/AnimatedIconSuccess';
 import ErrorNotificaition from './notifications/ErrorNotification';
 import Slot from './Slot';
-import { createContactForm } from '../src/graphql/mutations';
-import CardTitle from './CardTitle';
-import CardAnimatePresence from './cards/CardAnimatePresence';
-import AnimatedIconSuccess from './icons/animated/AnimatedIconSuccess';
-import { useAuthContext } from '../providers/auth-data-provider';
-import { genericErrorMessage } from '../consts';
 
 const ContactForm = ({ onSubmit, onCancel }: { onSubmit: Function; onCancel: () => void }) => {
 	const [isBusy, setIsBusy] = useState(false);
@@ -52,33 +52,33 @@ const ContactForm = ({ onSubmit, onCancel }: { onSubmit: Function; onCancel: () 
 	};
 
 	const getInput = () => {
-		let operation = createContactForm;
-		let operationName = 'createContactForm';
-		let input = {
-			firstName,
-			lastName,
-			message,
-		};
-		return { operation, operationName, input };
+		// let operation = createContactForm;
+		// let operationName = 'createContactForm';
+		// let input = {
+		// 	firstName,
+		// 	lastName,
+		// 	message,
+		// };
+		// return { operation, operationName, input };
 	};
 
 	const save = async () => {
-		const { operation, operationName, input } = getInput();
-		const response: any = await API.graphql(graphqlOperation(operation, { input }));
-		return response;
+		// const { operation, operationName, input } = getInput();
+		// const response: any = await API.graphql(graphqlOperation(operation, { input }));
+		// return response;
 	};
 
 	const sendEmail = async () => {
-		const email = user?.attributes.email;
-		const options = {
-			body: { email, firstName, lastName, message },
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
-			},
-		};
-		const response = await API.post('nymblrRestApi', '/api/contact-form', options);
-		return response;
+		// const email = user?.attributes.email;
+		// const options = {
+		// 	body: { email, firstName, lastName, message },
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 		Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+		// 	},
+		// };
+		// const response = await API.post('nymblrRestApi', '/api/contact-form', options);
+		// return response;
 	};
 
 	const handleSubmit = async (e: FormEvent) => {
@@ -148,12 +148,7 @@ const ContactForm = ({ onSubmit, onCancel }: { onSubmit: Function; onCancel: () 
 							</h4>
 							<AnimatedIconSuccess isActive={isSubmitted} />
 							<div className="py-6"></div>
-							<FormButton
-								type="submit"
-								onClick={onCancel}
-								disabled={isBusy}
-								variant={['is-outlined', 'is-ui-button']}
-							>
+							<FormButton type="submit" onClick={onCancel} disabled={isBusy} variant={['is-outlined', 'is-ui-button']}>
 								Continue
 							</FormButton>
 						</div>
@@ -161,13 +156,7 @@ const ContactForm = ({ onSubmit, onCancel }: { onSubmit: Function; onCancel: () 
 				</Slot>
 				<Slot slot="footer">
 					<CardAnimatePresence isActive={!isSubmitted}>
-						<FormButton
-							type="submit"
-							onClick={handleSubmit}
-							disabled={isBusy}
-							loading={isBusy}
-							variant={['is-outlined', 'is-ui-button']}
-						>
+						<FormButton type="submit" onClick={handleSubmit} disabled={isBusy} loading={isBusy} variant={['is-outlined', 'is-ui-button']}>
 							Submit
 						</FormButton>
 					</CardAnimatePresence>

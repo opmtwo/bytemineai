@@ -135,11 +135,11 @@ async function processData(maxRecords?: number) {
 	const randomPids = new Set(availablePids.sort(() => Math.random() - 0.5).slice(0, Math.ceil(availablePids.length * 0.55)));
 
 	const limit = Math.ceil(availablePids.length * 0.55); // 55% limit
-	for (const pid of randomPids) {
-		if (newSharePids.size < limit) {
-			newSharePids.add(pid);
-		}
-	}
+	// for (const pid of randomPids) {
+	// 	if (newSharePids.size < limit) {
+	// 		newSharePids.add(pid);
+	// 	}
+	// }
 
 	console.log({ allPids: allPids.length, sharedPids: sharedPids.size, availablePids: availablePids.length, newSharePids: newSharePids.size });
 

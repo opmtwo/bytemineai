@@ -49,7 +49,7 @@ const Modal = ({
 	}, []);
 
 	return (
-		<AnimatePresence initial={false} exitBeforeEnter={true} onExitComplete={() => null}>
+		<AnimatePresence initial={false} presenceAffectsLayout={true} onExitComplete={() => null}>
 			{isActive && (
 				<motion.div
 					layout

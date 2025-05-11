@@ -4,7 +4,6 @@ import { Children, MouseEvent, ReactElement, ReactNode, useEffect, useState } fr
 
 import { useAuthContext } from '../../providers/auth-data-provider';
 import { useHeader } from '../../providers/header-provider';
-import { useSettingsContext } from '../../providers/settings-provider';
 import ContactForm from '../ContactForm';
 import Header from '../header/Header';
 import IconNewApi from '../icons/IconNewApi';
@@ -35,17 +34,13 @@ const PageLayout = ({
 	const { onCompactToggle } = useHeader();
 
 	const { attributes } = useAuthContext();
-	const { settings, initSettings } = useSettingsContext();
-	const groupName = attributes?.['custom:group_name'];
+
 	const currentPathName =
 		pathName === '/campaigns/summary/' || pathName === '/campaigns/contacts/' || pathName === '/campaigns/settings/' || pathName === '/campaigns/builder/';
-	useEffect(() => {
-		groupName && initSettings(groupName);
-	}, [groupName]);
 
-	useEffect(() => {
-		document.body.style.setProperty('--primary', settings?.['custom:color_code'] || '');
-	}, [settings?.['custom:color_code']]);
+	// useEffect(() => {
+	// 	document.body.style.setProperty('--primary', settings?.['custom:color_code'] || '');
+	// }, [settings?.['custom:color_code']]);
 
 	useEffect(() => {
 		document.body.classList.add('is-dashboard');
@@ -89,7 +84,7 @@ const PageLayout = ({
 		<>
 			<Header onUpgrade={onUpgrade} />
 			<Sidebar items={menuItemsTop} bottomItems={menuItemsBottom} />
-			<main className={classNames(currentPathName === true ? '' : 'container', size)}>{children}</main>
+			<main className={classNames(currentPathName === true ? '' : 'is-relative container', size)}>{children}</main>
 			<Modal isActive={isContactModalActive} onCancel={onUpgradeCancel}>
 				<ContactForm onSubmit={onUpgradeSubmit} onCancel={onUpgradeCancel} />
 			</Modal>

@@ -8,7 +8,7 @@ const useRoutePrompt = (isLoading: boolean) => {
   const router = useRouter();
 
   const onRouteChangeStart = React.useCallback(
-    (nextPath) => {
+    (nextPath: string) => {
       if (isLoading) {
        setTimeout(()=>{
           setShouldShowLeaveConfirmDialog(true)

@@ -7,10 +7,7 @@ import Anchor from '../Anchor';
 
 const HeaderMenu = () => {
   const router = useRouter();
-  const { attributes } = useAuthContext();
-  
-  const isUser = attributes?.["custom:role"] === Roles.User;
-  const isManager = attributes?.["custom:role"] === Roles.Manager;
+  const { isManager } = useAuthContext();
 
   const menuItems = [
 

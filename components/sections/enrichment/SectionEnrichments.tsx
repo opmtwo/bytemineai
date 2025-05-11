@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useAuthContext } from '../../../providers/auth-data-provider';
 import { useCrudContext } from '../../../providers/crud-provider';
-import { useSettingsContext } from '../../../providers/settings-provider';
 import { Contact, IBytemineEnrichment, ListContactModel } from '../../../types';
 import Breadcrumb from '../../Breadcrumb';
 import EnrichUploadForm from '../../enrich/EnrichUploadForm';
@@ -43,8 +42,6 @@ const SectionEnrichments = () => {
 
 	const router = useRouter();
 
-	const { settings, canUpgrade } = useSettingsContext();
-
 	const init = async () => {
 		setIsBusy(true);
 		await enrichmentOnRead();
@@ -55,7 +52,7 @@ const SectionEnrichments = () => {
 		await router.push({ pathname: '/settings/subscription' });
 	};
 
-	const isTrailAccount = canUpgrade;
+	const isTrailAccount = true;
 
 	const { attributes } = useAuthContext();
 

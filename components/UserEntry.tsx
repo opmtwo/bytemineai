@@ -105,7 +105,7 @@ const UserEntry = ({ index, user, isListMode = false }: { index: number; user: I
 		<span className="has-text-weight-normal">
 			Last log in on
 			<br />
-			{formatDate(user.lastLoginAt)}
+			{/* {formatDate(user.lastLoginAt)} */}
 		</span>
 	);
 

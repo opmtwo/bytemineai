@@ -8,8 +8,7 @@ import Head from 'next/head';
 import { ToastContainer } from 'react-toastify';
 
 import EnrichmentsInProgress from '../components/enrich/EnrichmentsInProgress';
-import Favicon from '../components/Favicon';
-import SettingsLoader from '../components/SettingsLoader';
+// import Favicon from '../components/Favicon';
 import AuthDataProvider from '../providers/auth-data-provider';
 import { HeaderContextProvider } from '../providers/header-provider';
 import StripeProvider from '../providers/stripe-provider';
@@ -44,8 +43,7 @@ const NewApp = ({ Component, pageProps }: AppProps) => {
 			<HeaderContextProvider>
 				<AuthDataProvider>
 					<StripeProvider>
-						<SettingsLoader />
-						<Favicon />
+						{/* <Favicon /> */}
 						<LayoutGroup>
 							<Component {...pageProps} />
 							<EnrichmentsInProgress />

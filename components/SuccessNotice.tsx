@@ -1,7 +1,6 @@
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '../providers/auth-data-provider';
-import { useSettingsContext } from '../providers/settings-provider';
 import { AccountType } from '../types';
 import CardAnimatePresence from './cards/CardAnimatePresence';
 import FormButton from './form/FormButton';
@@ -12,16 +11,12 @@ const SuccessNotice = ({ onCustomize }: { onCustomize: () => void }) => {
 	const [creditsLeft, setCreditsLeft] = useState(0);
 
 	const { user, isRoot } = useAuthContext();
-	const { getGroupUsage, settings } = useSettingsContext();
 
 	const groupname = user?.attributes['custom:group_name'];
 
     
 
 	useEffect(() => {
-		if (!groupname || !settings?.['custom:created_at']) {
-			return;
-		}
 		(async () => {
 			try {
                 setMessage('Thanks for upgrading your account!');
@@ -29,9 +24,9 @@ const SuccessNotice = ({ onCustomize }: { onCustomize: () => void }) => {
 				console.log('Error fetching usage details', err);
 			}
 		})();
-	}, [groupname, settings?.['custom:created_at']]);
+	}, [groupname]);
 
-	const isActive = !isRoot && settings?.['custom:account_type'] === AccountType.Trial && message !== undefined;
+	const isActive = !isRoot && message !== undefined;
 
 	return (
 		<CardAnimatePresence isActive={isActive}>

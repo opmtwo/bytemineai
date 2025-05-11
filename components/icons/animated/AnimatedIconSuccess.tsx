@@ -16,7 +16,7 @@ const icon = {
 const transition = { duration: 1, yoyo: 0, ease: 'easeInOut' };
 
 const AnimatedIconSuccess = ({ isActive }: { isActive: boolean }) => (
-	<AnimatePresence exitBeforeEnter={true} initial={true}>
+	<AnimatePresence presenceAffectsLayout={true} initial={true}>
 		{isActive && (
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width={160} height={160}>
 				<motion.path

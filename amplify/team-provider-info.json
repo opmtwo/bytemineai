@@ -18,13 +18,13 @@
       "function": {
         "bytemineRestApiLambda": {
           "deploymentBucketName": "amplify-bytemine-dev-96701-deployment",
-          "s3Key": "amplify-builds/bytemineRestApiLambda-3839676c66576b497546-build.zip",
+          "s3Key": "amplify-builds/bytemineRestApiLambda-4938586b306b386e7746-build.zip",
           "stripeClientSecret": "sk_test_51OSl5uLgUrD1kX4RntOleOV3WAUXUKEqtizcVSVxrCPxsjEZ89Y5RhEViyOOubSC8pDQxJoY1xHtghfK3z5PSxcu00Ej5J9fgD",
           "atDataApiKey": "863c3f14e37d1dd240e9cf76227a5d70"
         },
         "bytemineaiEnrichLambda": {
           "deploymentBucketName": "amplify-bytemine-dev-96701-deployment",
-          "s3Key": "amplify-builds/bytemineaiEnrichLambda-2b72793854476f664376-build.zip",
+          "s3Key": "amplify-builds/bytemineaiEnrichLambda-793851425a733863394f-build.zip",
           "selfArn": "arn:aws:lambda:us-east-2:396102999596:function:bytemineaiEnrichLambda-dev"
         }
       },

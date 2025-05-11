@@ -15,7 +15,6 @@ import {
 } from '../types';
 import countryCodes from '../data/country-codes';
 import moment from 'moment';
-import { listUsageByGroupId } from '../src/graphql/queries';
 import API from '@aws-amplify/api';
 
 
@@ -213,28 +212,28 @@ export const getUsage = async (groupname: string, date: string) => {
 	let response: any;
 	let items: UsageModel[] = [];
 	let nextToken = undefined;
-	while (true) {
-		const options: GraphQLOptions = {
-			query: listUsageByGroupId,
-			variables: {
-				groupId: groupname,
-				createdAt: {
-					beginsWith: moment(date, 'DD-MM-YYYY', true).format('YYYY-MM-DD'),
-				},
-				sortDirection: 'DESC',
-				nextToken: nextToken,
-			},
-		};
-		try {
-			response = await API.graphql(options);
-			items = items.concat(items, response?.data?.listUsageByGroupId?.items || []);
-			nextToken = response?.data?.listUsageByGroupId?.nextToken;
-		} catch (err) {
-			break;
-		}
-		if (!nextToken) {
-			break;
-		}
-	}
+	// while (true) {
+	// 	const options: GraphQLOptions = {
+	// 		query: listUsageByGroupId,
+	// 		variables: {
+	// 			groupId: groupname,
+	// 			createdAt: {
+	// 				beginsWith: moment(date, 'DD-MM-YYYY', true).format('YYYY-MM-DD'),
+	// 			},
+	// 			sortDirection: 'DESC',
+	// 			nextToken: nextToken,
+	// 		},
+	// 	};
+	// 	try {
+	// 		response = await API.graphql(options);
+	// 		items = items.concat(items, response?.data?.listUsageByGroupId?.items || []);
+	// 		nextToken = response?.data?.listUsageByGroupId?.nextToken;
+	// 	} catch (err) {
+	// 		break;
+	// 	}
+	// 	if (!nextToken) {
+	// 		break;
+	// 	}
+	// }
 	return items;
 };

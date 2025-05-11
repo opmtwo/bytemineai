@@ -1,4 +1,3 @@
-import { useSettingsContext } from '../providers/settings-provider';
 import Anchor from './Anchor';
 import CardAnimatePresence from './cards/CardAnimatePresence';
 
@@ -11,16 +10,16 @@ const Logo = ({
 	maxWidth?: number | string;
 	maxHeight?: string | number;
 }) => {
-	const { logoUrl, isLogoLoading } = useSettingsContext();
 
 	return (
-		<CardAnimatePresence isActive={!isLogoLoading}>
+		<CardAnimatePresence isActive={true}>
 			<Anchor className="is-block" href="/">
-				{logoUrl ? (
+				{/* {logoUrl ? (
 					<img src={logoUrl} alt="" style={{ maxWidth, maxHeight }} />
 				) : (
 					<img src="/logo.png" alt="" style={{ maxWidth, maxHeight }} />
-				)}
+				)} */}
+				<img src="/logo.png" alt="" style={{ maxWidth, maxHeight }} />
 			</Anchor>
 		</CardAnimatePresence>
 	);

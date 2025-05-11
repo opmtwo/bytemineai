@@ -2,7 +2,6 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 
 import { useAuthContext } from '../providers/auth-data-provider';
-import { useSettingsContext } from '../providers/settings-provider';
 import { AccountType } from '../types';
 import CardAnimatePresence from './cards/CardAnimatePresence';
 import FormButton from './form/FormButton';

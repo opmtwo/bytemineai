@@ -58,7 +58,7 @@ const FormSelect = ({
 		<FormField isLast={isLast}>
 			<FormLabel label={label} error={error} />
 			<p className={classNames('select is-fullwidth', { 'has-icons-left': iconLeft }, { 'has-icons-right': iconRight }, {'is-danger': error})}>
-				<select name={name} value={value} placeholder={placeholder} className={cssClassNames} onChange={handleChange} required={required}>
+				<select name={name} value={value} className={cssClassNames} onChange={handleChange} required={required}>
 					<option value="">{placeholder}</option>
 					{optionsList}
 				</select>

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAuthContext } from '../../providers/auth-data-provider';
 
 import { Enrichment } from '../../types';
-import EnrichmentsInProgressEntry from './EnrichmentsInProgressEntry';
+// import EnrichmentsInProgressEntry from './EnrichmentsInProgressEntry';
 
 const EnrichmentsInProgress = () => {
 	const [isBusy, setIsBusy] = useState(false);

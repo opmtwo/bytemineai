@@ -1,7 +1,8 @@
-import { Dispatch, MouseEvent, MouseEventHandler, SetStateAction, useState } from 'react';
-import { v4 } from 'uuid';
 import classNames from 'classnames';
+import { Dispatch, MouseEvent, MouseEventHandler, SetStateAction, useState } from 'react';
 import ReactSwitch from 'react-switch';
+import { v4 } from 'uuid';
+
 import { useAuthContext } from '../providers/auth-data-provider';
 import { decodeJson } from '../utils/helper-utils';
 import IconList from './icons/IconList';
