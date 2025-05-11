@@ -51,6 +51,7 @@ const ProspectContactItems = ({
 	onSelectMany,
 	onPageChange,
 	isTrialAccount,
+	lastUpdatedAt,
 	setIsUpgradeModalActive,
 	onLoadMore,
 	onLoadPrev,
@@ -72,6 +73,7 @@ const ProspectContactItems = ({
 	isBusy: boolean;
 	hasNext?: boolean;
 	totalResults?: number;
+	lastUpdatedAt?: string;
 	onAdd: (contact: IBytemineContact) => void;
 	onSelect: (id: string, isChecked: boolean) => void;
 	onDownload: (contact: IBytemineContact) => void;
@@ -99,16 +101,13 @@ const ProspectContactItems = ({
 	const [filteredItems, setFilteredItems] = useState<IBytemineContact[]>([]);
 	const [isListMode, setIsListMode] = useState(false);
 	const [sortMap, setSortMap] = useState<SortData[]>(keysToExportMap);
-	const [displayItems, setDisplayItems] = useState<IBytemineContact[]>([]);
+	// const [displayItems, setDisplayItems] = useState<IBytemineContact[]>([]);
 	const [dropdownSelectedAction, setDropdownSelectedAction] = useState<string>('');
 	const { attributes } = useAuthContext();
-	useEffect(() => {
-		onQueryChange(query);
-	}, [items]);
 
 	useEffect(() => {
 		onQueryChange(query);
-	}, [sortMap, activePage, itemsPerPage]);
+	}, [items, lastUpdatedAt, itemsPerPage, pidsBeingUnlocked, sortMap, activePage]);
 
 	useEffect(() => {
 		// const profile = decodeJson(user?.attributes.profile);
@@ -123,7 +122,11 @@ const ProspectContactItems = ({
 			return;
 		}
 		const newItems = filteredItems.map((item) => {
-			if (pidsBeingUnlocked.includes(item.id)) {
+			const index = items.findIndex((_item) => _item.pid === item.pid);
+			if (index !== -1) {
+				item = { ...item, ...items[index] };
+			}
+			if (pidsBeingUnlocked.includes(item.pid)) {
 				item.isUnlocking = true;
 			} else {
 				item.isUnlocking = false;
@@ -131,8 +134,10 @@ const ProspectContactItems = ({
 			return item;
 		});
 		setFilteredItems(newItems);
-		setDisplayItems(paginate(newItems, itemsPerPage, activePage));
+		// setDisplayItems(paginate(newItems, itemsPerPage, activePage));
 	}, [pidsBeingUnlocked]);
+
+	const displayItems = paginate(filteredItems, itemsPerPage, activePage);
 
 	const handlePageChange = (newPage: number, newPerPage: number) => {
 		console.log('handlePageChange - newPage ', newPage);
@@ -174,7 +179,7 @@ const ProspectContactItems = ({
 			newItems = sortedItems;
 		}
 		setFilteredItems(newItems);
-		setDisplayItems(paginate(newItems, itemsPerPage, activePage));
+		// setDisplayItems(paginate(newItems, itemsPerPage, activePage));
 	};
 
 	const onSelectAll = () =>
