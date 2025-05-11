@@ -1,46 +1,53 @@
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import UserGuard from '../../../guards/UserGuard';
-import PageLayout from '../../../components/layouts/PageLayout';
-import SectionProspectFinder from '../../../components/sections/prospect-finder/SectionProspectFinder';
+import { useEffect, useState } from 'react';
+
 import EmptyMsg from '../../../components/EmptyMsg';
-import { List } from '../../../types';
-import QueryLoader from '../../../components/QueryLoader';
-import { getList } from '../../../src/graphql/queries';
+import PageLayout from '../../../components/layouts/PageLayout';
+import UserGuard from '../../../guards/UserGuard';
+import { IBytemineCollection } from '../../../types';
+import { callApi } from '../../../utils/helper-utils';
+import SectionProspects from '../../../components/sections/prospects/SectionProspects';
+import Breadcrumb from '../../../components/Breadcrumb';
 
 const MyListDetails = () => {
-	const [listId, setListId] = useState<string>();
-	const [list, setList] = useState<List>();
-	const [isListLoading, setIsListLoading] = useState(false);
+	const [collectionId, setCollectionId] = useState<string>();
+	const [collection, setCollection] = useState<IBytemineCollection>();
+	const [isCollectionLoading, setIsCollectionLoading] = useState(false);
 
 	const router = useRouter();
 
 	useEffect(() => {
 		if (typeof router.query.id === 'string') {
-			setListId(router.query.id);
+			setCollectionId(router.query.id);
+			getCollection(router.query.id);
 		}
 	}, [router.query.id]);
+
+	// Load collections / lists
+	const getCollection = async (collectionId: string) => {
+		try {
+			const res = (await callApi(null, `/api/v1/collections/${collectionId}`, {})) as IBytemineCollection;
+			setCollection(res);
+		} catch (err) {
+			console.log('getCollection - error', err);
+		}
+	};
 
 	return (
 		<UserGuard>
 			<Head>
-				<title>{isListLoading ? 'Loading...' : list?.name || 'List not found'}</title>
+				<title>{isCollectionLoading ? 'Loading...' : collection?.name || 'List not found'}</title>
 				<meta name="description" content="" />
 			</Head>
 			<PageLayout>
-				{listId ? (
+				{collectionId ? (
 					<>
-						<SectionProspectFinder isContactsOnly={true} listId={listId} />
-						<QueryLoader
-							onLoad={setList}
-							query={getList}
-							rootKey="data"
-							dataKey="getList"
-							options={{ id: listId, limit: 999 }}
-							isSingle={true}
-							onBusyToggle={setIsListLoading}
+						<Breadcrumb
+							title={`${collection?.name}`}
+							items={[{ label: 'Prospect Finder', href: '/prospect-finder', isCurrent: true }]}
 						/>
+						<SectionProspects isContactsOnly={true} collectionId={collectionId} />
 					</>
 				) : (
 					<EmptyMsg msg="List not found" />
