@@ -42,13 +42,16 @@ const MyListDetails = () => {
 			</Head>
 			<PageLayout>
 				{collectionId ? (
-					<>
+					<main className="is-relative">
 						<Breadcrumb
-							title={`${collection?.name}`}
-							items={[{ label: 'Prospect Finder', href: '/prospect-finder', isCurrent: true }]}
+							title={`${collection?.name || ''}`}
+							items={[
+								{ label: 'My Lists', href: '/my-lists', isCurrent: false },
+								{ label: collection?.name || '', href: `/prospect-finder/${collectionId}`, isCurrent: true },
+							]}
 						/>
-						<SectionProspects isContactsOnly={true} collectionId={collectionId} />
-					</>
+						<SectionProspects collectionId={collectionId} isCollectionMode={true} />
+					</main>
 				) : (
 					<EmptyMsg msg="List not found" />
 				)}
