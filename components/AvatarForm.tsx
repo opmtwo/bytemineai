@@ -72,7 +72,7 @@ const AvatarForm: React.FC<AvatarFormProps> = () => {
 				<div className="is-flex mb-3">
 					<label className="is-relative is-flex is-flex-direction-column is-clickable mr-5" htmlFor={idTwo}>
 						<FormButtonNew type="button" style={{ pointerEvents: 'none' }}>
-							<IconNewPlus />
+							<IconNewPlus width={16} />
 							<span className="ml-3">Change Image</span>
 						</FormButtonNew>
 						<input type="file" id={idTwo} accept="image/*" className="is-hidden" onChange={onAvatarChange} />
