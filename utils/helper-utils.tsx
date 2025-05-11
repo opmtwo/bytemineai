@@ -466,7 +466,7 @@ export const forceDownloadS3File = async (path: string, fileName = 'downloaded-f
 };
 
 export const encodeContact = (contact: any) => {
-	const keys = ['work_email_history', 'personal_email_history', 'mobile_number_history', 'education', 'skills', 'work_experience'];
+	const keys = ['work_email_history', 'personal_email_history', 'mobile_number_history', 'education', 'skills', 'interests', 'work_experience'];
 	for (let i = 0; i < keys.length; i++) {
 		const key = keys[i];
 		if (!contact[key]) {
