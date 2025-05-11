@@ -8,7 +8,7 @@ const {
 	createBytemineCollectionContact,
 	deleteBytemineCollectionContact,
 } = require('../graphql/mutations');
-const { getBytemineCollection, listCollectionByTeamId, listCollectionBySlug } = require('../graphql/queries');
+const { getBytemineCollection, listCollectionByTeamId, listCollectionBySlug, listCollectionContactByCollectionId } = require('../graphql/queries');
 const { verifyTeam, verifyToken } = require('../middlewares/auth');
 const { ICollection, schemaValidate, IIds, IPids } = require('../schemas');
 const { apsGql } = require('../utils/aps-utils');
@@ -98,6 +98,42 @@ router.put('/:id', schemaValidate(ICollection), verifyToken, verifyTeam, async (
 	const collectionUpdated = await apsGql(updateBytemineCollection, { input }, 'data.updateBytemineCollection');
 
 	return res.json(collectionUpdated);
+});
+
+router.get('/:id/contacts', verifyToken, verifyTeam, async (req, res) => {
+	const { id } = req.params;
+	const { id: teamId } = res.locals.team;
+
+	// Check collection
+	const collection = await apsGql(getBytemineCollection, { id }, 'data.getBytemineCollection');
+	if (!collection?.id) {
+		return res.status(404).json({ message: 'Not found' });
+	}
+
+	let collectionContacts = [];
+	let nextToken = null;
+
+	do {
+		const response = await apsGql(
+			listCollectionContactByCollectionId,
+			{
+				collectionId: id,
+				limit: 999,
+				sortDirection: 'DESC',
+				nextToken,
+			},
+			'data.listCollectionContactByCollectionId'
+		);
+
+		collectionContacts = collectionContacts.concat(response.items);
+		nextToken = response.nextToken;
+	} while (nextToken);
+
+	console.log({ collectionContacts: collectionContacts.length });
+	const contacts = collectionContacts.filter((c) => c.contact?.pid).map((c) => c.contact);
+	console.log({ contacts: contacts.length });
+
+	return res.json(contacts);
 });
 
 router.post('/:id/contacts', schemaValidate(IPids), verifyToken, verifyTeam, async (req, res) => {
