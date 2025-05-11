@@ -272,3 +272,27 @@ div.planslist div.column div.panel {
 	bottom: 100%;
 	margin-bottom: 1rem;
 }
+
+.is-react-select,
+.is-react-select > div {
+	background-color: $white-bis;
+	border-radius: $radius;
+}
+
+.is-react-select > div {
+	padding-right: 0.5rem;
+	padding-left: 0.5rem;
+}
+
+@include widescreen {
+	.is-search-form {
+		position: absolute;
+		right: 0;
+		bottom: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 450px;
+		margin-bottom: 1rem;
+	}
+}
