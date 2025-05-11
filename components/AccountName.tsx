@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import CardAnimatePresence from "./cards/CardAnimatePresence";
 import FormButton from "./form/FormButton";
+import FormButtonNew from "./form/FormButtonNew";
 
 const AccountName = ({
   name,
@@ -21,23 +22,24 @@ const AccountName = ({
     >
       <div className="is-flex is-align-items-center is-justify-content-space-between pb-5">
         <div>
-          <FormButton
-            variant={["is-outlined", "is-ui-button"]}
+          <FormButtonNew
+            type="button"
             color="is-dark"
             onClick={onBack}
           >
             Back
-          </FormButton>
+          </FormButtonNew>
           <strong className="is-size-5 has-text-dark ml-5">{name}</strong>
         </div>
-        <FormButton
-          variant={["is-outlined", "is-ui-button"]}
-          onClick={onDelete}
+        <FormButtonNew
+          type="button"
+          variant="active"
+          onClick={() => onDelete && onDelete()}
           className="ml-5"
           loading={loading}
         >
           Delete Account
-        </FormButton>
+        </FormButtonNew>
       </div>
     </CardAnimatePresence>
   );

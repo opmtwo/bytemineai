@@ -21,9 +21,9 @@ const CrediCard = () => {
           <CardTitle>Credit Card</CardTitle>
         </div>
           { /*
-        <FormButton variant={["is-outlined", "is-ui-button"]}>
+        <FormButtonNew variant={["is-outlined", "is-ui-button"]}>
           Change
-          </FormButton> */}
+          </FormButtonNew> */}
       </Slot>
       <Slot slot="body">
         <div className="pannel-block is-realtive ">

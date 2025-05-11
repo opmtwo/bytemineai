@@ -5,6 +5,7 @@ import Slot from '../../Slot';
 import CardTitle from '../../CardTitle';
 import FormButton from '../../form/FormButton';
 import IconClose from '../../icons/IconClose';
+import FormButtonNew from '../../form/FormButtonNew';
 
 const WarningModel = ({
   isActive,
@@ -44,20 +45,21 @@ const WarningModel = ({
         </div>
       </Slot>
       <Slot slot='footer'>
-        <FormButton
+        <FormButtonNew
+          type="button"
           onClick={onReject}
-          variant={['is-outlined', 'is-ui-button']}
           className='mr-3'
         >
           {cancelLabel}
-        </FormButton>
-        <FormButton
+        </FormButtonNew>
+        <FormButtonNew
+          type="button"
           onClick={onAllow}
-          variant={['is-outlined', 'is-ui-button']}
+          variant="active"
           color='is-danger'
         >
           {submitLabel}
-        </FormButton>
+        </FormButtonNew>
       </Slot>
     </Card>
   </Modal>

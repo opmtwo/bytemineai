@@ -11,6 +11,7 @@ import FormInput from '../../form/FormInput';
 import Logo from '../../Logo';
 import ErrorNotificaition from '../../notifications/ErrorNotification';
 import Slot from '../../Slot';
+import FormButtonNew from '../../form/FormButtonNew';
 
 const NewPasswordFormNew = ({ oldPass, isNewPassword, onSubmit }: { oldPass?: string; isNewPassword?: boolean; onSubmit?: () => void }) => {
 	const router = useRouter();
@@ -129,9 +130,9 @@ const NewPasswordFormNew = ({ oldPass, isNewPassword, onSubmit }: { oldPass?: st
 					</div>
 				</Slot>
 				<Slot slot="footer">
-					<FormButton type="submit" disabled={isBusy} loading={isBusy} className="ml-5" variant={['is-ui-button']}>
+					<FormButtonNew type="submit" disabled={isBusy} loading={isBusy} className="ml-5" variant="active">
 						Update Password
-					</FormButton>
+					</FormButtonNew>
 				</Slot>
 			</Card>
 		</form>

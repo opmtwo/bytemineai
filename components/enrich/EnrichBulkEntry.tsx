@@ -4,6 +4,7 @@ import { formatNumber } from '../../utils/helper-utils';
 import FormButton from '../form/FormButton';
 import IconDownload from '../icons/IconDownload';
 import IconWorking from '../icons/IconWorking';
+import FormButtonNew from '../form/FormButtonNew';
 
 const EnrichBulkEntry = ({ item, onDownload }: { item: Enrichment; onDownload: (id: string) => void }) => {
 	const handleDownload = () => onDownload(item.id);
@@ -44,10 +45,11 @@ const EnrichBulkEntry = ({ item, onDownload }: { item: Enrichment; onDownload: (
 							<span>Match Rate</span>
 						</div>
 						<div className="column is-1 has-text-right ml-5">
-							<FormButton
+							<FormButtonNew
+								type="button"
 								className="ml-3"
 								onClick={item.isCompleted ? handleDownload : undefined}
-								variant={['is-icon', 'is-outlined', 'is-rounded']}
+								variant="icon"
 								disabled={!item.isCompleted}
 								icon={
 									<span style={{ width: 12 }}>

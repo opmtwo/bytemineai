@@ -6,6 +6,7 @@ import FormButton from "./form/FormButton";
 import Info from "./Info";
 import Loader from "./Loader";
 import Slot from "./Slot";
+import FormButtonNew from "./form/FormButtonNew";
 
 const AccountInfo = ({
   isBusy,
@@ -51,30 +52,30 @@ const AccountInfo = ({
       </div>
       <div className="ml-a">
         {onCustomize !== undefined && (
-          <FormButton
-            variant={["is-outlined", "is-ui-button"]}
+          <FormButtonNew
+            type="button"
             onClick={onCustomize}
           >
             Customize Look
-          </FormButton>
+          </FormButtonNew>
         )}
         {onEditAccount !== undefined && (
-          <FormButton
-            variant={["is-outlined", "is-ui-button"]}
+          <FormButtonNew
+            type="button"
             onClick={onEditAccount}
             className="ml-5"
           >
             Edit Account
-          </FormButton>
+          </FormButtonNew>
         )}
         {onUpgrade !== undefined && (
-          <FormButton
-            variant={["is-ui-button"]}
+          <FormButtonNew
+            type="button"
             onClick={onUpgrade}
             className="ml-5"
           >
             Upgrade
-          </FormButton>
+          </FormButtonNew>
         )}
       </div>
     </Slot>

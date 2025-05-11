@@ -127,7 +127,7 @@ const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactMod
 						<p>Upload a list of phone numbers. email addresses. or personal LinkedIn profiles.</p>
 					</div>
 					<div className="ml-auto">
-						<FormButtonNew variant="active" onClick={enrichmentOnAdd}>
+						<FormButtonNew type="button" variant="active" onClick={enrichmentOnAdd}>
 							<IconNewUpload width={16} />
 							<span>Upload</span>
 						</FormButtonNew>

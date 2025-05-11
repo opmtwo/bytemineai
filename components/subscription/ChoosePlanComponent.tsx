@@ -5,6 +5,7 @@ import FormButton from "../form/FormButton";
 import Slot from "../Slot";
 import { useStripeContext } from "../../providers/stripe-provider";
 import styles from "./CardDetail.module.css";
+import FormButtonNew from "../form/FormButtonNew";
 function ChoosePlanComponent({
   plan,
   isSelected,
@@ -22,15 +23,12 @@ function ChoosePlanComponent({
   }
     let button;
     if (plan.buttonTxt){
-        button = <FormButton
-            variant={
-            isSelected ? ["is-ui-button"] : ["is-outlined", "is-ui-button"]
-        }
+        button = <FormButtonNew
             style={{ width: "100%" }}
             onClick={() => getPlanValue(plan)}
             >
             { isSelected ? `Selected` : `Select Plan` }
-        </FormButton>;
+        </FormButtonNew>;
     } else {
         button = <h1 className="is-size-6"><strong>Contact Us</strong></h1>;
     }

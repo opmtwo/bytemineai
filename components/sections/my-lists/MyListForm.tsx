@@ -13,6 +13,7 @@ import ErrorNotificaition from '../../notifications/ErrorNotification';
 import Slot from '../../Slot';
 import { isLength } from 'validator';
 import { callApi } from '../../../utils/helper-utils';
+import FormButtonNew from '../../form/FormButtonNew';
 
 const MyListForm = () => {
 	const [isBusy, setIsBusy] = useState(false);
@@ -133,9 +134,9 @@ const MyListForm = () => {
 					</div>
 				</Slot>
 				<Slot slot="footer">
-					<FormButton variant={['is-outlined', 'is-ui-button']} disabled={isBusy} loading={isBusy} type="submit">
+					<FormButtonNew disabled={isBusy} loading={isBusy} type="submit">
 						{id ? 'Update' : 'Create'}
-					</FormButton>
+					</FormButtonNew>
 				</Slot>
 			</Card>
 		</form>

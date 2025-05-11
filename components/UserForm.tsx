@@ -14,6 +14,7 @@ import IconClose from './icons/IconClose';
 import ErrorNotificaition from './notifications/ErrorNotification';
 import Slot from './Slot';
 import { callApi } from '../utils/helper-utils';
+import FormButtonNew from './form/FormButtonNew';
 
 const UserForm = () => {
 	const [id, setId] = useState('');
@@ -208,9 +209,9 @@ const UserForm = () => {
 					</div>
 				</Slot>
 				<Slot slot="footer">
-					<FormButton type="submit" variant={['is-outlined', 'is-ui-button']} onClick={handleSubmit} disabled={isBusy} loading={isBusy}>
+					<FormButtonNew type="submit" onClick={handleSubmit} disabled={isBusy} loading={isBusy}>
 						{id ? 'Save & Update' : 'Create'}
-					</FormButton>
+					</FormButtonNew>
 				</Slot>
 			</Card>
 		</form>

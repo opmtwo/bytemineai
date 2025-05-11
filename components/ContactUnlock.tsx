@@ -2,6 +2,7 @@ import { useState } from 'react';
 import classNames from 'classnames';
 import { ActionUnlock, Contact } from '../types';
 import FormButton from './form/FormButton';
+import FormButtonNew from './form/FormButtonNew';
 
 const ContactUnlock = ({
 	onUnlock,
@@ -42,9 +43,9 @@ const ContactUnlock = ({
 			{isActive ? <div className="is-overlay" onClick={onToggle}></div> : null}
 			<div className={classNames('dropdown', { 'is-active': isActive })}>
 				<div className="dropdown-trigger">
-					<FormButton onClick={onToggle} variant={['is-outlined']} className="mr-5" disabled={contacts.length === 0}>
+					<FormButtonNew type="button" onClick={onToggle} className="mr-5" disabled={contacts.length === 0}>
 						Unlock
-					</FormButton>
+					</FormButtonNew>
 				</div>
 				<div className="dropdown-menu">
 					<div className="dropdown-content is-borderless">

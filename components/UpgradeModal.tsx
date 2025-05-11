@@ -14,6 +14,7 @@ import { atDataCatchAllEmailCodes, atDataValidEmailCodes, exportLabels, keysToEx
 import { getEmailValidityStatus } from '../utils/contact-utilsx';
 import IconUnlock from './icons/IconUnlock';
 import { useRouter } from 'next/router';
+import FormButtonNew from './form/FormButtonNew';
 
 const UpgradeModal = ({ contacts, isActive, onCancel }: { contacts: Contact[]; isActive: boolean; onCancel: () => void }) => {
 	const [exportType, setExportType] = useState<'valid' | 'catchAll' | 'all'>('all');
@@ -72,13 +73,13 @@ const UpgradeModal = ({ contacts, isActive, onCancel }: { contacts: Contact[]; i
 				<Slot slot="footer">
 					<span className="is-flex-grow-1 has-text-weight-normal">{/* Up to 10 credits will be used */}</span>
 					<div className="mr-5">
-						<FormButton variant={['is-outlined', 'is-ui-button']} onClick={handleSubmit} disabled={isBusy} loading={isBusy}>
+						<FormButtonNew type="button" onClick={handleSubmit} disabled={isBusy} loading={isBusy}>
 							View Plans
-						</FormButton>
+						</FormButtonNew>
 					</div>
-					<FormButton variant={['is-ui-button']} onClick={handleSubmit} disabled={isBusy} loading={isBusy}>
+					<FormButtonNew type="button" variant="active" onClick={handleSubmit} disabled={isBusy} loading={isBusy}>
 						Upgrade
-					</FormButton>
+					</FormButtonNew>
 				</Slot>
 			</Card>
 		</Modal>

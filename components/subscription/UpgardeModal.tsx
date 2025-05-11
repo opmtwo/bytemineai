@@ -12,6 +12,7 @@ import CardDetailForm from "./CardDetailForm";
 import { stripeKey } from "../../utils/plan-info";
 import { useStripeContext } from "../../providers/stripe-provider";
 import { formatInThousand } from "../../utils/plan-info";
+import FormButtonNew from "../form/FormButtonNew";
 
 const stripePromise = loadStripe(stripeKey);
 const UpgradeModal = ({
@@ -87,12 +88,11 @@ const UpgradeModal = ({
                     Powered by{" "}
                     <span className="has-text-weight-bold">Stripe</span>
                   </h1>
-                  <FormButton
-                    variant={["is-outlined", "is-ui-button"]}
+                  <FormButtonNew
                     type="submit"
                   >
                     Upgrade
-                  </FormButton>
+                  </FormButtonNew>
                 </div>
               </motion.div>
             </Slot>

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import DeleteConfirm from './DeleteConfirm';
 import { formatDate, timestampToMoment } from '../utils/helper-utils';
 import Anchor from './Anchor';
+import FormButtonNew from './form/FormButtonNew';
 
 const UserEntry = ({
 	index,
@@ -100,7 +101,7 @@ const UserEntry = ({
 
 							<div className="column is-5 is-flex is-justify-content-flex-end">{lastLogin}</div>
 							<div className="column is-5 is-flex is-justify-content-flex-end">{createdAt}</div>
-							<div className="column is-2"><FormButton onClick={handleDelete} >Delete</FormButton></div>
+							<div className="column is-2"><FormButtonNew type="button" variant="active" onClick={handleDelete} >Delete</FormButtonNew></div>
 						</div>
 					</div>
 				</div>

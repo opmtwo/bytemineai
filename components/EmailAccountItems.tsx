@@ -16,6 +16,7 @@ import ViewToggle from './ViewToggle';
 import ListView from './ListView';
 import { useAuthContext } from '../providers/auth-data-provider';
 import { decodeJson } from '../utils/helper-utils';
+import FormButtonNew from './form/FormButtonNew';
 
 const EmailAccountItems = ({
 	items = [],
@@ -92,9 +93,9 @@ const EmailAccountItems = ({
 				<span className="has-text-grey ml-6">{filteredItems.length} results</span>
 				<div className="ml-6 mr-5">{pagination}</div>
 				<ViewToggle name="emailAccountItems" isChecked={isListMode} onChange={setIsListMode} />
-				<FormButton onClick={onNew} variant={['is-outlined']}>
+				<FormButtonNew type="button" onClick={() => onNew()}>
 					New Account
-				</FormButton>
+				</FormButtonNew>
 			</Slot>
 			<Slot slot="body">
 				<CardAnimatePresence isActive={isBusy && !items.length}>

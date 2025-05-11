@@ -5,6 +5,7 @@ import Anchor from '../Anchor';
 import FormButton from '../form/FormButton';
 import IconAvatar from '../icons/IconAvatar';
 import { cleanupBodyClassList } from '../../utils/helper-utils';
+import FormButtonNew from '../form/FormButtonNew';
 
 const HeaderQuickMenu = () => {
 	const { user, isAdmin, isRoot, attributes } = useAuthContext();
@@ -24,9 +25,9 @@ const HeaderQuickMenu = () => {
 	return (
 		<div className="navbar-item navbar-quickmenu">
 			{canUpgrade && (
-				<FormButton className="m-0" onClick={onUpgrade}>
+				<FormButtonNew type="button" variant="active" className="m-0" onClick={onUpgrade}>
 					Upgrade
-				</FormButton>
+				</FormButtonNew>
 			)}
 			<div className="navbar-item has-dropdown is-hoverable">
 				{/* <FormButton icon={<IconAvatar />} size="is-medium" variant={['is-icon', 'is-rounded', 'is-outlined']} className="ml-5" color="is-primary" /> */}

@@ -12,6 +12,7 @@ import FormInput from './form/FormInput';
 import AnimatedIconSuccess from './icons/animated/AnimatedIconSuccess';
 import ErrorNotificaition from './notifications/ErrorNotification';
 import Slot from './Slot';
+import FormButtonNew from './form/FormButtonNew';
 
 const ContactForm = ({ onSubmit, onCancel }: { onSubmit: Function; onCancel: () => void }) => {
 	const [isBusy, setIsBusy] = useState(false);
@@ -148,17 +149,17 @@ const ContactForm = ({ onSubmit, onCancel }: { onSubmit: Function; onCancel: () 
 							</h4>
 							<AnimatedIconSuccess isActive={isSubmitted} />
 							<div className="py-6"></div>
-							<FormButton type="submit" onClick={onCancel} disabled={isBusy} variant={['is-outlined', 'is-ui-button']}>
+							<FormButtonNew type="submit" onClick={onCancel} disabled={isBusy} variant="active">
 								Continue
-							</FormButton>
+							</FormButtonNew>
 						</div>
 					</CardAnimatePresence>
 				</Slot>
 				<Slot slot="footer">
 					<CardAnimatePresence isActive={!isSubmitted}>
-						<FormButton type="submit" onClick={handleSubmit} disabled={isBusy} loading={isBusy} variant={['is-outlined', 'is-ui-button']}>
+						<FormButtonNew type="submit" onClick={handleSubmit} disabled={isBusy} loading={isBusy}>
 							Submit
-						</FormButton>
+						</FormButtonNew>
 					</CardAnimatePresence>
 				</Slot>
 			</Card>

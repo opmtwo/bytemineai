@@ -4,6 +4,7 @@ import Card from "../cards/Card";
 import CardTitle from "../CardTitle";
 import FormButton from "../form/FormButton";
 import Slot from "../Slot";
+import FormButtonNew from "../form/FormButtonNew";
 const SubscriptionCard = () => {
   return (
     <>
@@ -13,9 +14,9 @@ const SubscriptionCard = () => {
             <CardTitle>Subscription</CardTitle>
           </div>
           <Link passHref href="/account-settings/subscription-billing/plan">
-            <FormButton variant={["is-outlined", "is-ui-button"]}>
+            <FormButtonNew type="button">
               Upgrade
-            </FormButton>
+            </FormButtonNew>
           </Link>
         </Slot>
         <Slot slot="body">

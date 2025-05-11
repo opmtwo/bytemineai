@@ -13,6 +13,7 @@ import FormInput from '../../form/FormInput';
 import Logo from '../../Logo';
 import ErrorNotificaition from '../../notifications/ErrorNotification';
 import Slot from '../../Slot';
+import FormButtonNew from '../../form/FormButtonNew';
 
 const LoginForm = ({
 	onVerify,
@@ -118,9 +119,9 @@ const LoginForm = ({
 				</Slot>
 				<Slot slot="footer">
 					<Anchor href="/register">Create Account</Anchor>
-					<FormButton type="submit" className="ml-5" loading={isBusy} disabled={isBusy} variant={['is-ui-button']}>
+					<FormButtonNew type="submit" className="ml-5" loading={isBusy} disabled={isBusy} variant="active">
 						Log in
-					</FormButton>
+					</FormButtonNew>
 				</Slot>
 			</Card>
 			<CardRelated />

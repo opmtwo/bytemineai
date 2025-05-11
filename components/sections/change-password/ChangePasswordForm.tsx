@@ -8,6 +8,7 @@ import FormInput from '../../form/FormInput';
 import Logo from '../../Logo';
 import ErrorNotificaition from '../../notifications/ErrorNotification';
 import Slot from '../../Slot';
+import FormButtonNew from '../../form/FormButtonNew';
 
 const ChangePasswordForm = () => {
 	const router = useRouter();
@@ -85,9 +86,9 @@ const ChangePasswordForm = () => {
 					</div>
 				</Slot>
 				<Slot slot="footer">
-					<FormButton type="submit" disabled={isBusy} loading={isBusy} className="ml-5">
+					<FormButtonNew type="submit" variant="active" disabled={isBusy} loading={isBusy} className="ml-5">
 						Change Password
-					</FormButton>
+					</FormButtonNew>
 				</Slot>
 			</Card>
 		</form>

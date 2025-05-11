@@ -7,6 +7,7 @@ import DeleteConfirm from './DeleteConfirm';
 import FormButton from './form/FormButton';
 import IconArrowRight from './icons/IconArrowRight';
 import IconDelete from './icons/IconDelete';
+import FormButtonNew from './form/FormButtonNew';
 
 const EmailAccountEntry = ({
 	item,
@@ -48,17 +49,19 @@ const EmailAccountEntry = ({
 
 	const controls = (
 		<>
-			<FormButton
+			<FormButtonNew
+				type="button"
 				className="ml-3"
 				onClick={handleActivate}
-				variant={['is-icon', 'is-outlined', 'is-rounded']}
+				variant="icon"
 				icon={<IconArrowRight />}
 				disabled={isBusy}
 			/>
-			<FormButton
+			<FormButtonNew
+				type="button"
 				className="ml-3"
 				onClick={handleDelete}
-				variant={['is-icon', 'is-outlined', 'is-rounded']}
+				variant="icon"
 				icon={<IconDelete />}
 				disabled={isBusy}
 			/>

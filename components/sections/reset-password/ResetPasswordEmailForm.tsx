@@ -10,6 +10,7 @@ import FormButton from '../../form/FormButton';
 import FormInput from '../../form/FormInput';
 import Logo from '../../Logo';
 import Slot from '../../Slot';
+import FormButtonNew from '../../form/FormButtonNew';
 
 const ResetPasswordEmailForm = ({ onSubmit }: { onSubmit: Function }) => {
 	const [isBusy, setIsBusy] = useState(false);
@@ -56,9 +57,9 @@ const ResetPasswordEmailForm = ({ onSubmit }: { onSubmit: Function }) => {
 				</Slot>
 				<Slot slot="footer">
 					<Anchor href="/login">Back</Anchor>
-					<FormButton type="submit" disabled={isBusy} loading={isBusy} className="ml-5" onClick={handleSubmit}>
+					<FormButtonNew type="submit" variant="active" disabled={isBusy} loading={isBusy} className="ml-5" onClick={handleSubmit}>
 						<span className="px-5">Next</span>
-					</FormButton>
+					</FormButtonNew>
 				</Slot>
 			</Card>
 			<CardRelated>Enter your email for instructions to reset your password.</CardRelated>

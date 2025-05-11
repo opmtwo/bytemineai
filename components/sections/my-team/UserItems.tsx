@@ -21,6 +21,7 @@ import Slot from '../../Slot';
 import UserEntry from '../../UserEntry';
 import ViewToggle from '../../ViewToggle';
 import PaginationNew from '../../PaginationNew';
+import FormButtonNew from '../../form/FormButtonNew';
 
 const UserItems = () => {
 	const [isListMode, setIsListMode] = useState(false);
@@ -100,9 +101,9 @@ const UserItems = () => {
 						Sort by name
 					</span> */}
 				<CardAnimatePresence isActive={isNewDisabled ? false : true}>
-					<FormButton onClick={isNewDisabled ? undefined : userOnAdd} variant={['is-outlined']} disabled={isNewDisabled}>
+					<FormButtonNew type="button" variant="active" onClick={isNewDisabled ? undefined : userOnAdd} disabled={isNewDisabled}>
 						New User
-					</FormButton>
+					</FormButtonNew>
 				</CardAnimatePresence>
 			</Slot>
 			<Slot slot="body">

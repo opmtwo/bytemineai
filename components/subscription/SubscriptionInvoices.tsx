@@ -8,6 +8,7 @@ import FormButton from "../../components/form/FormButton";
 import IconDownload from "../../components/icons/IconDownload";
 import { invoice } from "../../data/invoice-data";
 import Pagination from "../Pagination";
+import FormButtonNew from "../form/FormButtonNew";
 
 const subscriptionInvoices = ({
   onLoadPrev,
@@ -20,9 +21,10 @@ const subscriptionInvoices = ({
 }) => {
   const controls = (
     <>
-      <FormButton
+      <FormButtonNew
+        type="button"
         className="ml-3"
-        variant={["is-icon", "is-outlined", "is-rounded"]}
+        variant="icon"
         icon={<IconDownload />}
       />
     </>

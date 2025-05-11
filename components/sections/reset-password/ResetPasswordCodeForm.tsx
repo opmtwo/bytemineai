@@ -14,6 +14,7 @@ import FormField from '../../form/FormField';
 import Logo from '../../Logo';
 import Notification from '../../Notification';
 import Slot from '../../Slot';
+import FormButtonNew from '../../form/FormButtonNew';
 
 const ResetPasswordCodeForm = ({ email, onCancel }: { email: string; onCancel: Function }) => {
 	const { onSignIn } = useAuthContext();
@@ -125,21 +126,21 @@ const ResetPasswordCodeForm = ({ email, onCancel }: { email: string; onCancel: F
 					</div>
 				</Slot>
 				<Slot slot="footer">
-					<FormButton variant="is-inverted" onClick={onCancel} disabled={isBusy}>
+					<FormButtonNew type="button" onClick={() => onCancel()} disabled={isBusy}>
 						Back
-					</FormButton>
-					<FormButton type="submit" disabled={isBusy} loading={isBusy} className="ml-5" onClick={handleSubmit}>
+					</FormButtonNew>
+					<FormButtonNew type="submit" variant="active" disabled={isBusy} loading={isBusy} className="ml-5" onClick={handleSubmit}>
 						Next
-					</FormButton>
+					</FormButtonNew>
 				</Slot>
 			</Card>
 			<CardRelated>
 				<Notification error={codeError} />
 				{isResent ? 'A new verification code was sent to your email' : 'A verification code was sent to your email. Enter the code to continue.'}
 			</CardRelated>
-			<FormButton variant="is-inverted" size="is-small" className="is-block mx-auto mt-3" onClick={onResend} disabled={isResent || isBusy}>
+			<FormButtonNew type="button" size="sm" className="is-block mx-auto mt-3" onClick={onResend} disabled={isResent || isBusy}>
 				Did&apos;nt receive code? Click here to resend
-			</FormButton>
+			</FormButtonNew>
 		</form>
 	);
 };

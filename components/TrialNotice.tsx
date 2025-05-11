@@ -6,6 +6,7 @@ import { AccountType } from '../types';
 import CardAnimatePresence from './cards/CardAnimatePresence';
 import FormButton from './form/FormButton';
 import IconClock from './icons/IconClock';
+import FormButtonNew from './form/FormButtonNew';
 
 const TrialNotice = ({ onCustomize }: { onCustomize: () => void }) => {
 	const [message, setMessage] = useState<string>();
@@ -65,9 +66,9 @@ const TrialNotice = ({ onCustomize }: { onCustomize: () => void }) => {
 				</div>
 				<div className="is-fullwidth is-hidden-widescreen my-3"></div>
 				<div className="is-flex is-align-items-center ml-a">
-					<FormButton onClick={onCustomize} variant={['is-ui-button']} className="ml-5">
+					<FormButtonNew type="button" onClick={onCustomize} className="ml-5">
 						Upgrade
-					</FormButton>
+					</FormButtonNew>
 				</div>
 			</div>
 		</CardAnimatePresence>

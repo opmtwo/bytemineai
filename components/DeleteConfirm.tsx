@@ -5,6 +5,7 @@ import Slot from './Slot';
 import CardTitle from './CardTitle';
 import FormButton from './form/FormButton';
 import IconClose from './icons/IconClose';
+import FormButtonNew from './form/FormButtonNew';
 
 const DeleteConfirm = ({
 	isActive,
@@ -46,12 +47,12 @@ const DeleteConfirm = ({
 				</div>
 			</Slot>
 			<Slot slot="footer">
-				<FormButton onClick={onCancel} variant={['is-outlined', 'is-ui-button']} className="mr-3">
+				<FormButtonNew type="button" onClick={onCancel} className="mr-3">
 					{cancelLabel}
-				</FormButton>
-				<FormButton onClick={onSubmit} variant={['is-outlined', 'is-ui-button']} color="is-danger" loading={loading}>
+				</FormButtonNew>
+				<FormButtonNew type="button" variant="active" onClick={() => onSubmit()} color="is-danger" loading={loading}>
 					{submitLabel}
-				</FormButton>
+				</FormButtonNew>
 			</Slot>
 		</Card>
 	</Modal>
