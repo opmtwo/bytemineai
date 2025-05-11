@@ -2,15 +2,18 @@ import { sentenceCase } from 'change-case';
 import { CSSProperties, useEffect, useState } from 'react';
 
 import { atDataCatchAllEmailCodes, atDataValidEmailCodes, exportLabels, keysToExport } from '../consts';
-import { Contact, IBytemineContact } from '../types';
+import { IBytemineContact } from '../types';
 import { getEmailValidityStatus } from '../utils/contact-utilsx';
 import { arrayToCsv, download } from '../utils/helper-utils';
 import Card from './cards/Card';
 import CardTitle from './CardTitle';
-import EmailStatusIndicator from './EmailStatusIndicator';
 import ExportContactRadio from './ExportContactRadio';
-import FormButton from './form/FormButton';
+import FormButtonNew from './form/FormButtonNew';
 import IconClose from './icons/IconClose';
+import IconNewExportAll from './icons/IconNewExportAll';
+import IconNewExportCircle from './icons/IconNewExportCircle';
+import IconNewExportValid from './icons/IconNewExportValid';
+import IconNewExportValidAll from './icons/IconNewExportValidAll';
 import Modal from './modals/Modal';
 import Slot from './Slot';
 
@@ -110,7 +113,16 @@ const ExportContacts = ({
 		<Modal isActive={isActive} onCancel={onCancel}>
 			<Card>
 				<Slot slot="header">
-					<CardTitle>Export Contacts to CSV</CardTitle>
+					<CardTitle>
+						<span className="is-flex is-align-items-center">
+							<IconNewExportCircle width={48} />
+							<span className="ml-5">
+								Export Contacts to CSV
+								<br />
+								<span className="is-size-7 has-text-weight-light">Quickly Export Your Contacts to CSV for Easy Access & Use.</span>
+							</span>
+						</span>
+					</CardTitle>
 					<span className="is-clickable" onClick={onCancel}>
 						<IconClose />
 					</span>
@@ -120,32 +132,23 @@ const ExportContacts = ({
 						<div className="columns is-mobile">
 							<div className="column is-4 is-flex">
 								<ExportContactRadio name="exportType" value="valid" checkedValue={exportType} onSelect={setExportType}>
-									<div className="mb-3">Valid</div>
-									<div className="has-text-weight-normal">Export contacts with valid email only.</div>
-									<div style={indicatorStyles}>
-										<EmailStatusIndicator width={12} height={12} marginLeft={0} color="success" />
-									</div>
+									<IconNewExportValid width={48} />
+									<div className="has-text-weight-bold mb-3">Valid</div>
+									<div className="has-text-weight-light has-text-dark is-size-7">Export Contacts With Valid Email Only.</div>
 								</ExportContactRadio>
 							</div>
 							<div className="column is-4 is-flex">
 								<ExportContactRadio name="exportType" value="catchAll" checkedValue={exportType} onSelect={setExportType}>
-									<div className="mb-3">Valid + Accept All</div>
-									<div className="has-text-weight-normal">Export contacts with valid and catch all emails.</div>
-									<div style={indicatorStyles}>
-										<EmailStatusIndicator width={12} height={12} marginLeft={0} color="success" />
-										<EmailStatusIndicator width={12} height={12} marginLeft={0} color="warning" />
-									</div>
+									<IconNewExportValidAll width={48} />
+									<div className="has-text-weight-bold mb-3">Valid + Accept All</div>
+									<div className="has-text-weight-light has-text-dark is-size-7">Export contacts with valid and catch all emails.</div>
 								</ExportContactRadio>
 							</div>
 							<div className="column is-4 is-flex">
 								<ExportContactRadio name="exportType" value="all" checkedValue={exportType} onSelect={setExportType}>
-									<div className="mb-3">All Contacts</div>
-									<div className="has-text-weight-normal">Export all selected contacts.</div>
-									<div style={indicatorStyles}>
-										<EmailStatusIndicator width={12} height={12} marginLeft={0} color="success" />
-										<EmailStatusIndicator width={12} height={12} marginLeft={0} color="warning" />
-										<EmailStatusIndicator width={12} height={12} marginLeft={0} color="danger" />
-									</div>
+									<IconNewExportAll width={48} />
+									<div className="has-text-weight-bold mb-3">All Contacts</div>
+									<div className="has-text-weight-light has-text-dark is-size-7">Export all selected contacts.</div>
 								</ExportContactRadio>
 							</div>
 						</div>
@@ -153,9 +156,9 @@ const ExportContacts = ({
 				</Slot>
 				<Slot slot="footer">
 					<span className="is-flex-grow-1 has-text-weight-normal">{/* Up to 10 credits will be used */}</span>
-					<FormButton variant={['is-outlined', 'is-ui-button']} onClick={handleSubmit} disabled={isBusy} loading={isBusy}>
+					<FormButtonNew type="button" variant="active" onClick={handleSubmit} disabled={isBusy} loading={isBusy}>
 						Export
-					</FormButton>
+					</FormButtonNew>
 				</Slot>
 			</Card>
 		</Modal>
