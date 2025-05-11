@@ -24,6 +24,7 @@ import FormButton from '../../form/FormButton';
 import FormButtonNew from '../../form/FormButtonNew';
 import FormInput from '../../form/FormInput';
 import IconDownloadComponent from '../../icons/components/IconDownloadComponent';
+import IconNewExport from '../../icons/IconNewExport';
 import Modal from '../../modals/Modal';
 import QueryLoader from '../../QueryLoader';
 import { Header, THROTTLE_LIMIT, THROTTLE_TIME, Wrapper } from './ProspectCommon';
@@ -361,19 +362,10 @@ const ProspectExportActionButton = ({
 			{isActive ? <div className="is-overlay" onClick={onToggle}></div> : null}
 			<div className={classNames('dropdown', { 'is-active': isActive })}>
 				<div className="dropdown-trigger is-flex is-justify-content-center is-align-items-center">
-					<FormButton
-						onClick={onToggle}
-						variant={['is-outlined']}
-						color="is-primary"
-						className="is-flex-direction-row-reverse mr-5 pl-5-1"
-						icon={
-							<span className="pr-6 is-flex is-justify-content-center is-align-items-center">
-								<IconDownloadComponent height={16} width={16} />
-							</span>
-						}
-					>
-						Export
-					</FormButton>
+					<FormButtonNew variant="active" onClick={onToggle}>
+						<IconNewExport width={16} />
+						<span>Export</span>
+					</FormButtonNew>
 				</div>
 				<div className="dropdown-menu list-action-button-container">
 					<div className="dropdown-content is-borderless">
