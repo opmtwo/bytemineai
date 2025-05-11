@@ -277,10 +277,12 @@ const ProspectContactEntry = ({
 			<FormButtonNew size="sm" variant="icon" className="ml-3" onClick={handleDownload}>
 				<IconNewDownload width={16} />
 			</FormButtonNew>
-			<FormButtonNew size="sm" className="ml-3" onClick={handleUnlock}>
-				<IconNewUnlock width={16} />
-				<span>Unlock</span>
-			</FormButtonNew>
+			{item.is_unlocked ? null : (
+				<FormButtonNew size="sm" className="ml-3" onClick={handleUnlock}>
+					<IconNewUnlock width={16} />
+					<span>Unlock</span>
+				</FormButtonNew>
+			)}
 		</>
 	);
 
