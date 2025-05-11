@@ -19,6 +19,7 @@ import IconNewLinkedin from '../../icons/IconNewLinkedin';
 import IconNewPlusCircle from '../../icons/IconNewPlusCircle';
 import IconNewUnlock from '../../icons/IconNewUnlock';
 import Loader from '../../Loader';
+import IconNewPhone from '../../icons/IconNewPhone';
 
 const ProspectContactEntry = ({
 	item,
@@ -94,36 +95,55 @@ const ProspectContactEntry = ({
 						</>
 					) : null}
 				</h2>
-				<p className="is-flex is-align-items-center">
+				<p className="is-flex is-flex-wrap-wrap is-align-items-center has-text-weight-medium mb-1">
 					{item.job_title ? (
 						<span className="is-flex is-align-items-center mr-2">
 							<IconNewJobTitle width={16} />
-							<span className="has-text-weight-normal ml-1">{item.job_title}</span>
+							<span className="ml-1">{item.job_title}</span>
 						</span>
 					) : null}
 					{item.company_name && item.company_domain ? (
 						<Anchor href={item.is_unlocked ? item.company_domain : '#'} target="_blank" className="is-flex is-align-items-center mr-2">
 							<IconNewCompany width={16} />
-							<span className="has-text-weight-normal ml-1">{item.company_name}</span>
+							<span className="ml-1">{item.company_name}</span>
 						</Anchor>
 					) : null}
-					{item.is_unlocked ? (
-						<>
-							{item.work_email ? (
-								<span className="is-flex is-align-items-center mr-2">
-									<IconNewEmail width={16} />
-									<span className="has-text-weight-normal ml-1">{item.job_title}</span>
-								</span>
-							) : null}
-							{item.personal_email ? (
-								<span className="is-flex is-align-items-center mr-2">
-									<IconNewEmail width={16} />
-									<span className="has-text-weight-normal ml-1">{item.personal_email}</span>
-								</span>
-							) : null}
-						</>
-					) : null}
 				</p>
+				{item.is_unlocked ? (
+					<p className="is-flex is-flex-wrap-wrap is-align-items-center has-text-weight-medium">
+						<span className="has-text-weight-normal mr-2">Contact:</span>
+						{item.is_unlocked ? (
+							<>
+								{item.direct_dial ? (
+									<span className="is-flex is-align-items-center mr-2">
+										<IconNewPhone width={16} />
+										<span className="ml-1">{item.direct_dial}</span>
+									</span>
+								) : null}
+								{item.mobile_number ? (
+									<span className="is-flex is-align-items-center mr-2">
+										<IconNewPhone width={16} />
+										<span className="ml-1">{item.mobile_number}</span>
+									</span>
+								) : null}
+								{item.work_email ? (
+									<span className="is-flex is-align-items-center mr-2">
+										<IconNewEmail width={16} />
+										<span className="ml-1">{item.work_email}</span>
+										<ContactEmailStatus statusCode={item.contact_email_status_code} />
+									</span>
+								) : null}
+								{item.personal_email ? (
+									<span className="is-flex is-align-items-center mr-2">
+										<IconNewEmail width={16} />
+										<span className="ml-1">{item.personal_email}</span>
+										<ContactEmailStatus statusCode={item.personal_email_status_code} />
+									</span>
+								) : null}
+							</>
+						) : null}
+					</p>
+				) : null}
 			</div>
 		</div>
 	);
@@ -308,7 +328,9 @@ const ProspectContactEntry = ({
 					if (item.is_email_verified && value.id === 'emailStatus') {
 						return (
 							<td key={value.id}>
-								<ContactEmailStatus contact={item} />
+								<ContactEmailStatus
+									statusCode={item.contact_email_status_code || item.personal_email_status_code || item.contact_personal_email_status_code}
+								/>
 							</td>
 						);
 					}
