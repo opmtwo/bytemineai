@@ -3,17 +3,13 @@ import { uniqBy } from 'lodash';
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useCrudContext } from '../../../providers/crud-provider';
-import { IBytemineCollection, List, ListContactModel, UserAttributes } from '../../../types';
+import { IBytemineCollection, IBytemineContact } from '../../../types';
+import { callApi } from '../../../utils/helper-utils';
 import Anchor from '../../Anchor';
-import FormButton from '../../form/FormButton';
-import IconAdd from '../../icons/IconAdd';
-import IconDelete from '../../icons/IconDelete';
-import IconDownload from '../../icons/IconDownload';
-import Loader from '../../Loader';
-import QueryLoader from '../../QueryLoader';
-import FlexBox from '../../FlexBox';
 import FormCheckbox from '../../form/FormCheckbox';
+import IconDelete from '../../icons/IconDelete';
 import IconEdit from '../../icons/IconEdit';
+import Loader from '../../Loader';
 
 const MyListEntry = ({
 	item,
@@ -22,9 +18,9 @@ const MyListEntry = ({
 }: {
 	item: IBytemineCollection;
 	isListMode?: boolean;
-	onExport: (listContacts: ListContactModel[]) => void;
+	onExport: (listContacts: IBytemineContact[]) => void;
 }) => {
-	const [listContactItems, setListContactItems] = useState<ListContactModel[]>([]);
+	const [listContactItems, setListContactItems] = useState<IBytemineContact[]>([]);
 	const [isContactsLoading, setIsContactsLoading] = useState(false);
 
 	const {
@@ -35,14 +31,30 @@ const MyListEntry = ({
 		onSelect: collectionOnSelect,
 	} = useCrudContext<IBytemineCollection>();
 
+	useEffect(() => {
+		getCollectionContacts(item.id);
+	}, [item.id]);
+
 	// const [owner, setOwner] = useState<UserAttributes>();
 
 	const uniqueContacts = uniqBy(
-		listContactItems.filter((item) => item.contact?.ruid),
-		'contactId'
+		listContactItems.filter((item) => item.pid),
+		'pid'
 	);
 
 	const handleExport = () => onExport(uniqueContacts);
+
+	// Load collection contacts
+	const getCollectionContacts = async (id: string) => {
+		setIsContactsLoading(true);
+		try {
+			const res = (await callApi(null, `/api/v1/collections/${id}/contacts`, {})) as IBytemineContact[];
+			setListContactItems(res);
+		} catch (err) {
+			console.log('getCollectionContacts - error', err);
+		}
+		setIsContactsLoading(false);
+	};
 
 	// const onClickDelete = ()=> onDelete(item)
 	// useEffect(() => {
@@ -66,7 +78,7 @@ const MyListEntry = ({
 
 	const handleEdit = () => {
 		collectionOnEdit(item.id);
-	}
+	};
 
 	const handleSelect = (isSelected: boolean) => {
 		collectionOnSelect(item.id, isSelected);
@@ -125,9 +137,13 @@ const MyListEntry = ({
 				<div className="column is-10">
 					<Anchor href={url} className="columns is-mobile is-align-items-center has-text-dark">
 						<div className="column is-4 is-flex">
-							<span className="is-relative" style={{ zIndex: 1 }} onClick={(e) => {
-								e.stopPropagation();
-							}}>
+							<span
+								className="is-relative"
+								style={{ zIndex: 1 }}
+								onClick={(e) => {
+									e.stopPropagation();
+								}}
+							>
 								<FormCheckbox className="relative" value="accept" isChecked={item.isSelected ? true : false} onChange={handleSelect} />
 							</span>
 							{item.name}
