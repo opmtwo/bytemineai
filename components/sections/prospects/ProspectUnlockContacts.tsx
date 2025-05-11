@@ -89,6 +89,7 @@ const ProspectUnlockContacts = ({
 			notifySuccess(`${pids.length} contacts unlocked`);
 			setIsCompleted(true);
 		} catch (err) {
+			console.log('handleUnlock - error', err);
 			// setError(new Error(err?.response?.data?.message || err?.message || genericErrorMessage));
 			onError([]);
 			notifyError(err);
