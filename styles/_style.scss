@@ -58,6 +58,10 @@ section.section {
 	max-height: 85vh;
 }
 
+.is-scroll-view.is-collection-mode {
+	max-height: 60vh;
+}
+
 .is-scroll-view header {
 	z-index: 10;
 	position: sticky;
