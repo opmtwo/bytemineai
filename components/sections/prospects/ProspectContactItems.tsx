@@ -21,14 +21,15 @@ import EmptyMsg from '../../EmptyMsg';
 import FormButtonNew from '../../form/FormButtonNew';
 import FormCheckbox from '../../form/FormCheckbox';
 import IconDownload from '../../icons/IconDownload';
+import IconNewCheck from '../../icons/IconNewCheck';
 import IconRocket from '../../icons/IconRocket';
 import ListView from '../../ListView';
+import Pagination from '../../Pagination';
 import Slot from '../../Slot';
 import TableSkeleton from '../../table-skeleton';
 import ProspectContactEntry from './ProspectContactEntry';
 import ProspectExportActionButton from './ProspectExportActionButton';
 import ProspectListActionButton from './ProspectListActionButton';
-import Pagination from '../../Pagination';
 
 const ProspectContactItems = ({
 	items = [],
@@ -247,6 +248,15 @@ const ProspectContactItems = ({
 		onSelectMany(type, targetIds);
 	};
 
+	const handleSelectAll = () => {
+		// if (isChecked) {
+		// 	setDropdownSelectedAction(ActionList.CurrentPage);
+		// } else {
+		// 	setDropdownSelectedAction('');
+		// }
+		onSelectAll && onSelectAll();
+	};
+
 	if (!isAudienceBuilder) {
 		pagination = (
 			<Pagination
@@ -269,78 +279,88 @@ const ProspectContactItems = ({
 
 	return (
 		<>
-			<form className="is-flex is-align-items-center is-fullwidth" onSubmit={handleQueryFormSubmit}>
-				<FormCheckbox
-					value={isAllSelected}
-					isChecked={isAllSelected}
-					onChange={(isChecked: boolean) => {
-						if (isChecked) {
-							setDropdownSelectedAction(ActionList.CurrentPage);
-						} else {
-							setDropdownSelectedAction('');
-						}
-						onSelectAll && onSelectAll();
-					}}
-				/>
+			<form className="prospect-pagination is-flex is-align-items-center is-fullwidth" onSubmit={handleQueryFormSubmit}>
+				<div className="is-flex is-align-items-center mr-auto">
+					{/* <FormCheckbox
+						value={isAllSelected}
+						isChecked={isAllSelected}
+						onChange={(isChecked: boolean) => {
+							if (isChecked) {
+								setDropdownSelectedAction(ActionList.CurrentPage);
+							} else {
+								setDropdownSelectedAction('');
+							}
+							onSelectAll && onSelectAll();
+						}}
+					/> */}
 
-				<ProspectListActionButton
-					contacts={items}
-					displayItems={displayItems}
-					selectedAction={dropdownSelectedAction}
-					onSuccess={onSuccess}
-					isContactsOnly={isContactsOnly}
-				/>
+					{/* <FormButtonNew className="is-outlined mr-5" onClick={showSampleExportModal}>
+						<IconDownload />
+						&nbsp;&nbsp;Get Sample
+					</FormButtonNew> */}
 
-				<ProspectExportActionButton
-					contacts={items}
-					displayItems={displayItems}
-					selectedAction={dropdownSelectedAction}
-					onSuccess={onSuccess}
-					onExport={onExport}
-					sortMap={sortMap}
-					isContactsOnly={isContactsOnly}
-				/>
+					{/* <FormButtonNew onClick={showExportModal}>
+						<IconRocket className="" />
+						<span>Export</span>
+					</FormButtonNew> */}
 
-				{/* <FormButtonNew className="is-outlined mr-5" onClick={showSampleExportModal}>
-					<IconDownload />
-					&nbsp;&nbsp;Get Sample
-				</FormButtonNew> */}
+					{/* {isLocked && <ContactUnlock onUnlock={onUnlock} contacts={items} displayItems={displayItems} />}
+							<ContactActions
+								onAddToList={onAddToList}
+								onExport={onExport}
+								contacts={items}
+								onSelect={onSelectMany}
+								displayItems={displayItems}
+								sortMap={sortMap}
+							/> */}
 
-				{/* <FormButtonNew onClick={showExportModal}>
-					<IconRocket className="" />
-					<span>Export</span>
-				</FormButtonNew> */}
+					{/* <FormInput
+								value={query}
+								onChange={onQueryChange}
+								isLast={true}
+								iconLeft={<IconSearch />}
+								fieldClassName="is-flex-grow-1"
+								placeholder="Enter job title to filter"
+							/> */}
 
-				{/* {isLocked && <ContactUnlock onUnlock={onUnlock} contacts={items} displayItems={displayItems} />}
-						<ContactActions
-							onAddToList={onAddToList}
-							onExport={onExport}
-							contacts={items}
-							onSelect={onSelectMany}
-							displayItems={displayItems}
-							sortMap={sortMap}
-						/> */}
+					{/*<ViewToggle name="contactItems" isChecked={isListMode} onChange={setIsListMode}  />*/}
 
-				{totalSelected > 0 && <div className="has-text-primary">{totalSelected} Selected</div>}
+					{pagination}
 
-				{/* <FormInput
-							value={query}
-							onChange={onQueryChange}
-							isLast={true}
-							iconLeft={<IconSearch />}
-							fieldClassName="is-flex-grow-1"
-							placeholder="Enter job title to filter"
-						/> */}
+					{totalSelected ? (
+						<div className="is-flex is-flex-direction-column is-justify-content-center has-text-grey" style={{ minWidth: 120 }}>
+							{/* <strong>{(totalResults || filteredItems.length).toLocaleString('en-US')} results</strong> */}
+							{totalSelected > 0 && <span className="has-text-primary">{totalSelected} Selected</span>}
+						</div>
+					) : null}
+				</div>
 
-				{/*<ViewToggle name="contactItems" isChecked={isListMode} onChange={setIsListMode}  />*/}
+				<div className="is-flex is-align-items-center ml-auto">
+					<FormButtonNew onClick={handleSelectAll}>
+						<IconNewCheck width={16} />
+						<span>Select All</span>
+					</FormButtonNew>
 
-				<div className="ml-5">{pagination}</div>
+					<ProspectListActionButton
+						contacts={items}
+						displayItems={displayItems}
+						selectedAction={dropdownSelectedAction}
+						onSuccess={onSuccess}
+						isContactsOnly={isContactsOnly}
+					/>
 
-				<span className="has-text-grey ml-5" style={{ fontWeight: 'bold' }}>
-					{(totalResults || filteredItems.length).toLocaleString('en-US')} results
-				</span>
+					<ProspectExportActionButton
+						contacts={items}
+						displayItems={displayItems}
+						selectedAction={dropdownSelectedAction}
+						onSuccess={onSuccess}
+						onExport={onExport}
+						sortMap={sortMap}
+						isContactsOnly={isContactsOnly}
+					/>
+				</div>
 			</form>
-			<div className="is-scroll-view">{itemsList}</div>;
+			<div className="is-scroll-view">{itemsList}</div>
 		</>
 	);
 
