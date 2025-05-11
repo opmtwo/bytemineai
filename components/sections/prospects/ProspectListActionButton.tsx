@@ -9,6 +9,7 @@ import { ActionList, IBytemineCollection, IBytemineCollectionContact, IBytemineC
 import { callApi, encodeContact, notifyError, notifySuccess, notifySuccessListAndExport } from '../../../utils/helper-utils';
 import FormButtonNew from '../../form/FormButtonNew';
 import IconPlusComponent from '../../icons/components/IconPlusComponent';
+import IconNewList from '../../icons/IconNewList';
 import { Header, THROTTLE_LIMIT, THROTTLE_TIME, Wrapper } from './ProspectCommon';
 import ProspectCreatableMultiContacts, { createOption, MultiSelectOption } from './ProspectCreatableMultiContacts';
 import ProspectWarningModel from './ProspectWarningModel';
@@ -320,18 +321,9 @@ const ProspectListActionButton = ({
 			{isActive ? <div className="is-overlay" onClick={onToggle}></div> : null}
 			<div className={classNames('dropdown', { 'is-active': isActive })}>
 				<div className="dropdown-trigger is-flex is-justify-content-center is-align-items-center">
-					<FormButtonNew
-						onClick={onToggle}
-						// variant={['is-outlined']}
-						// color="is-primary"
-						className="is-flex-direction-row-reverse mr-5 pl-5-1"
-						icon={
-							<span className="pr-6 is-flex is-justify-content-center is-align-items-center">
-								<IconPlusComponent height={16} width={16} />
-							</span>
-						}
-					>
-						List
+					<FormButtonNew className="mx-5" onClick={onToggle}>
+						<IconNewList width={16} />
+						<span>Add to List</span>
 					</FormButtonNew>
 				</div>
 
