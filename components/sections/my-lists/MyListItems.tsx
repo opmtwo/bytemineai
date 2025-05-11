@@ -3,30 +3,27 @@ import { useEffect, useState } from 'react';
 import { ITEMS_PER_PAGE } from '../../../consts';
 import { useAuthContext } from '../../../providers/auth-data-provider';
 import { useCrudContext } from '../../../providers/crud-provider';
-import { Contact, IBytemineCollection, List, ListContactModel, UserAttributes } from '../../../types';
+import { Contact, IBytemineCollection, IBytemineContact, List, ListContactModel, UserAttributes } from '../../../types';
 import { decodeJson } from '../../../utils/helper-utils';
 import { searchListItems } from '../../../utils/list-utils';
 import Card from '../../cards/Card';
 import CardAnimatePresence from '../../cards/CardAnimatePresence';
 import EmptyMsg from '../../EmptyMsg';
 import FormButton from '../../form/FormButton';
+import FormButtonNew from '../../form/FormButtonNew';
 import FormInput from '../../form/FormInput';
+import IconNewPlus from '../../icons/IconNewPlus';
 import IconSearch from '../../icons/IconSearch';
 import ListView from '../../ListView';
 import Loader from '../../Loader';
 import Pagination, { paginate } from '../../Pagination';
+import PaginationNew from '../../PaginationNew';
 import Slot from '../../Slot';
 import TableSkeleton from '../../table-skeleton';
 import ViewToggle from '../../ViewToggle';
 import MyListEntry from './MyListEntry';
-import PaginationNew from '../../PaginationNew';
 
-const MyListItems = ({ onExport }: { onExport: (listContacts: ListContactModel[]) => void }) => {
-	// const [query, setQuery] = useState('');
-	// const [activePage, setActivePage] = useState(0);
-	// const [activePerPage, setActivePerPage] = useState(ITEMS_PER_PAGE);
-	// const [filteredItems, setFilteredItems] = useState<List[]>([]);
-
+const MyListItems = ({ onExport }: { onExport: (listContacts: IBytemineContact[]) => void }) => {
 	const [isListMode, setIsListMode] = useState(false);
 
 	const { attributes } = useAuthContext();
@@ -47,54 +44,12 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: ListContactModel[]
 		onDeleteMany: collectionOnDeleteMany,
 	} = useCrudContext<IBytemineCollection>();
 
-	// useEffect(() => {
-	// 	onQueryChange(query);
-	// }, [items]);
-
 	useEffect(() => {
 		const profile = decodeJson(attributes?.profile);
 		if (profile?.listModes?.myListItems) {
 			setIsListMode(true);
 		}
 	}, []);
-
-	// const onQueryChange = (newQuery: string) => {
-	// 	setQuery(newQuery);
-	// 	setActivePage(0);
-	// 	const queryNormalized = newQuery.toLowerCase().trim();
-	// 	if (queryNormalized) {
-	// 		setFilteredItems(searchListItems(items, queryNormalized));
-	// 	} else {
-	// 		setFilteredItems(items);
-	// 	}
-	// };
-
-	// const displayItems = paginate(filteredItems, activePerPage, activePage);
-	// const itemsList = displayItems.map((item) => (
-	// 	<MyListEntry key={item.id} item={item} isListMode={isListMode} onAdd={onAdd} onExport={onExport} users={users} onDelete={onDelete}/>
-	// ));
-
-	// const onPageChange = async (newPage: number, newPerPage: number) => {
-	// 	setActivePage(newPage);
-	// 	if (newPerPage) {
-	// 		setActivePerPage(newPerPage);
-	// 	}
-	// };
-
-	// const pagination = (
-	// 	<Pagination
-	// 		totalItems={filteredItems.length}
-	// 		activePage={activePage}
-	// 		isTrialAccount={false}
-	// 		setIsUpgradeModalActive={() => {}}
-	// 		itemsPerPage={activePerPage}
-	// 		onPageChange={onPageChange}
-	// 	/>
-	// );
-
-	// if(isBusy && !items.length) {
-	// 	return <TableSkeleton />
-	// }
 
 	const itemsList = paginate(collectionItemsInUse, collectionPerPage, collectionPage).map((item) => (
 		<>
@@ -129,9 +84,13 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: ListContactModel[]
 		/>
 	);
 
+	if (collectionIsBusy && !collectionItems.length) {
+		return <TableSkeleton />;
+	}
+
 	return (
-		<Card className="is-scroll-view">
-			<Slot slot="header">
+		<main className="is-relative">
+			<form className="is-search-form">
 				<div className="is-flex is-align-items-center mr-auto">
 					<FormInput
 						fieldClassName="is-flex-grow-1"
@@ -139,27 +98,31 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: ListContactModel[]
 						onChange={collectionOnQueryChange}
 						isLast={true}
 						iconLeft={<IconSearch />}
+						placeholder="Search"
 					/>
 					{/* <span className="has-text-grey ml-5">{collectionItemsInUse.length} results</span> */}
 				</div>
 				{/* <div className="ml-6 mr-5">{pagination}</div> */}
-				<FormButton onClick={collectionOnAdd} variant={['is-outlined', 'is-ui-button']} className="ml-5">
-					New List
-				</FormButton>
-			</Slot>
+				<FormButtonNew type="button" onClick={collectionOnAdd} variant="active" className="ml-5">
+					<IconNewPlus width={12} fill="#fff" />
+					<span className="ml-1">Add New List</span>
+				</FormButtonNew>
+			</form>
 
-			<Slot slot="body">
-				<CardAnimatePresence isActive={collectionIsBusy && !collectionItems.length}>
-					<Loader />
-				</CardAnimatePresence>
-				<CardAnimatePresence isActive={!collectionIsBusy && !collectionItemsInUse.length}>
-					<EmptyMsg msg="No list found" />
-				</CardAnimatePresence>
-				{isListMode ? <ListView>{itemsList}</ListView> : itemsList}
-			</Slot>
+			<Card className="is-scroll-view">
+				<Slot slot="body">
+					<CardAnimatePresence isActive={collectionIsBusy && !collectionItems.length}>
+						<Loader />
+					</CardAnimatePresence>
+					<CardAnimatePresence isActive={!collectionIsBusy && !collectionItemsInUse.length}>
+						<EmptyMsg msg="No list found" />
+					</CardAnimatePresence>
+					{isListMode ? <ListView>{itemsList}</ListView> : itemsList}
+				</Slot>
 
-			{collectionItemsInUse.length ? <Slot slot="footer">{pagination}</Slot> : null}
-		</Card>
+				{collectionItemsInUse.length ? <Slot slot="footer">{pagination}</Slot> : null}
+			</Card>
+		</main>
 	);
 };
 
