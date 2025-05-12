@@ -312,3 +312,7 @@ export const exportContactCompanyLabels = {
 	'location.longitude': 'Longitude',
 	'location.postalCode': 'Postal code',
 };
+
+export const MONTHLY_PRICE_ID = 'price_1RNoLNLgUrD1kX4RjzqrCGS8';
+
+export const YEARLY_PRICE_ID = 'price_1RNoLNLgUrD1kX4Rocv6WXIN';
