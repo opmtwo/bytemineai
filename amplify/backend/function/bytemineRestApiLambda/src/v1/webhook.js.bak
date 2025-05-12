@@ -1,21 +1,17 @@
-const { Request, Response, Router } = require('express');
-const Stripe = require('stripe');
-const moment = require('moment/moment');
+const { Router } = require('express');
 
-const { updateBytemineSub } = require('../graphql/mutations');
+const { createUser, updateUser } = require('../../graphql/mutations');
 const { apsGql } = require('../utils/aps-utils');
 const { safeJsonDecode } = require('../utils/helper-utils');
 const { idpAdminGetUser } = require('../utils/idp-utils');
 const { stripeGetCustomer, stripeGetSubscription, stripeSetDefaultPaymentMethod } = require('../utils/stripe-utils');
-const { getBytemineUser, listSubByTeamId } = require('../graphql/queries');
+// const { listUsersByEmail } = require('../../graphql/queries');
 
-const { AUTH_BYTEMINEF573E062_USERPOOLID: USERPOOLID } = process.env;
+const { AUTH_STACKUPAUTH_USERPOOLID: USERPOOLID } = process.env;
 
-// const overachieveTrialHtml = require('./templates/free-trial-html');
-// const overachieveTrialText = require('./templates/free-trial-text');
 const router = Router();
 
-router.post('/', async (req, res) => {
+router.post('/stripe', async (req, res) => {
 	// log request body
 	console.log('Request body ', JSON.stringify(req.body, null, 2));
 
@@ -29,216 +25,146 @@ router.post('/', async (req, res) => {
 		body = req.body;
 	}
 
-	// Stripe event data
-	const stripeEvent = body.data?.object || {};
-	const stripeEventType = body.type;
-
 	// -------------------------------------------------------------------------
 	// Start
 	// -------------------------------------------------------------------------
 
-	// //need to move this to a variable sometime
-	// const stripe = require('stripe')('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');
-	// const stripe_webhook_key = 'whsec_5CSSRrok8vSyODxiSad5MEIjIKtXdT0f';
-	// const stripeEvent = stripe.webhooks.constructEvent(event.body, event.headers['Stripe-Signature'], stripe_webhook_key);
+	//need to move this to a variable sometime
+	const stripe = require('stripe')('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');
+	const stripe_webhook_key = 'whsec_5CSSRrok8vSyODxiSad5MEIjIKtXdT0f';
+	const stripe_event = stripe.webhooks.constructEvent(event.body, event.headers['Stripe-Signature'], stripe_webhook_key);
 
+	let response;
 	const now = moment();
-	console.log(JSON.stringify({ now, stripeEvent }));
+	if (stripe_event.type === 'checkout.session.completed') {
+		let stripe_customer = body.data.object.customer || '';
+		let client_reference = body.data.object.client_reference_id;
+		let payment_status = body.data.object.payment_status;
+		let stripe_subscription = body.data.object.subscription || '';
+		let founduser = await getUser(client_reference);
+		account = founduser;
+		account.Attributes = account.UserAttributes;
+		const groupName = account?.UserAttributes?.find((attr) => attr?.Name === 'custom:group_name')?.Value;
+		//response = {"client_reference":client_reference,"customer":stripe_customer,"payment_status":payment_status,"group":groupName};
+		const nymblrSubResponse1 = await getNymblrSubscription(groupName);
+		const items = nymblrSubResponse1?.listNymblrSubscriptionsByGroupId?.items || [];
+		const nysub = items[0];
 
-	// get subscription id
-	let subscriptionId = stripeEvent?.['subscription'];
-
-	// subscription created
-	if (!subscriptionId && stripeEventType === 'customer.subscription.created') {
-		subscriptionId = stripeEvent?.id;
-	}
-
-	// subscription updated
-	if (!subscriptionId && stripeEventType === 'customer.subscription.updated') {
-		subscriptionId = stripeEvent?.id;
-	}
-
-	// subscription deleted
-	if (!subscriptionId && stripeEventType === 'customer.subscription.deleted') {
-		subscriptionId = stripeEvent?.id;
-	}
-
-	// get customer id
-	const customerId = stripeEvent?.['customer'];
-	console.log({ customerId });
-
-	// get price id
-	const priceId = stripeEvent?.['lines']?.['data']?.[0]?.['plan']?.id;
-	console.log({ priceId });
-
-	// subscription id is required
-	if (!subscriptionId) {
-		console.log('Subscription ID not found - bail - ', subscriptionId);
-		return res.status(200).json({});
-	}
-
-	// customer id is required
-	if (!customerId) {
-		console.log('Customer ID not found - bail - ', customerId);
-		return res.status(200).json({});
-	}
-
-	// get email address
-	const userEmail =
-		stripeEvent.metadata?.email ||
-		stripeEvent.customer_email ||
-		stripeEvent.receipt_email ||
-		stripeEvent.billing_details?.email ||
-		stripeEvent.customer_details?.email;
-	const userEmailClean = userEmail?.toLowerCase().trim();
-	console.log(JSON.stringify({ userEmailClean }));
-
-	// User email not found?
-	if (!userEmailClean) {
-		console.log('User email not found - skipping', JSON.stringify({ userEmail, userEmailClean, stripeEvent }));
-		return res.json({});
-	}
-
-	// get cognito user
-	const userCognito = await idpAdminGetUser(USERPOOLID, userEmailClean);
-	console.log(JSON.stringify({ userCognito }));
-
-	// Cognito username
-	const userSub = userCognito.Username;
-	console.log(JSON.stringify({ userSub }));
-
-	// Get user info
-	const userInfo = await apsGql(getBytemineUser, { id: userSub }, 'data.getBytemineUser');
-	console.log(JSON.stringify({ userInfo }));
-
-	// User not found?
-	if (!userInfo?.teamId) {
-		console.log('User info not found - skipping', JSON.stringify(userInfo));
-		return res.json({});
-	}
-
-	// Get stripe subscription model
-	const subscriptionItems = await apsGql(listSubByTeamId, { teamId: userInfo.teamId }, 'data.listSubByTeamId.items');
-	const subscriptionInfo = subscriptionItems?.[0];
-	console.log(JSON.stringify({ subscriptionItems, subscriptionInfo }));
-
-	// Subscription info not found?
-	if (!subscriptionInfo?.id) {
-		console.log('Subscription info not found - skipping', JSON.stringify(subscriptionItems));
-		return res.json({});
-	}
-
-	// checkout.session.completed
-	if (stripeEventType === 'checkout.session.completed') {
-		const input = {
-			id: subscriptionInfo.id,
-			stripeCustomerId: customerId,
-			stripeSubscriptionID: subscriptionId,
-			subscriptionStatus: 'ActiveCustomer',
-			firstPaid: now.toISOString(),
+		const options2 = {
+			input: {
+				id: nysub.id,
+				stripeSubscriptionID: [stripe_subscription],
+				stripeCustomerId: stripe_customer,
+				firstPaid: now.toISOString(),
+			},
 		};
-		console.log('checkout.session.completed', JSON.stringify({ input }));
-
-		const updatedSubscriptionInfo = await apsGql(updateBytemineSub, { input }, 'data.updateBytemineSub');
-		console.log('All done - processed checkout.session.completed', JSON.stringify(updatedSubscriptionInfo));
-
-		return res.json(updatedSubscriptionInfo);
-	}
-
-	// invoice.paid
-	if (stripeEventType === 'invoice.paid') {
-		let mainPlan;
-		let mainQty = 0;
-		let extraQty = 0;
-		let monthlyCredit = 0;
-		let annualCredit = 0;
-		let quarterlyCredit = 0;
-
-		let lines = stripeEvent.lines.data;
-		console.log(JSON.stringify({ lines }));
-
+		const response2 = await appSyncMutation(mutations.updateNymblrSubscription, options2);
+		return getResponse(response2);
+	} else if (stripe_event.type === 'invoice.paid') {
+		let customer_id;
+		let main_plan;
+		let main_qty = 0;
+		let addnl_qty = 0;
+		let monthly_credit = 0;
+		let annual_credit = 0;
+		let quarterly_credit = 0;
+		let lines = body.data.object.lines.data;
+		customer_id = body.data.object.customer;
 		const parseLine = (item, index, arr) => {
-			console.log(JSON.stringify({ item, index }));
-			if (item.price.id === 'price_1RNoLNLgUrD1kX4RjzqrCGS8') {
-				mainPlan = 'Monthly';
-				mainQty = 1000;
-				monthlyCredit = 1000;
-				quarterlyCredit = 1000;
-			} else if (item.price.id === 'price_1RNoLNLgUrD1kX4Rocv6WXIN') {
-				mainPlan = 'Yearly';
-				mainQty = 12000;
-				annualCredit = 12000;
-				quarterlyCredit = 1200;
+			//console.log(item.price.id);
+			if (item.price.id === 'price_1MA7Q4KEmxTujg3VZbcuhUpo') {
+				main_plan = 'Monthly';
+				main_qty = 1000;
+				monthly_credit = 1000;
+				quarterly_credit = 1000;
+			} else if (item.price.id === 'price_1MA7PnKEmxTujg3VOohzcP52') {
+				main_plan = 'Yearly';
+				main_qty = 12000;
+				annual_credit = 12000;
+				quarterly_credit = 1200;
 			} else if (item.price.id === 'price_1MA7OyKEmxTujg3VwNMqMraq') {
 				//monthly addn'l credits
-				extraQty = parseInt(item.quantity || '0');
-				monthlyCredit = monthlyCredit + extraQty;
+				addnl_qty = parseInt(item.quantity || '0');
+				monthly_credit = monthly_credit + addnl_qty;
 			} else if (item.price.id === 'price_1MA7OLKEmxTujg3VRKbkGiHP') {
 				//annual addn'l credits
-				extraQty = parseInt(item.quantity || '0');
-				annualCredit = annualCredit + extraQty;
+				addnl_qty = parseInt(item.quantity || '0');
+				annual_credit = annual_credit + addnl_qty;
 			} else if (item.price.id === 'price_1Ml1ZAKEmxTujg3Vm2lzOrVn') {
-				mainPlan = 'Monthly';
-				mainQty = 10000;
-				monthlyCredit = 10000;
-				quarterlyCredit = 10000;
+				main_plan = 'Monthly';
+				main_qty = 10000;
+				monthly_credit = 10000;
+				quarterly_credit = 10000;
 			} else if (item.price.id === 'price_1Ml1dxKEmxTujg3V62aIZnE3') {
-				mainPlan = 'Yearly';
-				mainQty = 120000;
-				annualCredit = 120000;
-				quarterlyCredit = 15000;
+				main_plan = 'Yearly';
+				main_qty = 120000;
+				annual_credit = 120000;
+				quarterly_credit = 15000;
 			} else if (item.price.id === 'price_1Ml1htKEmxTujg3VParc8ZrL') {
 				//monthly addn'l credits
-				extraQty = parseInt(item.quantity || '0');
-				monthlyCredit = monthlyCredit + extraQty;
+				addnl_qty = parseInt(item.quantity || '0');
+				monthly_credit = monthly_credit + addnl_qty;
 			} else if (item.price.id === 'price_1Ml1idKEmxTujg3V0aCr2TbQ') {
 				//annual addn'l credits
-				extraQty = parseInt(item.quantity || '0');
-				annualCredit = annualCredit + extraQty;
+				addnl_qty = parseInt(item.quantity || '0');
+				annual_credit = annual_credit + addnl_qty;
 			}
 		};
 		lines.forEach(parseLine);
 
-		const newCredits = parseInt(subscriptionInfo.currentCredits || '0') + monthlyCredit + annualCredit;
-		console.log(JSON.stringify({ currentCredits: subscriptionInfo.currentCredits, monthlyCredit, annualCredit, newCredits }));
-
-		const input = {
-			id: subscriptionInfo.id,
-			monthlyCredits: monthlyCredit,
-			quarterlyCredits: quarterlyCredit,
-			annualCredits: annualCredit,
-			currentCredits: newCredits,
-			subscriptionPeriod: mainPlan,
-			lastPaid: now.toISOString(),
+		const options = {
+			stripeCustomerId: customer_id,
 		};
-		console.log('invoice.paid', JSON.stringify({ input }));
 
-		const updatedSubscriptionInfo = await apsGql(updateBytemineSub, { input }, 'data.updateBytemineSub');
-		console.log('All done - processed invoice.paid', JSON.stringify(updatedSubscriptionInfo));
-
-		return res.json(updatedSubscriptionInfo);
-	}
-
-	// customer.subscription.deleted
-	if (stripeEventType === 'customer.subscription.deleted') {
-		const input = {
-			id: subscriptionInfo.id,
-			monthlyCredits: 0,
-			quarterlyCredits: 0,
-			annualCredits: 0,
-			subscriptionPeriod: 'Monthly',
-			subscriptionStatus: 'Trial',
+		const response = await appSyncQuery(queries.listNymblrSubscriptionsByStripeCustomerId, options);
+		const nymblrSubResponse1 = response.data;
+		const items = nymblrSubResponse1?.listNymblrSubscriptionsByStripeCustomerId?.items || [];
+		const nysub = items[0];
+		const preCredits = nysub.currentCredits || '0';
+		const newCredits = parseInt(nysub.currentCredits || '0') + monthly_credit + annual_credit;
+		const options2 = {
+			input: {
+				id: nysub.id,
+				monthlyCredits: monthly_credit,
+				quarterlyCredits: quarterly_credit,
+				annualCredits: annual_credit,
+				currentCredits: newCredits,
+				subscriptionPeriod: main_plan,
+				lastPaid: now.toISOString(),
+			},
 		};
-		console.log('customer.subscription.deleted', JSON.stringify({ input }));
+		const response2 = await appSyncMutation(mutations.updateNymblrSubscription, options2);
+		return getResponse(response2);
+	} else if (stripe_event.type === 'customer.subscription.deleted') {
+		let customer_id;
+		customer_id = body.data.object.customer;
+		//console.log('sub delete - get nymblr stripeCustomerId-',customer_id);
 
-		const updatedSubscriptionInfo = await apsGql(updateBytemineSub, { input }, 'data.updateBytemineSub');
-		console.log('All done - processed customer.subscription.deleted', JSON.stringify(updatedSubscriptionInfo));
-
-		return res.json(updatedSubscriptionInfo);
+		const options = {
+			stripeCustomerId: customer_id,
+		};
+		const response = await appSyncQuery(queries.listNymblrSubscriptionsByStripeCustomerId, options);
+		const nymblrSubResponse1 = response.data;
+		const items = nymblrSubResponse1?.listNymblrSubscriptionsByStripeCustomerId?.items || [];
+		if (items.length > 0) {
+			const nysub = items[0];
+			const options2 = {
+				input: {
+					id: nysub.id,
+					monthlyCredits: 0,
+					quarterlyCredits: 0,
+					annualCredits: 0,
+					subscriptionPeriod: 'Monthly',
+					subscriptionStatus: 'Trial',
+				},
+			};
+			const response2 = await appSyncMutation(mutations.updateNymblrSubscription, options2);
+			return getResponse(response2);
+		} else {
+			return getErrorResponse({ message: 'User/Account Not Found' }, body);
+		}
 	}
-
-	console.log('All done');
-	return res.json({});
+	return getErrorResponse(body);
 
 	// -------------------------------------------------------------------------
 	// End
@@ -306,7 +232,6 @@ router.post('/', async (req, res) => {
 	// End lifetime subscription payment
 	// -------------------------------------------------------------------------
 
-	/*
 	// get subscription id
 	let subscriptionId = data?.['subscription'];
 
@@ -361,7 +286,7 @@ router.post('/', async (req, res) => {
 	// get customer
 	let customer;
 	try {
-		customer = (await stripeGetCustomer(customerId));
+		customer = await stripeGetCustomer(customerId);
 		if (!customer?.id) {
 			console.log('Customer not found - bail');
 			return res.status(200).json({});
@@ -452,6 +377,34 @@ router.post('/', async (req, res) => {
 				console.log('Error setting default payment method - ', err);
 			}
 		}
+
+		/**
+		 * @summary
+		 * send trial email
+		 *
+		 * @description
+		 * @event
+		 * invoice.payment_succeeded:
+		 * This event is triggered when a payment for an invoice is successfully
+		 * processed. It indicates that the payment for a specific invoice has
+		 * been successfully completed. This event is particularly useful when
+		 * you need to track successful payment attempts on individual invoices.
+		 *
+		 * @event
+		 * invoice.paid:
+		 * This event is triggered when an invoice is marked as paid, regardless
+		 * of whether the payment was successful or not. It is a broader event
+		 * that simply indicates that the invoice's status has transitioned to
+		 * "paid". This can occur when a payment is successfully processed, but
+		 * it can also occur if the invoice is manually marked as paid in the
+		 * Stripe Dashboard or through the API.
+		 */
+		if (subscription.status === 'trialing' && type === 'invoice.paid') {
+			// await sesSendEmail(email, 'Congratulations for starting your free trial with Unfiltered!', overachieveTrialHtml, overachieveTrialText, {
+			// 	email,
+			// 	name,
+			// });
+		}
 	}
 
 	// payment failed / subscription cancelled - cancel all future schedules after expiry
@@ -459,7 +412,7 @@ router.post('/', async (req, res) => {
 		[
 			// 'invoice.payment_failed',
 			// 'customer.subscription.deleted'
-			'stripe.event.name'
+			'stripe.event.name',
 		].includes(type)
 	) {
 		try {
@@ -469,7 +422,6 @@ router.post('/', async (req, res) => {
 			await apsGql(createUser, { input }, 'data.createUser');
 		}
 	}
-    */
 
 	// all done
 	console.log('All done');
