@@ -50,12 +50,12 @@
   "lambdaLayers": [],
   "environmentVariableList": [
     {
-      "cloudFormationParameterName": "stripeClientSecret",
-      "environmentVariableName": "STRIPE_CLIENT_SECRET"
-    },
-    {
       "cloudFormationParameterName": "atDataApiKey",
       "environmentVariableName": "AT_DATA_API_KEY"
+    },
+    {
+      "cloudFormationParameterName": "stripeClientSecret",
+      "environmentVariableName": "STRIPE_CLIENT_SECRET"
     }
   ]
 }

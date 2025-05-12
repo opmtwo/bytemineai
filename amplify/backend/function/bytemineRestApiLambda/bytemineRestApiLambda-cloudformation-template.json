@@ -36,10 +36,10 @@
       "Type": "String",
       "Default": "functionbytemineaiEnrichLambdaName"
     },
-    "stripeClientSecret": {
+    "atDataApiKey": {
       "Type": "String"
     },
-    "atDataApiKey": {
+    "stripeClientSecret": {
       "Type": "String"
     }
   },
@@ -189,11 +189,11 @@
                 ]
               ]
             },
-            "STRIPE_CLIENT_SECRET": {
-              "Ref": "stripeClientSecret"
-            },
             "AT_DATA_API_KEY": {
               "Ref": "atDataApiKey"
+            },
+            "STRIPE_CLIENT_SECRET": {
+              "Ref": "stripeClientSecret"
             }
           }
         },
