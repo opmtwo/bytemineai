@@ -89,7 +89,9 @@ export interface AuthContextInterface {
 	user?: CognitoUserExt;
 	self?: IBytemineUser;
 	team?: IBytemineUser;
-	sub?: IBytemineSub;
+	subscription?: IBytemineSub;
+	stripeCustomer?: IBytemineSub;
+	stripeSubscription?: IBytemineSub;
 	attributes?: FetchUserAttributesOutput;
 	authError?: Error;
 	isAuthBusy: boolean;
@@ -1206,4 +1208,19 @@ export interface IBytemineCollectionContact {
 
 	contactId: string;
 	contact?: IBytemineContact;
+}
+
+export interface IBytemineUsage {
+	id: string;
+	owner: string;
+	teamId?: string;
+	userId?: string;
+
+	createdAt: string;
+	updatedAt: string;
+
+	isSelected?: boolean;
+
+	filterId: string
+	credits: number;
 }
