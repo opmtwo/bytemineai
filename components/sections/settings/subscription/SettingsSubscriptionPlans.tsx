@@ -1,3 +1,8 @@
+import { MouseEvent, useState } from 'react';
+import Stripe from 'stripe';
+
+import { MONTHLY_PRICE_ID, YEARLY_PRICE_ID } from '../../../../consts';
+import { callApi } from '../../../../utils/helper-utils';
 import Card from '../../../Card';
 import FormButtonNew from '../../../form/FormButtonNew';
 import IconNewCheck from '../../../icons/IconNewCheck';
@@ -6,20 +11,53 @@ import IconNewPlanStandard from '../../../icons/IconNewPlanStandard';
 import Slot from '../../../Slot';
 
 const SettingsSubscriptionPlans = () => {
+	const [isBusy, setIsBusy] = useState(false);
+	const [isMonthlyBusy, setIsMonthlyBusy] = useState(false);
+	const [isYearlyBusy, setIsYearlyBusy] = useState(false);
+
+	const openPaymentLink = async (priceId: string) => {
+		setIsBusy(true);
+		try {
+			const res = (await callApi(null, `api/v1/subscriptions/link?id=${priceId}`, {})) as Stripe.PaymentLink;
+			window.location.href = res.url;
+		} catch (err) {
+			console.log('getPaymentLink - error', err);
+		}
+		setIsBusy(false);
+	};
+
+	const openClientMonthly = async (e: MouseEvent<HTMLButtonElement>) => {
+		setIsMonthlyBusy(true);
+		e.preventDefault();
+		await openPaymentLink(MONTHLY_PRICE_ID);
+		setIsMonthlyBusy(false);
+	};
+
+	const openClientYearly = async (e: MouseEvent<HTMLButtonElement>) => {
+		setIsYearlyBusy(true);
+		e.preventDefault();
+		await openPaymentLink(YEARLY_PRICE_ID);
+		setIsYearlyBusy(false);
+	};
+
 	const plans = [
 		{
 			title: 'Basic plan',
 			price: '$10',
 			cycle: 'Monthly Subscription',
 			isAnnual: false,
+			isBusy: isMonthlyBusy,
 			features: ['Unlimited users', 'Cancel anytime', 'Largest database of contacts', 'Mobiles', 'Personal Emails', 'Work Emails', 'API access'],
+			onClick: openClientMonthly,
 		},
 		{
 			title: 'Standard plan',
 			price: '$100',
 			cycle: 'Annual Subscription',
 			isAnnual: true,
+			isBusy: isYearlyBusy,
 			features: ['Unlimited users', 'Cancel anytime', 'Largest database of contacts', 'Mobiles', 'Personal Emails', 'Work Emails', 'API access'],
+			onClick: openClientYearly,
 		},
 	];
 
@@ -57,7 +95,16 @@ const SettingsSubscriptionPlans = () => {
 									</Slot>
 									<Slot slot="footer">
 										<div className="p-5">
-											<FormButtonNew className="is-fullwidth has-text-centered" variant={plan.isAnnual ? 'active' : 'default'}>Select Plan</FormButtonNew>
+											<FormButtonNew
+												type="button"
+												className="is-fullwidth has-text-centered"
+												variant={plan.isAnnual ? 'active' : 'default'}
+												disabled={plan.isBusy}
+												loading={plan.isBusy}
+												onClick={plan.onClick}
+											>
+												Select Plan
+											</FormButtonNew>
 										</div>
 									</Slot>
 								</Card>
