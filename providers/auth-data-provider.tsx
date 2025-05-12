@@ -11,6 +11,7 @@ import {
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 import shortHash from 'shorthash2';
+import Stripe from 'stripe';
 import { UrlObject } from 'url';
 
 import { AccountType, AuthContextInterface, CognitoUserExt, IBytemineSub, IBytemineUser, Roles } from '../types';
@@ -41,7 +42,10 @@ const AuthDataProvider = (props: any) => {
 	const [self, setSelf] = useState<IBytemineUser>();
 	const [team, setTeam] = useState<IBytemineUser>();
 
-	const [sub, setSub] = useState<IBytemineSub>();
+	const [subscription, setSubscription] = useState<IBytemineSub>();
+
+	const [stripeCustomer, setStripeCustomer] = useState<Stripe.Customer>();
+	const [stripeSubscription, setStripeSubscription] = useState<Stripe.Subscription>();
 
 	const [isRoot, setIsRoot] = useState(false);
 	const [isAdmin, setisAdmin] = useState(false);
@@ -108,9 +112,18 @@ const AuthDataProvider = (props: any) => {
 
 	const getUserAndTeam = async () => {
 		try {
-			const res = (await callApi(null, '/api/v1/me', {})) as { self: IBytemineUser; team: IBytemineUser; sub: IBytemineSub };
+			const res = (await callApi(null, '/api/v1/subscriptions/me', {})) as {
+				self: IBytemineUser;
+				owner: IBytemineUser;
+				subscription: IBytemineSub;
+				stripeCustomer: Stripe.Customer;
+				stripeSubscription: Stripe.Subscription;
+			};
 			setSelf(res.self);
-			setTeam(res.team);
+			setTeam(res.owner);
+			setSubscription(res.subscription);
+			setStripeCustomer(res.stripeCustomer);
+			setStripeSubscription(res.stripeSubscription);
 			const { role } = res.self;
 			setisAdmin(role === Roles.Admin);
 			setisManager(role === Roles.Manager);
@@ -213,7 +226,9 @@ const AuthDataProvider = (props: any) => {
 				user,
 				self,
 				team,
-				sub,
+				subscription,
+				stripeCustomer,
+				stripeSubscription,
 				isRoot,
 				isAdmin,
 				isManager,
