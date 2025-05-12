@@ -1,5 +1,6 @@
 import moment from 'moment';
 
+import { useAuthContext } from '../../../../providers/auth-data-provider';
 import { formatNum } from '../../../../utils/helper-utils';
 import Card from '../../../Card';
 import IconNewCredits from '../../../icons/IconNewCredits';
@@ -9,34 +10,36 @@ import IconNewRenewal from '../../../icons/IconNewRenewal';
 import Slot from '../../../Slot';
 
 const SettingsUsageSummary = () => {
+	const { subscription } = useAuthContext();
+
 	const options = [
 		{
 			id: 'current-credits',
 			bg: '#9068D0',
 			icon: <IconNewCredits width={32} />,
 			text: 'Current Credits',
-			value: formatNum((976275).toString()),
+			value: formatNum((subscription?.currentCredits || 0).toString()),
 		},
 		{
 			id: 'monthly-credits',
 			bg: '#9068D0',
 			icon: <IconNewCredits width={32} />,
 			text: 'Monthly Credits',
-			value: formatNum((1000000).toString()),
+			value: formatNum((subscription?.monthlyCredits || 0).toString()),
 		},
 		{
 			id: 'plan',
 			bg: '#D84C10',
 			icon: <IconNewPlan width={32} />,
 			text: 'Plan',
-			value: 'Active Customer',
+			value: subscription?.subscriptionStatus || 'Trial',
 		},
 		{
 			id: 'quarterly-bonus-credits',
 			bg: '#D84C10',
 			icon: <IconNewPlan width={32} />,
 			text: 'Quarterly Bonus Credits',
-			value: formatNum((10000).toString()),
+			value: formatNum((subscription?.quarterlyCredits || 0).toString()),
 		},
 		{
 			id: 'renewal',
@@ -50,21 +53,21 @@ const SettingsUsageSummary = () => {
 			bg: '#0084FF',
 			icon: <IconNewRenewal width={32} />,
 			text: 'Annual Credits',
-			value: '0',
+			value: formatNum((subscription?.annualCredits || 0).toString()),
 		},
 		{
 			id: 'last-paid',
 			bg: '#52BA69',
 			icon: <IconNewPaid width={32} />,
 			text: 'Last Paid',
-			value: moment().format('DD/MM/YYYY'),
+			value: subscription?.lastPaid ? moment(subscription?.lastPaid).format('MM/DD/YYYY') : 'NA',
 		},
 		{
 			id: 'created',
 			bg: '#52BA69',
 			icon: <IconNewPaid width={32} />,
 			text: 'Created',
-			value: moment().format('DD/MM/YYYY'),
+			value: subscription?.lastPaid ? moment(subscription?.createdAt).format('MM/DD/YYYY') : 'NA',
 		},
 	];
 
