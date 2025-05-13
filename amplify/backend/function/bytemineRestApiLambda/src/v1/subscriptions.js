@@ -29,7 +29,7 @@ router.get('/me', verifyToken, verifyTeam, async (req, res) => {
 	let stripeCustomer = null;
 	if (subscription?.stripeCustomerId) {
 		try {
-			stripeCustomer = await stripeGetCustomer(profile.stripeCustomerId);
+			stripeCustomer = await stripeGetCustomer(subscription.stripeCustomerId);
 			console.log('Found stripe customer', JSON.stringify({ stripeCustomer }, null, 2));
 		} catch (err) {
 			console.log('Error fetching stripe customer', err);
@@ -41,7 +41,7 @@ router.get('/me', verifyToken, verifyTeam, async (req, res) => {
 	let stripeSubscription = null;
 	if (subscription?.stripeSubscriptionID?.length) {
 		try {
-			stripeSubscription = await stripeGetSubscription(profile.stripeSubscriptionID[0]);
+			stripeSubscription = await stripeGetSubscription(subscription.stripeSubscriptionID[0]);
 			console.log('Found valid subscription', JSON.stringify(stripeSubscription, null, 2));
 		} catch (err) {
 			console.log('Error getting subscription', err);
