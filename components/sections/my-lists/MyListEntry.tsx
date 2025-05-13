@@ -1,14 +1,15 @@
 import { motion } from 'framer-motion';
 import { uniqBy } from 'lodash';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useCrudContext } from '../../../providers/crud-provider';
 import { IBytemineCollection, IBytemineContact } from '../../../types';
 import { callApi } from '../../../utils/helper-utils';
 import Anchor from '../../Anchor';
-import FormCheckbox from '../../form/FormCheckbox';
-import IconDelete from '../../icons/IconDelete';
-import IconEdit from '../../icons/IconEdit';
+import FormDoubleCheckbox from '../../form/FormDoubleCheckbox';
+import IconNewDownload from '../../icons/IconNewDownload';
+import IconNewEdit from '../../icons/IconNewEdit';
+import IconNewTrash from '../../icons/IconNewTrash';
 import Loader from '../../Loader';
 
 const MyListEntry = ({
@@ -99,13 +100,18 @@ const MyListEntry = ({
 	const controls = (
 		<>
 			<span className="is-clickable icon-text" onClick={handleDelete}>
-				<span className="icon">
-					<IconDelete width={24} />
+				<span className="icon has-text-danger ml-3">
+					<IconNewTrash width={12} stroke="currentColor" />
 				</span>
 			</span>
 			<span className="is-clickable icon-text" onClick={handleEdit}>
-				<span className="icon">
-					<IconEdit width={24} />
+				<span className="icon ml-3">
+					<IconNewEdit width={12} />
+				</span>
+			</span>
+			<span className="is-clickable icon-text" onClick={handleExport}>
+				<span className="icon has-border has-border-alt has-radius-small ml-3">
+					<IconNewDownload width={12} />
 				</span>
 			</span>
 			{/* <FormButton className="ml-3" onClick={handleDelete} variant={['is-icon', 'is-outlined', 'is-rounded']} icon={<IconDelete />} />
@@ -137,22 +143,24 @@ const MyListEntry = ({
 				<div className="column is-10">
 					<Anchor href={url} className="columns is-mobile is-align-items-center has-text-dark">
 						<div className="column is-4 is-flex">
-							<span
-								className="is-relative"
-								style={{ zIndex: 1 }}
-								onClick={(e) => {
-									e.stopPropagation();
-								}}
-							>
-								<FormCheckbox className="relative" value="accept" isChecked={item.isSelected ? true : false} onChange={handleSelect} />
-							</span>
-							{item.name}
+							<div className="is-flex is-align-items-center">
+								<span
+									className="is-relative field"
+									style={{ zIndex: 1 }}
+									onClick={(e) => {
+										e.stopPropagation();
+									}}
+								>
+									<FormDoubleCheckbox value={item.id} className="is-filter-checkbox has-border-alt m-0" isChecked={item.isSelected} onChange={handleSelect} />
+								</span>
+								<span className="ml-5">{item.name}</span>
+							</div>
 						</div>
 						<div className="column is-4">{numberOfContacts}</div>
 						<div className="column is-4">{fullName}</div>
 					</Anchor>
 				</div>
-				<div className="column is-2 is-flex is-justify-content-flex-end action-buttons">{controls}</div>
+				<div className="column is-2 is-flex is-justify-content-flex-end">{controls}</div>
 			</div>
 		</motion.div>
 	);
