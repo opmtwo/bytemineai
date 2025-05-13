@@ -52,7 +52,7 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: IBytemineContact[]
 	}, []);
 
 	const itemsHeader = (
-		<motion.div layout className="panel-block is-block">
+		<motion.div layout className="panel-block is-block has-background-white-bis">
 			<div className="columns is-mobile is-align-items-center">
 				<div className="column is-10">
 					<div className="columns is-mobile is-align-items-center has-text-dark">
