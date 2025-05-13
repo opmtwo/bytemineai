@@ -301,3 +301,25 @@ div.planslist div.column div.panel {
 		margin-bottom: 1rem;
 	}
 }
+
+// -----------------------------------------------------------------------------
+// Toastify toast
+// -----------------------------------------------------------------------------
+
+.Toastify__toast-theme--colored.Toastify__toast--success,
+.Toastify__toast-theme--colored.Toastify__toast--error {
+	background-color: $secondary;
+	border-radius: 100px;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+	color: $success;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--error {
+	color: $danger;
+}
+
+.Toastify__close-button {
+	margin-right: 10px;
+}
