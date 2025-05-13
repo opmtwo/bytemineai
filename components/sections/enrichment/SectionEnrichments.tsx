@@ -6,7 +6,8 @@ import { useCrudContext } from '../../../providers/crud-provider';
 import { Contact, IBytemineEnrichment, ListContactModel } from '../../../types';
 import Breadcrumb from '../../Breadcrumb';
 import EnrichUploadForm from '../../enrich/EnrichUploadForm';
-import LoaderFullscreen from '../../LoaderFullscreen';
+import FormButtonNew from '../../form/FormButtonNew';
+import IconNewUpload from '../../icons/IconNewUpload';
 import Modal from '../../modals/Modal';
 import TrialNotice from '../../TrialNotice';
 import EnrichmentItems from './EnrichmentItems';
@@ -86,9 +87,20 @@ const SectionEnrichments = () => {
 		<>
 			{isTrailAccount ? <TrialNotice onCustomize={onCustomize} /> : <div></div>}
 
-			{enrichmentIsBusy || isBusy ? <LoaderFullscreen /> : null}
-
 			<Breadcrumb title="Enrich" items={[{ label: 'Enrich', href: '/enrichment', isCurrent: true }]} />
+
+			<div className="is-flex is-align-items-center is-justify-content-space-between is-fullwidth has-border has-radius p-5 mb-5">
+				<div className="mr-auto">
+					<h2 className="title is-4 mb-3">Bulk Enrichment</h2>
+					<p>Upload a list of phone numbers. email addresses. or personal LinkedIn profiles.</p>
+				</div>
+				<div className="ml-auto">
+					<FormButtonNew type="button" variant="active" onClick={enrichmentOnAdd}>
+						<IconNewUpload width={16} />
+						<span>Upload</span>
+					</FormButtonNew>
+				</div>
+			</div>
 
 			<EnrichmentItems onExport={onExport} />
 
