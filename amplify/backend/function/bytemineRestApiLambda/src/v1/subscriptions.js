@@ -92,7 +92,7 @@ router.get('/usage', verifyToken, verifyTeam, async (req, res) => {
 	const { teamId } = res.locals.team;
 
 	const thirtyDaysAgo = moment().subtract(30, 'days');
-	
+
 	let usageItems = [];
 	let nextToken = null;
 	let done = false;
@@ -120,7 +120,6 @@ router.get('/usage', verifyToken, verifyTeam, async (req, res) => {
 		}
 
 		nextToken = done ? null : response.nextToken;
-
 	} while (nextToken);
 
 	const users = await apsGql(
@@ -135,7 +134,7 @@ router.get('/usage', verifyToken, verifyTeam, async (req, res) => {
 
 	const creditsUsed = usageItems.reduce((sum, item) => sum + (item?.credits || 0), 0);
 
-	const userInThirtyDays = users.filter(_user => moment(_user.createdAt).isAfter(thirtyDaysAgo));
+	const userInThirtyDays = users.filter((_user) => moment(_user.createdAt).isAfter(thirtyDaysAgo));
 
 	return res.json({ usage: usageItems, users: userInThirtyDays, creditsUsed });
 });
