@@ -3,7 +3,7 @@ const moment = require('moment');
 
 const { verifyToken, verifyTeam } = require('../middlewares/auth');
 const { idpGetUserAttribute, idpAdminListGroupsForUser } = require('../utils/idp-utils');
-const { stripeGeneratePaymentLink, stripeGetCustomer, stripeGetSubscription } = require('../utils/stripe-utils');
+const { stripeGeneratePaymentLink, stripeGetCustomer, stripeGetSubscription, stripeCreateCustomerPortalSession, stripeCreateCustomer } = require('../utils/stripe-utils');
 const { listSubByTeamId, listUsageByTeamId, listUserByTeamId } = require('../graphql/queries');
 const { apsGql } = require('../utils/aps-utils');
 
@@ -86,6 +86,48 @@ router.get('/link', verifyToken, verifyTeam, async (req, res) => {
 
 	// return stripe checkout session
 	return res.json(link);
+});
+
+/**
+ * @summary
+ * Create customer portal session for the current user
+ */
+router.get('/me/portal', verifyToken, verifyTeam, async (req, res) => {
+	// get current user
+	const { sub } = res.locals;
+	const { email } = res.locals.owner;
+	const { teamId } = res.locals.team;
+
+	let subscription = null;
+	try {
+		// get subscription info
+		const subscriptions = await apsGql(listSubByTeamId, { teamId }, 'data.listSubByTeamId.items');
+		subscription = subscriptions?.[0];
+
+		// create customer portal
+		const portal = await stripeCreateCustomerPortalSession(subscription.stripeCustomerId);
+
+		// return portal data
+		return res.json(portal);
+	} catch (err) {
+		console.log('Error opening customer portal', err);
+
+		// ---------------------------------------------------------------------
+		// Create or fetch existing stripe customer by email and try to open customer portal
+		// ---------------------------------------------------------------------
+
+		// clean email
+		const emailClean = email.toLowerCase().trim();
+
+		// get existing stripe customer or create new stripe customer
+		const customer = await stripeCreateCustomer(emailClean);
+
+		// create customer portal
+		const portal = await stripeCreateCustomerPortalSession(customer.id);
+
+		// return portal data
+		return res.json(portal);
+	}
 });
 
 router.get('/usage', verifyToken, verifyTeam, async (req, res) => {
