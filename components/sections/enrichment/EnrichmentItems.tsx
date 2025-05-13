@@ -1,30 +1,32 @@
 import { sentenceCase } from 'change-case';
+import { motion } from 'framer-motion';
 import { ReactNode, useEffect, useState } from 'react';
 
 import { useAuthContext } from '../../../providers/auth-data-provider';
 import { useCrudContext } from '../../../providers/crud-provider';
-import { IBytemineEnrichment, ListContactModel, SortData, SortOrder } from '../../../types';
+import { EActionSelect, IBytemineEnrichment, ListContactModel, SortData, SortOrder } from '../../../types';
 import { decodeJson, getSortedItems } from '../../../utils/helper-utils';
 import Card from '../../cards/Card';
 import CardAnimatePresence from '../../cards/CardAnimatePresence';
 import EmptyMsg from '../../EmptyMsg';
-import FormButtonNew from '../../form/FormButtonNew';
+import FormDoubleCheckbox from '../../form/FormDoubleCheckbox';
 import IconNewProcessing from '../../icons/IconNewProcessing';
-import IconNewUpload from '../../icons/IconNewUpload';
 import ListView from '../../ListView';
 import Loader from '../../Loader';
 import { paginate } from '../../Pagination';
 import PaginationNew from '../../PaginationNew';
 import Slot from '../../Slot';
+import TableSkeleton from '../../table-skeleton';
 import EnrichmentEntry from './EnrichmentEntry';
 
 const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactModel[]) => void }) => {
-	const [isListMode, setIsListMode] = useState(true);
+	const [isListMode, setIsListMode] = useState(false);
 
 	const { attributes } = useAuthContext();
 
 	const {
 		isBusy: enrichmentIsBusy,
+		isLoading: enrichmentIsLoading,
 		items: enrichmentItems,
 		itemsInUse: enrichmentItemsInUse,
 		page: enrichmentPage,
@@ -34,6 +36,7 @@ const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactMod
 		onQueryChange: enrichmentOnQueryChange,
 		onConfirmOpen: enrichmentOnConfirmOpen,
 		onConfirmCancel: enrichmentOnConfirmCancel,
+		onSelectMany: enrichmentOnSelectMany,
 		onAdd: enrichmentOnAdd,
 		onDelete: enrichmentOnDelete,
 		onDeleteMany: enrichmentOnDeleteMany,
@@ -85,6 +88,42 @@ const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactMod
 
 	const enrichmentItemsInUseSorted = getSortedItems(enrichmentItemsInUse, sortMap as any);
 
+	const itemsHeader = (
+		<motion.div layout className="panel-block is-block has-background-white-bis">
+			<div className="columns is-mobile is-align-items-center">
+				<div className="column is-10">
+					<div className="columns is-mobile is-align-items-center has-text-dark">
+						<div className="column is-4">
+							<span className="is-flex is-align-items-center">
+								<span
+									className="is-relative field"
+									style={{ zIndex: 1 }}
+									onClick={(e) => {
+										e.stopPropagation();
+									}}
+								>
+									<FormDoubleCheckbox
+										className="is-filter-checkbox has-border-alt m-0"
+										isChecked={paginate(enrichmentItemsInUseSorted, enrichmentPerPage, enrichmentPage).every((item) => item.isSelected)}
+										onChange={() => {
+											enrichmentOnSelectMany(EActionSelect.ToggleCurrentPage, []);
+										}}
+									/>
+								</span>
+								<span className="ml-5">My File</span>
+							</span>
+						</div>
+						<div className="column is-2 has-text-centered">Records Uploaded</div>
+						<div className="column is-2 has-text-centered">Records Enriched</div>
+						<div className="column is-2 has-text-centered">Match Rate</div>
+						<div className="column is-2 has-text-centered">Staus</div>
+					</div>
+				</div>
+				<div className="column is-2 is-flex is-justify-content-flex-end action-buttons">Action</div>
+			</div>
+		</motion.div>
+	);
+
 	const itemsList = paginate(enrichmentItemsInUseSorted, enrichmentPerPage, enrichmentPage).map((item) => (
 		<>
 			<EnrichmentEntry key={item.id} item={item} sortMap={sortMap} isSticky={false} isListMode={isListMode} onExport={onExport} />
@@ -118,44 +157,42 @@ const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactMod
 		/>
 	);
 
-	return (
-		<Card className="is-scroll-view">
-			<Slot slot="header">
-				<div className="is-flex is-justify-content-space-between is-fullwidth">
-					<div className="mr-auto">
-						<h2 className="title is-4 mb-3">Bulk Enrichment</h2>
-						<p>Upload a list of phone numbers. email addresses. or personal LinkedIn profiles.</p>
-					</div>
-					<div className="ml-auto">
-						<FormButtonNew type="button" variant="active" onClick={enrichmentOnAdd}>
-							<IconNewUpload width={16} />
-							<span>Upload</span>
-						</FormButtonNew>
-					</div>
-				</div>
-			</Slot>
+	if (enrichmentIsLoading && !enrichmentItems.length) {
+		return <TableSkeleton />;
+	}
 
-			<Slot slot="body">
-				<CardAnimatePresence isActive={enrichmentIsBusy && !enrichmentItems.length}>
-					<Loader />
-				</CardAnimatePresence>
-				<CardAnimatePresence isActive={!enrichmentIsBusy && !enrichmentItemsInUse.length}>
-					<EmptyMsg msg="No enrichments found" />
-				</CardAnimatePresence>
-				{enrichmentItemsInUse.length ? (
-					<>
-						{isListMode ? (
-							<ListView headings={sortMap} isSticky={false} className="is-comfortable is-resizable" onReorder={onReorder} onSort={onSort}>
-								{itemsList}
-							</ListView>
-						) : (
-							itemsList
-						)}
-					</>
-				) : null}
-			</Slot>
-			{enrichmentItemsInUse.length ? <Slot slot="footer">{pagination}</Slot> : null}
-		</Card>
+	return (
+		<>
+			<Card className="is-scroll-view">
+				<Slot slot="body">
+					<CardAnimatePresence isActive={enrichmentIsBusy && !enrichmentItems.length}>
+						<Loader />
+					</CardAnimatePresence>
+					<CardAnimatePresence isActive={!enrichmentIsBusy && !enrichmentItemsInUse.length}>
+						<EmptyMsg msg="No enrichments found" />
+					</CardAnimatePresence>
+					{enrichmentItemsInUse.length ? (
+						<>
+							{isListMode ? (
+								<ListView headings={sortMap} isSticky={false} className="is-comfortable is-resizable" onReorder={onReorder} onSort={onSort}>
+									{itemsList}
+								</ListView>
+							) : (
+								<>
+									{enrichmentIsLoading && !enrichmentItems.length ? null : (
+										<>
+											{itemsHeader}
+											{itemsList}
+										</>
+									)}
+								</>
+							)}
+						</>
+					) : null}
+				</Slot>
+			</Card>
+			{enrichmentItemsInUse.length ? pagination : null}
+		</>
 	);
 };
 
