@@ -483,3 +483,18 @@ export const encodeContact = (contact: any) => {
 
 	return contact;
 };
+
+export const toHttpsUrl = (input: string): string => {
+	if (!input) {
+		return '';
+	}
+	try {
+		// If input already includes a protocol, return it as-is
+		const url = new URL(input.includes('://') ? input : `https://${input}`);
+		return url.href;
+	} catch (e) {
+		// If the input is not a valid URL
+		console.error('Invalid URL input:', input);
+		return '';
+	}
+};
