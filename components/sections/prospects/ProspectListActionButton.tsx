@@ -57,7 +57,7 @@ const ProspectListActionButton = ({
 		try {
 			const res = (await callApi(null, '/api/v1/collections', {})) as IBytemineCollection[];
 			setCollections(res);
-			console.log('getCollections - success', res);
+			// console.log('getCollections - success', res);
 		} catch (err) {
 			console.log('getCollections - error', err);
 		}
@@ -210,7 +210,7 @@ const ProspectListActionButton = ({
 				// Unlock contacts
 				// -------------------------------------------------------------
 				const pids = sourceContacts.map((item) => item.pid).filter((pid) => pid?.trim()?.length);
-				console.log({ sourceContacts, pids });
+				// console.log({ sourceContacts, pids });
 
 				const fullContacts = (await callApi(null, '/api/v1/contacts/unlock', {
 					method: 'POST',
