@@ -8,8 +8,10 @@ import { IBytemineEnrichment, ListContactModel, SortData } from '../../../types'
 import { forceDownloadS3File } from '../../../utils/helper-utils';
 import Anchor from '../../Anchor';
 import FormCheckbox from '../../form/FormCheckbox';
-import IconDelete from '../../icons/IconDelete';
+import FormDoubleCheckbox from '../../form/FormDoubleCheckbox';
 import IconNewDownload from '../../icons/IconNewDownload';
+import IconNewProcessing from '../../icons/IconNewProcessing';
+import IconNewTrash from '../../icons/IconNewTrash';
 import Loader from '../../Loader';
 
 const EnrichmentEntry = ({
@@ -108,14 +110,14 @@ const EnrichmentEntry = ({
 	const controls = (
 		<>
 			<span className="is-clickable icon-text" onClick={handleDelete}>
-				<div className="is-flex is-align-items-center is-justify-content-center image is-32x32">
-					<IconDelete width={16} />
-				</div>
+				<span className="icon has-text-danger ml-3">
+					<IconNewTrash width={12} stroke="currentColor" />
+				</span>
 			</span>
 			<span className="is-clickable icon-text" onClick={item.isCompleted ? handleDownload : undefined}>
-				<div className="is-flex is-align-items-center is-justify-content-center image is-32x32 has-border has-radius-small">
-					<IconNewDownload width={16} />
-				</div>
+				<span className="icon has-border has-border-alt has-radius-small ml-3">
+					<IconNewDownload width={12} />
+				</span>
 			</span>
 		</>
 	);
@@ -140,23 +142,59 @@ const EnrichmentEntry = ({
 			<div className="columns is-mobile is-align-items-center">
 				<div className="column is-10">
 					<Anchor href={url} className="columns is-mobile is-align-items-center has-text-dark">
-						<div className="column is-4 is-flex">
+						<div className="column is-4 is-flex is-align-items-center">
 							<span
-								className="is-relative"
+								className="is-relative field"
 								style={{ zIndex: 1 }}
 								onClick={(e) => {
 									e.stopPropagation();
 								}}
 							>
-								<FormCheckbox className="relative" value="accept" isChecked={item.isSelected ? true : false} onChange={handleSelect} />
+								<FormDoubleCheckbox
+									value={item.id}
+									className="is-filter-checkbox has-border-alt m-0"
+									isChecked={item.isSelected}
+									onChange={handleSelect}
+								/>
 							</span>
-							{item.name}
+							<span className="ml-5" style={{ wordBreak: 'break-all' }}>
+								{item.name}
+							</span>
 						</div>
-						<div className="column is-4">{numberOfContacts}</div>
-						<div className="column is-4">{fullName}</div>
+						<div className="column is-2 has-text-centered">
+							{item.status?.toLowerCase().trim() === 'processing' ? (
+								<span className="is-inline-flex is-align-items-center px-2 py-1" style={{ backgroundColor: '#eaecf0', borderRadius: 20 }}>
+									<IconNewProcessing width={12} />
+									<span className="ml-2">Processing</span>
+								</span>
+							) : (
+								item.recordsUploaded
+							)}
+						</div>
+						<div className="column is-2 has-text-centered">
+							{item.status?.toLowerCase().trim() === 'processing' ? (
+								<span className="is-inline-flex is-align-items-center px-2 py-1" style={{ backgroundColor: '#eaecf0', borderRadius: 20 }}>
+									<IconNewProcessing width={12} />
+									<span className="ml-2">Processing</span>
+								</span>
+							) : (
+								item.recordsEnriched
+							)}
+						</div>
+						<div className="column is-2 has-text-centered">
+							{item.status?.toLowerCase().trim() === 'processing' ? (
+								<span className="is-inline-flex is-align-items-center px-2 py-1" style={{ backgroundColor: '#eaecf0', borderRadius: 20 }}>
+									<IconNewProcessing width={12} />
+									<span className="ml-2">Processing</span>
+								</span>
+							) : (
+								item.matchRate
+							)}
+						</div>
+						<div className="column is-2 has-text-centered">{item.status}</div>
 					</Anchor>
 				</div>
-				<div className="column is-2 is-flex is-justify-content-flex-end action-buttons">{controls}</div>
+				<div className="column is-2 is-flex is-justify-content-flex-end">{controls}</div>
 			</div>
 		</motion.div>
 	);
