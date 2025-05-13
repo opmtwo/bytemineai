@@ -45,8 +45,8 @@ const FormButtonNew: React.FC<FormButtonNewProps> = ({
 
 	const sizeMap: Record<ButtonSize, { height: string; fontSize: string; iconSize: number }> = {
 		sm: { height: '2rem', fontSize: '0.875rem', iconSize: 16 },
-		md: { height: '2.75rem', fontSize: '1rem', iconSize: 20 },
-		lg: { height: '3.25rem', fontSize: '1.125rem', iconSize: 24 },
+		md: { height: '2.5rem', fontSize: '1rem', iconSize: 20 },
+		lg: { height: '3rem', fontSize: '1.125rem', iconSize: 24 },
 	};
 
 	const { height, fontSize, iconSize } = sizeMap[size];
@@ -57,7 +57,7 @@ const FormButtonNew: React.FC<FormButtonNewProps> = ({
 		alignItems: 'center',
 		justifyContent: 'center',
 		gap: variant === 'icon' ? 0 : '0.5rem',
-		borderRadius: '0.5rem',
+		// borderRadius: '0.5rem',
 		cursor: loading ? 'not-allowed' : 'pointer',
 		fontWeight: 600,
 		fontSize,
@@ -88,7 +88,7 @@ const FormButtonNew: React.FC<FormButtonNewProps> = ({
 		) : null;
 
 	return (
-		<button className={classNames('btn', className, { 'is-loading': loading })} style={styles} disabled={loading || disabled} {...props}>
+		<button className={classNames('btn has-radius', className, { 'is-loading': loading })} style={styles} disabled={loading || disabled} {...props}>
 			{loading ? (
 				<span
 					className="is-absolute is-flex is-align-items-center is-justify-content-center has-background-white has-radius"
