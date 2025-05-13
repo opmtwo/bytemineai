@@ -140,9 +140,9 @@ const ProspectContactItems = ({
 	const displayItems = paginate(filteredItems, itemsPerPage, activePage);
 
 	const handlePageChange = (newPage: number, newPerPage: number) => {
-		console.log('handlePageChange - newPage ', newPage);
+		// console.log('handlePageChange - newPage ', newPage);
 		setActivePage(newPage);
-		console.log('handlePageChange - onPageChange ', onPageChange);
+		// console.log('handlePageChange - onPageChange ', onPageChange);
 		if (onPageChange) {
 			onPageChange(newPage, newPerPage);
 		}

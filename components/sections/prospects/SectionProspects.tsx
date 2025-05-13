@@ -193,7 +193,7 @@ const SectionProspects = ({
 		setIsHistoryBusy(true);
 		try {
 			const res = (await callApi(null, '/api/v1/filters', {})) as FilterModel[];
-			console.log('getFilters - success', res);
+			// console.log('getFilters - success', res);
 			setHistoryItems(res.filter((f) => f.isSaved === false));
 			setSavedHistoryItems(res.filter((f) => f.isSaved === true));
 		} catch (err) {
@@ -219,7 +219,7 @@ const SectionProspects = ({
 	// -------------------------------------------------------------------------
 
 	const searchContacts = async (filter: IBytemineFilter, model?: FilterModel, itemsPerPage?: number) => {
-		console.log('searchContacts', { filter, model, itemsPerPage });
+		// console.log('searchContacts', { filter, model, itemsPerPage });
 		// return;
 
 		let response;
@@ -263,7 +263,7 @@ const SectionProspects = ({
 		// next page
 		if (response?.page !== undefined) {
 			setPage(response.page);
-			console.log('Response page - ', response.page);
+			// console.log('Response page - ', response.page);
 		}
 
 		// has next
@@ -285,9 +285,9 @@ const SectionProspects = ({
 		}
 
 		// set contact items
-		console.log('search before', contactItems);
+		// console.log('search before', contactItems);
 		setContactItems(newContacts);
-		console.log('search after', newContacts);
+		// console.log('search after', newContacts);
 
 		// return fetched results
 		return newContacts;
@@ -448,7 +448,7 @@ const SectionProspects = ({
 				method: 'POST',
 				body: JSON.stringify(value),
 			})) as IBytemineFilter;
-			console.log('saveFilter - success', response);
+			// console.log('saveFilter - success', response);
 			return response;
 		} catch (err) {
 			console.log('saveFilter - error', err);
@@ -459,7 +459,7 @@ const SectionProspects = ({
 		const isFilterEmpty = values(value).every((val) => isEmpty(val) && val !== true);
 
 		if (isFilterEmpty) {
-			console.log('Filter is empty', value);
+			// console.log('Filter is empty', value);
 			setContactItems(undefined);
 			return;
 		}
@@ -485,7 +485,7 @@ const SectionProspects = ({
 		let items: IBytemineContact[] = [];
 		setContactItems(undefined);
 
-		console.log('on filter submit after clear', contactItems);
+		// console.log('on filter submit after clear', contactItems);
 		setPage(0);
 		setActiveContactsPage(0);
 
@@ -498,7 +498,7 @@ const SectionProspects = ({
 		setActiveFilterModel(model);
 		setContactItems(undefined);
 		setContactItems([]);
-		console.log('on filter submit after clear 2', contactItems);
+		// console.log('on filter submit after clear 2', contactItems);
 
 		const newContacts = await searchContacts(value, model);
 
@@ -641,7 +641,7 @@ const SectionProspects = ({
 		}
 
 		setError(undefined);
-		console.log('onLoadMore - page exppage', page, page + 1);
+		// console.log('onLoadMore - page exppage', page, page + 1);
 
 		// fetch contacts from server
 		setIsBusy(true);
@@ -658,7 +658,7 @@ const SectionProspects = ({
 
 		// fetch contacts from server
 		setError(undefined);
-		console.log('onLoadPrev - page exppage', page, page - 1);
+		// console.log('onLoadPrev - page exppage', page, page - 1);
 
 		setIsBusy(true);
 		/*
