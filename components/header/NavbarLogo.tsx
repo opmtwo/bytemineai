@@ -9,7 +9,7 @@ const HeaderLogo = () => {
 	// }
 
 	return (
-		<Anchor href="/" className="px-5 mx-5" style={{ maxWidth: 200 }}>
+		<Anchor href="/" className="mx-5" style={{ maxWidth: 175 }}>
 			{/* {logoUrl ? (
 				<img src={logoUrl} alt="" />
 			) : (
