@@ -12,6 +12,10 @@ main.container.is-fluid {
 	padding-top: 1rem;
 }
 
+.menu {
+	font-size: 1em;
+}
+
 @media (min-width: 1024px) {
 	.is-dashboard {
 		padding-left: var(--sidebar-width);
