@@ -1,26 +1,24 @@
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-import { ITEMS_PER_PAGE } from '../../../consts';
 import { useAuthContext } from '../../../providers/auth-data-provider';
 import { useCrudContext } from '../../../providers/crud-provider';
-import { Contact, IBytemineCollection, IBytemineContact, List, ListContactModel, UserAttributes } from '../../../types';
+import { EActionSelect, IBytemineCollection, IBytemineContact } from '../../../types';
 import { decodeJson } from '../../../utils/helper-utils';
-import { searchListItems } from '../../../utils/list-utils';
 import Card from '../../cards/Card';
 import CardAnimatePresence from '../../cards/CardAnimatePresence';
 import EmptyMsg from '../../EmptyMsg';
-import FormButton from '../../form/FormButton';
 import FormButtonNew from '../../form/FormButtonNew';
+import FormDoubleCheckbox from '../../form/FormDoubleCheckbox';
 import FormInput from '../../form/FormInput';
 import IconNewPlus from '../../icons/IconNewPlus';
 import IconSearch from '../../icons/IconSearch';
 import ListView from '../../ListView';
 import Loader from '../../Loader';
-import Pagination, { paginate } from '../../Pagination';
+import { paginate } from '../../Pagination';
 import PaginationNew from '../../PaginationNew';
 import Slot from '../../Slot';
 import TableSkeleton from '../../table-skeleton';
-import ViewToggle from '../../ViewToggle';
 import MyListEntry from './MyListEntry';
 
 const MyListItems = ({ onExport }: { onExport: (listContacts: IBytemineContact[]) => void }) => {
@@ -30,6 +28,7 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: IBytemineContact[]
 
 	const {
 		isBusy: collectionIsBusy,
+		isLoading: collectionIsLoading,
 		items: collectionItems,
 		itemsInUse: collectionItemsInUse,
 		page: collectionPage,
@@ -42,6 +41,7 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: IBytemineContact[]
 		onAdd: collectionOnAdd,
 		onDelete: collectionOnDelete,
 		onDeleteMany: collectionOnDeleteMany,
+		onSelectMany: collectionOnSelectMany,
 	} = useCrudContext<IBytemineCollection>();
 
 	useEffect(() => {
@@ -50,6 +50,48 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: IBytemineContact[]
 			setIsListMode(true);
 		}
 	}, []);
+
+	const itemsHeader = (
+		<motion.div layout className="panel-block is-block">
+			<div className="columns is-mobile is-align-items-center">
+				<div className="column is-10">
+					<div className="columns is-mobile is-align-items-center has-text-dark">
+						<div className="column is-4">
+							<span className="is-flex is-align-items-center">
+								{/* <FormCheckbox
+									className="relative"
+									value="accept"
+									isChecked={paginate(collectionItemsInUse, collectionPerPage, collectionPage).every((item) => item.isSelected)}
+									onChange={() => {
+										collectionOnSelectMany(EActionSelect.ToggleCurrentPage, []);
+									}}
+								/> */}
+								<span
+									className="is-relative field"
+									style={{ zIndex: 1 }}
+									onClick={(e) => {
+										e.stopPropagation();
+									}}
+								>
+									<FormDoubleCheckbox
+										className="is-filter-checkbox has-border-alt m-0"
+										isChecked={paginate(collectionItemsInUse, collectionPerPage, collectionPage).every((item) => item.isSelected)}
+										onChange={() => {
+											collectionOnSelectMany(EActionSelect.ToggleCurrentPage, []);
+										}}
+									/>
+								</span>
+								<span className="ml-5">List Name</span>
+							</span>
+						</div>
+						<div className="column is-4">Contacts</div>
+						<div className="column is-4">Member Name</div>
+					</div>
+				</div>
+				<div className="column is-2 is-flex is-justify-content-flex-end action-buttons">Action</div>
+			</div>
+		</motion.div>
+	);
 
 	const itemsList = paginate(collectionItemsInUse, collectionPerPage, collectionPage).map((item) => (
 		<>
@@ -84,14 +126,14 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: IBytemineContact[]
 		/>
 	);
 
-	if (collectionIsBusy && !collectionItems.length) {
+	if (collectionIsLoading && !collectionItems.length) {
 		return <TableSkeleton />;
 	}
 
 	return (
 		<main className="is-relative">
 			<form className="is-search-form">
-				<div className="is-flex is-align-items-center mr-auto">
+				<div className="is-flex is-align-items-center mr-auto is-flex-grow-1">
 					<FormInput
 						fieldClassName="is-flex-grow-1"
 						value={collectionQuery}
@@ -103,10 +145,12 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: IBytemineContact[]
 					{/* <span className="has-text-grey ml-5">{collectionItemsInUse.length} results</span> */}
 				</div>
 				{/* <div className="ml-6 mr-5">{pagination}</div> */}
-				<FormButtonNew type="button" onClick={collectionOnAdd} variant="active" className="ml-5">
-					<IconNewPlus width={12} fill="#fff" />
-					<span className="ml-1">Add New List</span>
-				</FormButtonNew>
+				<div className="is-flex is-align-items-center mr-auto is-flex-grow-1">
+					<FormButtonNew type="button" onClick={collectionOnAdd} variant="active" className="ml-3">
+						<IconNewPlus width={12} fill="#fff" />
+						<span className="ml-1">Add New List</span>
+					</FormButtonNew>
+				</div>
 			</form>
 
 			<Card className="is-scroll-view">
@@ -117,11 +161,21 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: IBytemineContact[]
 					<CardAnimatePresence isActive={!collectionIsBusy && !collectionItemsInUse.length}>
 						<EmptyMsg msg="No list found" />
 					</CardAnimatePresence>
-					{isListMode ? <ListView>{itemsList}</ListView> : itemsList}
+					{isListMode ? (
+						<ListView>{itemsList}</ListView>
+					) : (
+						<>
+							{collectionIsLoading && !collectionItems.length ? null : (
+								<>
+									{itemsHeader}
+									{itemsList}
+								</>
+							)}
+						</>
+					)}
 				</Slot>
-
-				{collectionItemsInUse.length ? <Slot slot="footer">{pagination}</Slot> : null}
 			</Card>
+			{collectionItemsInUse.length ? <>{pagination}</> : null}
 		</main>
 	);
 };
