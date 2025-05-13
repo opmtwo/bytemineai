@@ -56,7 +56,7 @@ const PageLayout = ({
 	const onUpgradeSubmit = () => {};
 
 	const menuItemsTop: SidebarMenuItem[] = [
-		{ label: 'Dashboard', icon: <IconNewDashboard width={18} />, href: '/' },
+		// { label: 'Dashboard', icon: <IconNewDashboard width={18} />, href: '/' },
 		{ label: 'Prospect Finder', icon: <IconNewProspectFinder width={18} />, href: '/' },
 		{ label: 'My Lists', icon: <IconNewMyLists width={18} />, href: '/my-lists' },
 		{ label: 'My Team', icon: <IconNewTeam width={18} />, href: '/my-team' },

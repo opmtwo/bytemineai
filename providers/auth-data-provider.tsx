@@ -8,6 +8,7 @@ import {
 	updateUserAttributes,
 	UpdateUserAttributesInput,
 } from 'aws-amplify/auth';
+import moment from 'moment';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 import shortHash from 'shorthash2';
@@ -224,16 +225,14 @@ const AuthDataProvider = (props: any) => {
 	 * @returns boolean
 	 */
 	const isExpired = () => {
-		// if (user?.attributes['custom:account_type'] !== AccountType.Trial) {
-		// 	return false;
-		// }
-		// if (!user?.attributes['custom:created_at']) {
-		// 	return true;
-		// }
-		// const now = moment();
-		// const then = moment.unix(parseInt(user?.attributes['custom:created_at'] || '') / 1000).add(7, 'days');
-		// return now > then;
-		return false;
+		if (isActive) {
+			return false;
+		}
+		if (!subscription?.createdAt) {
+			return false;
+		}
+		const createdAt = moment(subscription.createdAt);
+		return moment(createdAt).isAfter(createdAt.clone().add(7, 'days'));
 	};
 
 	const refresh = async () => {
