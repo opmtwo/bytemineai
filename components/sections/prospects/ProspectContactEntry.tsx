@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { atDataValidEmailCodes } from '../../../consts';
 import { EmailAccountModel, IBytemineContact, SortData } from '../../../types';
+import { toHttpsUrl } from '../../../utils/helper-utils';
 import Anchor from '../../Anchor';
 import CardAnimatePresence from '../../cards/CardAnimatePresence';
 import ContactEmailStatus from '../../ContactEmailStatus';
@@ -16,10 +17,10 @@ import IconNewEmail from '../../icons/IconNewEmail';
 import IconNewFacebook from '../../icons/IconNewFacebook';
 import IconNewJobTitle from '../../icons/IconNewJobTitle';
 import IconNewLinkedin from '../../icons/IconNewLinkedin';
+import IconNewPhone from '../../icons/IconNewPhone';
 import IconNewPlusCircle from '../../icons/IconNewPlusCircle';
 import IconNewUnlock from '../../icons/IconNewUnlock';
 import Loader from '../../Loader';
-import IconNewPhone from '../../icons/IconNewPhone';
 
 const ProspectContactEntry = ({
 	item,
@@ -82,14 +83,32 @@ const ProspectContactEntry = ({
 
 					{item.linkedin_profile ? (
 						<>
-							<Anchor className="is-flex is-align-items-center mr-2" target="_blank" href={item.linkedin_profile}>
+							<Anchor
+								className="is-flex is-align-items-center mr-2"
+								target="_blank"
+								href={item.is_unlocked ? item.linkedin_profile : ''}
+								onClick={(e) => {
+									if (!item.is_unlocked) {
+										e.preventDefault();
+									}
+								}}
+							>
 								<IconNewLinkedin width={16} />
 							</Anchor>
 						</>
 					) : null}
 					{item.facebook_profile ? (
 						<>
-							<Anchor className="is-flex is-align-items-center mr-2" target="_blank" href={item.facebook_profile}>
+							<Anchor
+								className="is-flex is-align-items-center mr-2"
+								target="_blank"
+								href={item.is_unlocked ? item.facebook_profile : ''}
+								onClick={(e) => {
+									if (!item.is_unlocked) {
+										e.preventDefault();
+									}
+								}}
+							>
 								<IconNewFacebook width={16} />
 							</Anchor>
 						</>
@@ -103,7 +122,16 @@ const ProspectContactEntry = ({
 						</span>
 					) : null}
 					{item.company_name && item.company_domain ? (
-						<Anchor href={item.is_unlocked ? item.company_domain : '#'} target="_blank" className="is-flex is-align-items-center mr-2">
+						<Anchor
+							href={item.is_unlocked ? toHttpsUrl(item.company_domain) : ''}
+							target="_blank"
+							className="is-flex is-align-items-center mr-2"
+							onClick={(e) => {
+								if (!item.is_unlocked) {
+									e.preventDefault();
+								}
+							}}
+						>
 							<IconNewCompany width={16} />
 							<span className="ml-1">{item.company_name}</span>
 						</Anchor>
@@ -152,7 +180,7 @@ const ProspectContactEntry = ({
 		<>
 			{item.company_domain ? (
 				<>
-					<Anchor target="_blank" href={item.company_domain}>
+					<Anchor target="_blank" href={toHttpsUrl(item.company_domain)}>
 						<span className="has-text-weight-normal">{item.company_name || item.company_domain}</span>
 					</Anchor>
 				</>
