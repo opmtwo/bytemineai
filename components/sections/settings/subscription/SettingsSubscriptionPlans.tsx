@@ -2,6 +2,7 @@ import { MouseEvent, useState } from 'react';
 import Stripe from 'stripe';
 
 import { MONTHLY_PRICE_ID, YEARLY_PRICE_ID } from '../../../../consts';
+import { useAuthContext } from '../../../../providers/auth-data-provider';
 import { callApi } from '../../../../utils/helper-utils';
 import Card from '../../../Card';
 import FormButtonNew from '../../../form/FormButtonNew';
@@ -15,6 +16,22 @@ const SettingsSubscriptionPlans = () => {
 	const [isMonthlyBusy, setIsMonthlyBusy] = useState(false);
 	const [isYearlyBusy, setIsYearlyBusy] = useState(false);
 
+	const { isActive, isTrial, isMonthly, isYearly } = useAuthContext();
+
+	const openCustomerPortal = async () => {
+		setIsBusy(true);
+		try {
+			const res = (await callApi(null, 'api/v1/subscriptions/me/portal', {
+				method: 'GET',
+			})) as { url: string };
+			console.log('openCustomerPortal - success', res);
+			window.location.href = res.url;
+		} catch (err) {
+			console.log('openCustomerPortal - error', err);
+		}
+		setIsBusy(false);
+	};
+
 	const openPaymentLink = async (priceId: string) => {
 		setIsBusy(true);
 		try {
@@ -26,16 +43,14 @@ const SettingsSubscriptionPlans = () => {
 		setIsBusy(false);
 	};
 
-	const openClientMonthly = async (e: MouseEvent<HTMLButtonElement>) => {
+	const openClientMonthly = async () => {
 		setIsMonthlyBusy(true);
-		e.preventDefault();
 		await openPaymentLink(MONTHLY_PRICE_ID);
 		setIsMonthlyBusy(false);
 	};
 
-	const openClientYearly = async (e: MouseEvent<HTMLButtonElement>) => {
+	const openClientYearly = async () => {
 		setIsYearlyBusy(true);
-		e.preventDefault();
 		await openPaymentLink(YEARLY_PRICE_ID);
 		setIsYearlyBusy(false);
 	};
@@ -48,7 +63,7 @@ const SettingsSubscriptionPlans = () => {
 			isAnnual: false,
 			isBusy: isMonthlyBusy,
 			features: ['Unlimited users', 'Cancel anytime', 'Largest database of contacts', 'Mobiles', 'Personal Emails', 'Work Emails', 'API access'],
-			onClick: openClientMonthly,
+			onClick: isMonthly ? openCustomerPortal : openClientMonthly,
 		},
 		{
 			title: 'Standard plan',
@@ -57,7 +72,7 @@ const SettingsSubscriptionPlans = () => {
 			isAnnual: true,
 			isBusy: isYearlyBusy,
 			features: ['Unlimited users', 'Cancel anytime', 'Largest database of contacts', 'Mobiles', 'Personal Emails', 'Work Emails', 'API access'],
-			onClick: openClientYearly,
+			onClick: isYearly ? openCustomerPortal : openClientYearly,
 		},
 	];
 
@@ -103,7 +118,7 @@ const SettingsSubscriptionPlans = () => {
 												loading={plan.isBusy}
 												onClick={plan.onClick}
 											>
-												Select Plan
+												{isActive ? 'Manage' : 'Select Plan'}
 											</FormButtonNew>
 										</div>
 									</Slot>
