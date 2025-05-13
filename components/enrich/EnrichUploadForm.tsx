@@ -287,7 +287,7 @@ const EnrichUploadForm = ({
 							<ErrorNotificaition error={error} className="has-text-centered pb-5" />
 							<Uploader uploadPath={`public/${attributes?.sub}/uploads`} uploads={uploads} onUpload={onUpload} />
 							<div className="is-flex is-align-items-center pt-5">
-								<IconBulb width={32} />
+								<IconBulb width={64} />
 								<p className="ml-3">
 									Your file must be a CSV format and contain at lease one column with email addresses, phone numbers, or personal LinkedIn or
 									FaceBook profile URLs.
