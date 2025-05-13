@@ -2,13 +2,14 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import Breadcrumb from '../../../components/Breadcrumb';
 import EmptyMsg from '../../../components/EmptyMsg';
 import PageLayout from '../../../components/layouts/PageLayout';
+import SectionProspects from '../../../components/sections/prospects/SectionProspects';
+import TableSkeleton from '../../../components/table-skeleton';
 import UserGuard from '../../../guards/UserGuard';
 import { IBytemineCollection } from '../../../types';
 import { callApi } from '../../../utils/helper-utils';
-import SectionProspects from '../../../components/sections/prospects/SectionProspects';
-import Breadcrumb from '../../../components/Breadcrumb';
 
 const MyListDetails = () => {
 	const [collectionId, setCollectionId] = useState<string>();
@@ -26,12 +27,14 @@ const MyListDetails = () => {
 
 	// Load collections / lists
 	const getCollection = async (collectionId: string) => {
+		setIsCollectionLoading(true);
 		try {
 			const res = (await callApi(null, `/api/v1/collections/${collectionId}`, {})) as IBytemineCollection;
 			setCollection(res);
 		} catch (err) {
 			console.log('getCollection - error', err);
 		}
+		setIsCollectionLoading(false);
 	};
 
 	return (
@@ -41,6 +44,7 @@ const MyListDetails = () => {
 				<meta name="description" content="" />
 			</Head>
 			<PageLayout>
+				{isCollectionLoading && !collection?.id ? <TableSkeleton /> : null}
 				{collectionId ? (
 					<main className="is-relative">
 						<Breadcrumb
