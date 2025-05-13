@@ -19,6 +19,11 @@ import { callApi } from '../utils/helper-utils';
 
 export const AuthContext = createContext<AuthContextInterface>({
 	isAuthBusy: false,
+	isLoading: false,
+	isActive: false,
+	isTrial: false,
+	isMonthly: false,
+	isYearly: false,
 	isRoot: false,
 	isAdmin: false,
 	isManager: false,
@@ -38,6 +43,7 @@ const AuthDataProvider = (props: any) => {
 
 	const [authError, setAuthError] = useState();
 	const [isAuthBusy, setIsAuthBusy] = useState(true);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const [self, setSelf] = useState<IBytemineUser>();
 	const [team, setTeam] = useState<IBytemineUser>();
@@ -46,6 +52,11 @@ const AuthDataProvider = (props: any) => {
 
 	const [stripeCustomer, setStripeCustomer] = useState<Stripe.Customer>();
 	const [stripeSubscription, setStripeSubscription] = useState<Stripe.Subscription>();
+
+	const [isActive, setIsActive] = useState(false);
+	const [isTrial, setIsTrial] = useState(false);
+	const [isMonthly, setIsMonthly] = useState(false);
+	const [isYearly, setIsYearly] = useState(false);
 
 	const [isRoot, setIsRoot] = useState(false);
 	const [isAdmin, setisAdmin] = useState(false);
@@ -111,6 +122,7 @@ const AuthDataProvider = (props: any) => {
 	};
 
 	const getUserAndTeam = async () => {
+		setIsLoading(true);
 		try {
 			const res = (await callApi(null, '/api/v1/subscriptions/me', {})) as {
 				self: IBytemineUser;
@@ -124,6 +136,14 @@ const AuthDataProvider = (props: any) => {
 			setSubscription(res.subscription);
 			setStripeCustomer(res.stripeCustomer);
 			setStripeSubscription(res.stripeSubscription);
+
+			const latestPlan = (res.stripeSubscription as any).plan as Stripe.Plan;
+
+			setIsActive(res.subscription?.subscriptionStatus?.toLowerCase().trim() === 'activecustomer');
+			setIsTrial(res.subscription?.subscriptionStatus?.toLowerCase().trim() === 'trial');
+			setIsMonthly(latestPlan?.interval === 'month');
+			setIsYearly(latestPlan?.interval === 'year');
+
 			const { role } = res.self;
 			setisAdmin(role === Roles.Admin);
 			setisManager(role === Roles.Manager);
@@ -132,6 +152,7 @@ const AuthDataProvider = (props: any) => {
 		} catch (err) {
 			console.log('getUserAndTeam - error', err);
 		}
+		setIsLoading(false);
 	};
 
 	/**
@@ -223,12 +244,17 @@ const AuthDataProvider = (props: any) => {
 		<AuthContext.Provider
 			value={{
 				isAuthBusy,
+				isLoading,
 				user,
 				self,
 				team,
 				subscription,
 				stripeCustomer,
 				stripeSubscription,
+				isActive,
+				isTrial,
+				isMonthly,
+				isYearly,
 				isRoot,
 				isAdmin,
 				isManager,

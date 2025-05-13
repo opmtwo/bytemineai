@@ -95,6 +95,11 @@ export interface AuthContextInterface {
 	attributes?: FetchUserAttributesOutput;
 	authError?: Error;
 	isAuthBusy: boolean;
+	isLoading: boolean;
+	isActive?: boolean;
+	isTrial?: boolean;
+	isMonthly?: boolean;
+	isYearly?: boolean;
 	isRoot: boolean;
 	isAdmin: boolean;
 	isManager: boolean;
