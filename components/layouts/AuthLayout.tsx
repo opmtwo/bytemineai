@@ -1,14 +1,13 @@
-import { ReactNode } from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
 
-const AuthLayout = ({ children }: { children: ReactNode }) => (
-	<section className="section">
-		<div
-			className="modal-card is-flex is-flex-direction-column is-justify-content-center p-5"
-			// style={{ height: 'auto', maxHeight: 'none', minHeight: 'calc(100vh - 6rem)' }}
-		>
-			{children}
-		</div>
-	</section>
+interface AuthLayoutProps extends HTMLAttributes<HTMLDivElement> {
+	//
+}
+
+const AuthLayout = ({ children, className = 'modal-card is-flex is-flex-direction-column is-justify-content-center p-5', ...rest }: AuthLayoutProps) => (
+	<div className={className} {...rest}>
+		{children}
+	</div>
 );
 
 export default AuthLayout;
