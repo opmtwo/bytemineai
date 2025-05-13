@@ -1030,7 +1030,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.urls.length; j++) {
 				query.push({
-					match_phrase_prefix: { [fields[i]]: body.urls[j].replace('https', '').replace('http', '').replace('://', '').replace('www.', '') },
+					prefix: { [fields[i]]: body.urls[j].replace('https', '').replace('http', '').replace('://', '').replace('www.', '') },
 				});
 			}
 		}
