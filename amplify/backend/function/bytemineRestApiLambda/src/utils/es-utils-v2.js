@@ -1707,6 +1707,9 @@ const esMaskDocument2 = (document) => {
 	];
 	let doc = JSON.parse(JSON.stringify(document));
 	for (let i = 0; i < keysToMask.length; i++) {
+		if ([undefined, null, ''].includes(doc[keysToMask[i]])) {
+			continue;
+		}
 		doc[keysToMask[i]] = '***';
 	}
 	// console.log('esMaskDocument2 - output', JSON.stringify(document));
