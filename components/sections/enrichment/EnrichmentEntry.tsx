@@ -115,7 +115,7 @@ const EnrichmentEntry = ({
 				</span>
 			</span>
 			<span className="is-clickable icon-text" onClick={item.isCompleted ? handleDownload : undefined}>
-				<span className="icon has-border has-border-alt has-radius-small ml-3">
+				<span className="icon ml-3">
 					<IconNewDownload width={12} />
 				</span>
 			</span>

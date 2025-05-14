@@ -110,7 +110,7 @@ const MyListEntry = ({
 				</span>
 			</span>
 			<span className="is-clickable icon-text" onClick={handleExport}>
-				<span className="icon has-border has-border-alt has-radius-small ml-3">
+				<span className="icon ml-3">
 					<IconNewDownload width={12} />
 				</span>
 			</span>
