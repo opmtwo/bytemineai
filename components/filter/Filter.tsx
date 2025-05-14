@@ -16,6 +16,8 @@ import bytemineSkills from '../../bytemine/bytemine-skills';
 import { BytemineStatesOptions } from '../../bytemine/bytemine-states';
 import { RampedUpIndustryOptions } from '../../ramped-up/ramped-up-industries';
 import { FilterItem, FilterModel, IBytemineContact, IBytemineFilter, SelectOption } from '../../types';
+import { hasMinimumOneFilter } from '../../utils/helper-utils';
+import Anchor from '../Anchor';
 import Card from '../Card';
 import CardTitle from '../CardTitle';
 import FormButtonNew from '../form/FormButtonNew';
@@ -330,16 +332,6 @@ const Filter = ({
 		excludeExisting,
 	});
 
-	const hasMinimumOneFilter = (newFilter: IBytemineFilter) =>
-		Object.values(newFilter).some((filterItem) => {
-			if (typeof filterItem === 'string') {
-				return !isEmpty(filterItem);
-			}
-			if (typeof filterItem === 'object') {
-				return filterItem.length !== 0;
-			}
-		});
-
 	/**
 	 * @summary
 	 * Get input to save current filter
@@ -487,9 +479,16 @@ const Filter = ({
 					<Slot slot="header">
 						<div className="panel-block is-block p-4">
 							{/* <CardTitle>Filters</CardTitle> */}
-							<h2 className="title is-4 has-text-weight-medium">Filters</h2>
-							<div className="spacer mb-2"></div>
-							<div className="is-flex is-align-items-center is-justify-content-space-between">
+							<header className="is-flex is-align-items-center is-justify-content-space-between">
+								<h2 className="title is-4 has-text-weight-medium m-0">Filters</h2>
+								<Anchor href="/prospect-finder">
+									<FormButtonNew style={{ fontSize: 12, padding: '0 10px', height: 30 }} type="reset" onClick={onReset}>
+										{clearLabel}
+									</FormButtonNew>
+								</Anchor>
+							</header>
+							{/* <div className="spacer mb-2"></div> */}
+							{/* <div className="is-flex is-align-items-center is-justify-content-space-between">
 								<FormButtonNew style={{ fontSize: 12, padding: '0 10px', height: 30 }} type="reset" onClick={onReset}>
 									{clearLabel}
 								</FormButtonNew>
@@ -517,7 +516,7 @@ const Filter = ({
 									</FormButtonNew>
 								)}
 
-								{/* {isContactsOnly ? null : (
+								{isContactsOnly ? null : (
 									<FormButton
 										type="button"
 										variant={['is-inverted']}
@@ -529,8 +528,8 @@ const Filter = ({
 									>
 										<IconSearchAlt />
 									</FormButton>
-								)} */}
-							</div>
+								)}
+							</div> */}
 						</div>
 					</Slot>
 					<Slot slot="body">
