@@ -498,3 +498,27 @@ export const toHttpsUrl = (input: string): string => {
 		return '';
 	}
 };
+
+/**
+ * Formats a number into a short string with suffixes like k, m, b, t.
+ *
+ * @param num - The number to format.
+ * @param digits - Number of decimal digits to include (default is 1).
+ * @returns A formatted string like "10.5k", "2m", etc.
+ */
+export const formatNumberShort = (num: number, digits = 1): string => {
+	const units = [
+		{ value: 1e12, symbol: 't' },
+		{ value: 1e9, symbol: 'b' },
+		{ value: 1e6, symbol: 'm' },
+		{ value: 1e3, symbol: 'k' },
+	];
+
+	for (const unit of units) {
+		if (num >= unit.value) {
+			return (num / unit.value).toFixed(digits).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, '$1') + unit.symbol;
+		}
+	}
+
+	return num.toString();
+}
