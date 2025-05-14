@@ -116,7 +116,7 @@ const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactMod
 						<div className="column is-2 has-text-centered">Records Uploaded</div>
 						<div className="column is-2 has-text-centered">Records Enriched</div>
 						<div className="column is-2 has-text-centered">Match Rate</div>
-						<div className="column is-2 has-text-centered">Staus</div>
+						<div className="column is-2 has-text-centered">Status</div>
 					</div>
 				</div>
 				<div className="column is-2 is-flex is-justify-content-flex-end action-buttons">Action</div>
