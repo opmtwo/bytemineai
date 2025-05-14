@@ -2,65 +2,15 @@ import { motion } from 'framer-motion';
 import moment from 'moment';
 import React, { useState } from 'react';
 
-import Auth from '@aws-amplify/auth';
-
 import { useCrudContext } from '../providers/crud-provider';
-import { IBytemineUser, UserAttributes } from '../types';
+import { IBytemineUser } from '../types';
 import { formatDate } from '../utils/helper-utils';
-import DeleteConfirm from './DeleteConfirm';
-import FormButton from './form/FormButton';
-import IconDelete from './icons/IconDelete';
-import IconEdit from './icons/IconEdit';
-import IconReset from './icons/IconReset';
+import IconNewEdit from './icons/IconNewEdit';
+import IconNewTrash from './icons/IconNewTrash';
 import LoaderFullscreen from './LoaderFullscreen';
 import Message from './Message';
-import ErrorNotificaition from './notifications/ErrorNotification';
 
 const UserEntry = ({ index, user, isListMode = false }: { index: number; user: IBytemineUser; isListMode?: boolean }) => {
-	// const [isConfirmModalActive, setIsConfirmModalActive] = useState(false);
-	// const [isPasswordResetModalActive, setIsPasswordResetModalActive] = useState(false);
-	// const [error, setError] = useState<Error>();
-	// const [isBusy, setIsBusy] = useState(false);
-
-	// const onConfirmDelete = () => setIsConfirmModalActive(true);
-
-	// const onConfirmCancel = () => setIsConfirmModalActive(false);
-
-	// const handleEdit = () => {
-	// 	onEdit(user.sub);
-	// };
-
-	// const handleDelete = () => {
-	// 	setIsConfirmModalActive(false);
-	// 	onDelete(user.sub);
-	// };
-
-	// const onPasswordReset = () => {
-	// 	setError(undefined);
-	// 	setIsPasswordResetModalActive(true);
-	// };
-
-	// const onPasswordResetSubmit = async () => {
-	// 	setIsBusy(true);
-	// 	try {
-	// 		await Auth.forgotPassword(user.sub);
-	// 		setError(
-	// 			new Error(
-	// 				`Password has been reset. A new temporary password has been sent to the registered email address ${user.email}`
-	// 			)
-	// 		);
-	// 		setIsPasswordResetModalActive(false);
-	// 	} catch (err) {
-	// 		setError(err);
-	// 	}
-	// 	setIsBusy(false);
-	// };
-
-	// const onPasswordResetCancel = () => {
-	// 	setIsPasswordResetModalActive(false);
-	// 	setError(undefined);
-	// };
-
 	const {
 		error: userError,
 		isBusy: userIsBusy,
@@ -80,7 +30,7 @@ const UserEntry = ({ index, user, isListMode = false }: { index: number; user: I
 			await userOnConfirmCancel();
 			window.dispatchEvent(new Event('logs.refresh'));
 		};
-		userOnConfirmOpen('Delete seeding mailbox?', 'Are you sure you want to delete this seeding mailbox? This can not be undone!', onSubmit, onCancel);
+		userOnConfirmOpen('Delete user?', 'Are you sure you want to delete this user? This can not be undone!', onSubmit, onCancel);
 	};
 
 	const handleEdit = () => {
@@ -91,7 +41,7 @@ const UserEntry = ({ index, user, isListMode = false }: { index: number; user: I
 		userOnSelect(user.id, isSelected);
 	};
 
-	const counterId = <span>{(index + 1).toString().padStart(6, '0')}</span>;
+	const counterId = <span>{(index + 1).toString().padStart(3, '0')}</span>;
 
 	const fullName = (
 		<span className="has-text-weight-normal">
@@ -117,35 +67,21 @@ const UserEntry = ({ index, user, isListMode = false }: { index: number; user: I
 		</span>
 	);
 
-	const controls = user?.role === 'Admin' ? null : (
-		<>
-			{/* <FormButton
-				onClick={onPasswordReset}
-				variant={['is-icon', 'is-outlined', 'is-rounded']}
-				icon={<IconReset />}
-				size="is-small"
-			/> */}
-			{/* <FormButton className="ml-3" onClick={handleEdit} variant={['is-icon', 'is-outlined', 'is-rounded']} icon={<IconEdit />} size="is-small" />
-			<FormButton
-				className="ml-3"
-				onClick={handleDelete}
-				variant={['is-icon', 'is-outlined', 'is-rounded']}
-				icon={<IconDelete />}
-				color="is-danger"
-				size="is-small"
-			/> */}
-			<span className="is-clickable icon-text" onClick={handleDelete}>
-				<span className="icon">
-					<IconDelete width={24} />
+	const controls =
+		user?.role === 'Admin' ? null : (
+			<>
+				<span className="is-clickable icon-text" onClick={handleDelete}>
+					<span className="icon has-text-danger ml-3">
+						<IconNewTrash width={12} stroke="currentColor" />
+					</span>
 				</span>
-			</span>
-			<span className="is-clickable icon-text" onClick={handleEdit}>
-				<span className="icon">
-					<IconEdit width={24} />
+				<span className="is-clickable icon-text" onClick={handleEdit}>
+					<span className="icon ml-3">
+						<IconNewEdit width={12} />
+					</span>
 				</span>
-			</span>
-		</>
-	);
+			</>
+		);
 
 	const errorInfo = userError ? (
 		<Message color="is-info" size="is-normal">
@@ -207,20 +143,20 @@ const UserEntry = ({ index, user, isListMode = false }: { index: number; user: I
 			<motion.div layout className="panel-block is-block">
 				{errorInfo}
 				<div className="columns is-mobile is-multiline is-align-items-center">
-					<div className="column is-12-mobile is-5-tablet">
+					<div className="column is-10">
 						<div className="columns is-mobile is-align-items-center">
-							<div className="column is-5-mobile is-4-tablet">{counterId}</div>
-							<div className="column is-5-mobile is-4-tablet">{fullName}</div>
-							<div className="column is-2-mobile is-3-tablet has-text-right has-text-left-tablet">{userRole}</div>
+							<div className="column is-3">
+								<span className="is-inline-flex" style={{ width: 50 }}>
+									{counterId}
+								</span>
+								<span>{fullName}</span>
+							</div>
+							<div className="column is-3">{user.role}</div>
+							<div className="column is-3">{moment(user.createdAt).format('MM/DD/YYYY')}</div>
+							<div className="column is-3">{user.lastLoginAt ? moment(user.lastLoginAt).format('ddd Do MMM, h:mm a') : null}</div>
 						</div>
 					</div>
-					<div className="column is-12-mobile is-7-tablet">
-						<div className="columns is-mobile is-align-items-center">
-							<div className="column is-5">{lastLogin}</div>
-							<div className="column is-5">{createdAt}</div>
-							<div className="column is-2 is-flex is-justify-content-flex-end">{controls}</div>
-						</div>
-					</div>
+					<div className="column is-2 is-flex is-justify-content-flex-end">{controls}</div>
 				</div>
 			</motion.div>
 			{dialogs}
