@@ -76,39 +76,41 @@ router.post('/unlock', schemaValidate(IPids), verifyToken, verifyTeam, async (re
 	const { sub: userId } = res.locals;
 	const { id: teamId } = res.locals.team;
 	const { pids } = req.body;
+	console.log(JSON.stringify({ pids }));
 
 	// const usage = await usageAddUsage(teamId, userId, 0);
 
 	const savedContacts = await getAllSavedContacts(pids, teamId);
-	console.log({ savedContacts: savedContacts.length });
+	console.log(JSON.stringify({ savedContacts: savedContacts.length }));
 
-	const fullContacts = savedContacts.filter((item) => item.is_unlocked);
-	console.log({ fullContacts: fullContacts.length });
+	const fullContacts = savedContacts.filter((item) => item.is_unlocked && item.pid);
+	console.log(JSON.stringify({ fullContacts: fullContacts.length }));
 
-	const partialContacts = savedContacts.filter((item) => !item.is_unlocked);
-	console.log({ partialContacts: partialContacts.length });
+	const partialContacts = savedContacts.filter((item) => !item.is_unlocked || !item.pid);
+	console.log(JSON.stringify({ partialContacts: partialContacts.length }));
 
 	const unlockedpids = fullContacts.map((item) => item.pid);
-	console.log({ unlockedpids: unlockedpids.length });
+	console.log(JSON.stringify({ length: unlockedpids.length, unlockedpids }));
 
 	const pidsToUnlock = pids.filter((id) => !unlockedpids.includes(id));
-	console.log({ pidsToUnlock: pidsToUnlock.length });
+	console.log(JSON.stringify({ length: pidsToUnlock.length, pidsToUnlock }));
 
-	const pidsToDelete = partialContacts.map((item) => item.pid);
-	console.log({ pidsToDelete: pidsToDelete.length });
+	const pidsToDelete = partialContacts.map((item) => item.pid || item.id.split('-')[0]);
+	console.log(JSON.stringify({ length: pidsToDelete.length, pidsToDelete }));
 
 	await deleteAllSavedContacts(pidsToDelete, teamId);
 
 	const newFullContacts = await getAllContacts(pidsToUnlock);
-	console.log({ newFullContacts: newFullContacts.length });
+	console.log(JSON.stringify({ newFullContacts: newFullContacts.length }));
 
 	const newSavedContacts = await saveAllContacts(newFullContacts, teamId, userId, false, true);
 
 	//credits used calc
-	const creditsUsed = newFullContacts.filter(
-		(item) => parseInt(item?.contact_email_status_code || '0') === 50 || parseInt(item?.personal_email_status_code || '0') === 50
-	).length;
-	console.log({ creditsUsed });
+	// const creditsUsed = newFullContacts.filter(
+	// 	(item) => parseInt(item?.contact_email_status_code || '0') === 50 || parseInt(item?.personal_email_status_code || '0') === 50
+	// ).length;
+	const creditsUsed = newFullContacts.length;
+	console.log(JSON.stringify({ creditsUsed }));
 
 	//const creditsUsed = newFullContacts.filter((item) => item.contactEmail || item.personalEmail || item.historicalEmails?.length).length;
 
