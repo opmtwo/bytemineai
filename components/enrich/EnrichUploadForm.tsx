@@ -2,7 +2,7 @@ import { CSSProperties, FormEvent, useState } from 'react';
 
 import { useAuthContext } from '../../providers/auth-data-provider';
 import { IBytemineEnrichment, Upload } from '../../types';
-import { callApi, getErrorMessage } from '../../utils/helper-utils';
+import { callApi, getErrorMessage, humanFileSize } from '../../utils/helper-utils';
 import Card from '../cards/Card';
 import CardTitle from '../CardTitle';
 import FormButton from '../form/FormButton';
@@ -12,6 +12,8 @@ import IconBulb from '../icons/IconBulb';
 import IconClose from '../icons/IconClose';
 import IconInfo from '../icons/IconInfo';
 import IconNewBulkEnrichment from '../icons/IconNewBulkEnrichment';
+import IconNewCsv from '../icons/IconNewCsv';
+import IconNewTrashAlt from '../icons/IconNewTrashAlt';
 import LoaderFullscreen from '../LoaderFullscreen';
 import ErrorNotificaition from '../notifications/ErrorNotification';
 import Slot from '../Slot';
@@ -168,7 +170,9 @@ const EnrichUploadForm = ({
 							<CardTitle>
 								Bulk Enrichment
 								<br />
-								<small className="has-text-weight-light is-size-6">Upload and attach files to this project.</small>
+								<small className="has-text-weight-light is-size-7">
+									{isUploaded ? <>Enrich your contacts with additional data points.</> : <>Upload and attach files to this project.</>}
+								</small>
 							</CardTitle>
 						</div>
 						<span className="is-clickable mb-auto ml-auto" onClick={onCancel}>
@@ -181,32 +185,32 @@ const EnrichUploadForm = ({
 							<div className="panel-block is-block">
 								<ErrorNotificaition error={error} className="has-text-centered pb-4" />
 
-								{/* {file ? (
+								{file ? (
 									<>
-										<div className="has-border has-radius is-clipped p-5 is-flex is-align-items-center mb-5">
+										<div className="has-border has-radius is-clipped p-5 is-flex is-align-items-center my-5">
 											<IconNewCsv width={32} />
 											<span className="ml-3">
-												<strong>{file.name}</strong>
+												<span className="has-text-weight-medium">{file.name}</span>
 												<br />
 												<span>{humanFileSize(file.size)}</span>
 												&nbsp;
 												<span>100% uploaded</span>
 											</span>
-											<span className="ml-auto is-clickable">
-												<IconNewTrash width={20} onClick={onCancel} />
+											<span className="ml-auto is-clickable" onClick={onCancel}>
+												<IconNewTrashAlt width={20} />
 											</span>
 										</div>
 									</>
-								) : null} */}
+								) : null}
 
-								<p className="has-text-centered mb-5">
+								{/* <p className="has-text-centered mb-5">
 									<strong>Map at least one of the following fields:</strong>
-								</p>
+								</p> */}
 
 								<div className="has-border has-radius is-clipped">
-									<div className="columns is-mobile is-align-items-center is-multiline p-3 has-background-white-bis">
+									<div className="columns is-mobile is-align-items-center is-multiline p-0 m-0 has-border-b has-background-white-bis">
 										<div className="column is-3 ">
-											<strong className="has-text-grey">Field</strong>
+											<strong className="has-text-grey">Our Field</strong>
 										</div>
 										<div className="column is-4">
 											<strong className="has-text-grey">Your CSV Field</strong>
@@ -216,7 +220,7 @@ const EnrichUploadForm = ({
 										</div>
 									</div>
 
-									<div className="columns is-mobile is-align-items-center is-multiline px-3 py-1 has-border-b">
+									<div className="columns is-mobile is-align-items-center is-multiline p-0 m-0 has-border-b">
 										<div className="column is-3">
 											<span>LinkedIn URL</span>
 										</div>
@@ -230,7 +234,7 @@ const EnrichUploadForm = ({
 										</div>
 									</div>
 
-									<div className="columns is-mobile is-align-items-center is-multiline px-3 py-1 has-border-b">
+									<div className="columns is-mobile is-align-items-center is-multiline p-0 m-0 has-border-b">
 										<div className="column is-3">
 											<span>Email Address</span>
 										</div>
@@ -244,7 +248,7 @@ const EnrichUploadForm = ({
 										</div>
 									</div>
 
-									<div className="columns is-mobile is-align-items-center is-multiline px-3 py-1 has-border-b">
+									<div className="columns is-mobile is-align-items-center is-multiline p-0 m-0 has-border-b">
 										<div className="column is-3">
 											<span>Phone Number</span>
 										</div>
@@ -258,7 +262,7 @@ const EnrichUploadForm = ({
 										</div>
 									</div>
 
-									<div className="columns is-mobile is-align-items-center is-multiline px-3 py-1 pb-5">
+									<div className="columns is-mobile is-align-items-center is-multiline p-0 m-0 has-border-">
 										<div className="column is-3">
 											<span>Facebook URL</span>
 										</div>
@@ -286,13 +290,13 @@ const EnrichUploadForm = ({
 						<div className="panel-block is-block">
 							<ErrorNotificaition error={error} className="has-text-centered pb-5" />
 							<Uploader uploadPath={`public/${attributes?.sub}/uploads`} uploads={uploads} onUpload={onUpload} />
-							<div className="is-flex is-align-items-center pt-5">
+							{/* <div className="is-flex is-align-items-center pt-5">
 								<IconBulb width={64} />
 								<p className="ml-3">
 									Your file must be a CSV format and contain at lease one column with email addresses, phone numbers, or personal LinkedIn or
 									FaceBook profile URLs.
 								</p>
-							</div>
+							</div> */}
 						</div>
 					)}
 				</Slot>
@@ -315,10 +319,23 @@ const EnrichUploadForm = ({
 									</FormButton> */}
 
 									<div className="is-flex is-justify-content-flex-end ml-auto">
-										<FormButtonNew type="button" variant="default" className="mr-5" onClick={onCancel} disabled={!file}>
+										<FormButtonNew
+											type="button"
+											variant="default"
+											className="mr-3"
+											onClick={onCancel}
+											disabled={!file}
+											style={{ width: 100 }}
+										>
 											Back
 										</FormButtonNew>
-										<FormButtonNew type="button" variant="active" onClick={handleSubmit} disabled={!file || isBusy || !isColumnSelected}>
+										<FormButtonNew
+											type="button"
+											variant="active"
+											onClick={handleSubmit}
+											disabled={!file || isBusy || !isColumnSelected}
+											style={{ width: 120 }}
+										>
 											Next
 										</FormButtonNew>
 									</div>
