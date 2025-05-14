@@ -130,7 +130,7 @@ const ProspectListActionButton = ({
 			return;
 		}
 
-		notifySuccessListAndExport(`Adding contacts to list`, 0, selectedCollections.length, 'Prcocessing');
+		// notifySuccessListAndExport(`Adding contacts to list`, 0, selectedCollections.length, 'Prcocessing');
 
 		let sourceContacts: IBytemineContact[] = [...(contacts || [])];
 
@@ -186,7 +186,7 @@ const ProspectListActionButton = ({
 								setSelectedCollections([]);
 								setLoading(false);
 							}
-							notifySuccessListAndExport(`Added ${index + 1} contact to list`, index + 1, sourceContacts.length, 'Processing');
+							// notifySuccessListAndExport(`Added ${index + 1} contact to list`, index + 1, sourceContacts.length, 'Processing');
 							return opr();
 						})
 					)
@@ -294,7 +294,7 @@ const ProspectListActionButton = ({
 								setSelectedCollections([]);
 								setLoading(false);
 							}
-							notifySuccessListAndExport(`Added ${index + 1} contacts to list`, index + 1, sourceContacts.length, 'Processing');
+							// notifySuccessListAndExport(`Added ${index + 1} contacts to list`, index + 1, sourceContacts.length, 'Processing');
 							return opr;
 						})
 					)
@@ -308,7 +308,7 @@ const ProspectListActionButton = ({
 		}
 
 		// All done
-		notifySuccessListAndExport(`Added ${sourceContacts.length} contacts to list`, sourceContacts.length, sourceContacts.length, 'Completed');
+		// notifySuccessListAndExport(`Added ${sourceContacts.length} contacts to list`, sourceContacts.length, sourceContacts.length, 'Completed');
 	};
 
 	const listItemOptions: MultiSelectOption[] = Collections.map((item) => ({

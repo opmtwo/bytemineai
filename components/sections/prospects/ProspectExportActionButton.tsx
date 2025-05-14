@@ -162,7 +162,7 @@ const ProspectExportActionButton = ({
 			return;
 		}
 
-		notifySuccessListAndExport(`Exporting  contacts to list`, 0, selectedCollections.length, 'Prcocessing');
+		// notifySuccessListAndExport(`Exporting  contacts to list`, 0, selectedCollections.length, 'Prcocessing');
 		let sourceContacts: IBytemineContact[] = [...(contacts || [])];
 
 		if (selectedAction === ActionList.All) {
@@ -213,7 +213,7 @@ const ProspectExportActionButton = ({
 									setSelectedCollections([]);
 									setLoading(false);
 								}
-								notifySuccessListAndExport(`Added ${index + 1} contacts to list`, index, sourceContacts.length, 'completed');
+								// notifySuccessListAndExport(`Added ${index + 1} contacts to list`, index, sourceContacts.length, 'completed');
 								return opr;
 							})
 						)
@@ -225,12 +225,12 @@ const ProspectExportActionButton = ({
 			}
 			// unlock contacts,
 			const totalRecords = exportRecords(sourceContacts);
-			notifySuccessListAndExport(
-				`Exported ${totalRecords === 0 ? 'All' : totalRecords} contacts  successfully`,
-				totalRecords,
-				totalRecords,
-				`Exported and Added to My files`
-			);
+			// notifySuccessListAndExport(
+			// 	`Exported ${totalRecords === 0 ? 'All' : totalRecords} contacts  successfully`,
+			// 	totalRecords,
+			// 	totalRecords,
+			// 	`Exported and Added to My files`
+			// );
 			onToggle();
 		} else {
 			// Only X number of contacts can be unlocked at once
@@ -254,7 +254,7 @@ const ProspectExportActionButton = ({
 					body: JSON.stringify({ pids }),
 				})) as IBytemineContact[];
 
-				notifySuccessListAndExport(`${pids.length} contacts unlocked`, pids.length, pids.length, `unlocked contact`);
+				// notifySuccessListAndExport(`${pids.length} contacts unlocked`, pids.length, pids.length, `unlocked contact`);
 
 				// for the unlocked contacts update in table
 				let existingContacts = [...(sourceContacts || [])];
@@ -337,12 +337,12 @@ const ProspectExportActionButton = ({
 				//   "Completed"
 				// );
 
-				notifySuccessListAndExport(
-					`Exported ${totalRecords === 0 ? 'All' : totalRecords} contacts  successfully!`,
-					totalRecords,
-					totalRecords,
-					'Exported and added to My Files'
-				);
+				// notifySuccessListAndExport(
+				// 	`Exported ${totalRecords === 0 ? 'All' : totalRecords} contacts  successfully!`,
+				// 	totalRecords,
+				// 	totalRecords,
+				// 	'Exported and added to My Files'
+				// );
 
 				setLoading(false);
 			} catch (err) {
