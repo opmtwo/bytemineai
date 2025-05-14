@@ -15,8 +15,8 @@ const icon = {
 	},
 	visible: {
 		pathLength: 1,
-		fill: 'rgba(151, 151, 151, 1)',
-		stroke: 'rgba(151, 151, 151, 1)',
+		fill: 'rgba(6, 21, 81, 1)',
+		stroke: 'rgba(255, 255, 255, 1)',
 	},
 };
 
@@ -51,7 +51,7 @@ const FormDoubleCheckbox = ({
 		<>
 			<label htmlFor={id} className="is-flex is-align-items-center is-clickable is-unselectable is-checkbox">
 				<input className="is-hidden" type="checkbox" id={id} name={name} value={value as any} onChange={handleChange} checked={isChecked} />
-				<span className={cssClassNames} style={{ width: 20, height: 20 }}>
+				<span className={classNames(cssClassNames, isChecked ? 'has-background-primary' : '')} style={{ width: 20, height: 20 }}>
 					<span className="is-overlay is-flex is-align-items-center is-justify-content-center">
 						<AnimatePresence presenceAffectsLayout={true}>
 							{isChecked && (
