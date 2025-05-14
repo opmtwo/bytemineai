@@ -13,7 +13,7 @@ import NotificationPopup from '../components/sections/prospect-finder/Notificati
 import { genericErrorMessage } from '../consts';
 import countryCodes from '../data/country-codes';
 import awsmobile from '../src/aws-exports';
-import { Contact, ESortOrder, IBytemineContact, ISortData, RampedUpFilter, SortData, SortOrder } from '../types';
+import { Contact, ESortOrder, IBytemineContact, IBytemineFilter, ISortData, RampedUpFilter, SortData, SortOrder } from '../types';
 
 export const timestampToMoment = (timestamp: string | number) => moment(new Date(parseInt(timestamp.toString())));
 
@@ -521,4 +521,14 @@ export const formatNumberShort = (num: number, digits = 1): string => {
 	}
 
 	return num.toString();
-}
+};
+
+export const hasMinimumOneFilter = (newFilter: IBytemineFilter) =>
+	Object.values(newFilter).some((filterItem) => {
+		if (typeof filterItem === 'string') {
+			return !isEmpty(filterItem);
+		}
+		if (typeof filterItem === 'object') {
+			return filterItem.length !== 0;
+		}
+	});
