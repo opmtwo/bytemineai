@@ -11,6 +11,7 @@ import FormButtonNew from './form/FormButtonNew';
 import IconNewBulkEnrichUpload from './icons/IconNewBulkEnrichUpload';
 import IconNewCsv from './icons/IconNewCsv';
 import IconNewTrash from './icons/IconNewTrash';
+import IconNewTrashAlt from './icons/IconNewTrashAlt';
 import Loader from './Loader';
 import LoaderFullscreen from './LoaderFullscreen';
 import ErrorNotificaition from './notifications/ErrorNotification';
@@ -173,12 +174,13 @@ const Uploader = ({
 			<ErrorNotificaition error={error} className="has-text-centered pb-5" />
 			<div className="has-border has-radius is-clipped" {...getRootProps({ style })}>
 				<input {...getInputProps()} accept=".csv" />
-				<IconNewBulkEnrichUpload width={56} />
-				<p>
+				<IconNewBulkEnrichUpload style={{ minHeight: 56 }} />
+				<p className="mt-5">
 					<strong className="has-text-link">Click to upload</strong>
 					&nbsp;
 					<span>or drag and drop</span>
 				</p>
+				<p className="has-text-centered">Your file must contact at least one of the following: email, phone number, or LinkedIn profile URL.</p>
 				{/* {isBusy && (
 					<div className="is-overlay has-background-white" style={{ opacity: 0.9 }}>
 						<Loader />
@@ -190,23 +192,23 @@ const Uploader = ({
 					<div className="has-border has-radius is-clipped p-5 is-flex is-align-items-center my-5">
 						<IconNewCsv width={32} />
 						<span className="ml-3">
-							<strong>{file.name}</strong>
+							<span className="has-text-weight-medium">{file.name}</span>
 							<br />
 							<span>{humanFileSize(file.size)}</span>
 							&nbsp;
 							{transferredBytes ? <span>{Math.round((transferredBytes / totalBytes) * 100)}% uploaded</span> : null}
 						</span>
 						<span className="ml-auto is-clickable">
-							<IconNewTrash width={20} onClick={onCancel} />
+							<IconNewTrashAlt width={20} onClick={onCancel} />
 						</span>
 					</div>
 				</>
 			) : null}
 			<div className="is-flex is-justify-content-flex-end mt-5">
-				<FormButtonNew type="button" variant="default" className="mr-5" onClick={onCancel} disabled={!file}>
+				<FormButtonNew type="button" variant="default" className="mr-3" onClick={onCancel} disabled={!file} style={{ width: 100 }}>
 					Back
 				</FormButtonNew>
-				<FormButtonNew type="button" variant="active" onClick={onSubmit} disabled={!file}>
+				<FormButtonNew type="button" variant="active" onClick={onSubmit} disabled={!file} style={{ width: 120 }}>
 					Next
 				</FormButtonNew>
 			</div>
