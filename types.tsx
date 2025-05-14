@@ -987,58 +987,89 @@ export interface IBytemineUser {
 
 	isSelected?: boolean;
 
-	isEnabled?: boolean;
-	role?: 'Admin' | 'Manager' | 'Editor' | 'Viewer'; // example enum, adjust as needed
+	// enabled / disabled
+	isEnabled: boolean;
 
-	email?: string;
-	phone?: string;
+	// admin / manager / user
+	role: string;
 
-	name?: string;
-	givenName?: string;
-	familyName?: string;
+	// email
+	email: string;
 
-	company?: string;
+	// phone_number
+	phone: string;
 
-	passwordHash?: string;
+	// full name
+	name: string;
 
-	avatarS3Key?: string;
-	avatarS3Url?: string;
+	// given name
+	givenName: string;
 
-	subscriptionStatus: string;
-	subscriptionPeriod: string;
+	// family name
+	familyName: string;
 
-	monthlyCredits: number;
-	quarterlyCredits: number;
-	annualCredits: number;
-	currentCredits: number;
+	// website
+	company: string;
 
-	stripeCustomerId: string;
-	stripeSubscriptionID: string[];
+	// password hash
+	passwordHash: string;
 
-	seats: string;
+	avatarS3Key: string;
+	avatarS3Url: string;
 
-	block: Boolean;
+	// account_type: string
+	// bonus_credits: string
+	// color_code: string
+	// company: string
+	// connect_email_code: string
+	// connect_email_token: string
+	// country: string
+	// created_at: string
+	// credits: string
+	// email_google: string
+	// email_status_code: string
+	// group_name: string
+	// has_api: string
+	// has_email: string
+	// icon_s3_key: string
+	// isBlocked: string
+	// last_login_at: string
+	// lastaudiencesample: string
+	// logo_s3_key: string
+	// renewal_period: string
+	// role: string
+	// seats: string
+	// temp_code: string
+	// verificationdate: string
+	// veriflastsent: string
 
-	tenant: Boolean;
+	accountType: string;
 
-	notes: string;
+	bonusCredits: number;
 
-	color_code: string;
+	colorCode: string;
+
+	country: string;
+
+	credits: number;
+
+	groupName: string;
+
+	hasApi: Boolean;
+
+	hasEmail: Boolean;
 
 	iconS3Key: string;
+
 	logoS3Key: string;
 
-	isApiBlocked: boolean; // block_api
-	isEmailBlocked: boolean; // block_email
-	isProspectBlocked: boolean; // block_prospect
-	isEnrichBlocked: boolean; // block_enrich
-	isFilesBlocked: boolean; // block_files
-	isAutoComposeBlocked: boolean; // block_auto_compose
-	isAssistantsBlocked: boolean; // block_assistants
-	isSubProcessingBlocked: boolean; // block_sub_processing
-	firstPaid: string;
-	lastPaid: string;
-	nextPay: string;
+	isBlocked: Boolean;
+
+	lastLoginAt: string;
+
+	renewalPeriod: string;
+
+	seats: number;
 }
 
 export enum ESortOrder {
@@ -1226,6 +1257,6 @@ export interface IBytemineUsage {
 
 	isSelected?: boolean;
 
-	filterId: string
+	filterId: string;
 	credits: number;
 }
