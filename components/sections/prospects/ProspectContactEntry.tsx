@@ -139,7 +139,7 @@ const ProspectContactEntry = ({
 				</p>
 				{item.is_unlocked ? (
 					<p className="is-flex is-flex-wrap-wrap is-align-items-center has-text-weight-medium">
-						<span className="has-text-weight-normal mr-2">Contact:</span>
+						{item.is_unlocked ? null : <span className="has-text-weight-normal mr-2">Contact:</span>}
 						{item.is_unlocked ? (
 							<>
 								{item.direct_dial ? (
