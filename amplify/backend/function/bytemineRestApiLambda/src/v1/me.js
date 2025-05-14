@@ -77,10 +77,10 @@ router.post('/onboard', verifyToken, async (req, res, next) => {
 		teamId: userId,
 		subscriptionStatus: 'Trial',
 		subscriptionPeriod: 'Monthly',
-		monthlyCredits: '10',
+		monthlyCredits: '50',
 		quarterlyCredits: '0',
 		annualCredits: '0',
-		currentCredits: '10',
+		currentCredits: '50',
 	};
 	if (isSubUpdate) {
 		// userSub = apsGql(updateBytemineSub, { input: subInput }, 'data.updateBytemineSub');
