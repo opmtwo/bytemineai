@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import classNames from 'classnames';
 import { sortBy } from 'lodash';
 import { useEffect, useState } from 'react';
@@ -5,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { ITEMS_PER_PAGE } from '../../../consts';
 import { useAuthContext } from '../../../providers/auth-data-provider';
 import { useCrudContext } from '../../../providers/crud-provider';
-import { IBytemineUser, UserAttributes } from '../../../types';
+import { EActionSelect, IBytemineUser, UserAttributes } from '../../../types';
 import { decodeJson } from '../../../utils/helper-utils';
 import { searchUserItems } from '../../../utils/user-utils';
 import Card from '../../cards/Card';
@@ -22,6 +23,9 @@ import UserEntry from '../../UserEntry';
 import ViewToggle from '../../ViewToggle';
 import PaginationNew from '../../PaginationNew';
 import FormButtonNew from '../../form/FormButtonNew';
+import FormDoubleCheckbox from '../../form/FormDoubleCheckbox';
+import TableSkeleton from '../../table-skeleton';
+import IconNewPlus from '../../icons/IconNewPlus';
 
 const UserItems = () => {
 	const [isListMode, setIsListMode] = useState(false);
@@ -30,6 +34,7 @@ const UserItems = () => {
 
 	const {
 		isBusy: userIsBusy,
+		isLoading: userIsLoading,
 		items: userItems,
 		itemsInUse: userItemsInUse,
 		page: userPage,
@@ -42,6 +47,7 @@ const UserItems = () => {
 		onAdd: userOnAdd,
 		onDelete: userOnDelete,
 		onDeleteMany: userOnDeleteMany,
+		onSelectMany: userOnSelectMany,
 	} = useCrudContext<IBytemineUser>();
 
 	useEffect(() => {
@@ -50,6 +56,27 @@ const UserItems = () => {
 			setIsListMode(true);
 		}
 	}, []);
+
+	const itemsHeader = (
+		<motion.div layout className="panel-block is-block has-background-white-bis">
+			<div className="columns is-mobile is-align-items-center">
+				<div className="column is-10">
+					<div className="columns is-mobile is-align-items-center has-text-dark">
+						<div className="column is-3">
+							<span className="is-inline-flex" style={{ width: 50 }}>SL</span>
+							<span>
+								Name
+							</span>
+						</div>
+						<div className="column is-3">Role</div>
+						<div className="column is-3">Create Date</div>
+						<div className="column is-3">Logged Time</div>
+					</div>
+				</div>
+				<div className="column is-2 is-flex is-justify-content-flex-end action-buttons">Action</div>
+			</div>
+		</motion.div>
+	);
 
 	const itemsList = paginate(userItemsInUse, userPerPage, userPage).map((item: IBytemineUser, index: number) => (
 		<>
@@ -66,12 +93,7 @@ const UserItems = () => {
 			window.dispatchEvent(new Event('logs.refresh'));
 		};
 		const onCancel = () => async () => await userOnConfirmCancel();
-		userOnConfirmOpen(
-			'Delete seeding mailbox?',
-			'Are you sure you want to the selected seeding mailbox? This can not be undone!',
-			onSubmit,
-			onCancel
-		);
+		userOnConfirmOpen('Delete seeding mailbox?', 'Are you sure you want to the selected seeding mailbox? This can not be undone!', onSubmit, onCancel);
 	};
 
 	const pagination = (
@@ -86,37 +108,58 @@ const UserItems = () => {
 
 	const isNewDisabled = false;
 
+	if (userIsLoading && !userItems.length) {
+		return <TableSkeleton />;
+	}
+
 	return (
-		<Card className="is-scroll-view">
-			<Slot slot="header">
-				<div className="is-flex is-align-items-center mr-auto">
-					<FormInput fieldClassName="is-flex-grow-1" value={userQuery} onChange={userOnQueryChange} isLast={true} iconLeft={<IconSearch />} />
+		<main className="is-relative">
+			<form className="is-search-form">
+				<div className="is-flex is-align-items-center mr-auto is-flex-grow-1">
+					<FormInput
+						fieldClassName="is-flex-grow-1"
+						value={userQuery}
+						onChange={userOnQueryChange}
+						isLast={true}
+						iconLeft={<IconSearch />}
+						placeholder="Search"
+					/>
+					{/* <span className="has-text-grey ml-5">{userItemsInUse.length} results</span> */}
 				</div>
-				{/* <span className="has-text-grey ml-5">{userItemsInUse.length} results</span> */}
 				{/* <div className="ml-6 mr-5">{pagination}</div> */}
-				{/* <span
-						className={classNames('is-clickable', isSorted ? 'has-text-primary' : 'has-text-grey')}
-						onClick={onSortToggle}
-					>
-						Sort by name
-					</span> */}
-				<CardAnimatePresence isActive={isNewDisabled ? false : true}>
-					<FormButtonNew type="button" variant="active" onClick={isNewDisabled ? undefined : userOnAdd} disabled={isNewDisabled}>
-						New User
+				<div className="is-flex is-align-items-center">
+					<FormButtonNew type="button" onClick={userOnAdd} variant="active" className="ml-3">
+						<IconNewPlus width={12} fill="#fff" />
+						<span className="ml-1">Add Team</span>
 					</FormButtonNew>
-				</CardAnimatePresence>
-			</Slot>
-			<Slot slot="body">
-				<CardAnimatePresence isActive={userIsBusy && !userItems.length}>
-					<Loader />
-				</CardAnimatePresence>
-				<CardAnimatePresence isActive={!userIsBusy && !userItemsInUse.length}>
-					<EmptyMsg msg="No users found" />
-				</CardAnimatePresence>
-				{isListMode ? <ListView>{itemsList}</ListView> : itemsList}
-			</Slot>
-			{userItemsInUse.length ? <Slot slot="footer">{pagination}</Slot> : null}
-		</Card>
+				</div>
+			</form>
+
+
+			<Card className="is-scroll-view">
+				<Slot slot="body">
+					<CardAnimatePresence isActive={userIsBusy && !userItems.length}>
+						<Loader />
+					</CardAnimatePresence>
+					<CardAnimatePresence isActive={!userIsBusy && !userItemsInUse.length}>
+						<EmptyMsg msg="No users found" />
+					</CardAnimatePresence>
+					{isListMode ? (
+						<ListView>{itemsList}</ListView>
+					) : (
+						<>
+							{userIsLoading && !userItems.length ? null : (
+								<>
+									{itemsHeader}
+									{itemsList}
+								</>
+							)}
+						</>
+					)}
+				</Slot>
+			</Card>
+			{userItemsInUse.length ? <>{pagination}</> : null}
+		</main>
 	);
 };
 
