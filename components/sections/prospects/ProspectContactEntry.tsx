@@ -180,7 +180,15 @@ const ProspectContactEntry = ({
 		<>
 			{item.company_domain ? (
 				<>
-					<Anchor target="_blank" href={toHttpsUrl(item.company_domain)}>
+					<Anchor
+						target="_blank"
+						href={item.is_unlocked ? toHttpsUrl(item.company_domain) : ''}
+						onClick={(e) => {
+							if (!item.is_unlocked) {
+								e.preventDefault();
+							}
+						}}
+					>
 						<span className="has-text-weight-normal">{item.company_name || item.company_domain}</span>
 					</Anchor>
 				</>
