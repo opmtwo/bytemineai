@@ -45,6 +45,12 @@ section.section {
 	height: inherit;
 }
 
+.is-clickable:hover .icon {
+	border: $panel-item-border;
+	border-color: $border;
+	border-radius: $radius-small;
+}
+
 .tox.tox-tinymce {
 	border: none;
 }
