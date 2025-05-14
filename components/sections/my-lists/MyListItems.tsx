@@ -143,10 +143,10 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: IBytemineContact[]
 					{/* <span className="has-text-grey ml-5">{collectionItemsInUse.length} results</span> */}
 				</div>
 				{/* <div className="ml-6 mr-5">{pagination}</div> */}
-				<div className="is-flex is-align-items-center mr-auto is-flex-grow-1">
+				<div className="is-flex is-align-items-center">
 					<FormButtonNew type="button" onClick={collectionOnAdd} variant="active" className="ml-3">
 						<IconNewPlus width={12} fill="#fff" />
-						<span className="ml-1">Add New List</span>
+						<span className="ml-1">New List</span>
 					</FormButtonNew>
 				</div>
 			</form>
