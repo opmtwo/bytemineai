@@ -92,7 +92,7 @@ const SectionEnrichments = () => {
 			<div className="is-flex is-align-items-center is-justify-content-space-between is-fullwidth has-border has-radius p-5 mb-5">
 				<div className="mr-auto">
 					<h2 className="title is-4 mb-3">Bulk Enrichment</h2>
-					<p>Upload a list of phone numbers. email addresses. or personal LinkedIn profiles.</p>
+					<p>Upload a list of phone numbers, email addresses, or personal LinkedIn profiles.</p>
 				</div>
 				<div className="ml-auto">
 					<FormButtonNew type="button" variant="active" onClick={enrichmentOnAdd}>
