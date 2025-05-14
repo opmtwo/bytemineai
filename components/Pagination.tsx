@@ -19,6 +19,7 @@ const Pagination = ({
 	activePage = 0,
 	onPageChange,
 	isTrialAccount,
+	variant,
 	setIsUpgradeModalActive,
 	onLoadMore,
 	onLoadPrev,
@@ -29,6 +30,7 @@ const Pagination = ({
 	activePage: number;
 	onPageChange: Function;
 	isTrialAccount?: boolean;
+	variant?: 'normal' | 'spread';
 	setIsUpgradeModalActive: (value: boolean) => void;
 	onLoadMore?: (activePage: number) => any;
 	onLoadPrev?: () => any;
@@ -97,18 +99,20 @@ const Pagination = ({
 
 	return (
 		<div className="pagination is-flex is-align-items-center is-fullwidth is-justify-content-start mb-0">
-			<div className="mr-3">
+			<div className={classNames('is-flex is-align-items-center mr-3', { 'mr-auto': variant === 'spread' })}>
 				<FormSelect options={perPageOptions} onChange={onPerPageChange} value={itemsPerPage} size="is-small" />
 			</div>
-			<div className="has-text-grey px-3" style={{ minWidth: 120 }}>
-				#{Math.min(startIndex + 1, totalItems)} - {endIndex}
+			<div className={classNames('is-flex is-align-items-center', {'ml-auto': variant === 'spread' })}>
+				<div className="has-text-grey px-3" style={{ minWidth: 120 }}>
+					#{Math.min(startIndex + 1, totalItems)} - {endIndex}
+				</div>
+				<span className={classNames('icon is-clickable mx-3', { 'is-disabled': isPrevDisabled })} onClick={isPrevDisabled ? undefined : onPrev}>
+					<IconArrowLeft />
+				</span>
+				<span className={classNames('icon is-clickable mx-3', { 'is-disabled': isNextDisabled })} onClick={isNextDisabled ? undefined : onNext}>
+					<IconArrowRight />
+				</span>
 			</div>
-			<span className={classNames('icon is-clickable mx-3', { 'is-disabled': isPrevDisabled })} onClick={isPrevDisabled ? undefined : onPrev}>
-				<IconArrowLeft />
-			</span>
-			<span className={classNames('icon is-clickable mx-3', { 'is-disabled': isNextDisabled })} onClick={isNextDisabled ? undefined : onNext}>
-				<IconArrowRight />
-			</span>
 		</div>
 	);
 };
