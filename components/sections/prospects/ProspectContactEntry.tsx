@@ -64,7 +64,7 @@ const ProspectContactEntry = ({
 	const itemCheckbox = (
 		<FormDoubleCheckbox
 			value={item.id}
-			className="is-filter-checkbox"
+			className="is-filter-checkbox has-border-alt m-0"
 			isChecked={item.isSelected}
 			onChange={(isChecked: boolean) => {
 				onSelect(item.pid, isChecked);

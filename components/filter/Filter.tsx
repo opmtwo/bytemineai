@@ -546,28 +546,28 @@ const Filter = ({
 									<FormDoubleCheckbox
 										value={hasRequiredEmail}
 										label="Work Email"
-										className="is-filter-checkbox"
+										className="is-filter-checkbox has-border-alt m-0"
 										isChecked={hasRequiredEmail}
 										onChange={setHasRequiredEmail}
 									/>
 									<FormDoubleCheckbox
 										value={hasPersonalEmailOnly}
 										label="Personal Email"
-										className="is-filter-checkbox"
+										className="is-filter-checkbox has-border-alt m-0"
 										isChecked={hasPersonalEmailOnly}
 										onChange={setHasPersonalEmailOnly}
 									/>
 									<FormDoubleCheckbox
 										value={hasDirectDialOnly}
 										label="Cell Phone"
-										className="is-filter-checkbox"
+										className="is-filter-checkbox has-border-alt m-0"
 										isChecked={hasDirectDialOnly}
 										onChange={setHasDirectDialOnly}
 									/>
 									<FormDoubleCheckbox
 										value={excludeExisting}
 										label="Exclude My Contacts"
-										className="is-filter-checkbox"
+										className="is-filter-checkbox has-border-alt m-0"
 										isChecked={excludeExisting}
 										onChange={setExcludeExisting}
 									/>
