@@ -94,9 +94,7 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: IBytemineContact[]
 	);
 
 	const itemsList = paginate(collectionItemsInUse, collectionPerPage, collectionPage).map((item) => (
-		<>
-			<MyListEntry key={item.id} item={item} isListMode={isListMode} onExport={onExport} />
-		</>
+		<MyListEntry key={item.id} item={item} isListMode={isListMode} onExport={onExport} />
 	));
 
 	const selectedItems = collectionItems.filter((_item) => _item.isSelected);
