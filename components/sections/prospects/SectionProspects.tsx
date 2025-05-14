@@ -18,7 +18,7 @@ import {
 	SortData,
 } from '../../../types';
 import { applyContactFilters, downloadContacts, getExportData, getExportLabels } from '../../../utils/contact-utilsx';
-import { callApi, getFilterLabel, getSortedData } from '../../../utils/helper-utils';
+import { callApi, formatNumberShort, getFilterLabel, getSortedData } from '../../../utils/helper-utils';
 import Breadcrumb from '../../Breadcrumb';
 import Filter from '../../filter/Filter';
 import ErrorNotificaition from '../../notifications/ErrorNotification';
@@ -752,7 +752,7 @@ const SectionProspects = ({
 
 	return (
 		<>
-			<Breadcrumb title={`Result-${totalResults || 0}`} items={[{ label: 'Prospect Finder', href: '/prospect-finder', isCurrent: true }]} />
+			<Breadcrumb title={`Result-${formatNumberShort(totalResults || 0)}`} items={[{ label: 'Prospect Finder', href: '/prospect-finder', isCurrent: true }]} />
 
 			<div className="is-flex is-fullwidth">
 				<Filter
