@@ -214,7 +214,7 @@ const ProspectContactItems = ({
 	// const displayItems = paginate(filteredItems, itemsPerPage, activePage);
 	const itemsList = displayItems.map((item) => (
 		<ProspectContactEntry
-			key={item.id}
+			key={item.pid}
 			item={item}
 			emailAccounts={emailAccounts}
 			isListMode={isListMode}
