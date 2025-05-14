@@ -323,6 +323,7 @@ const ProspectContactItems = ({
 				onLoadPrev={onLoadPrev}
 				hasNext={enableHasNext}
 				onLoadMore={onLoadMore}
+				variant="spread"
 			/>
 		);
 	}
@@ -441,6 +442,8 @@ const ProspectContactItems = ({
 			{isCollectionMode && filteredItems.length ? <div className="mt-5">{pagination}</div> : null}
 
 			<ProspectSaveFilterForm isActive={isSaveModalActive} filter={filter} onCreate={onSaveSubmit} onCancel={onSaveCancel} onUpdate={onSaveUpdate} />
+
+			<div className="mt-5">{pagination}</div>
 		</>
 	);
 
