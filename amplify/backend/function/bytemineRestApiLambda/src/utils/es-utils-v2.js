@@ -1520,6 +1520,7 @@ const esGetPaginationQuery2 = (body) => {
 	let page;
 	let size;
 	let from;
+	let after;
 
 	// parse page size
 	try {
@@ -1542,7 +1543,13 @@ const esGetPaginationQuery2 = (body) => {
 		from = 0;
 	}
 
-	const options = { page, from, size };
+	try {
+		after = body.after || body.searchAfter || body.search_after;
+	} catch (e) {
+		after = undefined;
+	}
+
+	const options = { page, from, size, after };
 	const params = new URLSearchParams(options);
 	//console.log('esGetPaginationQuery - success -', { options, params });
 
@@ -1728,7 +1735,7 @@ const esSearch2 = async (body, mask = true, append = false, api = false) => {
 	let options = await esGetFilters2(body, false);
 
 	const pagination = await esGetPaginationQuery2(body);
-	const { page, from, size } = pagination.options;
+	const { page, from, size, after } = pagination.options;
 	try {
 		// const response = await elasticClient.search({ index, from, size, body: options });
 		// const responseCount = await elasticClient.count({ index, body: options });
@@ -1765,6 +1772,7 @@ const esSearch2 = async (body, mask = true, append = false, api = false) => {
 				{ _score: { order: 'asc' } }, // or 'desc' for descending order
 				{ id: 'asc' },
 			],
+			search_after: after ? [after] : undefined,
 		};
 		console.log('esSearch2 - search query with sort', JSON.stringify({ url, main_options }));
 
