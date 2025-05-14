@@ -38,12 +38,12 @@ const AccountMenu = () => {
 		// 	href: '/account-settings/white-label-settings',
 		// 	canAccess: isManager || isAdmin || isRoot || true,
 		// },
-		{
-			icon: <IconNewTeam width={18} stroke="currentColor" />,
-			title: <span>My Team</span>,
-			href: '/settings/team',
-			canAccess: isManager || isAdmin || isRoot || true,
-		},
+		// {
+		// 	icon: <IconNewTeam width={18} stroke="currentColor" />,
+		// 	title: <span>My Team</span>,
+		// 	href: '/settings/team',
+		// 	canAccess: isManager || isAdmin || isRoot || true,
+		// },
 		{
 			icon: <IconNewUsage width={18} stroke="currentColor" />,
 			title: <span>Usage</span>,
