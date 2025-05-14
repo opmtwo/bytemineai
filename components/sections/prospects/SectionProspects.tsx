@@ -404,6 +404,7 @@ const SectionProspects = ({
 
 	const onAddToCollectionSubmit = () => {
 		setIsAddToCollectionModalActive(false);
+		getCollections();
 	};
 
 	const onAddToCollectionCancel = () => {
@@ -745,6 +746,16 @@ const SectionProspects = ({
 					isActive={isExportModalActive}
 					onSubmit={onExportSubmit}
 					onCancel={onExportCancel}
+				/>
+
+				{/* contact unlocker */}
+				<ProspectUnlockContacts
+					contacts={contactsToUnlock}
+					isActive={isUnlockModalActive}
+					onCancel={onUnlockCancel}
+					onSuccess={onUnlockSuccess}
+					onStart={onUnlockStart}
+					onError={onUnlockError}
 				/>
 			</>
 		);
