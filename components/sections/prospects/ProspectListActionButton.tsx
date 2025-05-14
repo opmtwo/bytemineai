@@ -321,7 +321,7 @@ const ProspectListActionButton = ({
 			{isActive ? <div className="is-overlay" onClick={onToggle}></div> : null}
 			<div className={classNames('dropdown', { 'is-active': isActive })}>
 				<div className="dropdown-trigger is-flex is-justify-content-center is-align-items-center">
-					<FormButtonNew className="mx-5" onClick={onToggle}>
+					<FormButtonNew className="mx-3" onClick={onToggle}>
 						<IconNewList width={16} />
 						<span>Add to List</span>
 					</FormButtonNew>
