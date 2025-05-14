@@ -728,6 +728,10 @@ const SectionProspects = ({
 					onSuccess={onUnlockSuccess}
 					isContactsOnly
 					isCollectionMode
+					isProspectFinder={false}
+					filter={activeFilter}
+					onViewHistory={onViewHistory}
+					onFilterSave={onFilterSave}
 				/>
 
 				{/* The add to list modal */}
@@ -763,7 +767,10 @@ const SectionProspects = ({
 
 	return (
 		<>
-			<Breadcrumb title={`Result-${formatNumberShort(totalResults || 0)}`} items={[{ label: 'Prospect Finder', href: '/prospect-finder', isCurrent: true }]} />
+			<Breadcrumb
+				title={`Result-${formatNumberShort(totalResults || 0)}`}
+				items={[{ label: 'Prospect Finder', href: '/prospect-finder', isCurrent: true }]}
+			/>
 
 			<div className="is-flex is-fullwidth">
 				<Filter
@@ -809,6 +816,10 @@ const SectionProspects = ({
 									setIsUpgradeModalActive={setIsUpgradeModalActive}
 									onSuccess={onUnlockSuccess}
 									isContactsOnly
+									isProspectFinder={false}
+									filter={activeFilter}
+									onViewHistory={onViewHistory}
+									onFilterSave={onFilterSave}
 								/>
 							</div>
 						</>
@@ -853,6 +864,10 @@ const SectionProspects = ({
 										totalResults={totalResults}
 										onSuccess={onUnlockSuccess}
 										isContactsOnly={false}
+										isProspectFinder={true}
+										filter={activeFilter}
+										onViewHistory={onViewHistory}
+										onFilterSave={onFilterSave}
 									/>
 									{/* {isBusy && <TableSkeleton />} */}
 									{/* <CardAnimatePresence isActive={isBusy}>

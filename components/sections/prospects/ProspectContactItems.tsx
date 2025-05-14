@@ -10,12 +10,14 @@ import {
 	ActionSelect,
 	ActionUnlock,
 	EmailAccountModel,
+	FilterModel,
 	IBytemineContact,
+	IBytemineFilter,
 	SortData,
 	SortOrder,
 } from '../../../types';
 import { searchContactItems } from '../../../utils/contact-utilsx';
-import { getSortedData, paginate } from '../../../utils/helper-utils';
+import { getSortedData, hasMinimumOneFilter, notifyError, paginate } from '../../../utils/helper-utils';
 import Card from '../../Card';
 import CardAnimatePresence from '../../cards/CardAnimatePresence';
 import EmptyMsg from '../../EmptyMsg';
@@ -32,6 +34,7 @@ import TableSkeleton from '../../table-skeleton';
 import ProspectContactEntry from './ProspectContactEntry';
 import ProspectExportActionButton from './ProspectExportActionButton';
 import ProspectListActionButton from './ProspectListActionButton';
+import ProspectSaveFilterForm from './ProspectSaveFilterForm';
 
 const ProspectContactItems = ({
 	items = [],
@@ -41,6 +44,7 @@ const ProspectContactItems = ({
 	isLocked,
 	isBusy,
 	hasNext,
+	filter,
 	onUnlock,
 	onUnlockOne,
 	onAdd,
@@ -59,11 +63,14 @@ const ProspectContactItems = ({
 	onSearchQuerySubmit,
 	totalResults,
 	onSuccess,
+	isProspectFinder = false,
 	isAudienceBuilder = false,
 	isContactsOnly = false,
 	isCollectionMode = false,
 	showSampleExportModal,
 	showExportModal,
+	onViewHistory,
+	onFilterSave,
 }: {
 	items: IBytemineContact[];
 	emailAccounts: EmailAccountModel[];
@@ -74,6 +81,7 @@ const ProspectContactItems = ({
 	hasNext?: boolean;
 	totalResults?: number;
 	lastUpdatedAt?: string;
+	filter?: IBytemineFilter;
 	onAdd: (contact: IBytemineContact) => void;
 	onSelect: (id: string, isChecked: boolean) => void;
 	onDownload: (contact: IBytemineContact) => void;
@@ -90,19 +98,31 @@ const ProspectContactItems = ({
 	onLoadMore?: (activePage: number) => any;
 	onSuccess: (items: IBytemineContact[]) => void;
 	onLoadPrev?: () => any;
+	isProspectFinder?: boolean;
 	isAudienceBuilder?: boolean;
 	isContactsOnly?: boolean;
 	isCollectionMode?: boolean;
 	showSampleExportModal?: () => void;
 	showExportModal?: () => void;
+	onViewHistory?: () => void;
+	onFilterSave?: (value: IBytemineFilter, model?: FilterModel) => void;
 }) => {
 	const [query, setQuery] = useState('');
+
 	const [activePage, setActivePage] = useState(0);
+
 	const [filteredItems, setFilteredItems] = useState<IBytemineContact[]>([]);
+
 	const [isListMode, setIsListMode] = useState(false);
+
 	const [sortMap, setSortMap] = useState<SortData[]>(keysToExportMap);
+
 	// const [displayItems, setDisplayItems] = useState<IBytemineContact[]>([]);
+
 	const [dropdownSelectedAction, setDropdownSelectedAction] = useState<string>('');
+
+	const [isSaveModalActive, setIsSaveModalActive] = useState(false);
+
 	const { attributes } = useAuthContext();
 
 	useEffect(() => {
@@ -209,6 +229,31 @@ const ProspectContactItems = ({
 		setSortMap(newMap);
 	};
 
+	const onSaveCancel = () => setIsSaveModalActive(false);
+
+	const onSaveSubmit = (value: FilterModel) => {
+		//
+		setIsSaveModalActive(false);
+
+		if (filter && onFilterSave) {
+			onFilterSave(filter, value);
+		}
+	};
+
+	const onSaveUpdate = (filter: FilterModel) => {
+		//
+		setIsSaveModalActive(false);
+	};
+
+	const handleSave = async () => {
+		const newFilter = filter;
+		if (!newFilter || !hasMinimumOneFilter(newFilter)) {
+			notifyError(new Error('Please select at least one filter'));
+			return;
+		}
+		setIsSaveModalActive(true);
+	};
+
 	const onReorder = (newMap: SortData[]) => setSortMap(newMap);
 
 	// const displayItems = paginate(filteredItems, itemsPerPage, activePage);
@@ -297,8 +342,8 @@ const ProspectContactItems = ({
 				onSubmit={handleQueryFormSubmit}
 				style={{ display: isCollectionMode ? 'none' : 'flex' }}
 			>
-				<div className="is-flex is-align-items-center mr-auto">
-					{/* <FormCheckbox
+				{/* <div className="is-flex is-align-items-center mr-auto"> */}
+				{/* <FormCheckbox
 						value={isAllSelected}
 						isChecked={isAllSelected}
 						onChange={(isChecked: boolean) => {
@@ -311,17 +356,17 @@ const ProspectContactItems = ({
 						}}
 					/> */}
 
-					{/* <FormButtonNew className="is-outlined mr-5" onClick={showSampleExportModal}>
+				{/* <FormButtonNew className="is-outlined mr-5" onClick={showSampleExportModal}>
 						<IconDownload />
 						&nbsp;&nbsp;Get Sample
 					</FormButtonNew> */}
 
-					{/* <FormButtonNew onClick={showExportModal}>
+				{/* <FormButtonNew onClick={showExportModal}>
 						<IconRocket className="" />
 						<span>Export</span>
 					</FormButtonNew> */}
 
-					{/* {isLocked && <ContactUnlock onUnlock={onUnlock} contacts={items} displayItems={displayItems} />}
+				{/* {isLocked && <ContactUnlock onUnlock={onUnlock} contacts={items} displayItems={displayItems} />}
 							<ContactActions
 								onAddToList={onAddToList}
 								onExport={onExport}
@@ -331,7 +376,7 @@ const ProspectContactItems = ({
 								sortMap={sortMap}
 							/> */}
 
-					{/* <FormInput
+				{/* <FormInput
 								value={query}
 								onChange={onQueryChange}
 								isLast={true}
@@ -340,19 +385,18 @@ const ProspectContactItems = ({
 								placeholder="Enter job title to filter"
 							/> */}
 
-					{/*<ViewToggle name="contactItems" isChecked={isListMode} onChange={setIsListMode}  />*/}
+				{/*<ViewToggle name="contactItems" isChecked={isListMode} onChange={setIsListMode}  />*/}
 
-					{pagination}
+				{/* {pagination} */}
 
-					{totalSelected ? (
+				{/* {totalSelected ? (
 						<div className="is-flex is-flex-direction-column is-justify-content-center has-text-grey" style={{ minWidth: 120 }}>
-							{/* <strong>{(totalResults || filteredItems.length).toLocaleString('en-US')} results</strong> */}
 							{totalSelected > 0 && <span className="has-text-primary">{totalSelected} Selected</span>}
 						</div>
-					) : null}
-				</div>
+					) : null} */}
+				{/* </div> */}
 
-				<div className="is-flex is-align-items-center ml-auto">
+				<div className="is-flex is-align-items-center mr-auto">
 					<FormButtonNew onClick={handleSelectAll}>
 						<IconNewCheck width={16} />
 						<span>Select All</span>
@@ -375,12 +419,28 @@ const ProspectContactItems = ({
 						sortMap={sortMap}
 						isContactsOnly={isContactsOnly}
 					/>
+
+					{isProspectFinder && (
+						<FormButtonNew type="button" className="mx-3" onClick={handleSave}>
+							Save Search
+						</FormButtonNew>
+					)}
+
+					{isProspectFinder && (
+						<FormButtonNew type="button" onClick={onViewHistory}>
+							My Searches
+						</FormButtonNew>
+					)}
 				</div>
+
+				<div className="ml-auto">{totalSelected ? <span className="has-text-primary">{totalSelected} Selected</span> : null}</div>
 			</form>
 
 			<div className={classNames('is-scroll-view', { 'is-collection-mode': isCollectionMode })}>{itemsList}</div>
 
 			{isCollectionMode && filteredItems.length ? <div className="mt-5">{pagination}</div> : null}
+
+			<ProspectSaveFilterForm isActive={isSaveModalActive} filter={filter} onCreate={onSaveSubmit} onCancel={onSaveCancel} onUpdate={onSaveUpdate} />
 		</>
 	);
 
