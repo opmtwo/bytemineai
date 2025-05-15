@@ -317,9 +317,9 @@ export const MONTHLY_PRICE_ID = 'price_1RNoLNLgUrD1kX4RjzqrCGS8';
 
 export const YEARLY_PRICE_ID = 'price_1RNoLNLgUrD1kX4Rocv6WXIN';
 
-export const PLAN_STARTER_MONTHLY = 'price_1RP5LUDsM2Cd0g4eItv1ahpI';
+export const PLAN_STARTER_MONTHLY = 'price_1RP5LUDsM2Cd0g4ebEsp66r6';
 
-export const PLAN_STARTER_YEARLY = 'price_1RP5LUDsM2Cd0g4eItv1ahpI';
+export const PLAN_STARTER_YEARLY = 'price_1RP5LUDsM2Cd0g4ePWqXnWQ3';
 
 export const PLAN_GROWTH_MONTHLY = 'price_1RP5LUDsM2Cd0g4eItv1ahpI';
 
