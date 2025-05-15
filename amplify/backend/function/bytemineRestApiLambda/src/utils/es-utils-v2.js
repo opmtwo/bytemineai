@@ -829,8 +829,8 @@ const esGetFilters2 = (rawBody, append = false) => {
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.industries.length; j++) {
-				//query.push({ match: { [fields[i]]: body.industries[j] } });
-				query.push({ match_phrase_prefix: { [fields[i]]: body.industries[j] } });
+				query.push({ match: { [fields[i]]: body.industries[j] } });
+				// query.push({ match_phrase_prefix: { [fields[i]]: body.industries[j] } });
 			}
 		}
 		filters.push({ bool: { should: [...query] } });
@@ -1068,7 +1068,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.contactTitles.length; j++) {
-				query.push({ match_phrase_prefix: { [fields[i]]: body.contactTitles[j] } });
+				query.push({ match_phrase: { [fields[i]]: body.contactTitles[j] } });
 			}
 		}
 		filters.push({ bool: { should: [...query] } });
@@ -1084,7 +1084,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 			for (let j = 0; j < body.contactTitlesExclude.length; j++) {
 				query.push({
 					bool: {
-						must_not: { match: { [fields[i]]: body.contactTitlesExclude[j] } },
+						must_not: { match_phrase: { [fields[i]]: body.contactTitlesExclude[j] } },
 					},
 				});
 			}
