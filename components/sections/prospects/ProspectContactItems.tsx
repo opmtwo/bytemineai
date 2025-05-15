@@ -295,7 +295,8 @@ const ProspectContactItems = ({
 	const totalSelected =
 		dropdownSelectedAction === ActionList.All
 			? items.filter((item) => item.isSelected === true).length
-			: displayItems.filter((item) => item.isSelected === true).length;
+			// : displayItems.filter((item) => item.isSelected === true).length;
+			: items.filter((item) => item.isSelected === true).length;
 
 	const onSelectDropdown = (type: ActionSelect, targetIds: string[] = [], actionType: string) => {
 		setDropdownSelectedAction(actionType);
