@@ -50,7 +50,7 @@ const ProspectSearchEntry = ({ item, onClick }: { item: FilterModel; onClick: Di
 	};
 
 	const getLabel = () => {
-		console.log('item', item);
+		// console.log('item', item);
 		const bytemineFilter: IBytemineFilter | Error = attempt(JSON.parse.bind(null, item.filter));
 		if (bytemineFilter instanceof Error) {
 			return 'NA';
