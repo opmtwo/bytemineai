@@ -244,6 +244,10 @@ div.planslist div.column div.panel {
 // Tabs
 // -----------------------------------------------------------------------------
 
+.tabs a {
+	color: grey;
+}
+
 .tabs a:hover,
 .tabs li.is-active a {
 	border-color: $panel-border-color;
