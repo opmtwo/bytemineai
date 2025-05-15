@@ -88,7 +88,10 @@ const esRequest2 = async (method, path, data) => {
 			throw new Error(`ES error (${response.status}): ${errorText}`);
 		}
 
-		return await response.json();
+		const json = await response.json();
+		console.log('esRequest2', JSON.stringify({ json }));
+
+		return json
 	} catch (error) {
 		console.error('ES Request failed:', error.message);
 		throw error;
