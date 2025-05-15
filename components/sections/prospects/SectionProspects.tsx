@@ -683,7 +683,7 @@ const SectionProspects = ({
 		setIsUnlockModalActive(false);
 	};
 
-	const onUnlockError = (pids: string[]) => {
+	const onUnlockError = () => {
 		setPidsBeingUnlocked([]);
 		setIsUnlockModalActive(false);
 	};
@@ -732,6 +732,9 @@ const SectionProspects = ({
 					filter={activeFilter}
 					onViewHistory={onViewHistory}
 					onFilterSave={onFilterSave}
+					onUnlockStart={onUnlockStart}
+					onUnlockCancel={onUnlockCancel}
+					onUnlockError={onUnlockError}
 				/>
 
 				{/* The add to list modal */}
@@ -820,6 +823,9 @@ const SectionProspects = ({
 									filter={activeFilter}
 									onViewHistory={onViewHistory}
 									onFilterSave={onFilterSave}
+									onUnlockStart={onUnlockStart}
+									onUnlockCancel={onUnlockCancel}
+									onUnlockError={onUnlockError}
 								/>
 							</div>
 						</>
@@ -868,6 +874,9 @@ const SectionProspects = ({
 										filter={activeFilter}
 										onViewHistory={onViewHistory}
 										onFilterSave={onFilterSave}
+										onUnlockStart={onUnlockStart}
+										onUnlockCancel={onUnlockCancel}
+										onUnlockError={onUnlockError}
 									/>
 									{/* {isBusy && <TableSkeleton />} */}
 									{/* <CardAnimatePresence isActive={isBusy}>

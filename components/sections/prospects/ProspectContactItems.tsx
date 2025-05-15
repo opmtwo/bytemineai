@@ -71,6 +71,9 @@ const ProspectContactItems = ({
 	showExportModal,
 	onViewHistory,
 	onFilterSave,
+	onUnlockStart,
+	onUnlockCancel,
+	onUnlockError,
 }: {
 	items: IBytemineContact[];
 	emailAccounts: EmailAccountModel[];
@@ -106,6 +109,9 @@ const ProspectContactItems = ({
 	showExportModal?: () => void;
 	onViewHistory?: () => void;
 	onFilterSave?: (value: IBytemineFilter, model?: FilterModel) => void;
+	onUnlockStart: (pids: string[]) => void;
+	onUnlockCancel: () => void;
+	onUnlockError: () => void;
 }) => {
 	const [query, setQuery] = useState('');
 
@@ -410,9 +416,12 @@ const ProspectContactItems = ({
 						selectedAction={dropdownSelectedAction}
 						onSuccess={onSuccess}
 						isContactsOnly={isContactsOnly}
+						onUnlockStart={onUnlockStart}
+						onUnlockCancel={onUnlockCancel}
+						onUnlockError={onUnlockError}
 					/>
 
-					<ProspectExportActionButton
+					{/* <ProspectExportActionButton
 						contacts={items}
 						displayItems={displayItems}
 						selectedAction={dropdownSelectedAction}
@@ -420,16 +429,16 @@ const ProspectContactItems = ({
 						onExport={onExport}
 						sortMap={sortMap}
 						isContactsOnly={isContactsOnly}
-					/>
+					/> */}
 
 					{isProspectFinder && (
-						<FormButtonNew type="button" className="mx-3" onClick={handleSave}>
+						<FormButtonNew type="button" onClick={handleSave}>
 							Save Search
 						</FormButtonNew>
 					)}
 
 					{isProspectFinder && (
-						<FormButtonNew type="button" onClick={onViewHistory}>
+						<FormButtonNew type="button" className="mx-3" onClick={onViewHistory}>
 							My Searches
 						</FormButtonNew>
 					)}
@@ -477,6 +486,9 @@ const ProspectContactItems = ({
 								selectedAction={dropdownSelectedAction}
 								onSuccess={onSuccess}
 								isContactsOnly={isContactsOnly}
+								onUnlockStart={onUnlockStart}
+								onUnlockCancel={onUnlockCancel}
+								onUnlockError={onUnlockError}
 							/>
 						) : (
 							<div></div>

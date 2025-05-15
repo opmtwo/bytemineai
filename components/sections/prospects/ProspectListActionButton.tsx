@@ -20,14 +20,20 @@ const ProspectListActionButton = ({
 	selectedAction = '',
 	contacts = [],
 	displayItems = [],
-	onSuccess = (items: IBytemineContact[]) => {},
 	isContactsOnly = false,
+	onSuccess = (items: IBytemineContact[]) => {},
+	onUnlockStart,
+	onUnlockCancel,
+	onUnlockError,
 }: {
 	selectedAction: string;
 	contacts: IBytemineContact[];
 	displayItems: IBytemineContact[];
-	onSuccess: (items: IBytemineContact[]) => void;
 	isContactsOnly?: boolean;
+	onSuccess: (items: IBytemineContact[]) => void;
+	onUnlockStart: (pids: string[]) => void;
+	onUnlockCancel: () => void;
+	onUnlockError: () => void;
 }) => {
 	const [isActive, setIsActive] = useState(false);
 
@@ -212,6 +218,8 @@ const ProspectListActionButton = ({
 				const pids = sourceContacts.map((item) => item.pid).filter((pid) => pid?.trim()?.length);
 				// console.log({ sourceContacts, pids });
 
+				onUnlockStart(pids);
+
 				const fullContacts = (await callApi(null, '/api/v1/contacts/unlock', {
 					method: 'POST',
 					body: JSON.stringify({ pids }),
@@ -302,9 +310,11 @@ const ProspectListActionButton = ({
 			} catch (err) {
 				notifyError(err);
 				setLoading(false);
+				onUnlockError();
 			}
 
 			setLoading(false);
+			onUnlockCancel();
 		}
 
 		// All done
@@ -321,8 +331,8 @@ const ProspectListActionButton = ({
 			{isActive ? <div className="is-overlay" onClick={onToggle}></div> : null}
 			<div className={classNames('dropdown', { 'is-active': isActive })}>
 				<div className="dropdown-trigger is-flex is-justify-content-center is-align-items-center">
-					<FormButtonNew className="mx-3" onClick={onToggle}>
-						<IconNewList width={16} />
+					<FormButtonNew variant="active" className="mx-3" onClick={onToggle}>
+						<IconNewList stroke="white" width={16} />
 						<span>Add to List</span>
 					</FormButtonNew>
 				</div>
@@ -351,11 +361,9 @@ const ProspectListActionButton = ({
 							<FormButtonNew
 								type="button"
 								onClick={unlockSelectedContacts}
-								// variant={['is-outlined']}
-								// color="is-primary"
 								className="is-fullwidth"
 								disabled={loading}
-								// loading={loading}
+								loading={loading}
 							>
 								Add Selection
 							</FormButtonNew>
