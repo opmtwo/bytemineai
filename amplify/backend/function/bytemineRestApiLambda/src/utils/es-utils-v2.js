@@ -91,7 +91,7 @@ const esRequest2 = async (method, path, data) => {
 		const json = await response.json();
 		console.log('esRequest2', JSON.stringify({ json }));
 
-		return json
+		return json;
 	} catch (error) {
 		console.error('ES Request failed:', error.message);
 		throw error;
@@ -125,14 +125,13 @@ const esGetOptionValuesV2 = (optionValues, incexclude = 'include', verbose = fal
 		}
 
 		if (!values.length) {
-			optionValues.forEach(val => {
+			optionValues.forEach((val) => {
 				if (val.excluded) {
 					return;
 				}
 				values.push(val.value);
-			})
+			});
 		}
-
 	} else if (incexclude === 'exclude') {
 		// If 'exclude' key exists, push all its values
 		if ('exclude' in optionValues) {
@@ -140,22 +139,21 @@ const esGetOptionValuesV2 = (optionValues, incexclude = 'include', verbose = fal
 		}
 
 		if (!values.length) {
-			optionValues.forEach(val => {
+			optionValues.forEach((val) => {
 				if (!val.excluded) {
 					return;
 				}
 				values.push(val.value);
-			})
+			});
 		}
-
 	} else {
 		// If no specific mode, assume optionValues is a raw array
 		optionValues.forEach((item) => values.push(item));
 
 		if (!values.length) {
-			optionValues.forEach(val => {
+			optionValues.forEach((val) => {
 				values.push(val.value);
-			})
+			});
 		}
 	}
 
@@ -177,66 +175,66 @@ const esGetOptionsV2 = (body) => {
 
 		name_first: esGetOptionValuesV2(body.firstName),
 		name_last: esGetOptionValuesV2(body.lastName),
-		
+
 		contactTitles: esGetOptionValuesV2(body.jobTitles),
 		contactTitlesExclude: esGetOptionValuesV2(body.jobTitles, 'exclude'),
-		
+
 		contactEducation: esGetOptionValuesV2(body.schools),
 		contactEducationExclude: esGetOptionValuesV2(body.schools, 'exclude'),
-		
+
 		contactSkills: esGetOptionValuesV2(body.skills), // ['string'],
 		contactSkillsExclude: esGetOptionValuesV2(body.skills, 'exclude'), // ['string'],
-		
+
 		contactInterests: esGetOptionValuesV2(body.interests), // ['string'],
 		contactInterestsExclude: esGetOptionValuesV2(body.interests, 'exclude'), // ['string'],
-		
+
 		seniorityLevels: esGetOptionValuesV2(body.seniorityLevels), // ['cxo', 'vp', 'director'],
 		seniorityLevelsExclude: esGetOptionValuesV2(body.seniorityLevels, 'exclude'), // ['cxo', 'vp', 'director'],
-		
+
 		departments: esGetOptionValuesV2(body.departments), // ['customer_service', 'engineering', 'real_estate'],
 		departmentsExclude: esGetOptionValuesV2(body.departments, 'exclude'), // ['customer_service', 'engineering', 'real_estate'],
-		
+
 		hqLocations: esGetOptionValuesV2(body.hqLocations), // ['United States', 'United Kingdom'],
-		
+
 		cities: esGetOptionValuesV2(body.cities), // ['string'],
-		
+
 		states: esGetOptionValuesV2(body.states), // ['NY', 'CA'],
 		statesExclude: esGetOptionValuesV2(body.states, 'exclude'), // ['NY', 'CA'],
-		
+
 		industries: esGetOptionValuesV2(body.industries), // ['accounting', 'capital markets', 'architecture & planning'],
 		industriesExclude: esGetOptionValuesV2(body.industries, 'exclude'), // ['accounting', 'capital markets', 'architecture & planning'],
-		
+
 		employeeSizes: esGetOptionValuesV2(body.employeeSizes), // [5, 8],
 		employeeSizesExclude: esGetOptionValuesV2(body.employeeSizes, 'exclude'), // [5, 8],
-		
+
 		companyRevenues: esGetOptionValuesV2(body.companyRevenues), // [6, 7],
 		companyRevenuesExclude: esGetOptionValuesV2(body.companyRevenues, 'exclude'), // [6, 7],
-		
+
 		sicCodes: esGetOptionValuesV2(body.sicCodes), // ['8720', '9411', '273'],
 		sicCodesExclude: esGetOptionValuesV2(body.sicCodes, 'exclude'), // ['8720', '9411', '273'],
-		
+
 		naicsCodes: esGetOptionValuesV2(body.companyNaicsCodes), // ['8720', '9411', '273'],
 		naicsCodesExclude: esGetOptionValuesV2(body.companyNaicsCodes, 'exclude'), // ['8720', '9411', '273'],
-		
+
 		companyNames: esGetOptionValuesV2(body.companyNames), // ['google', 'microsoft'],
 		companyNamesExclude: esGetOptionValuesV2(body.companyNames, 'exclude'), // ['google', 'microsoft'],
-		
+
 		urls: esGetOptionValuesV2(body.urls), // ['rampedup.io', 'google.com'],
 		urlsExclude: esGetOptionValuesV2(body.urls, 'exclude'), // ['rampedup.io', 'google.com'],
-		
+
 		hasChangedJobRecently: body.hasChangedJobRecently ? true : false,
-		
+
 		urlsToSuppress: esGetOptionValuesV2(body.urlsToSuppress), // ['microsoft.com', 'yahoo.com'],
-		
+
 		linkedinUrls: esGetOptionValuesV2(body.linkedinUrls), // ['microsoft.com', 'yahoo.com'],
 		linkedinUrlsExclude: esGetOptionValuesV2(body.linkedinUrls, 'exclude'), // ['microsoft.com', 'yahoo.com'],
-		
+
 		titlesToSuppress: esGetOptionValuesV2(body.titlesToSuppress), // ['Administrator', 'Software Developer'],
-		
+
 		emailsToSuppress: esGetOptionValuesV2(body.emailsToSuppress), // ['test@testemail.com'],
-		
+
 		emailAddresses: esGetOptionValuesV2(body.emailAddresses), // ['test@testemail.com'],
-		
+
 		hasRequiredEmail: body.hasRequiredEmail ? true : false,
 		hasValidateEmails: body.hasValidateEmails ? true : false,
 		hasPrimaryContactsOnly: body.hasPrimaryContactsOnly ? true : false,
@@ -247,15 +245,15 @@ const esGetOptionsV2 = (body) => {
 		hasPhoneCell: body.hasPhoneCell ? true : false,
 		hasWorkEmail: body.hasWorkEmail ? true : false,
 		hasPersonalEmail: body.hasPersonalEmailOnly ? true : false,
-		
+
 		md5HashedEmailAddresses: esGetOptionValuesV2(body.md5HashedEmailAddresses),
-		
+
 		facebookUrls: esGetOptionValuesV2(body.facebookUrls),
-		
+
 		mobilePhones: esGetOptionValuesV2(body.mobilePhones),
-		
+
 		audience: body.audience ? true : false,
-		
+
 		page: body.page || 0, // using default page 1
 		pageSize: Math.max(body.pageSize || 10, 10), // using default / max page size of 10
 	};
@@ -1167,9 +1165,17 @@ const esGetFilters2 = (rawBody, append = false) => {
 				query.push({ match_phrase: { [fields[i]]: body.contactEducation[j] } });
 			}
 		}
-		filters.push({ nested: {
-			path: 'education',
-			query: { bool: { should: [...query], minimum_should_match: 1 } } } });
+		filters.push({
+			nested: {
+				path: 'education',
+				query: {
+					bool: {
+						should: [...query],
+						minimum_should_match: 1,
+					},
+				},
+			},
+		});
 	}
 
 	// -------------------------------------------------------------------------
@@ -1181,8 +1187,14 @@ const esGetFilters2 = (rawBody, append = false) => {
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.contactEducationExclude.length; j++) {
 				query.push({
-					bool: {
-						must_not: { match: { [fields[i]]: body.contactEducationExclude[j] } },
+					nested: {
+						path: 'education',
+						query: {
+							bool: {
+								must_not: { match: { [fields[i]]: body.contactEducationExclude[j] } },
+								minimum_should_match: 1,
+							},
+						},
 					},
 				});
 			}
