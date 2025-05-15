@@ -98,12 +98,12 @@ const Pagination = ({
 	};
 
 	return (
-		<div className="pagination is-flex is-align-items-center is-fullwidth is-justify-content-start mb-0">
-			<div className={classNames('is-flex is-align-items-center mr-3', { 'mr-auto': variant === 'spread' })}>
+		<div className={classNames('pagination is-flex is-align-items-center is-fullwidth is-justify-content-start m-0', { 'is-flex-direction-row-reverse': variant === 'spread' })}>
+			<div className={classNames('is-flex is-align-items-center', { 'ml-auto': variant === 'spread' })}>
 				<FormSelect options={perPageOptions} onChange={onPerPageChange} value={itemsPerPage} size="is-small" />
 			</div>
-			<div className={classNames('is-flex is-align-items-center', {'ml-auto': variant === 'spread' })}>
-				<div className="has-text-grey px-3" style={{ minWidth: 120 }}>
+			<div className={classNames('is-flex is-align-items-center', {'mr-auto': variant === 'spread' })}>
+				<div className="has-text-grey">
 					#{Math.min(startIndex + 1, totalItems)} - {endIndex}
 				</div>
 				<span className={classNames('icon is-clickable mx-3', { 'is-disabled': isPrevDisabled })} onClick={isPrevDisabled ? undefined : onPrev}>
