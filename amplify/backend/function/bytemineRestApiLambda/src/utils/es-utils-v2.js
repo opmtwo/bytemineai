@@ -335,7 +335,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.contactSkills.length; j++) {
-				query.push({ match: { [fields[i]]: body.contactSkills[j] } });
+				query.push({ terms: { [fields[i]]: [body.contactSkills[j]] } });
 			}
 		}
 		filters.push({ bool: { should: [...query] } });
@@ -351,7 +351,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 			for (let j = 0; j < body.contactSkillsExclude.length; j++) {
 				query.push({
 					bool: {
-						must_not: { match: { [fields[i]]: body.contactSkillsExclude[j] } },
+						must_not: { terms: { [fields[i]]: [body.contactSkillsExclude[j]] } },
 					},
 				});
 			}
@@ -380,32 +380,32 @@ const esGetFilters2 = (rawBody, append = false) => {
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
 	if (body?.contactInterests instanceof Array && body?.contactInterests.length > 0) {
-		const fields = ['interests'];
+		const fields = ['interests.keyword'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.contactInterests.length; j++) {
-				query.push({ match: { [fields[i]]: body.contactInterests[j] } });
+				query.push({ terms: { [fields[i]]: [body.contactInterests[j]] } });
 			}
 		}
-		filters.push({ bool: { should: [...query] } });
+		filters.push({ bool: { should: [...query] }, minimum_should_match: 1 });
 	}
 
 	// -------------------------------------------------------------------------
 	// contactInterestsExclude > interests
 	// -------------------------------------------------------------------------
 	if (body?.contactInterestsExclude instanceof Array && body?.contactInterestsExclude.length > 0) {
-		const fields = ['interests'];
+		const fields = ['interests.keyword'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.contactInterestsExclude.length; j++) {
 				query.push({
 					bool: {
-						must_not: { match: { [fields[i]]: body.contactInterestsExclude[j] } },
+						must_not: { terms: { [fields[i]]: [body.contactInterestsExclude[j]] } },
 					},
 				});
 			}
 		}
-		filters.push({ bool: { filter: [...query] } });
+		filters.push({ bool: { filter: [...query], minimum_should_match: 1 } });
 	}
 
 	// -------------------------------------------------------------------------
@@ -616,11 +616,11 @@ const esGetFilters2 = (rawBody, append = false) => {
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
 	if (body?.departments instanceof Array && body?.departments.length > 0) {
-		const fields = [];
+		const fields = ['department'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.departments.length; j++) {
-				query.push({ match_phrase_prefix: { [fields[i]]: body.departments[j] } });
+				query.push({ prefix: { [fields[i]]: body.departments[j] } });
 			}
 		}
 		filters.push({ bool: { should: [...query] } });
@@ -630,7 +630,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 	// departmentsExclude > None
 	// -------------------------------------------------------------------------
 	if (body?.departmentsExclude instanceof Array && body?.departmentsExclude.length > 0) {
-		const fields = [];
+		const fields = ['department'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.departmentsExclude.length; j++) {
