@@ -316,3 +316,23 @@ export const exportContactCompanyLabels = {
 export const MONTHLY_PRICE_ID = 'price_1RNoLNLgUrD1kX4RjzqrCGS8';
 
 export const YEARLY_PRICE_ID = 'price_1RNoLNLgUrD1kX4Rocv6WXIN';
+
+export const PLAN_STARTER_MONTHLY = 'price_1RP5LUDsM2Cd0g4eItv1ahpI';
+
+export const PLAN_STARTER_YEARLY = 'price_1RP5LUDsM2Cd0g4eItv1ahpI';
+
+export const PLAN_GROWTH_MONTHLY = 'price_1RP5LUDsM2Cd0g4eItv1ahpI';
+
+export const PLAN_GROWTH_YEARLY = 'price_1RP5LUDsM2Cd0g4eAY4rwsOF';
+
+export const PLAN_PRO_MONTHLY = 'price_1RP5LUDsM2Cd0g4eEI0CbhUZ';
+
+export const PLAN_PRO_YEARLY = 'price_1RP5LUDsM2Cd0g4eG9yFwBNQ';
+
+export const PLAN_BUSINESS_MONTHLY = 'price_1RP5LUDsM2Cd0g4eEUzamNdQ';
+
+export const PLAN_BUSINESS_YEARLY = 'price_1RP5LUDsM2Cd0g4eQL14r4I2';
+
+export const PLAN_ENTERPRISE_MONTHLY = 'price_1RP5LUDsM2Cd0g4eYMocuEBF';
+
+export const PLAN_ENTERPRISE_YEARLY = 'price_1RP5LUDsM2Cd0g4eVwbp22Gi';
