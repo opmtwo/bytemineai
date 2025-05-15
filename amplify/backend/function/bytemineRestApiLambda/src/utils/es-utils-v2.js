@@ -181,14 +181,14 @@ const esGetOptionsV2 = (body) => {
 		contactTitles: esGetOptionValuesV2(body.jobTitles),
 		contactTitlesExclude: esGetOptionValuesV2(body.jobTitles, 'exclude'),
 		
-		contactEducation: esGetOptionValuesV2(body.contactEducation),
-		contactEducationExclude: esGetOptionValuesV2(body.contactEducation, 'exclude'),
+		contactEducation: esGetOptionValuesV2(body.schools),
+		contactEducationExclude: esGetOptionValuesV2(body.schools, 'exclude'),
 		
-		contactSkills: esGetOptionValuesV2(body.contactSkills), // ['string'],
-		contactSkillsExclude: esGetOptionValuesV2(body.contactSkills, 'exclude'), // ['string'],
+		contactSkills: esGetOptionValuesV2(body.skills), // ['string'],
+		contactSkillsExclude: esGetOptionValuesV2(body.skills, 'exclude'), // ['string'],
 		
-		contactInterests: esGetOptionValuesV2(body.contactInterests), // ['string'],
-		contactInterestsExclude: esGetOptionValuesV2(body.contactInterests, 'exclude'), // ['string'],
+		contactInterests: esGetOptionValuesV2(body.interests), // ['string'],
+		contactInterestsExclude: esGetOptionValuesV2(body.interests, 'exclude'), // ['string'],
 		
 		seniorityLevels: esGetOptionValuesV2(body.seniorityLevels), // ['cxo', 'vp', 'director'],
 		seniorityLevelsExclude: esGetOptionValuesV2(body.seniorityLevels, 'exclude'), // ['cxo', 'vp', 'director'],
@@ -206,11 +206,11 @@ const esGetOptionsV2 = (body) => {
 		industries: esGetOptionValuesV2(body.industries), // ['accounting', 'capital markets', 'architecture & planning'],
 		industriesExclude: esGetOptionValuesV2(body.industries, 'exclude'), // ['accounting', 'capital markets', 'architecture & planning'],
 		
-		employeeSizes: esGetOptionValuesV2(body.companySizeIds), // [5, 8],
-		employeeSizesExclude: esGetOptionValuesV2(body.companySizeIds, 'exclude'), // [5, 8],
+		employeeSizes: esGetOptionValuesV2(body.employeeSizes), // [5, 8],
+		employeeSizesExclude: esGetOptionValuesV2(body.employeeSizes, 'exclude'), // [5, 8],
 		
-		companyRevenues: esGetOptionValuesV2(body.companyRevenueIds), // [6, 7],
-		companyRevenuesExclude: esGetOptionValuesV2(body.companyRevenueIds, 'exclude'), // [6, 7],
+		companyRevenues: esGetOptionValuesV2(body.companyRevenues), // [6, 7],
+		companyRevenuesExclude: esGetOptionValuesV2(body.companyRevenues, 'exclude'), // [6, 7],
 		
 		sicCodes: esGetOptionValuesV2(body.sicCodes), // ['8720', '9411', '273'],
 		sicCodesExclude: esGetOptionValuesV2(body.sicCodes, 'exclude'), // ['8720', '9411', '273'],
@@ -380,27 +380,27 @@ const esGetFilters2 = (rawBody, append = false) => {
 	// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
 	// -------------------------------------------------------------------------
 	if (body?.contactInterests instanceof Array && body?.contactInterests.length > 0) {
-		const fields = ['interests.keyword'];
+		const fields = ['interests'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.contactInterests.length; j++) {
-				query.push({ terms: { [fields[i]]: [body.contactInterests[j]] } });
+				query.push({ match: { [fields[i]]: body.contactInterests[j] } });
 			}
 		}
-		filters.push({ bool: { should: [...query] }, minimum_should_match: 1 });
+		filters.push({ bool: { should: [...query], minimum_should_match: 1 } });
 	}
 
 	// -------------------------------------------------------------------------
 	// contactInterestsExclude > interests
 	// -------------------------------------------------------------------------
 	if (body?.contactInterestsExclude instanceof Array && body?.contactInterestsExclude.length > 0) {
-		const fields = ['interests.keyword'];
+		const fields = ['interests'];
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.contactInterestsExclude.length; j++) {
 				query.push({
 					bool: {
-						must_not: { terms: { [fields[i]]: [body.contactInterestsExclude[j]] } },
+						must_not: { match: { [fields[i]]: body.contactInterestsExclude[j] } },
 					},
 				});
 			}
@@ -864,7 +864,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.employeeSizes.length; j++) {
 				//query.push({ match: { [fields[i]]: body.employeeSizes[j] } });
-				query.push({ match_phrase_prefix: { [fields[i]]: body.employeeSizes[j] } });
+				query.push({ terms: { [fields[i]]: [body.employeeSizes[j]] } });
 			}
 		}
 		filters.push({ bool: { should: [...query] } });
@@ -880,7 +880,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 			for (let j = 0; j < body.employeeSizesExclude.length; j++) {
 				query.push({
 					bool: {
-						must_not: { match: { [fields[i]]: body.employeeSizesExclude[j] } },
+						must_not: { terms: { [fields[i]]: [body.employeeSizesExclude[j]] } },
 					},
 				});
 			}
@@ -898,7 +898,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.companyRevenues.length; j++) {
 				//query.push({ match: { [fields[i]]: body.companyRevenues[j] } });
-				query.push({ match_phrase_prefix: { [fields[i]]: body.companyRevenues[j] } });
+				query.push({ terms: { [fields[i]]: [body.companyRevenues[j]] } });
 			}
 		}
 		filters.push({ bool: { should: [...query] } });
@@ -914,7 +914,7 @@ const esGetFilters2 = (rawBody, append = false) => {
 			for (let j = 0; j < body.companyRevenuesExclude.length; j++) {
 				query.push({
 					bool: {
-						must_not: { match: { [fields[i]]: body.companyRevenuesExclude[j] } },
+						must_not: { terms: { [fields[i]]: [body.companyRevenuesExclude[j]] } },
 					},
 				});
 			}
@@ -1164,10 +1164,12 @@ const esGetFilters2 = (rawBody, append = false) => {
 		const query = [];
 		for (let i = 0; i < fields.length; i++) {
 			for (let j = 0; j < body.contactEducation.length; j++) {
-				query.push({ match_phrase_prefix: { [fields[i]]: body.contactEducation[j] } });
+				query.push({ match_phrase: { [fields[i]]: body.contactEducation[j] } });
 			}
 		}
-		filters.push({ bool: { should: [...query] } });
+		filters.push({ nested: {
+			path: 'education',
+			query: { bool: { should: [...query], minimum_should_match: 1 } } } });
 	}
 
 	// -------------------------------------------------------------------------
