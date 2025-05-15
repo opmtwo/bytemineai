@@ -650,8 +650,8 @@ const Filter = ({
 								name="jobTitles"
 								label="Job Titles"
 								placeholder="Enter job titles"
-								value={keywords}
-								onChange={setKeywords}
+								value={jobTitles}
+								onChange={setJobTitles}
 								options={[]}
 								isMulti={true}
 								// iconLeft={<span className="material-icons">work</span>}
