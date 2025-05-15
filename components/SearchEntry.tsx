@@ -51,7 +51,7 @@ const SearchEntry = ({
 	};
 
 	const getLabel = () => {
-		console.log('item', item);
+		// console.log('item', item);
 		const rampedUpFilter: RampedUpFilter | Error = attempt(JSON.parse.bind(null, item.filter));
 		if (rampedUpFilter instanceof Error) {
 			return 'NA';
