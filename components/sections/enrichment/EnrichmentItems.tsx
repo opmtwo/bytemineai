@@ -94,7 +94,7 @@ const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactMod
 				<div className="column is-10">
 					<div className="columns is-mobile is-align-items-center has-text-dark">
 						<div className="column is-4">
-							<span className="is-flex is-align-items-center">
+							{/* <span className="is-flex is-align-items-center">
 								<span
 									className="is-relative field"
 									style={{ zIndex: 1 }}
@@ -111,7 +111,8 @@ const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactMod
 									/>
 								</span>
 								<span className="ml-5">My File</span>
-							</span>
+							</span> */}
+							<span>My File</span>
 						</div>
 						<div className="column is-2 has-text-centered">Records Uploaded</div>
 						<div className="column is-2 has-text-centered">Records Enriched</div>

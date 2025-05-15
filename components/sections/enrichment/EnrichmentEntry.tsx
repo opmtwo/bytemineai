@@ -143,7 +143,7 @@ const EnrichmentEntry = ({
 				<div className="column is-10">
 					<Anchor href={url} className="columns is-mobile is-align-items-center has-text-dark">
 						<div className="column is-4 is-flex is-align-items-center">
-							<span
+							{/* <span
 								className="is-relative field"
 								style={{ zIndex: 1 }}
 								onClick={(e) => {
@@ -159,7 +159,8 @@ const EnrichmentEntry = ({
 							</span>
 							<span className="ml-5" style={{ wordBreak: 'break-all' }}>
 								{item.name}
-							</span>
+							</span> */}
+							<span>{item.name}</span>
 						</div>
 						<div className="column is-2 has-text-centered">
 							{item.status?.toLowerCase().trim() === 'processing' ? (
