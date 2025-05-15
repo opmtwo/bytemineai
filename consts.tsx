@@ -336,3 +336,16 @@ export const PLAN_BUSINESS_YEARLY = 'price_1RP5LUDsM2Cd0g4eQL14r4I2';
 export const PLAN_ENTERPRISE_MONTHLY = 'price_1RP5LUDsM2Cd0g4eYMocuEBF';
 
 export const PLAN_ENTERPRISE_YEARLY = 'price_1RP5LUDsM2Cd0g4eVwbp22Gi';
+
+export const plans = [
+	{ id: PLAN_STARTER_MONTHLY, interval: 'monthly', priceId: PLAN_STARTER_MONTHLY, name: 'Starter Monthly' },
+	{ id: PLAN_STARTER_YEARLY, interval: 'yearly', priceId: PLAN_STARTER_YEARLY, name: 'Starter Yearly' },
+	{ id: PLAN_GROWTH_MONTHLY, interval: 'monthly', priceId: PLAN_GROWTH_MONTHLY, name: 'Growth Monthly' },
+	{ id: PLAN_GROWTH_YEARLY, interval: 'yearly', priceId: PLAN_GROWTH_YEARLY, name: 'Growth Yearly' },
+	{ id: PLAN_PRO_MONTHLY, interval: 'monthly', priceId: PLAN_PRO_MONTHLY, name: 'Pro Monthly' },
+	{ id: PLAN_PRO_YEARLY, interval: 'yearly', priceId: PLAN_PRO_YEARLY, name: 'Pro Yearly' },
+	{ id: PLAN_BUSINESS_MONTHLY, interval: 'monthly', priceId: PLAN_BUSINESS_MONTHLY, name: 'Business Monthly' },
+	{ id: PLAN_BUSINESS_YEARLY, interval: 'yearly', priceId: PLAN_BUSINESS_YEARLY, name: 'Business Yearly' },
+	{ id: PLAN_ENTERPRISE_MONTHLY, interval: 'monthly', priceId: PLAN_ENTERPRISE_MONTHLY, name: 'Enterprise Monthly' },
+	{ id: PLAN_ENTERPRISE_YEARLY, interval: 'yearly', priceId: PLAN_ENTERPRISE_YEARLY, name: 'Enterprise Yearly' },
+];
