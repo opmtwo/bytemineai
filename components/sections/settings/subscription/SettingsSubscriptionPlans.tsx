@@ -6,11 +6,11 @@ import { useAuthContext } from '../../../../providers/auth-data-provider';
 import { callApi } from '../../../../utils/helper-utils';
 import Card from '../../../Card';
 import FormButtonNew from '../../../form/FormButtonNew';
+import FormSelect from '../../../form/FormSelect';
 import IconNewCheck from '../../../icons/IconNewCheck';
 import IconNewPlanBasic from '../../../icons/IconNewPlanBasic';
 import IconNewPlanStandard from '../../../icons/IconNewPlanStandard';
 import Slot from '../../../Slot';
-import FormSelect from '../../../form/FormSelect';
 
 const SettingsSubscriptionPlans = () => {
 	const [isBusy, setIsBusy] = useState(false);
@@ -27,7 +27,6 @@ const SettingsSubscriptionPlans = () => {
 
 	useEffect(() => {
 		const planId = creditPlan || '';
-		console.log({ planId });
 
 		if (['PLAN_STARTER_MONTHLY', 'PLAN_STARTER_YEARLY'].includes(planId)) {
 			setMonthlyOption(planOptions.find((p) => p.id === 'PLAN_STARTER_MONTHLY')!);
@@ -98,6 +97,14 @@ const SettingsSubscriptionPlans = () => {
 		setIsYearlyBusy(false);
 	};
 
+	const onConfirm = async () => {
+		const planId = planOptions.find((p) => p.id === creditPlan);
+		if (!planId) {
+			return;
+		}
+		await openPaymentLink(planId.priceId);
+	};
+
 	const plans = [
 		{
 			title: monthlyOption.name,
@@ -106,7 +113,7 @@ const SettingsSubscriptionPlans = () => {
 			isAnnual: false,
 			isBusy: isMonthlyBusy,
 			features: ['Unlimited users', 'Cancel anytime', 'Largest database of contacts', 'Mobiles', 'Personal Emails', 'Work Emails', 'API access'],
-			onClick: isMonthly ? openCustomerPortal : openClientMonthly,
+			onClick: isMonthly || isYearly ? undefined : openClientMonthly,
 		},
 		{
 			title: yearlyOption.name,
@@ -115,7 +122,7 @@ const SettingsSubscriptionPlans = () => {
 			isAnnual: true,
 			isBusy: isYearlyBusy,
 			features: ['Unlimited users', 'Cancel anytime', 'Largest database of contacts', 'Mobiles', 'Personal Emails', 'Work Emails', 'API access'],
-			onClick: isYearly ? openCustomerPortal : openClientYearly,
+			onClick: isMonthly || isYearly ? undefined : openClientYearly,
 		},
 	];
 
@@ -158,11 +165,11 @@ const SettingsSubscriptionPlans = () => {
 													type="button"
 													className="is-fullwidth has-text-centered"
 													variant={plan.isAnnual ? 'active' : 'default'}
-													disabled={plan.isBusy}
+													disabled={plan.isBusy || !plan.onClick}
 													loading={plan.isBusy}
 													onClick={plan.onClick}
 												>
-													{isActive ? 'Manage' : 'Select Plan'}
+													Select Plan
 												</FormButtonNew>
 											</div>
 										</Slot>
@@ -183,6 +190,18 @@ const SettingsSubscriptionPlans = () => {
 								nameField="name"
 								label=""
 							/>
+							{creditPlan && !isActive ? (
+								<div className="mt-5">
+									<FormButtonNew type="button" variant="active" style={{ width: 160 }} disabled={isBusy} loading={isBusy} onClick={onConfirm}>
+										Confirm
+									</FormButtonNew>
+								</div>
+							) : null}
+							{isActive ? (
+								<p className="has-text-danger has-text-weight-semibold my-5">
+									Please cancel your active subscription before switching to another plan.
+								</p>
+							) : null}
 						</div>
 					</div>
 				</Slot>
