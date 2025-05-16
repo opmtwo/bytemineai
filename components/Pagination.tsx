@@ -90,11 +90,12 @@ const Pagination = ({
 	};
 
 	const onPerPageChange = (value: number) => {
-		if (isTrialAccount) {
-			setIsUpgradeModalActive(true);
-		} else {
-			onPageChange(0, parseInt(value.toString(), 10));
-		}
+		onPageChange(0, parseInt(value.toString(), 10));
+		// if (isTrialAccount) {
+		// 	setIsUpgradeModalActive(true);
+		// } else {
+		// 	onPageChange(0, parseInt(value.toString(), 10));
+		// }
 	};
 
 	return (
