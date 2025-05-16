@@ -55,6 +55,7 @@ app.use(function(req, res, next) {
 app.use('/api/v1/hello', helloRouter);
 app.use('/api/v1/me', meRouter);
 app.use('/api/v1/collections', collectionsRouter);
+app.use('/api/v1/lists', collectionsRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/search', searchRouter);
 app.use('/api/v1/csv-filters', csvFiltersRouter);
