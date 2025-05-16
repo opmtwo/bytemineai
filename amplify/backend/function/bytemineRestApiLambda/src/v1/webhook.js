@@ -159,43 +159,88 @@ router.post('/', async (req, res) => {
 
 		const parseLine = (item, index, arr) => {
 			console.log(JSON.stringify({ item, index }));
-			if (item.price.id === 'price_1RNoLNLgUrD1kX4RjzqrCGS8') {
+
+			if (item.price.id === 'price_1RP5LUDsM2Cd0g4ebEsp66r6') {
 				mainPlan = 'Monthly';
 				mainQty = 1000;
 				monthlyCredit = 1000;
-				quarterlyCredit = 1000;
-			} else if (item.price.id === 'price_1RNoLNLgUrD1kX4Rocv6WXIN') {
+				quarterlyCredit = 0;
+				annualCredit = 0;
+			}
+
+			if (item.price.id === 'price_1RP5LUDsM2Cd0g4ePWqXnWQ3') {
 				mainPlan = 'Yearly';
 				mainQty = 12000;
+				monthlyCredit = 0;
+				quarterlyCredit = 0;
 				annualCredit = 12000;
-				quarterlyCredit = 1200;
-			} else if (item.price.id === 'price_1MA7OyKEmxTujg3VwNMqMraq') {
-				//monthly addn'l credits
-				extraQty = parseInt(item.quantity || '0');
-				monthlyCredit = monthlyCredit + extraQty;
-			} else if (item.price.id === 'price_1MA7OLKEmxTujg3VRKbkGiHP') {
-				//annual addn'l credits
-				extraQty = parseInt(item.quantity || '0');
-				annualCredit = annualCredit + extraQty;
-			} else if (item.price.id === 'price_1Ml1ZAKEmxTujg3Vm2lzOrVn') {
-				mainPlan = 'Monthly';
-				mainQty = 10000;
-				monthlyCredit = 10000;
-				quarterlyCredit = 10000;
-			} else if (item.price.id === 'price_1Ml1dxKEmxTujg3V62aIZnE3') {
-				mainPlan = 'Yearly';
-				mainQty = 120000;
-				annualCredit = 120000;
-				quarterlyCredit = 15000;
-			} else if (item.price.id === 'price_1Ml1htKEmxTujg3VParc8ZrL') {
-				//monthly addn'l credits
-				extraQty = parseInt(item.quantity || '0');
-				monthlyCredit = monthlyCredit + extraQty;
-			} else if (item.price.id === 'price_1Ml1idKEmxTujg3V0aCr2TbQ') {
-				//annual addn'l credits
-				extraQty = parseInt(item.quantity || '0');
-				annualCredit = annualCredit + extraQty;
 			}
+
+			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eItv1ahpI') {
+				mainPlan = 'Monthly';
+				mainQty = 2500;
+				monthlyCredit = 2500;
+				quarterlyCredit = 0;
+				annualCredit = 0;
+			}
+
+			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eAY4rwsOF') {
+				mainPlan = 'Yearly';
+				mainQty = 30000;
+				monthlyCredit = 0;
+				quarterlyCredit = 0;
+				annualCredit = 30000;
+			}
+
+			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eEI0CbhUZ') {
+				mainPlan = 'Monthly';
+				mainQty = 7500;
+				monthlyCredit = 7500;
+				quarterlyCredit = 0;
+				annualCredit = 0;
+			}
+
+			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eG9yFwBNQ') {
+				mainPlan = 'Yearly';
+				mainQty = 90000;
+				monthlyCredit = 0;
+				quarterlyCredit = 0;
+				annualCredit = 90000;
+			}
+
+			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eEUzamNdQ') {
+				mainPlan = 'Monthly';
+				mainQty = 20000;
+				monthlyCredit = 20000;
+				quarterlyCredit = 0;
+				annualCredit = 0;
+			}
+
+			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eQL14r4I2') {
+				mainPlan = 'Yearly';
+				mainQty = 240000;
+				monthlyCredit = 0;
+				quarterlyCredit = 0;
+				annualCredit = 240000;
+			}
+
+			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eYMocuEBF') {
+				mainPlan = 'Monthly';
+				mainQty = 50000;
+				monthlyCredit = 50000;
+				quarterlyCredit = 0;
+				annualCredit = 0;
+			}
+
+			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eVwbp22Gi') {
+				mainPlan = 'Yearly';
+				mainQty = 600000;
+				monthlyCredit = 0;
+				quarterlyCredit = 0;
+				annualCredit = 600000;
+			}
+
+			console.log({ item, index, mainPlan, mainQty, monthlyCredit, quarterlyCredit, annualCredit });
 		};
 		lines.forEach(parseLine);
 
