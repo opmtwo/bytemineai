@@ -6,7 +6,7 @@ const { updateBytemineSub } = require('../graphql/mutations');
 const { apsGql } = require('../utils/aps-utils');
 const { safeJsonDecode } = require('../utils/helper-utils');
 const { idpAdminGetUser } = require('../utils/idp-utils');
-const { stripeGetCustomer, stripeGetSubscription, stripeSetDefaultPaymentMethod } = require('../utils/stripe-utils');
+const { stripeGetCustomer, stripeGetSubscription, stripeSetDefaultPaymentMethod, stripeDeleteSubscription } = require('../utils/stripe-utils');
 const { getBytemineUser, listSubByTeamId } = require('../graphql/queries');
 
 const { AUTH_BYTEMINEF573E062_USERPOOLID: USERPOOLID } = process.env;
@@ -32,6 +32,7 @@ router.post('/', async (req, res) => {
 	// Stripe event data
 	const stripeEvent = body.data?.object || {};
 	const stripeEventType = body.type;
+	const stripeCancancellation = stripeEvent?.cancellation_details?.reason;
 
 	// -------------------------------------------------------------------------
 	// Start
@@ -63,12 +64,18 @@ router.post('/', async (req, res) => {
 		subscriptionId = stripeEvent?.id;
 	}
 
+	// invoice.paid
+	if (!subscriptionId && stripeEventType === 'invoice.paid') {
+		subscriptionId = stripeEvent?.parent?.subscription_details?.subscription;
+	}
+
 	// get customer id
+	let customer;
 	const customerId = stripeEvent?.['customer'];
 	console.log({ customerId });
 
 	// get price id
-	const priceId = stripeEvent?.['lines']?.['data']?.[0]?.['plan']?.id;
+	const priceId = stripeEvent?.['lines']?.['data']?.[0]?.['plan']?.id || stripeEvent?.['lines']?.['data']?.[0]?.['pricing']?.price_details?.price;
 	console.log({ priceId });
 
 	// subscription id is required
@@ -84,12 +91,19 @@ router.post('/', async (req, res) => {
 	}
 
 	// get email address
-	const userEmail =
+	let userEmail =
 		stripeEvent.metadata?.email ||
 		stripeEvent.customer_email ||
 		stripeEvent.receipt_email ||
 		stripeEvent.billing_details?.email ||
 		stripeEvent.customer_details?.email;
+
+	// Fetch user email from stripe customer
+	if (!userEmail) {
+		customer = await stripeGetCustomer(customerId);
+		userEmail = customer?.email;
+	}
+
 	const userEmailClean = userEmail?.toLowerCase().trim();
 	console.log(JSON.stringify({ userEmailClean }));
 
@@ -160,7 +174,10 @@ router.post('/', async (req, res) => {
 		const parseLine = (item, index, arr) => {
 			console.log(JSON.stringify({ item, index }));
 
-			if (item.price.id === 'price_1RP5LUDsM2Cd0g4ebEsp66r6') {
+			const itemPriceId = item?.price?.id || item?.pricing?.price_details?.price;
+			console.log({ itemPriceId });
+
+			if (itemPriceId === 'price_1RP5LUDsM2Cd0g4ebEsp66r6') {
 				mainPlan = 'Monthly';
 				mainQty = 1000;
 				monthlyCredit = 1000;
@@ -168,7 +185,7 @@ router.post('/', async (req, res) => {
 				annualCredit = 0;
 			}
 
-			if (item.price.id === 'price_1RP5LUDsM2Cd0g4ePWqXnWQ3') {
+			if (itemPriceId === 'price_1RP5LUDsM2Cd0g4ePWqXnWQ3') {
 				mainPlan = 'Yearly';
 				mainQty = 12000;
 				monthlyCredit = 0;
@@ -176,7 +193,7 @@ router.post('/', async (req, res) => {
 				annualCredit = 12000;
 			}
 
-			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eItv1ahpI') {
+			if (itemPriceId === 'price_1RP5LUDsM2Cd0g4eItv1ahpI') {
 				mainPlan = 'Monthly';
 				mainQty = 2500;
 				monthlyCredit = 2500;
@@ -184,7 +201,7 @@ router.post('/', async (req, res) => {
 				annualCredit = 0;
 			}
 
-			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eAY4rwsOF') {
+			if (itemPriceId === 'price_1RP5LUDsM2Cd0g4eAY4rwsOF') {
 				mainPlan = 'Yearly';
 				mainQty = 30000;
 				monthlyCredit = 0;
@@ -192,7 +209,7 @@ router.post('/', async (req, res) => {
 				annualCredit = 30000;
 			}
 
-			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eEI0CbhUZ') {
+			if (itemPriceId === 'price_1RP5LUDsM2Cd0g4eEI0CbhUZ') {
 				mainPlan = 'Monthly';
 				mainQty = 7500;
 				monthlyCredit = 7500;
@@ -200,7 +217,7 @@ router.post('/', async (req, res) => {
 				annualCredit = 0;
 			}
 
-			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eG9yFwBNQ') {
+			if (itemPriceId === 'price_1RP5LUDsM2Cd0g4eG9yFwBNQ') {
 				mainPlan = 'Yearly';
 				mainQty = 90000;
 				monthlyCredit = 0;
@@ -208,7 +225,7 @@ router.post('/', async (req, res) => {
 				annualCredit = 90000;
 			}
 
-			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eEUzamNdQ') {
+			if (itemPriceId === 'price_1RP5LUDsM2Cd0g4eEUzamNdQ') {
 				mainPlan = 'Monthly';
 				mainQty = 20000;
 				monthlyCredit = 20000;
@@ -216,7 +233,7 @@ router.post('/', async (req, res) => {
 				annualCredit = 0;
 			}
 
-			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eQL14r4I2') {
+			if (itemPriceId === 'price_1RP5LUDsM2Cd0g4eQL14r4I2') {
 				mainPlan = 'Yearly';
 				mainQty = 240000;
 				monthlyCredit = 0;
@@ -224,7 +241,7 @@ router.post('/', async (req, res) => {
 				annualCredit = 240000;
 			}
 
-			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eYMocuEBF') {
+			if (itemPriceId === 'price_1RP5LUDsM2Cd0g4eYMocuEBF') {
 				mainPlan = 'Monthly';
 				mainQty = 50000;
 				monthlyCredit = 50000;
@@ -232,7 +249,7 @@ router.post('/', async (req, res) => {
 				annualCredit = 0;
 			}
 
-			if (item.price.id === 'price_1RP5LUDsM2Cd0g4eVwbp22Gi') {
+			if (itemPriceId === 'price_1RP5LUDsM2Cd0g4eVwbp22Gi') {
 				mainPlan = 'Yearly';
 				mainQty = 600000;
 				monthlyCredit = 0;
@@ -280,6 +297,15 @@ router.post('/', async (req, res) => {
 		console.log('All done - processed customer.subscription.deleted', JSON.stringify(updatedSubscriptionInfo));
 
 		return res.json(updatedSubscriptionInfo);
+	}
+
+	// customer.subscription.updated - cancel the subscription immediately
+	if (stripeEventType === 'customer.subscription.updated' && stripeCancancellation === 'cancellation_requested') {
+		try {
+			await stripeDeleteSubscription(subscriptionId);
+		} catch (err) {
+			console.log('customer.subscription.updated - error', err);
+		}
 	}
 
 	console.log('All done');
