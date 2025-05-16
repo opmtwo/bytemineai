@@ -35,7 +35,7 @@ router.get('/available', verifyToken, verifyTeam, async (req, res) => {
 	const users = await apsGql(listUserByEmail, { email: emailClean }, 'data.listUserByEmail.items');
 	console.log('users', { length: users.length });
 
-	return res.json({ id: users?.[0]?.id });
+	return res.json({ id: users?.[0]?.id?.split('-')?.[0], ok: users?.[0]?.id ? false : true });
 });
 
 router.get('/:id', verifyToken, verifyTeam, async (req, res) => {
