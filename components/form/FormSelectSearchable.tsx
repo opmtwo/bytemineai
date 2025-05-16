@@ -65,7 +65,7 @@ const styles = {
     ...provided,
     zIndex: 1,
     position: "relative",
-    backgroundColor: `${state.data.included ? "#90EE90" : "transparent"}`,
+    backgroundColor: `${state.data.included ? "#90EE90" : "#ffa6a6"}`,
     borderRadius: "20px",
     "&::after": {
       content: "''",
@@ -222,7 +222,7 @@ const FormSelectSearchable = ({
   const multiValueRemoveStyles = (baseStyles: any, state: any) => ({
     ...baseStyles,
     // display: "none",
-    backgroundColor: `${state.data.included ? "#90EE90" : "transparent"}`,
+    backgroundColor: `${state.data.included ? "#90EE90" : "#ffa6a6"}`,
     opacity: 0.5,
     borderRadius: "20px",
     color: "#000000",
