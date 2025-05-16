@@ -138,11 +138,13 @@ const SettingsSubscriptionPlans = () => {
 										<Slot slot="body">
 											<div className="panel-block is-block has-text-centered">
 												<span className="icon is-large has-text-info is-rounded has-background-white-ter">
-													{plan.isAnnual ? <IconNewPlanBasic width={16} /> : <IconNewPlanStandard width={16} />}
+													{plan.isAnnual ? <IconNewPlanStandard width={20} /> : <IconNewPlanBasic width={20} />}
 												</span>
 												<h2 className="title is-5 has-text-info my-4">{plan.title}</h2>
 												<p className="title is-2 my-4">${plan.price}</p>
 												<p>{plan.cycle}</p>
+												<p className="has-text-weight-semibold">{plan.isAnnual ? yearlyOption?.credits : monthlyOption?.credits} credits</p>
+												<p className="my-5 has-text-left">Features</p>
 												<ul className="has-text-left mt-5" style={{ listStyle: 'none', paddingLeft: 0 }}>
 													{plan.features.map((feature, i) => (
 														<li key={i} className="my-4">
