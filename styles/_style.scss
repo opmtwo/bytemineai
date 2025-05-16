@@ -339,3 +339,12 @@ div.planslist div.column div.panel {
 .Toastify__close-button {
 	margin-right: 10px;
 }
+
+// -----------------------------------------------------------------------------
+// FormSelectSearchable
+// -----------------------------------------------------------------------------
+
+.is-react-select.is-react-select-input [class*="multiValue"] div {
+	font-size: 70%;
+	white-space: normal !important;
+}
