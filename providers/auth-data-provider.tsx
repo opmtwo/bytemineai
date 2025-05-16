@@ -151,10 +151,14 @@ const AuthDataProvider = (props: any) => {
 
 			const latestPlan = (res.stripeSubscription as any).plan as Stripe.Plan;
 
-			setIsActive(res.subscription?.subscriptionStatus?.toLowerCase().trim() === 'activecustomer');
-			setIsTrial(res.subscription?.subscriptionStatus?.toLowerCase().trim() === 'trial');
-			setIsMonthly(latestPlan?.interval === 'month');
-			setIsYearly(latestPlan?.interval === 'year');
+			const isSubActive = res.subscription?.subscriptionStatus?.toLowerCase().trim() === 'activecustomer';
+			setIsActive(isSubActive);
+
+			const isSubTrial = res.subscription?.subscriptionStatus?.toLowerCase().trim() === 'trial';
+			setIsTrial(isSubTrial);
+
+			setIsMonthly(isSubActive && !isSubTrial && latestPlan?.interval === 'month');
+			setIsYearly(isSubActive && !isSubTrial && latestPlan?.interval === 'year');
 
 			const { role } = res.self;
 			setisAdmin(role === Roles.Admin);
