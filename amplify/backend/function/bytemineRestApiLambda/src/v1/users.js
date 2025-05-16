@@ -174,7 +174,7 @@ router.delete('/:id', verifyToken, verifyTeam, async (req, res) => {
 		return res.status(404).json({ message: 'Not found' });
 	}
 
-	await idpAdminDisableUser({ UserPoolId: USERPOOLID, Username: id });
+	await idpAdminDisableUser(USERPOOLID, id);
 	await idpAdminDeleteUser({ UserPoolId: USERPOOLID, Username: id });
 
 	const input = { id, _version: user._version };
