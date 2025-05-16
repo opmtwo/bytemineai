@@ -1566,7 +1566,11 @@ const esGetPaginationQuery2 = (body) => {
 		after = undefined;
 	}
 
-	const options = { page, from, size, after };
+	let options = { page, from, size, after };
+	if (after) {
+		options = { size, after };
+	}
+
 	const params = new URLSearchParams(options);
 	//console.log('esGetPaginationQuery - success -', { options, params });
 
@@ -1768,8 +1772,14 @@ const esSearch2 = async (body, mask = true, append = false, api = false) => {
 		}
 		console.log('esSearch2 - total number of records in query', JSON.stringify({ responseCount }));
 
-		// Search path
-		const url = `/${ES_INDEX}/_search?from=${from}&size=${size}`;
+		// Search path// Build search path
+		let url = `/${ES_INDEX}/_search?size=${size}`;
+
+		if (from && !after) {
+			// Use from for shallow pagination
+			url = `/${ES_INDEX}/_search?from=${from}&size=${size}`;
+		}
+
 		let main_options = options;
 		// main_options.sort = ['_id'];
 		if (append) {
@@ -1785,10 +1795,12 @@ const esSearch2 = async (body, mask = true, append = false, api = false) => {
 		// Add sorting
 		main_options = {
 			...main_options,
-			sort: [
-				{ _score: { order: 'asc' } }, // or 'desc' for descending order
-				{ id: 'asc' },
-			],
+			sort: after
+				? [{ id: 'asc' }]
+				: [
+						{ _score: { order: 'asc' } }, // or 'desc' for descending order
+						{ id: 'asc' },
+				  ],
 			search_after: after ? [after] : undefined,
 		};
 		console.log('esSearch2 - search query with sort', JSON.stringify({ url, main_options }));
