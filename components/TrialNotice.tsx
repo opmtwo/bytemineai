@@ -22,7 +22,7 @@ const TrialNotice = ({ onCustomize }: { onCustomize: () => void }) => {
 			try {
 				const now = moment();
 				const then = moment.unix(parseInt(team?.createdAt || '') / 1000).add(1, 'days');
-				setCreditsLeft(team?.currentCredits || 0);
+				setCreditsLeft(subscription?.currentCredits || 0);
 
 				if (now > then && (subscription?.currentCredits || 50) <= 0) {
 					setMessage('Upgrade now and save 15%, use code NYMBLR15 at checkout.');
@@ -56,6 +56,8 @@ const TrialNotice = ({ onCustomize }: { onCustomize: () => void }) => {
 			}
 		})();
 	}, [team?.id]);
+
+	return null
 
 	return (
 		<CardAnimatePresence isActive={subscription?.id !== undefined && isTrial ? true : false}>
