@@ -88,6 +88,10 @@ const SectionEnrichments = () => {
 		enrichmentOnFormCancel();
 	};
 
+	const onUpgrade = () => {
+		router.push('/settings/subscription/');
+	};
+
 	return (
 		<>
 			{isTrailAccount ? <TrialNotice onCustomize={onCustomize} /> : <div></div>}
@@ -114,7 +118,7 @@ const SectionEnrichments = () => {
 					isActive={enrichmentIsFormActive}
 					onSubmit={onEnrichmentUploadFormSubmit}
 					onCancel={onEnrichmentUploadFormCancel}
-					onUpgrade={() => {}}
+					onUpgrade={onUpgrade}
 				/>
 			</Modal>
 		</>
