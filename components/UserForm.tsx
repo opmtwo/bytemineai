@@ -63,6 +63,7 @@ const UserForm = () => {
 		setId(userActiveItem.id);
 		setFirstName(userActiveItem.givenName || '');
 		setLastName(userActiveItem.familyName || '');
+		setCountry(userActiveItem.country || '');
 		setPhone(userActiveItem.phone || '');
 		setEmail(userActiveItem.email || '');
 		setRole(userActiveItem.role || '');
@@ -72,6 +73,7 @@ const UserForm = () => {
 		setId('');
 		setFirstName('');
 		setLastName('');
+		setCountry('US');
 		setPhone('');
 		setEmail('');
 		setRole('');
@@ -86,7 +88,7 @@ const UserForm = () => {
 			givenName: firstName,
 			familyName: lastName,
 			name: `${firstName} ${lastName}`,
-			// country,
+			country,
 		});
 
 	/**
@@ -101,11 +103,11 @@ const UserForm = () => {
 		isValid = err ? false : isValid;
 		setEmailError(err);
 
-		// err = (await isCountryValid(country)) ? undefined : new Error('Invalid country');
-		// isValid = err ? false : isValid;
-		// setCountryError(err);
+		err = (await isCountryValid(country)) ? undefined : new Error('Invalid country');
+		isValid = err ? false : isValid;
+		setCountryError(err);
 
-		err = (await isPhoneValidStrict(phone)) ? undefined : new Error('Invalid phone number');
+		err = (await isPhoneValid(phone)) ? undefined : new Error('Invalid phone number');
 		isValid = err ? false : isValid;
 		setPhoneError(err);
 
@@ -185,7 +187,7 @@ const UserForm = () => {
 						<FormInput name="firstName" value={firstName} label="First Name" onChange={setFirstName} required={true} error={firstNameError} />
 						<FormInput name="lastName" value={lastName} label="Last Name" onChange={setLastName} required={true} error={lastNameError} />
 						<FormSelect name="role" value={role} label="User Role" onChange={setRole} required={true} error={roleError} options={roleOptions} />
-						{/* <FormField>
+						<FormField>
 							<div className="columns is-is-mobile">
 								<div className="column is-5">
 									<FormSelect
@@ -203,13 +205,13 @@ const UserForm = () => {
 									<FormInput name="phone" value={phone} label="Phone Number" onChange={setPhone} required={true} error={phoneError} />
 								</div>
 							</div>
-						</FormField> */}
-						<FormInput name="phone" value={phone} label="Phone Number" onChange={setPhone} required={true} error={phoneError} />
+						</FormField>
+						{/* <FormInput name="phone" value={phone} label="Phone Number" onChange={setPhone} required={true} error={phoneError} /> */}
 						<ErrorNotificaition error={error} />
 					</div>
 				</Slot>
 				<Slot slot="footer">
-					<FormButtonNew type="submit" onClick={handleSubmit} disabled={isBusy} loading={isBusy}>
+					<FormButtonNew type="submit" variant="active" onClick={handleSubmit} disabled={isBusy} loading={isBusy}>
 						{id ? 'Save & Update' : 'Create'}
 					</FormButtonNew>
 				</Slot>
