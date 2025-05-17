@@ -130,9 +130,9 @@ const RegisterMainForm = ({ onSubmit }: { onSubmit: Function }) => {
 
 	return (
 		<form method="POST" onSubmit={handleSubmit}>
-			<div className="has-text-centered" style={{ marginBottom: 20 }}>
+			{/* <div className="has-text-centered" style={{ marginBottom: 20 }}>
 				<Logo />
-			</div>
+			</div> */}
 			<Card>
 				<Slot slot="header">
 					<strong>
