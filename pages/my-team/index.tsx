@@ -8,7 +8,7 @@ import awsmobile from '../../src/aws-exports';
 
 const MyTeam = () => {
 	return (
-		<>
+		<UserGuard>
 			<Head>
 				<title>My Team</title>
 				<meta name="description" content="" />
@@ -18,7 +18,7 @@ const MyTeam = () => {
 					<SectionMyTeam />
 				</CrudProvider>
 			</PageLayout>
-		</>
+		</UserGuard>
 	);
 };
 
