@@ -1,14 +1,16 @@
 import { signOut, updatePassword } from 'aws-amplify/auth';
 import { FormEvent, useEffect, useState } from 'react';
 
+import { countryCodes } from '../../../../codes';
 import { useAuthContext } from '../../../../providers/auth-data-provider';
 import { callApi, cleanupBodyClassList, notifyError } from '../../../../utils/helper-utils';
-import { isFirstNameValid, isLastNameValid, isPasswordValid, isPhoneValidStrict } from '../../../../utils/user-utils';
+import { isCountryValid, isFirstNameValid, isLastNameValid, isPasswordValid, isPhoneValid, isPhoneValidStrict } from '../../../../utils/user-utils';
 import AvatarForm from '../../../AvatarForm';
 import Card from '../../../Card';
 import Confirm from '../../../Confirm';
 import FormButtonNew from '../../../form/FormButtonNew';
 import FormInput from '../../../form/FormInput';
+import FormSelect from '../../../form/FormSelect';
 import IconNewTrash from '../../../icons/IconNewTrash';
 import LoaderFullscreen from '../../../LoaderFullscreen';
 import Slot from '../../../Slot';
@@ -27,6 +29,9 @@ const SettingsAccountForm = () => {
 
 	const [company, setCompany] = useState('US');
 	const [companyError, setCompanyError] = useState<Error>();
+
+	const [country, setCountry] = useState('US');
+	const [countryError, setCountryError] = useState<Error>();
 
 	const [phone, setPhone] = useState('');
 	const [phoneError, setPhoneError] = useState<Error>();
@@ -64,6 +69,7 @@ const SettingsAccountForm = () => {
 		setId(self.id);
 		setFirstName(self.givenName || '');
 		setLastName(self.familyName || '');
+		setCountry(self.country || '');
 		setPhone(self.phone || '');
 		setEmail(self.email || '');
 		setCompany(self.company || '');
@@ -77,6 +83,7 @@ const SettingsAccountForm = () => {
 		setPhone('');
 		setEmail('');
 		setCompany('');
+		setCountry('US');
 		setError(undefined);
 	};
 
@@ -93,6 +100,7 @@ const SettingsAccountForm = () => {
 		familyName: lastName,
 		name: `${firstName} ${lastName}`,
 		company,
+		country,
 	});
 
 	/**
@@ -103,11 +111,11 @@ const SettingsAccountForm = () => {
 		let err;
 		let isValid = true;
 
-		// err = (await isCountryValid(country)) ? undefined : new Error('Invalid country');
-		// isValid = err ? false : isValid;
-		// setCountryError(err);
+		err = (await isCountryValid(country)) ? undefined : new Error('Invalid country');
+		isValid = err ? false : isValid;
+		setCountryError(err);
 
-		err = (await isPhoneValidStrict(phone)) ? undefined : new Error('Invalid phone number');
+		err = (await isPhoneValid(phone)) ? undefined : new Error('Invalid phone number');
 		isValid = err ? false : isValid;
 		setPhoneError(err);
 
@@ -227,7 +235,7 @@ const SettingsAccountForm = () => {
 							<div className="column is-12">
 								<FormInput name="company" value={company} label="Company" onChange={setCompany} required={true} error={companyError} />
 							</div>
-							<div className="column is-6-tablet">
+							<div className="column is-12-tablet">
 								<FormInput
 									name="email"
 									value={email}
@@ -236,6 +244,18 @@ const SettingsAccountForm = () => {
 									error={emailError}
 									readonly={true}
 									disabled={true}
+								/>
+							</div>
+							<div className="column is-6-tablet">
+								<FormSelect
+									name="country"
+									value={country}
+									onChange={setCountry}
+									error={countryError}
+									options={countryCodes}
+									idField="code"
+									nameField="name"
+									label="Country"
 								/>
 							</div>
 							<div className="column is-6-tablet">
