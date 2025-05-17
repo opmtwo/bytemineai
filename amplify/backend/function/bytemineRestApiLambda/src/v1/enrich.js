@@ -12,15 +12,15 @@ const { Router } = require('express');
 const { s3GeneratePresignedUploadUrl } = require('../utils/s3-utils');
 const { v4 } = require('uuid');
 const { lambdaInvokeFunction } = require('../utils/lambda-utils');
-const { updateCredits, addUsage } = require('../utils/usage-utils-enrich');
+const { updateCredits, addUsage, getCredits } = require('../utils/usage-utils-enrich');
 
 const router = Router();
 
 router.post('/preview', schemaValidate(IEnrichmentPreview), verifyToken, verifyTeam, async (req, res, next) => {
 	const { key } = req.body;
+	const { id: teamId } = res.locals.team;
 	const csvInfo = await csvGetInfo(key, BUCKETNAME);
-	// const credits = await getCredits(groupId);
-	const credits = 1000000;
+	const credits = await getCredits(teamId);
 	return res.status(200).json({
 		csv: csvInfo,
 		credits,
