@@ -12,7 +12,7 @@ const SectionSettingsSubscription = () => {
 	const [isBusy, setIsBusy] = useState(false);
 	const { isLoading } = useAuthContext();
 
-	const { isActive } = useAuthContext();
+	const { isActive, isExpired } = useAuthContext();
 
 	const openCustomerPortal = async () => {
 		setIsBusy(true);
@@ -28,9 +28,17 @@ const SectionSettingsSubscription = () => {
 		setIsBusy(false);
 	};
 
+	const hasExpired = isExpired();
+
 	return (
 		<>
 			{isLoading ? <LoaderFullscreen /> : null}
+
+			{hasExpired ? (
+				<div className="has-background-danger has-text-white has-text-centered has-radius has-text-weight-medium is-size-6 p-5 mb-5">
+					Your trial period has expired. To continue accessing all features and services, please upgrade to a paid plan.
+				</div>
+			) : null}
 
 			<div className="is-flex is-align-items-center is-justify-content-space-between">
 				<Breadcrumb title="Subscription & Billing" items={[{ label: 'Subscription & Billing', href: '/settings/subscription/', isCurrent: true }]} />
