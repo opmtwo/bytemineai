@@ -4,10 +4,11 @@ const { apsGql } = require('../utils/aps-utils');
 const { s3GeneratePresignedUploadUrl } = require('../utils/s3-utils');
 const { updateBytemineUser, createBytemineUser, updateBytemineSub, createBytemineSub, deleteBytemineUser } = require('../graphql/mutations');
 const { verifyToken, verifyTeam } = require('../middlewares/auth');
-const { getBytemineSub, listUserByEmail, getBytemineUser } = require('../graphql/queries');
+const { getBytemineSub, listUserByEmail, getBytemineUser, listUserByTeamId } = require('../graphql/queries');
 const { IUser, schemaValidate, IPublicUpload } = require('../schemas');
 const { v4 } = require('uuid');
-const { idpAdminDisableUser, idpAdminDeleteUser } = require('../utils/idp-utils');
+const { idpAdminDisableUser, idpAdminDeleteUser, idpAdminUpdateUserAttributes } = require('../utils/idp-utils');
+const countryCodes = require('../data/country-codes');
 
 const { REGION, STORAGE_BYTEMINESTORAGE_BUCKETNAME: BUCKETNAME, AUTH_BYTEMINEF573E062_USERPOOLID: USERPOOLID } = process.env;
 
@@ -26,10 +27,17 @@ router.get('/', verifyToken, verifyTeam, async (req, res, next) => {
 
 router.post('/', schemaValidate(IUser), verifyToken, verifyTeam, async (req, res, next) => {
 	const { team: self } = res.locals;
-	const { phone, name, givenName, familyName, company } = req.body;
+	const { phone, name, givenName, familyName, company, country } = req.body;
 
-	const input = { id: self.id, phone, name, givenName, familyName, company };
+	const input = { id: self.id, phone, name, givenName, familyName, company, country };
 	const selfUpdated = await apsGql(updateBytemineUser, { input }, 'data.updateBytemineUser');
+
+	await idpAdminUpdateUserAttributes(USERPOOLID, self.id, {
+		name: name,
+		given_name: givenName ?? '',
+		family_name: familyName ?? '',
+		phone_number: `${countryCodes.find((cc) => cc.code === country)?.dial_code || '+1'}${phone}`,
+	});
 
 	return res.json(selfUpdated);
 });
@@ -149,8 +157,9 @@ router.delete('/avatar', verifyToken, verifyTeam, async (req, res) => {
 	return res.json(selfUpdated);
 });
 
-router.delete('/', verifyToken, async (req, res) => {
+router.delete('/', verifyToken, verifyTeam, async (req, res) => {
 	const { sub, team: self } = res.locals;
+	const { teamId } = res.locals.team;
 	console.log(JSON.stringify({ sub, self }));
 
 	if (!sub) {
@@ -167,6 +176,19 @@ router.delete('/', verifyToken, async (req, res) => {
 	} else {
 		const input = { id: sub };
 		await apsGql(deleteBytemineUser, { input });
+	}
+
+	if (self.role?.toLowerCase()?.trim() === 'admin') {
+		const users = await apsGql(listUserByTeamId, { teamId, limit: 1000, sortDirection: 'DESC' }, 'data.listUserByTeamId.items');
+
+		for (let i = 0; i < users.length; i++) {
+			const { id: userId, _version } = users[i];
+
+			await idpAdminDisableUser(USERPOOLID, userId);
+			await idpAdminDeleteUser({ UserPoolId: USERPOOLID, Username: userId });
+
+			await apsGql(deleteBytemineUser, { input: { id: userId, _version } });
+		}
 	}
 
 	return res.json({});
