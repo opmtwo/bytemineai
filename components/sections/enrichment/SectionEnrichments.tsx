@@ -45,13 +45,6 @@ const SectionEnrichments = () => {
 		onEdit: enrichmentOnEdit,
 	} = useCrudContext<IBytemineEnrichment>();
 
-	useEffect(() => {
-		if (!isMounted.current || enrichmentItems.length) {
-			return;
-		}
-		clearInterval(intervalId.current);
-	}, [isMounted.current])
-
 	const router = useRouter();
 
 	const init = async () => {
@@ -114,7 +107,7 @@ const SectionEnrichments = () => {
 				</div>
 			</div>
 
-			<EnrichmentItems onExport={onExport} />
+			<EnrichmentItems isMounted={isMounted.current} onExport={onExport} />
 
 			<Modal isActive={enrichmentIsFormActive} onCancel={enrichmentOnFormCancel}>
 				<EnrichUploadForm

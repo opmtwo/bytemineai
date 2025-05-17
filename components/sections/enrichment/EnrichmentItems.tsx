@@ -19,7 +19,7 @@ import Slot from '../../Slot';
 import TableSkeleton from '../../table-skeleton';
 import EnrichmentEntry from './EnrichmentEntry';
 
-const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactModel[]) => void }) => {
+const EnrichmentItems = ({ isMounted, onExport }: { isMounted?: boolean; onExport: (listContacts: ListContactModel[]) => void }) => {
 	const [isListMode, setIsListMode] = useState(false);
 
 	const { attributes } = useAuthContext();
@@ -158,7 +158,7 @@ const EnrichmentItems = ({ onExport }: { onExport: (listContacts: ListContactMod
 		/>
 	);
 
-	if (enrichmentIsLoading && !enrichmentItems.length) {
+	if (!isMounted && enrichmentIsLoading && !enrichmentItems.length) {
 		return <TableSkeleton />;
 	}
 
