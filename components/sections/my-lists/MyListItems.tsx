@@ -163,7 +163,7 @@ const MyListItems = ({ onExport }: { onExport: (listContacts: IBytemineContact[]
 						<ListView>{itemsList}</ListView>
 					) : (
 						<>
-							{collectionIsLoading && !collectionItems.length ? null : (
+							{!collectionIsLoading && !collectionItems.length ? null : (
 								<>
 									{itemsHeader}
 									{itemsList}
