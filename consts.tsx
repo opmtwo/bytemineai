@@ -1,6 +1,7 @@
 import { sentenceCase } from 'change-case';
 
 import { SortData, SortOrder } from './types';
+import { countryCodes } from './codes';
 
 export const ITEMS_PER_PAGE = 10;
 
@@ -429,3 +430,8 @@ export const planOptions = [
 		name: 'Enterprise Yearly Plan',
 	},
 ];
+
+export const countryCodeOptions = countryCodes.map((_code) => ({
+	id: _code.dial_code,
+	name: `${_code.dial_code} ${_code.code} ${_code.name}`,
+}));
