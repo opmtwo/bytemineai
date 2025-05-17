@@ -89,9 +89,9 @@ const LoginForm = ({
 
 	return (
 		<form method="POST" onSubmit={onSubmit}>
-			<div className="has-text-centered" style={{ paddingBottom: 20 }}>
+			{/* <div className="has-text-centered" style={{ paddingBottom: 20 }}>
 				<Logo />
-			</div>
+			</div> */}
 			<CardRelated>{isVerified ? `Thanks for verifying your email, please login to continue.` : ` `}</CardRelated>
 			<Card>
 				<Slot slot="header">
