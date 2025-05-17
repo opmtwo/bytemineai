@@ -22,37 +22,37 @@ const SettingsSubscriptionPlans = () => {
 
 	const { isActive, isTrial, isMonthly, isYearly } = useAuthContext();
 
-	const [monthlyOption, setMonthlyOption] = useState(planOptions[0]);
-	const [yearlyOption, setYearlyOption] = useState(planOptions[1]);
+	const [monthlyPriceId, setMonthlyPriceId] = useState(planOptions[0].priceId);
+	const [yearlyPriceId, setYearlyPriceId] = useState(planOptions[1].priceId);
 
-	useEffect(() => {
-		const planId = creditPlan || '';
+	// useEffect(() => {
+	// 	const planId = creditPlan || '';
 
-		if (['PLAN_STARTER_MONTHLY', 'PLAN_STARTER_YEARLY'].includes(planId)) {
-			setMonthlyOption(planOptions.find((p) => p.id === 'PLAN_STARTER_MONTHLY')!);
-			setYearlyOption(planOptions.find((p) => p.id === 'PLAN_STARTER_YEARLY')!);
-		}
+	// 	if (['PLAN_STARTER_MONTHLY', 'PLAN_STARTER_YEARLY'].includes(planId)) {
+	// 		setMonthlyOption(planOptions.find((p) => p.id === 'PLAN_STARTER_MONTHLY')!);
+	// 		setYearlyOption(planOptions.find((p) => p.id === 'PLAN_STARTER_YEARLY')!);
+	// 	}
 
-		if (['PLAN_GROWTH_MONTHLY', 'PLAN_GROWTH_YEARLY'].includes(planId)) {
-			setMonthlyOption(planOptions.find((p) => p.id === 'PLAN_GROWTH_MONTHLY')!);
-			setYearlyOption(planOptions.find((p) => p.id === 'PLAN_GROWTH_YEARLY')!);
-		}
+	// 	if (['PLAN_GROWTH_MONTHLY', 'PLAN_GROWTH_YEARLY'].includes(planId)) {
+	// 		setMonthlyOption(planOptions.find((p) => p.id === 'PLAN_GROWTH_MONTHLY')!);
+	// 		setYearlyOption(planOptions.find((p) => p.id === 'PLAN_GROWTH_YEARLY')!);
+	// 	}
 
-		if (['PLAN_PRO_MONTHLY', 'PLAN_PRO_YEARLY'].includes(planId)) {
-			setMonthlyOption(planOptions.find((p) => p.id === 'PLAN_PRO_MONTHLY')!);
-			setYearlyOption(planOptions.find((p) => p.id === 'PLAN_PRO_YEARLY')!);
-		}
+	// 	if (['PLAN_PRO_MONTHLY', 'PLAN_PRO_YEARLY'].includes(planId)) {
+	// 		setMonthlyOption(planOptions.find((p) => p.id === 'PLAN_PRO_MONTHLY')!);
+	// 		setYearlyOption(planOptions.find((p) => p.id === 'PLAN_PRO_YEARLY')!);
+	// 	}
 
-		if (['PLAN_BUSINESS_MONTHLY', 'PLAN_BUSINESS_YEARLY'].includes(planId)) {
-			setMonthlyOption(planOptions.find((p) => p.id === 'PLAN_BUSINESS_MONTHLY')!);
-			setYearlyOption(planOptions.find((p) => p.id === 'PLAN_BUSINESS_YEARLY')!);
-		}
+	// 	if (['PLAN_BUSINESS_MONTHLY', 'PLAN_BUSINESS_YEARLY'].includes(planId)) {
+	// 		setMonthlyOption(planOptions.find((p) => p.id === 'PLAN_BUSINESS_MONTHLY')!);
+	// 		setYearlyOption(planOptions.find((p) => p.id === 'PLAN_BUSINESS_YEARLY')!);
+	// 	}
 
-		if (['PLAN_ENTERPRISE_MONTHLY', 'PLAN_ENTERPRISE_YEARLY'].includes(planId)) {
-			setMonthlyOption(planOptions.find((p) => p.id === 'PLAN_ENTERPRISE_MONTHLY')!);
-			setYearlyOption(planOptions.find((p) => p.id === 'PLAN_ENTERPRISE_YEARLY')!);
-		}
-	}, [creditPlan]);
+	// 	if (['PLAN_ENTERPRISE_MONTHLY', 'PLAN_ENTERPRISE_YEARLY'].includes(planId)) {
+	// 		setMonthlyOption(planOptions.find((p) => p.id === 'PLAN_ENTERPRISE_MONTHLY')!);
+	// 		setYearlyOption(planOptions.find((p) => p.id === 'PLAN_ENTERPRISE_YEARLY')!);
+	// 	}
+	// }, [creditPlan]);
 
 	const openCustomerPortal = async () => {
 		setIsBusy(true);
@@ -80,20 +80,20 @@ const SettingsSubscriptionPlans = () => {
 	};
 
 	const openClientMonthly = async () => {
-		if (!monthlyOption) {
+		if (!monthlyPriceId) {
 			return;
 		}
 		setIsMonthlyBusy(true);
-		await openPaymentLink(monthlyOption.priceId);
+		await openPaymentLink(monthlyPriceId);
 		setIsMonthlyBusy(false);
 	};
 
 	const openClientYearly = async () => {
-		if (!yearlyOption) {
+		if (!yearlyPriceId) {
 			return;
 		}
 		setIsYearlyBusy(true);
-		await openPaymentLink(yearlyOption.priceId);
+		await openPaymentLink(yearlyPriceId);
 		setIsYearlyBusy(false);
 	};
 
@@ -105,24 +105,36 @@ const SettingsSubscriptionPlans = () => {
 		await openPaymentLink(planId.priceId);
 	};
 
+	const yearlyPlanOptions = planOptions.filter(p => p.interval === 'yearly');
+	const monthlyPlanOptions = planOptions.filter(p => p.interval === 'monthly')
+
+	const yearlyOption = planOptions.find(p => p.priceId === yearlyPriceId) || yearlyPlanOptions[0];
+	const monthlyOption = planOptions.find(p => p.priceId === monthlyPriceId) || monthlyPlanOptions[0];
+
 	const plans = [
 		{
-			title: monthlyOption.name,
-			price: monthlyOption.price,
-			cycle: 'Monthly Subscription',
-			isAnnual: false,
-			isBusy: isMonthlyBusy,
-			features: ['Unlimited users', 'Cancel anytime', 'Largest database of contacts', 'Mobiles', 'Personal Emails', 'Work Emails', 'API access'],
-			onClick: isMonthly || isYearly ? undefined : openClientMonthly,
-		},
-		{
-			title: yearlyOption.name,
+			title: 'Annual',
 			price: yearlyOption.price,
 			cycle: 'Annual Subscription',
 			isAnnual: true,
 			isBusy: isYearlyBusy,
-			features: ['Unlimited users', 'Cancel anytime', 'Largest database of contacts', 'Mobiles', 'Personal Emails', 'Work Emails', 'API access'],
+			isDisabled: !yearlyPriceId || isYearlyBusy,
+			features: ['Unlimited users', '1 Credit = All Data Attributes', 'Built-in Work Email Validation', 'Mobile Numbers', 'Personal Emails', 'Work Emails', 'API access'],
+			options: yearlyPlanOptions,
 			onClick: isMonthly || isYearly ? undefined : openClientYearly,
+			onChange: (value: string) => setYearlyPriceId(value),
+		},
+		{
+			title: 'Monthly',
+			price: monthlyOption.price,
+			cycle: 'Monthly Subscription',
+			isAnnual: false,
+			isBusy: isMonthlyBusy,
+			isDisabled: !monthlyPriceId || isMonthlyBusy,
+			features: ['Unlimited users', '1 Credit = All Data Attributes', 'Built-in Work Email Validation', 'Mobile Numbers', 'Personal Emails', 'Work Emails', 'API access'],
+			options: monthlyPlanOptions,
+			onClick: isMonthly || isYearly ? undefined : openClientMonthly,
+			onChange: (value: string) => setMonthlyPriceId(value),
 		},
 	];
 
@@ -142,9 +154,11 @@ const SettingsSubscriptionPlans = () => {
 												</span>
 												<h2 className="title is-5 has-text-info my-4">{plan.title}</h2>
 												<p className="title is-2 my-4">${plan.price}</p>
-												<p>{plan.cycle}</p>
-												<p className="has-text-weight-semibold">{plan.isAnnual ? yearlyOption?.credits : monthlyOption?.credits} credits</p>
-												<p className="my-5 has-text-left">Features</p>
+												{/* <p>{plan.cycle}</p> */}
+												{/* <p className="has-text-weight-semibold">
+													{plan.isAnnual ? yearlyOption?.credits : monthlyOption?.credits} credits
+												</p> */}
+												{/* <p className="my-5 has-text-left">Features</p> */}
 												<ul className="has-text-left mt-5" style={{ listStyle: 'none', paddingLeft: 0 }}>
 													{plan.features.map((feature, i) => (
 														<li key={i} className="my-4">
@@ -162,12 +176,23 @@ const SettingsSubscriptionPlans = () => {
 											</div>
 										</Slot>
 										<Slot slot="footer">
-											<div className="p-5">
+											<div className="has-background-white-bis p-5">
+												<FormSelect
+													name="creditPlan"
+													placeholder="Select Credits"
+													value={creditPlan}
+													onChange={plan.onChange}
+													error={creditPlanError}
+													options={plan.options}
+													idField="priceId"
+													nameField="label"
+													label=""
+												/>
 												<FormButtonNew
 													type="button"
 													className="is-fullwidth has-text-centered"
 													variant={plan.isAnnual ? 'active' : 'default'}
-													disabled={plan.isBusy || !plan.onClick}
+													disabled={plan.isDisabled}
 													loading={plan.isBusy}
 													onClick={plan.onClick}
 												>
@@ -179,7 +204,7 @@ const SettingsSubscriptionPlans = () => {
 								</div>
 							))}
 						</div>
-						<div className="has-radius has-rounded">
+						{/* <div className="has-radius has-rounded">
 							<h3 className="title is-4 my-5">Add Additional Credits</h3>
 							<FormSelect
 								name="creditPlan"
@@ -204,7 +229,7 @@ const SettingsSubscriptionPlans = () => {
 									Please cancel your active subscription before switching to another plan.
 								</p>
 							) : null}
-						</div>
+						</div> */}
 					</div>
 				</Slot>
 			</Card>
