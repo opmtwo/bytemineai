@@ -115,7 +115,7 @@ const AuthDataProvider = (props: any) => {
 			return;
 		}
 		router.push('/settings/subscription');
-	}, [router.pathname]);
+	}, [router.pathname, subscription?.updatedAt]);
 
 	/**
 	 * Get current authenticated user
@@ -248,7 +248,7 @@ const AuthDataProvider = (props: any) => {
 			return false;
 		}
 		const createdAt = moment(subscription.createdAt);
-		return moment(createdAt).isAfter(createdAt.clone().add(7, 'days'));
+		return moment().isAfter(createdAt.clone().add(7, 'days'));
 	};
 
 	const refresh = async () => {
