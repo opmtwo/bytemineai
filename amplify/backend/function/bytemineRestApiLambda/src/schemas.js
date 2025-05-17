@@ -30,6 +30,7 @@ const IUser = Joi.object({
 	name: Joi.string().max(100).required(),
 	givenName: Joi.string().allow('', null).max(50).optional(),
 	familyName: Joi.string().allow('', null).max(50).optional(),
+	country: Joi.string().allow('', null).max(50).optional(),
 	company: Joi.string().allow('', null).max(200).optional(),
 	role: Joi.string().optional().allow('', null, 'Admin', 'Manager', 'Editor', 'Viewer'),
 }).options({ abortEarly: false });
