@@ -453,7 +453,7 @@ const ProspectContactItems = ({
 
 			<ProspectSaveFilterForm isActive={isSaveModalActive} filter={filter} onCreate={onSaveSubmit} onCancel={onSaveCancel} onUpdate={onSaveUpdate} />
 
-			<div className="mt-5">{pagination}</div>
+			{isContactsOnly ? null : <div className="mt-5">{pagination}</div>}
 		</>
 	);
 
