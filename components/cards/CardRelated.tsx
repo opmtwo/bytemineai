@@ -11,9 +11,9 @@ const CardRelated = ({ children }: { children?: ReactNode }) => (
 				) : (
 					<>
 						By logging in you agree to our &nbsp;
-						<Anchor href="https://www.nymblr.com/terms-and-conditions">Terms &amp; Conditions</Anchor>
+						<Anchor href="https://www.bytemine.ai/terms-and-conditions">Terms &amp; Conditions</Anchor>
 						<span>&nbsp;and&nbsp;</span>
-						<Anchor href="https://www.nymblr.com/privacy-policy">Privacy Policy</Anchor>
+						<Anchor href="https://www.bytemine.ai/privacy-policy">Privacy Policy</Anchor>
 					</>
 				)}
 			</div>
