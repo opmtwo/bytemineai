@@ -13,6 +13,9 @@ import TrialNotice from '../../TrialNotice';
 import EnrichmentItems from './EnrichmentItems';
 
 const SectionEnrichments = () => {
+	const isMounted = useRef(false);
+	const intervalId = useRef<NodeJS.Timeout>();
+
 	const [isBusy, setIsBusy] = useState(false);
 
 	const [activeContacts, setActiveContacts] = useState<Contact[]>([]);
@@ -21,6 +24,7 @@ const SectionEnrichments = () => {
 	useEffect(() => {
 		init();
 		const refreshIntervalId = setInterval(enrichmentOnRead, 10000);
+		intervalId.current = refreshIntervalId;
 		return () => {
 			console.log('Clearing refresh interval', { refreshIntervalId });
 			clearInterval(refreshIntervalId);
@@ -41,11 +45,19 @@ const SectionEnrichments = () => {
 		onEdit: enrichmentOnEdit,
 	} = useCrudContext<IBytemineEnrichment>();
 
+	useEffect(() => {
+		if (!isMounted.current || enrichmentItems.length) {
+			return;
+		}
+		clearInterval(intervalId.current);
+	}, [isMounted.current])
+
 	const router = useRouter();
 
 	const init = async () => {
 		setIsBusy(true);
 		await enrichmentOnRead();
+		isMounted.current = true;
 		setIsBusy(false);
 	};
 
