@@ -13,6 +13,7 @@ const {
 	idpAdminUpdateUserAttributes,
 	idpAdminSetUserPassword,
 } = require('../utils/idp-utils');
+const countryCodes = require('../data/country-codes');
 // const { stripeListSubscriptions } = require('../utils/stripe-utils');
 
 const { AUTH_BYTEMINEF573E062_USERPOOLID: USERPOOLID } = process.env;
@@ -28,6 +29,17 @@ router.get('/', verifyToken, verifyTeam, async (req, res) => {
 });
 
 router.get('/available', verifyToken, verifyTeam, async (req, res) => {
+	const { id: teamId } = res.locals.team;
+	const { email } = req.query;
+	const emailClean = email.toLowerCase().trim();
+
+	const users = await apsGql(listUserByEmail, { email: emailClean }, 'data.listUserByEmail.items');
+	console.log('users', { length: users.length });
+
+	return res.json({ id: users?.[0]?.id, ok: users?.[0]?.id ? false : true });
+});
+
+router.get('/free', verifyToken, verifyTeam, async (req, res) => {
 	const { id: teamId } = res.locals.team;
 	const { email } = req.query;
 	const emailClean = email.toLowerCase().trim();
@@ -70,7 +82,7 @@ router.post('/', schemaValidate(IUser), verifyToken, verifyTeam, async (req, res
 
 	const cognitoUser = await idpAdminCreateUser(USERPOOLID, emailClean, ['EMAIL'], {
 		email: emailClean,
-		phone_number: data.phone,
+		phone_number: `${countryCodes.find(cc => cc.code === data.country)?.dial_code || '+1'}${data.phone}`,
 		name: data.name,
 		given_name: data.givenName ?? '',
 		family_name: data.familyName ?? '',
@@ -108,6 +120,7 @@ router.put('/:id', schemaValidate(IUser), verifyToken, verifyTeam, async (req, r
 		name: data.name,
 		given_name: data.givenName ?? '',
 		family_name: data.familyName ?? '',
+		phone_number: `${countryCodes.find(cc => cc.code === data.country)?.dial_code || '+1'}${data.phone}`,
 	});
 
 	delete data.email;
