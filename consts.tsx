@@ -345,8 +345,8 @@ export const planOptions = [
 		price: 50,
 		credits: 1000,
 		priceId: PLAN_STARTER_MONTHLY,
-		label: 'Plan Starter Monthly',
-		name: 'Starter Monthly Plan',
+		label: '50$ - 1000 Credits',
+		name: 'Monthly Plan',
 	},
 	{
 		id: 'PLAN_STARTER_YEARLY',
@@ -354,8 +354,8 @@ export const planOptions = [
 		price: 480,
 		credits: 12000,
 		priceId: PLAN_STARTER_YEARLY,
-		label: 'Plan Starter Yearly',
-		name: 'Starter Yearly Plan',
+		label: '480$ - 12000 Credits',
+		name: 'Yearly Plan',
 	},
 	{
 		id: 'PLAN_GROWTH_MONTHLY',
@@ -363,8 +363,8 @@ export const planOptions = [
 		price: 100,
 		credits: 2500,
 		priceId: PLAN_GROWTH_MONTHLY,
-		label: 'Plan Growth Monthly',
-		name: 'Growth Monthly Plan',
+		label: '100$ - 2500 Credits',
+		name: 'Monthly Plan',
 	},
 	{
 		id: 'PLAN_GROWTH_YEARLY',
@@ -372,8 +372,8 @@ export const planOptions = [
 		price: 960,
 		credits: 30000,
 		priceId: PLAN_GROWTH_YEARLY,
-		label: 'Plan Growth Yearly',
-		name: 'Growth Yearly Plan',
+		label: '960$ - 30000 Credits',
+		name: 'Yearly Plan',
 	},
 	{
 		id: 'PLAN_PRO_MONTHLY', //
@@ -381,8 +381,8 @@ export const planOptions = [
 		price: 250,
 		credits: 7500,
 		priceId: PLAN_PRO_MONTHLY,
-		label: 'Plan Pro Monthly',
-		name: 'Pro Monthly Plan',
+		label: '250$ - 7500 Credits',
+		name: 'Monthly Plan',
 	},
 	{
 		id: 'PLAN_PRO_YEARLY', //
@@ -390,8 +390,8 @@ export const planOptions = [
 		price: 2400,
 		credits: 90000,
 		priceId: PLAN_PRO_YEARLY,
-		label: 'Plan Pro Yearly',
-		name: 'Pro Yearly Plan',
+		label: '2400$ - 90000 Credits',
+		name: 'Yearly Plan',
 	},
 	{
 		id: 'PLAN_BUSINESS_MONTHLY',
@@ -399,8 +399,8 @@ export const planOptions = [
 		price: 500,
 		credits: 20000,
 		priceId: PLAN_BUSINESS_MONTHLY,
-		label: 'Plan Business Monthly',
-		name: 'Business Monthly Plan',
+		label: '500$ - 20000 Credits',
+		name: 'Monthly Plan',
 	},
 	{
 		id: 'PLAN_BUSINESS_YEARLY',
@@ -408,8 +408,8 @@ export const planOptions = [
 		price: 4800,
 		credits: 240000,
 		priceId: PLAN_BUSINESS_YEARLY,
-		label: 'Plan Business Yearly',
-		name: 'Business Yearly Plan',
+		label: '4800$ - 240000 Credits',
+		name: 'Yearly Plan',
 	},
 	{
 		id: 'PLAN_ENTERPRISE_MONTHLY',
@@ -417,8 +417,8 @@ export const planOptions = [
 		price: 1000,
 		credits: 50000,
 		priceId: PLAN_ENTERPRISE_MONTHLY,
-		label: 'Plan Enterprise Monthly',
-		name: 'Enterprise Monthly Plan',
+		label: '1000$ - 50000 Credits',
+		name: 'Monthly Plan',
 	},
 	{
 		id: 'PLAN_ENTERPRISE_YEARLY',
@@ -426,8 +426,8 @@ export const planOptions = [
 		price: 9600,
 		credits: 600000,
 		priceId: PLAN_ENTERPRISE_YEARLY,
-		label: 'Plan Enterprise Yearly',
-		name: 'Enterprise Yearly Plan',
+		label: '9600$ - 600000 Credits',
+		name: 'Yearly Plan',
 	},
 ];
 
