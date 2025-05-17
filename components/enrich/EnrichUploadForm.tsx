@@ -117,8 +117,8 @@ const EnrichUploadForm = ({
 		}
 
 		if (credits < noOfCsvRecords) {
-			// setError(new Error("You don't have enough credits in your account"));
-			// return false;
+			setError(new Error("You don't have enough credits in your account"));
+			return false;
 		}
 
 		return isValid;
