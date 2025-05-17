@@ -6,6 +6,7 @@ import { useAuthContext } from '../../../../providers/auth-data-provider';
 import { callApi } from '../../../../utils/helper-utils';
 import Card from '../../../Card';
 import FormButtonNew from '../../../form/FormButtonNew';
+import FormField from '../../../form/FormField';
 import FormSelect from '../../../form/FormSelect';
 import IconNewCheck from '../../../icons/IconNewCheck';
 import IconNewPlanBasic from '../../../icons/IconNewPlanBasic';
@@ -105,11 +106,11 @@ const SettingsSubscriptionPlans = () => {
 		await openPaymentLink(planId.priceId);
 	};
 
-	const yearlyPlanOptions = planOptions.filter(p => p.interval === 'yearly');
-	const monthlyPlanOptions = planOptions.filter(p => p.interval === 'monthly')
+	const yearlyPlanOptions = planOptions.filter((p) => p.interval === 'yearly');
+	const monthlyPlanOptions = planOptions.filter((p) => p.interval === 'monthly');
 
-	const yearlyOption = planOptions.find(p => p.priceId === yearlyPriceId) || yearlyPlanOptions[0];
-	const monthlyOption = planOptions.find(p => p.priceId === monthlyPriceId) || monthlyPlanOptions[0];
+	const yearlyOption = planOptions.find((p) => p.priceId === yearlyPriceId) || yearlyPlanOptions[0];
+	const monthlyOption = planOptions.find((p) => p.priceId === monthlyPriceId) || monthlyPlanOptions[0];
 
 	const plans = [
 		{
@@ -119,7 +120,15 @@ const SettingsSubscriptionPlans = () => {
 			isAnnual: true,
 			isBusy: isYearlyBusy,
 			isDisabled: !yearlyPriceId || isYearlyBusy,
-			features: ['Unlimited users', '1 Credit = All Data Attributes', 'Built-in Work Email Validation', 'Mobile Numbers', 'Personal Emails', 'Work Emails', 'API access'],
+			features: [
+				'Unlimited users',
+				'1 Credit = All Data Attributes',
+				'Built-in Work Email Validation',
+				'Mobile Numbers',
+				'Personal Emails',
+				'Work Emails',
+				'API access',
+			],
 			options: yearlyPlanOptions,
 			onClick: isMonthly || isYearly ? undefined : openClientYearly,
 			onChange: (value: string) => setYearlyPriceId(value),
@@ -131,7 +140,15 @@ const SettingsSubscriptionPlans = () => {
 			isAnnual: false,
 			isBusy: isMonthlyBusy,
 			isDisabled: !monthlyPriceId || isMonthlyBusy,
-			features: ['Unlimited users', '1 Credit = All Data Attributes', 'Built-in Work Email Validation', 'Mobile Numbers', 'Personal Emails', 'Work Emails', 'API access'],
+			features: [
+				'Unlimited users',
+				'1 Credit = All Data Attributes',
+				'Built-in Work Email Validation',
+				'Mobile Numbers',
+				'Personal Emails',
+				'Work Emails',
+				'API access',
+			],
 			options: monthlyPlanOptions,
 			onClick: isMonthly || isYearly ? undefined : openClientMonthly,
 			onChange: (value: string) => setMonthlyPriceId(value),
@@ -177,27 +194,31 @@ const SettingsSubscriptionPlans = () => {
 										</Slot>
 										<Slot slot="footer">
 											<div className="has-background-white-bis p-5">
-												<FormSelect
-													name="creditPlan"
-													placeholder="Select Credits"
-													value={creditPlan}
-													onChange={plan.onChange}
-													error={creditPlanError}
-													options={plan.options}
-													idField="priceId"
-													nameField="label"
-													label=""
-												/>
-												<FormButtonNew
-													type="button"
-													className="is-fullwidth has-text-centered"
-													variant={plan.isAnnual ? 'active' : 'default'}
-													disabled={plan.isDisabled}
-													loading={plan.isBusy}
-													onClick={plan.onClick}
-												>
-													Select Plan
-												</FormButtonNew>
+												<FormField>
+													<FormSelect
+														name="creditPlan"
+														placeholder="Select Credits"
+														value={creditPlan}
+														onChange={plan.onChange}
+														error={creditPlanError}
+														options={plan.options}
+														idField="priceId"
+														nameField="label"
+														label=""
+													/>
+												</FormField>
+												<FormField>
+													<FormButtonNew
+														type="button"
+														className="is-fullwidth has-text-centered"
+														variant={plan.isAnnual ? 'active' : 'default'}
+														disabled={plan.isDisabled}
+														loading={plan.isBusy}
+														onClick={plan.onClick}
+													>
+														Select Plan
+													</FormButtonNew>
+												</FormField>
 											</div>
 										</Slot>
 									</Card>
