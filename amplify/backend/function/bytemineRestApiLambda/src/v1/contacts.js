@@ -3,7 +3,7 @@ const { verifyToken, verifyTeam } = require('../middlewares/auth');
 const { apsGql } = require('../utils/aps-utils');
 const { searchContactsV2, getAllSavedContacts, deleteAllSavedContacts, getAllContacts, saveAllContacts } = require('../utils/search-utils');
 const { getErrorMsg, getErrorCode, encodeContact } = require('../utils/helper-utils');
-const { usageAddUsage } = require('../utils/usage-utils');
+const { usageAddUsage, usageGetTotalCredits } = require('../utils/usage-utils');
 const { esGetOptionsV2 } = require('../utils/es-utils-v2');
 const { createBytemineContact, deleteBytemineContact, updateBytemineContact } = require('../graphql/mutations');
 const { getBytemineContact } = require('../graphql/queries');
@@ -94,6 +94,11 @@ router.post('/unlock', schemaValidate(IPids), verifyToken, verifyTeam, async (re
 
 	const pidsToUnlock = pids.filter((id) => !unlockedpids.includes(id));
 	console.log(JSON.stringify({ length: pidsToUnlock.length, pidsToUnlock }));
+
+	const credits = await usageGetTotalCredits(teamId, userId);
+	if (credits < pidsToUnlock.length) {
+		return res.status(422).json({ message: 'Insufficient credits.' });
+	}
 
 	const pidsToDelete = partialContacts.map((item) => item.pid || item.id.split('-')[0]);
 	console.log(JSON.stringify({ length: pidsToDelete.length, pidsToDelete }));
