@@ -35,6 +35,7 @@ router.post('/search', verifyToken, verifyTeam, async (req, res) => {
 	// -------------------------------------------------------------------------
 	// Lookup contacts in OpenSearch - this is the core
 	// -------------------------------------------------------------------------
+	body.teamId = teamId;
 	const response = await searchContactsV2(body, true, true, false, false);
 	if (response instanceof Error === true) {
 		return res.status(getErrorCode(response) || 422).json({ message: getErrorMsg(response) });
