@@ -108,6 +108,7 @@ const AuthDataProvider = (props: any) => {
 	// Trial redirection - redirect to subscription page when trial expires
 	useEffect(() => {
 		if (isExpired() !== true) {
+			refresh();
 			return;
 		}
 		if (router.pathname === '/settings/subscription') {
