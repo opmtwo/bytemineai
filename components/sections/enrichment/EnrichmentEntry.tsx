@@ -141,7 +141,7 @@ const EnrichmentEntry = ({
 		<motion.div layout className="panel-block is-block">
 			<div className="columns is-mobile is-align-items-center">
 				<div className="column is-10">
-					<Anchor href={url} className="columns is-mobile is-align-items-center has-text-dark">
+					<div className="columns is-mobile is-align-items-center has-text-dark">
 						<div className="column is-4 is-flex is-align-items-center">
 							{/* <span
 								className="is-relative field"
@@ -193,7 +193,7 @@ const EnrichmentEntry = ({
 							)}
 						</div>
 						<div className="column is-2 has-text-centered">{item.status}</div>
-					</Anchor>
+					</div>
 				</div>
 				<div className="column is-2 is-flex is-justify-content-flex-end">{controls}</div>
 			</div>
