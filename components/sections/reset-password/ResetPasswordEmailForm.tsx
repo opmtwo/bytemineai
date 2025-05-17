@@ -41,9 +41,9 @@ const ResetPasswordEmailForm = ({ onSubmit }: { onSubmit: Function }) => {
 
 	return (
 		<form method="POST" onSubmit={handleSubmit}>
-			<div className="has-text-centered" style={{ marginBottom: 80 }}>
+			{/* <div className="has-text-centered" style={{ marginBottom: 80 }}>
 				<Logo />
-			</div>
+			</div> */}
 			<Card>
 				<Slot slot="header">
 					<big>

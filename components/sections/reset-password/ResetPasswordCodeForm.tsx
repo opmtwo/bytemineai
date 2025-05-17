@@ -88,9 +88,9 @@ const ResetPasswordCodeForm = ({ email, onCancel }: { email: string; onCancel: F
 
 	return (
 		<form method="POST" onSubmit={handleSubmit}>
-			<div className="has-text-centered" style={{ marginBottom: 80 }}>
+			{/* <div className="has-text-centered" style={{ marginBottom: 80 }}>
 				<Logo />
-			</div>
+			</div> */}
 			<Card>
 				<Slot slot="header">
 					<big>
