@@ -83,9 +83,9 @@ const RegisterCodeFormNew = ({
 	return (
 		<>
 			<form method="POST" onSubmit={handleSubmit}>
-				<div className="has-text-centered" style={{ marginBottom: 20 }}>
+				{/* <div className="has-text-centered" style={{ marginBottom: 20 }}>
 					<Logo />
-				</div>
+				</div> */}
 				<div className={classNames('has-text-weight-bold has-text-centered', isResent ? 'has-text-danger' : '')} style={{ marginBottom: 20 }}>
 					{isResent
 						? `A new verification code was sent to your email ${username}`
